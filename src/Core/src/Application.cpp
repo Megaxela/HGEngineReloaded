@@ -56,5 +56,14 @@ int HG::Core::Application::exec()
 
 void HG::Core::Application::proceedScene()
 {
+    if (m_cachedScene != nullptr)
+    {
+        // Deleting current scene
+        delete m_currentScene;
+        m_currentScene = m_cachedScene;
+        m_cachedScene = nullptr;
 
+        // Calling start method
+
+    }
 }

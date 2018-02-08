@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <UniqueMergeContainer.hpp>
 #include "Application.hpp"
 
 namespace CORE_MODULE_NS
@@ -38,9 +39,14 @@ namespace CORE_MODULE_NS
         Application* application() const;
 
         /**
-         * @brief
+         * @brief Method, that's called every frame.
          */
         void update();
+
+        /**
+         * @brief Method, that's called on scene start.
+         */
+        void start();
 
     private:
         Application* m_mainApplication;

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.9)
 project(HGCore)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(HGCore STATIC
         src/Application.cpp
         include/Application.hpp
-        src/Scene.cpp include/Scene.hpp)
+        src/Scene.cpp include/Scene.hpp include/GameObject.cpp include/GameObject.hpp)
 
 target_include_directories(HGCore PUBLIC
         include
