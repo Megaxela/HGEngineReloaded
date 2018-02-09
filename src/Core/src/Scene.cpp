@@ -1,27 +1,50 @@
+#include <GameObjectCache.hpp>
 #include "Scene.hpp"
 
-HG::Core::Scene::Scene() :
-    m_mainApplication(nullptr)
+CORE_MODULE_NS::Scene::Scene() :
+    m_mainApplication(nullptr),
+    m_gameObjects()
 {
 
 }
 
-void HG::Core::Scene::setApplication(HG::Core::Application *application)
+void CORE_MODULE_NS::Scene::setApplication(CORE_MODULE_NS::Application *application)
 {
     m_mainApplication = application;
 }
 
-HG::Core::Application *HG::Core::Scene::application() const
+CORE_MODULE_NS::Application *CORE_MODULE_NS::Scene::application() const
 {
     return m_mainApplication;
 }
 
-void HG::Core::Scene::update()
+void CORE_MODULE_NS::Scene::update()
+{
+    m_gameObjects.merge();
+
+    for (auto&& gameObject : m_gameObjects)
+    {
+        gameObject->update();
+    }
+}
+
+void CORE_MODULE_NS::Scene::start()
 {
 
 }
 
-void HG::Core::Scene::start()
+void CORE_MODULE_NS::Scene::removeGameObject(CORE_MODULE_NS::GameObject* gameObject)
 {
+    // Removing current parent scene.
+    gameObject->setParentScene(nullptr);
+    m_gameObjects.remove(gameObject);
 
+    GameObjectCache::i().cache(gameObject);
+}
+
+void CORE_MODULE_NS::Scene::addGameObject(CORE_MODULE_NS::GameObject* gameObject)
+{
+    // Adding current scene as parent.
+    gameObject->setParentScene(this);
+    m_gameObjects.add(gameObject);
 }

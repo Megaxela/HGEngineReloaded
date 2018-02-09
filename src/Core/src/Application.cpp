@@ -2,7 +2,7 @@
 #include "Application.hpp"
 #include "Scene.hpp"
 
-HG::Core::Application::Application(int /* argc */, char** /* argv */) :
+CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
     m_currentScene(nullptr),
     m_cachedScene(nullptr),
     m_working(false)
@@ -10,7 +10,7 @@ HG::Core::Application::Application(int /* argc */, char** /* argv */) :
 
 }
 
-void HG::Core::Application::setScene(HG::Core::Scene* scene)
+void CORE_MODULE_NS::Application::setScene(CORE_MODULE_NS::Scene* scene)
 {
     if (scene == nullptr)
     {
@@ -21,7 +21,7 @@ void HG::Core::Application::setScene(HG::Core::Scene* scene)
     m_cachedScene = scene;
 }
 
-HG::Core::Scene* HG::Core::Application::scene() const
+CORE_MODULE_NS::Scene* CORE_MODULE_NS::Application::scene() const
 {
     if (m_cachedScene != nullptr)
     {
@@ -31,12 +31,12 @@ HG::Core::Scene* HG::Core::Application::scene() const
     return m_currentScene;
 }
 
-void HG::Core::Application::stop()
+void CORE_MODULE_NS::Application::stop()
 {
     m_working = false;
 }
 
-int HG::Core::Application::exec()
+int CORE_MODULE_NS::Application::exec()
 {
     m_working = true;
 
@@ -47,14 +47,29 @@ int HG::Core::Application::exec()
         // Checking for new scene, etc
         proceedScene();
 
-        // Calling update on scenes.
+        // Calling update on scene.
         m_currentScene->update();
+
+        // Executing rendering event queue.
+
+    }
+
+    if (m_currentScene != nullptr)
+    {
+        delete m_currentScene;
+        m_currentScene = nullptr;
+    }
+
+    if (m_cachedScene != nullptr)
+    {
+        delete m_cachedScene;
+        m_cachedScene = nullptr;
     }
 
     return 0;
 }
 
-void HG::Core::Application::proceedScene()
+void CORE_MODULE_NS::Application::proceedScene()
 {
     if (m_cachedScene != nullptr)
     {
@@ -64,6 +79,6 @@ void HG::Core::Application::proceedScene()
         m_cachedScene = nullptr;
 
         // Calling start method
-
+        m_currentScene->start();
     }
 }

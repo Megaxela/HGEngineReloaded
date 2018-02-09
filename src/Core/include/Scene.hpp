@@ -3,6 +3,7 @@
 #include <chrono>
 #include <UniqueMergeContainer.hpp>
 #include "Application.hpp"
+#include "GameObject.hpp"
 
 namespace CORE_MODULE_NS
 {
@@ -48,8 +49,26 @@ namespace CORE_MODULE_NS
          */
         void start();
 
+        /**
+         * @brief Method for removing gameobject
+         * from scene.
+         * @param gameObject GameObject.
+         */
+        void removeGameObject(GameObject* gameObject);
+
+        /**
+         * @brief Method for adding new gameObject.
+         * If gameObject will be `nullptr`,
+         * `std::runtime_error` exception will
+         * be thrown.
+         * @param gameObject Pointer to GameObject.
+         */
+        void addGameObject(GameObject* gameObject);
+
     private:
         Application* m_mainApplication;
+
+        UTILS_MODULE_NS::UniqueMergeContainer<GameObject*> m_gameObjects;
     };
 }
 

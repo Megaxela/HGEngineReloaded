@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm> // std::find, std::remove
 #include <stdexcept>
+#include <queue>
 
 namespace UTILS_MODULE_NS
 {
@@ -12,14 +13,15 @@ namespace UTILS_MODULE_NS
  */
     template<
         typename T,
-        typename Container=std::vector<T>
+        typename ContainerType=std::vector<T>
     >
     class UniqueMergeContainer
     {
     public:
-        typedef typename Container::const_iterator const_iterator;
-        typedef typename Container::iterator iterator;
-        typedef typename Container::size_type size_type;
+        using container = ContainerType;
+        using const_iterator = typename container::const_iterator;
+        using iterator = typename container::iterator;
+        using size_type = typename container::size_type;
 
         /**
          * @brief Default constructor creates no elements.
@@ -37,7 +39,7 @@ namespace UTILS_MODULE_NS
          * @brief Copy constructor. It's copying states.
          * @param container Copying object.
          */
-        UniqueMergeContainer(const UniqueMergeContainer<T, Container> &container) :
+        UniqueMergeContainer(const UniqueMergeContainer<T, ContainerType> &container) :
             m_removable(container.m_removable),
             m_added(container.m_added),
             m_current(container.m_current)
@@ -49,7 +51,7 @@ namespace UTILS_MODULE_NS
          * @brief Move constructor. It's just moving container data.
          * @param container Movable container.
          */
-        UniqueMergeContainer(UniqueMergeContainer<T, Container>&& container) :
+        UniqueMergeContainer(UniqueMergeContainer<T, ContainerType>&& container) :
             m_removable(std::move(container.m_removable)),
             m_added(std::move(container.m_added)),
             m_current(std::move(container.m_current))
@@ -104,8 +106,8 @@ namespace UTILS_MODULE_NS
         void merge()
         {
             // Removing elements from new one and from current
-            typename Container::iterator addedNewEndIterator = m_added.end();
-            typename Container::iterator currentNewEndIterator = m_current.end();
+            typename container::iterator addedNewEndIterator = m_added.end();
+            typename container::iterator currentNewEndIterator = m_current.end();
 
             for (auto&& el : m_removable)
             {
@@ -140,7 +142,7 @@ namespace UTILS_MODULE_NS
          * @param rhs Right hand container.
          * @return Reference to this container.
          */
-        UniqueMergeContainer<T, Container>& operator=(const UniqueMergeContainer<T, Container>& rhs)
+        UniqueMergeContainer<T, ContainerType>& operator=(const UniqueMergeContainer<T, ContainerType>& rhs)
         {
             m_current   = rhs.m_current;
             m_removable = rhs.m_removable;
@@ -154,7 +156,7 @@ namespace UTILS_MODULE_NS
          * @param rhs Right hand container.
          * @return Reference to this container.
          */
-        UniqueMergeContainer<T, Container>& operator=(UniqueMergeContainer<T, Container>&& rhs)
+        UniqueMergeContainer<T, ContainerType>& operator=(UniqueMergeContainer<T, ContainerType>&& rhs)
         {
             m_current   = std::move(rhs.m_current);
             m_removable = std::move(rhs.m_removable);
@@ -269,7 +271,7 @@ namespace UTILS_MODULE_NS
          * @brief Method to get const begin iterator of addable container.
          * @return Iterator.
          */
-        iterator addedBegin() const
+        const_iterator addedBegin() const
         {
             return m_added.begin();
         }
@@ -278,14 +280,50 @@ namespace UTILS_MODULE_NS
          * @brief Method to get const end iterator of addable container.
          * @return Iterator.
          */
-        iterator addedEnd() const
+        const_iterator addedEnd() const
         {
             return m_added.end();
         }
 
+        /**
+         * @brief Method to get const begin iterator of removable container.
+         * @return Const iterator.
+         */
+        const_iterator removableBegin() const
+        {
+            return m_removable.begin();
+        }
+
+        /**
+         * @brief Method to get begin iterator of removable container.
+         * @return Iterator.
+         */
+        iterator removableBegin()
+        {
+            return m_removable.begin();
+        }
+
+        /**
+         * @brief Method to get end const iterator of removable container.
+         * @return Const iterator.
+         */
+        const_iterator removableEnd() const
+        {
+            return m_removable.end();
+        }
+
+        /**
+         * @brief Method to get end iterator of removable container.
+         * @return Iterator.
+         */
+        iterator removableEnd()
+        {
+            return m_removable.end();
+        }
+
     private:
-        Container m_removable;
-        Container m_added;
-        Container m_current;
+        container m_removable;
+        container m_added;
+        container m_current;
     };
 }

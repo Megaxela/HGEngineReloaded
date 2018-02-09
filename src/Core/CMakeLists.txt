@@ -6,7 +6,16 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(HGCore STATIC
         src/Application.cpp
         include/Application.hpp
-        src/Scene.cpp include/Scene.hpp include/GameObject.cpp include/GameObject.hpp)
+        src/Scene.cpp
+        include/Scene.hpp
+        src/GameObject.cpp
+        include/GameObject.hpp
+        src/Behaviour.cpp
+        include/Behaviour.hpp
+        src/GameObjectBuilder.cpp
+        include/GameObjectBuilder.hpp
+        src/GameObjectCache.cpp
+        include/GameObjectCache.hpp)
 
 target_include_directories(HGCore PUBLIC
         include
