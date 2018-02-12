@@ -65,6 +65,9 @@ namespace CORE_MODULE_NS
         Scene* m_currentScene;
         Scene* m_cachedScene;
 
+
+
+        // While this variable is true, game cycle is active
         bool m_working;
     };
 }

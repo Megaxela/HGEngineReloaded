@@ -7,7 +7,9 @@ add_subdirectory(libraries)
 
 add_library(HGUtils STATIC
         include/UniqueMergeContainer.hpp
-        src/UniqueMergeContainer.cpp)
+        src/UniqueMergeContainer.cpp
+        include/Rect.hpp
+        src/Rect.cpp)
 
 target_include_directories(HGUtils PUBLIC
         include
@@ -15,6 +17,7 @@ target_include_directories(HGUtils PUBLIC
 
 target_link_libraries(HGUtils
         ALogger
+        glm
 )
 
 target_compile_definitions(HGUtils

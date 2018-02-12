@@ -23,6 +23,7 @@ target_include_directories(HGCore PUBLIC
 
 target_link_libraries(HGCore
         HGUtils # UniqueMergeContainer
+        HGRenderingBase #
 )
 
 target_compile_definitions(HGCore

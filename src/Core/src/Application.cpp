@@ -50,7 +50,7 @@ int CORE_MODULE_NS::Application::exec()
         // Calling update on scene.
         m_currentScene->update();
 
-        // Executing rendering event queue.
+        // Executing rendering pipeline.
 
     }
 
