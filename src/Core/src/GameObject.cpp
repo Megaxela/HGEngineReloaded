@@ -4,6 +4,7 @@
 
 CORE_MODULE_NS::GameObject::GameObject() :
     m_behaviours(),
+    m_transform(this),
     m_parentScene(nullptr)
 {
 
@@ -39,6 +40,14 @@ void CORE_MODULE_NS::GameObject::update()
     for (auto&& iter : m_behaviours)
     {
         iter->update();
+    }
+}
+
+void CORE_MODULE_NS::GameObject::render()
+{
+    for (auto&& iter : m_behaviours)
+    {
+        iter->render();
     }
 }
 
@@ -82,4 +91,19 @@ void CORE_MODULE_NS::GameObject::clear()
     {
         delete *iter;
     }
+}
+
+void CORE_MODULE_NS::GameObject::setName(std::string name)
+{
+    m_name = std::move(name);
+}
+
+std::string CORE_MODULE_NS::GameObject::name() const
+{
+    return m_name;
+}
+
+CORE_MODULE_NS::Transform* CORE_MODULE_NS::GameObject::transform() const
+{
+    return &m_transform;
 }

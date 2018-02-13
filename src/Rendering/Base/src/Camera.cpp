@@ -1,7 +1,8 @@
 #include <CurrentLogger.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "Camera.hpp"
 
-HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() :
+RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::OrthogonalSettings() :
     m_zoom(1.0f),
     m_size(1),
     m_parentCam(nullptr)
@@ -9,33 +10,37 @@ HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() :
 
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings(const HG::Rendering::Base::Camera::OrthogonalSettings& rhs) :
+RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::OrthogonalSettings(
+    const RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& rhs
+) :
     OrthogonalSettings()
 {
     (*this) = rhs;
 }
 
-void HG::Rendering::Base::Camera::OrthogonalSettings::setZoom(float zoom)
+void RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::setZoom(float zoom)
 {
     m_zoom = zoom;
 }
 
-float HG::Rendering::Base::Camera::OrthogonalSettings::zoom() const
+float RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::zoom() const
 {
     return m_zoom;
 }
 
-void HG::Rendering::Base::Camera::OrthogonalSettings::setSize(uint32_t size)
+void RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::setSize(uint32_t size)
 {
     m_size = size;
 }
 
-uint32_t HG::Rendering::Base::Camera::OrthogonalSettings::size() const
+uint32_t RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::size() const
 {
     return m_size;
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings& HG::Rendering::Base::Camera::OrthogonalSettings::operator=(const HG::Rendering::Base::Camera::OrthogonalSettings& rhs)
+RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::operator=(
+    const RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& rhs
+)
 {
     m_zoom = rhs.m_zoom;
     m_size = rhs.m_size;
@@ -47,20 +52,22 @@ HG::Rendering::Base::Camera::OrthogonalSettings& HG::Rendering::Base::Camera::Or
     return (*this);
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings() :
+RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings::PerspectiveSettings() :
     m_fov(80),
     m_parentCam(nullptr)
 {
 
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings(const HG::Rendering::Base::Camera::PerspectiveSettings& rhs) :
+RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings::PerspectiveSettings(
+    const RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& rhs
+) :
     PerspectiveSettings()
 {
     (*this) = rhs;
 }
 
-void HG::Rendering::Base::Camera::PerspectiveSettings::setFieldOfView(float fov)
+void RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings::setFieldOfView(float fov)
 {
     assert(fov >= 1 && fov <= 179);
     m_fov = fov;
@@ -70,12 +77,14 @@ void HG::Rendering::Base::Camera::PerspectiveSettings::setFieldOfView(float fov)
     }
 }
 
-float HG::Rendering::Base::Camera::PerspectiveSettings::fieldOfView() const
+float RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings::fieldOfView() const
 {
     return m_fov;
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings& HG::Rendering::Base::Camera::PerspectiveSettings::operator=(const HG::Rendering::Base::Camera::PerspectiveSettings& rhs)
+RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings::operator=(
+    const RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& rhs
+)
 {
     m_fov = rhs.m_fov;
 
@@ -87,17 +96,17 @@ HG::Rendering::Base::Camera::PerspectiveSettings& HG::Rendering::Base::Camera::P
     return (*this);
 }
 
-const std::vector<HG::Rendering::Base::Camera*>& HG::Rendering::Base::Camera::allCameras()
+const std::vector<RENDERING_BASE_MODULE_NS::Camera*>& RENDERING_BASE_MODULE_NS::Camera::allCameras()
 {
     return m_cameras;
 }
 
-std::size_t HG::Rendering::Base::Camera::allCamerasCount()
+std::size_t RENDERING_BASE_MODULE_NS::Camera::allCamerasCount()
 {
     return m_cameras.size();
 }
 
-HG::Rendering::Base::Camera::Camera() :
+RENDERING_BASE_MODULE_NS::Camera::Camera() :
     m_projectionMatrixChanged(true),
     m_projectionMatrix(1.0f),
     m_projection(),
@@ -111,22 +120,29 @@ HG::Rendering::Base::Camera::Camera() :
     m_perspectiveSettings.m_parentCam = this;
 }
 
-HG::Rendering::Base::Camera::~Camera()
+RENDERING_BASE_MODULE_NS::Camera::~Camera()
 {
-
+    Camera::m_cameras.erase(
+        std::find(
+            Camera::m_cameras.begin(),
+            Camera::m_cameras.end(),
+            this
+        ),
+        Camera::m_cameras.end()
+    );
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings& HG::Rendering::Base::Camera::orthogonalSettings()
+RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& RENDERING_BASE_MODULE_NS::Camera::orthogonalSettings()
 {
     return m_orthogonalSettings;
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings& HG::Rendering::Base::Camera::perspectiveSettings()
+RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& RENDERING_BASE_MODULE_NS::Camera::perspectiveSettings()
 {
     return m_perspectiveSettings;
 }
 
-glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
+glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
 {
     if (!m_projectionMatrixChanged)
     {
@@ -169,37 +185,45 @@ glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
     return m_projectionMatrix;
 }
 
-void HG::Rendering::Base::Camera::setViewport(int x, int y, int w, int h)
+void RENDERING_BASE_MODULE_NS::Camera::setViewport(int x, int y, int w, int h)
 {
-
+    m_viewport.x = x;
+    m_viewport.y = y;
+    m_viewport.w = w;
+    m_viewport.h = h;
 }
 
-void HG::Rendering::Base::Camera::setViewport(const HG::Utils::Rect& rect)
+void RENDERING_BASE_MODULE_NS::Camera::setViewport(const HG::Utils::Rect& rect)
 {
-
+    m_viewport = rect;
 }
 
-HG::Utils::Rect HG::Rendering::Base::Camera::viewport() const
+HG::Utils::Rect RENDERING_BASE_MODULE_NS::Camera::viewport() const
 {
-    return HG::Utils::Rect();
+    return m_viewport;
 }
 
-void HG::Rendering::Base::Camera::setNear(HG::Rendering::Base::Camera::CullType value)
+void RENDERING_BASE_MODULE_NS::Camera::setNear(RENDERING_BASE_MODULE_NS::Camera::CullType value)
 {
-
+    m_near = value;
 }
 
-HG::Rendering::Base::Camera::CullType HG::Rendering::Base::Camera::getNear() const
+RENDERING_BASE_MODULE_NS::Camera::CullType RENDERING_BASE_MODULE_NS::Camera::getNear() const
 {
-    return 0;
+    return m_near;
 }
 
-void HG::Rendering::Base::Camera::setFar(HG::Rendering::Base::Camera::CullType value)
+void RENDERING_BASE_MODULE_NS::Camera::setFar(RENDERING_BASE_MODULE_NS::Camera::CullType value)
 {
-
+    m_far = value;
 }
 
-HG::Rendering::Base::Camera::CullType HG::Rendering::Base::Camera::getFar() const
+RENDERING_BASE_MODULE_NS::Camera::CullType RENDERING_BASE_MODULE_NS::Camera::getFar() const
 {
-    return 0;
+    return m_far;
+}
+
+void RENDERING_BASE_MODULE_NS::Camera::onStart()
+{
+    Camera::m_cameras.push_back(this);
 }

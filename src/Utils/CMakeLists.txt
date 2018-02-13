@@ -9,7 +9,9 @@ add_library(HGUtils STATIC
         include/UniqueMergeContainer.hpp
         src/UniqueMergeContainer.cpp
         include/Rect.hpp
-        src/Rect.cpp)
+        src/Rect.cpp
+        include/Color.hpp
+        src/Color.cpp)
 
 target_include_directories(HGUtils PUBLIC
         include
@@ -22,4 +24,5 @@ target_link_libraries(HGUtils
 
 target_compile_definitions(HGUtils
         PUBLIC -DUTILS_MODULE_NS=HG::Utils
+        PUBLIC -DGLM_ENABLE_EXPERIMENTAL
 )

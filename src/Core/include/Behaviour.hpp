@@ -35,6 +35,12 @@ namespace CORE_MODULE_NS
         void start();
 
         /**
+         * @brief Public method for calling
+         * render method.
+         */
+        void render();
+
+        /**
          * @brief Method for getting gameobject.
          * @return Pointer to parent gameobject.
          */
@@ -53,6 +59,12 @@ namespace CORE_MODULE_NS
          * every frame.
          */
         virtual void onUpdate();
+
+        /**
+         * @brief Virtual method, that's called
+         * after update, every frame.
+         */
+        virtual void onRender();
 
         /**
          * @brief Virtual method, that's called

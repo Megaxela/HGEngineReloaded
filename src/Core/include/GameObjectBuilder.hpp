@@ -12,16 +12,14 @@ namespace CORE_MODULE_NS
     {
     public:
 
+        /**
+         * @brief Constructor.
+         */
+        GameObjectBuilder();
+
         // Disable copying
         GameObjectBuilder(const GameObjectBuilder&) = delete;
         GameObjectBuilder& operator=(const GameObjectBuilder&) = delete;
-
-        /**
-         * @brief Method for getting builder
-         * instance.
-         * @return Instance reference.
-         */
-        static GameObjectBuilder& i();
 
         /**
          * @brief Non explicit cast from builder
@@ -31,6 +29,14 @@ namespace CORE_MODULE_NS
         operator GameObject*();
 
         /**
+         * @brief Method for setting game object to setup.
+         * @param ptr GameObject pointer.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setGameObject(GameObject* ptr);
+
+
+        /**
          * @brief Method for adding behaviour to
          * game object.
          * @param behaviour Pointer to behaviour.
@@ -38,11 +44,56 @@ namespace CORE_MODULE_NS
          */
         GameObjectBuilder& addBehaviour(Behaviour* behaviour);
 
-    private:
         /**
-         * @brief Private constructor. (Singleton)
+         * @brief Method to set game object local position.
+         * @param position Vector3 position value.
+         * @return Reference to builder instance.
          */
-        GameObjectBuilder();
+        GameObjectBuilder& setLocalPosition(const glm::vec3 &position);
+
+        /**
+         * @brief Method to set game obejct global position
+         * @param position Vector3 position value.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setGlobalPosition(const glm::vec3 &position);
+
+        /**
+         * @brief Method to set game object rotation.
+         * @param rotation Quaternion rotation value.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setRotation(const glm::quat &rotation);
+
+        /**
+         * @brief Method to set game object scale.
+         * @param scale Vector3 scale value.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setScale(const glm::vec3 &scale);
+
+        /**
+         * @brief Method to set game object name.
+         * @param name ASCII name.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setName(std::string name);
+
+        /**
+         * @brief Method to set game object parent.
+         * @param parent Parent GameObject.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setParent(GameObject* parent);
+
+        /**
+         * @brief Method to set game object parent.
+         * @param parent Parent game object's transform.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setParent(Transform* parent);
+
+    private:
 
         /**
          * @brief Method for picking gameobject

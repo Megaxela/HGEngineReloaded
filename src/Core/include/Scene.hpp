@@ -45,9 +45,15 @@ namespace CORE_MODULE_NS
         void update();
 
         /**
+         * @brief Method, that's called every frame,
+         * after `update` method.
+         */
+        void render();
+
+        /**
          * @brief Method, that's called on scene start.
          */
-        void start();
+        virtual void start();
 
         /**
          * @brief Method for removing gameobject

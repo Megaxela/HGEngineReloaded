@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(HGRenderingBase STATIC
     include/Camera.hpp
     src/Camera.cpp
+    include/Lights/AbstractLight.hpp
+    src/Lights/AbstractLight.cpp
 )
 
 target_include_directories(HGRenderingBase PUBLIC
@@ -18,5 +20,5 @@ target_link_libraries(HGRenderingBase
 )
 
 target_compile_definitions(HGRenderingBase
-        PUBLIC -DBASE_RENDERING_MODULE_NS=HG::Rendering::Base
+        PUBLIC -DRENDERING_BASE_MODULE_NS=HG::Rendering::Base
 )

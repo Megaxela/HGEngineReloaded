@@ -4,7 +4,7 @@
 #include <Rect.hpp>
 #include "Behaviour.hpp"
 
-namespace BASE_RENDERING_MODULE_NS
+namespace RENDERING_BASE_MODULE_NS
 {
     /**
      * @brief Class, that describes
@@ -148,7 +148,7 @@ namespace BASE_RENDERING_MODULE_NS
         /**
          * @brief Destructor.
          */
-        ~Camera();
+        ~Camera() override;
 
         /**
          * @brief Method for getting orthogonal settings
@@ -219,6 +219,9 @@ namespace BASE_RENDERING_MODULE_NS
          * @return Far value.
          */
         CullType getFar() const;
+
+    protected:
+        void onStart() override;
 
     private:
 

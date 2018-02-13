@@ -28,6 +28,14 @@ void CORE_MODULE_NS::Scene::update()
     }
 }
 
+void CORE_MODULE_NS::Scene::render()
+{
+    for (auto&& gameObject : m_gameObjects)
+    {
+        gameObject->update();
+    }
+}
+
 void CORE_MODULE_NS::Scene::start()
 {
 

@@ -15,7 +15,9 @@ add_library(HGCore STATIC
         src/GameObjectBuilder.cpp
         include/GameObjectBuilder.hpp
         src/GameObjectCache.cpp
-        include/GameObjectCache.hpp)
+        include/GameObjectCache.hpp
+        src/Transform.cpp
+        include/Transform.hpp)
 
 target_include_directories(HGCore PUBLIC
         include

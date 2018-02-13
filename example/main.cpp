@@ -3,14 +3,9 @@
 #include <iostream>
 #include <thread>
 #include <GameObjectBuilder.hpp>
+#include <Camera.hpp>
 #include "Behaviour.hpp"
 
-class TestBH : public HG::Core::Behaviour
-{
-public:
-protected:
-
-};
 
 int main(int argc, char** argv)
 {
@@ -18,10 +13,14 @@ int main(int argc, char** argv)
 
     auto* scene = new HG::Core::Scene();
 
-    scene->addGameObject(HG::Core::GameObjectBuilder::i().addBehaviour(new TestBH()));
-    scene->addGameObject(HG::Core::GameObjectBuilder::i());
-    scene->addGameObject(HG::Core::GameObjectBuilder::i());
-    scene->addGameObject(HG::Core::GameObjectBuilder::i());
+    scene->addGameObject(
+        HG::Core::GameObjectBuilder()
+            .addBehaviour(new HG::Rendering::Base::Camera)
+    );
+
+    scene->addGameObject(HG::Core::GameObjectBuilder());
+    scene->addGameObject(HG::Core::GameObjectBuilder());
+    scene->addGameObject(HG::Core::GameObjectBuilder());
 
     application.setScene(scene);
 

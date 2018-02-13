@@ -50,6 +50,9 @@ int CORE_MODULE_NS::Application::exec()
         // Calling update on scene.
         m_currentScene->update();
 
+        // Calling render on scene
+        m_currentScene->render();
+
         // Executing rendering pipeline.
 
     }

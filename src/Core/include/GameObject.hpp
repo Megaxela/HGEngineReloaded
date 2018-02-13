@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UniqueMergeContainer.hpp>
+#include "Transform.hpp"
 
 namespace CORE_MODULE_NS
 {
@@ -25,6 +26,12 @@ namespace CORE_MODULE_NS
         void update();
 
         /**
+         * @brief Method for calling gameobject
+         * rendering behaviours.
+         */
+        void render();
+
+        /**
          * @brief Method for getting parent scene.
          * @return Pointer to parent scene.
          */
@@ -35,6 +42,27 @@ namespace CORE_MODULE_NS
          * @param behaviour New behaviour.
          */
         void addBehaviour(Behaviour* behaviour);
+
+        /**
+         * @brief Method for setting internal game object
+         * name.
+         * @param name Name.
+         */
+        void setName(std::string name);
+
+        /**
+         * @brief Method for getting game object
+         * name.
+         * @return String name.
+         */
+        std::string name() const;
+
+        /**
+         * @brief Method for getting game object
+         * transform.
+         * @return Pointer to transform.
+         */
+        Transform* transform() const;
 
         /**
          * @brief Method for clearing gameobject.
@@ -66,6 +94,10 @@ namespace CORE_MODULE_NS
         GameObject();
 
         UTILS_MODULE_NS::UniqueMergeContainer<Behaviour*> m_behaviours;
+
+        Transform m_transform;
+
+        std::string m_name;
 
         Scene* m_parentScene;
     };
