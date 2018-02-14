@@ -167,19 +167,13 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
             (float) m_viewport.y - (m_viewport.h / 2) * m_orthogonalSettings.zoom(),
             (float) m_viewport.h / 2                  * m_orthogonalSettings.zoom(),
             m_near,
-            m_far);
-//        m_projectionMatrix = glm::ortho(
-//                (float) 0.0f,
-//                (float) 1.0f,
-//                (float) 0.0f,
-//                (float) 1.0f,
-//                m_near,
-//                m_far);
+            m_far
+        );
         m_projectionMatrixChanged = false;
         break;
     default:
         Error() << "Found wrong camera projection value.";
-        exit(-3);
+        throw std::runtime_error("Found wrong camera projection value.");
     }
 
     return m_projectionMatrix;

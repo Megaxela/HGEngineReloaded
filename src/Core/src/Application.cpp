@@ -85,3 +85,8 @@ void CORE_MODULE_NS::Application::proceedScene()
         m_currentScene->start();
     }
 }
+
+RENDERING_BASE_MODULE_NS::Renderer* CORE_MODULE_NS::Application::renderer() const
+{
+    return &m_renderer;
+}

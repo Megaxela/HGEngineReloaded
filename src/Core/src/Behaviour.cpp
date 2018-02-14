@@ -49,3 +49,13 @@ void CORE_MODULE_NS::Behaviour::setParentGameObject(CORE_MODULE_NS::GameObject* 
 {
     m_parent = ptr;
 }
+
+CORE_MODULE_NS::Scene* CORE_MODULE_NS::Behaviour::scene() const
+{
+    if (m_parent == nullptr)
+    {
+        return nullptr;
+    }
+
+    return m_parent->scene();
+}

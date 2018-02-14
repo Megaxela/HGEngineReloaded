@@ -46,6 +46,12 @@ namespace CORE_MODULE_NS
          */
         GameObject* gameObject() const;
 
+        /**
+         * @brief Method for receiving parent scene.
+         * @return Scene.
+         */
+        Scene* scene() const;
+
     protected:
 
         /**

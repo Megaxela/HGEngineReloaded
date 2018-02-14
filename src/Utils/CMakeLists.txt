@@ -11,7 +11,11 @@ add_library(HGUtils STATIC
         include/Rect.hpp
         src/Rect.cpp
         include/Color.hpp
-        src/Color.cpp)
+        src/Color.cpp
+        include/Vertex.hpp
+        src/Vertex.cpp
+        include/Mesh.hpp
+        src/Mesh.cpp)
 
 target_include_directories(HGUtils PUBLIC
         include

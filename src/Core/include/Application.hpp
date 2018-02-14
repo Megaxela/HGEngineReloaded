@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Renderer.hpp>
+
 namespace CORE_MODULE_NS
 {
     class Scene;
@@ -52,6 +54,13 @@ namespace CORE_MODULE_NS
          */
         int exec();
 
+        /**
+         * @brief Method for getting pointer to
+         * application renderer.
+         * @return Pointer to renderer.
+         */
+        Rendering::Base::Renderer* renderer() const;
+
     private:
 
         /**
@@ -65,7 +74,8 @@ namespace CORE_MODULE_NS
         Scene* m_currentScene;
         Scene* m_cachedScene;
 
-
+        // Renderer object
+        Rendering::Base::Renderer m_renderer;
 
         // While this variable is true, game cycle is active
         bool m_working;

@@ -8,6 +8,10 @@ add_library(HGRenderingBase STATIC
     src/Camera.cpp
     include/Lights/AbstractLight.hpp
     src/Lights/AbstractLight.cpp
+    include/Renderer.hpp
+    src/Renderer.cpp
+    include/RenderingPipeline.hpp
+    src/RenderingPipeline.cpp
 )
 
 target_include_directories(HGRenderingBase PUBLIC

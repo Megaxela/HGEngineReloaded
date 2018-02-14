@@ -33,8 +33,8 @@ namespace CORE_MODULE_NS
 
         /**
          * @brief Method to rotate transform information
-         * @param anchor
-         * @param rotValue
+         * @param anchor Rotation anchor.
+         * @param rotValue Rotation value.
          */
         void rotateAround(glm::vec3 anchor, glm::quat rotValue);
 
