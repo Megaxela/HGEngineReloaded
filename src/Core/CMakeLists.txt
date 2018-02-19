@@ -4,7 +4,7 @@ project(HGCore)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(HGCore STATIC
-        src/Application.cpp
+        src/Application.tpp
         include/Application.hpp
         src/Scene.cpp
         include/Scene.hpp
@@ -17,14 +17,18 @@ add_library(HGCore STATIC
         src/GameObjectCache.cpp
         include/GameObjectCache.hpp
         src/Transform.cpp
-        include/Transform.hpp)
+        include/Transform.hpp
+        src/ResourceManager.cpp
+        include/ResourceManager.hpp
+        include/ResourceAccessor.hpp
+)
 
 target_include_directories(HGCore PUBLIC
         include
 )
 
 target_link_libraries(HGCore
-        HGUtils # UniqueMergeContainer
+        HGUtils # DoubleBufferContainer
         HGRenderingBase #
 )
 

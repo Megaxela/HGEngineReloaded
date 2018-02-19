@@ -11,6 +11,8 @@ int main(int argc, char** argv)
 {
     HG::Core::Application application(argc, argv);
 
+    application.resourceManager()->setResourceAccessor<>();
+
     auto* scene = new HG::Core::Scene();
 
     scene->addGameObject(

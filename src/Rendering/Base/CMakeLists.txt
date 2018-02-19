@@ -11,8 +11,7 @@ add_library(HGRenderingBase STATIC
     include/Renderer.hpp
     src/Renderer.cpp
     include/RenderingPipeline.hpp
-    src/RenderingPipeline.cpp
-)
+    src/RenderingPipeline.cpp)
 
 target_include_directories(HGRenderingBase PUBLIC
         include

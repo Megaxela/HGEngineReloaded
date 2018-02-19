@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chrono>
-#include <UniqueMergeContainer.hpp>
+#include <DoubleBufferContainer.hpp>
 #include "Application.hpp"
 #include "GameObject.hpp"
 
@@ -74,7 +74,7 @@ namespace CORE_MODULE_NS
     private:
         Application* m_mainApplication;
 
-        UTILS_MODULE_NS::UniqueMergeContainer<GameObject*> m_gameObjects;
+        UTILS_MODULE_NS::DoubleBufferContainer<GameObject*> m_gameObjects;
     };
 }
 

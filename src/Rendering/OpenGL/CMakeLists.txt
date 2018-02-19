@@ -4,7 +4,9 @@ project(HGRenderingOGL)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(HGRenderingOGL STATIC
-
+        src/Shader.cpp
+        include/Shader.hpp
+        include/GL/gl_ordered.hpp
 )
 
 target_include_directories(HGRenderingOGL PUBLIC
@@ -12,9 +14,9 @@ target_include_directories(HGRenderingOGL PUBLIC
 )
 
 #target_link_libraries(HGRenderingOGL
-#         # UniqueMergeContainer
+#         # DoubleBufferContainer
 #)
 
 target_compile_definitions(HGRenderingOGL
-        PUBLIC -DBASE_RENDERING_MODULE_NS=HG::Rendering::OpenGL
+        PUBLIC -DOGL_RENDERING_MODULE_NS=HG::Rendering::OpenGL
 )

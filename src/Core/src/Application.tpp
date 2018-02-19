@@ -3,6 +3,8 @@
 #include "Scene.hpp"
 
 CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
+    m_renderer(),
+    m_resourceManager(),
     m_currentScene(nullptr),
     m_cachedScene(nullptr),
     m_working(false)
@@ -89,4 +91,9 @@ void CORE_MODULE_NS::Application::proceedScene()
 RENDERING_BASE_MODULE_NS::Renderer* CORE_MODULE_NS::Application::renderer() const
 {
     return &m_renderer;
+}
+
+CORE_MODULE_NS::ResourceManager* CORE_MODULE_NS::Application::resourceManager() const
+{
+    return &m_resourceManager;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <UniqueMergeContainer.hpp>
+#include <DoubleBufferContainer.hpp>
 #include "Transform.hpp"
 
 namespace CORE_MODULE_NS
@@ -93,7 +93,7 @@ namespace CORE_MODULE_NS
          */
         GameObject();
 
-        UTILS_MODULE_NS::UniqueMergeContainer<Behaviour*> m_behaviours;
+        UTILS_MODULE_NS::DoubleBufferContainer<Behaviour*> m_behaviours;
 
         Transform m_transform;
 

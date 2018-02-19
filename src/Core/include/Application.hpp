@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Renderer.hpp>
+#include "ResourceManager.hpp"
 
 namespace CORE_MODULE_NS
 {
@@ -61,6 +62,13 @@ namespace CORE_MODULE_NS
          */
         Rendering::Base::Renderer* renderer() const;
 
+        /**
+         * @brief Method for getting pointer to application
+         * resource manager.
+         * @return Pointer to resource manager.
+         */
+        ResourceManager* resourceManager() const;
+
     private:
 
         /**
@@ -69,16 +77,18 @@ namespace CORE_MODULE_NS
          */
         void proceedScene();
 
+        // Renderer object
+        Rendering::Base::Renderer m_renderer;
+
+        // Resource manager
+        ResourceManager m_resourceManager;
+
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.
         Scene* m_currentScene;
         Scene* m_cachedScene;
 
-        // Renderer object
-        Rendering::Base::Renderer m_renderer;
-
         // While this variable is true, game cycle is active
         bool m_working;
     };
 }
-

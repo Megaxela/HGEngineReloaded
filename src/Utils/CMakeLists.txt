@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(libraries)
 
 add_library(HGUtils STATIC
-        include/UniqueMergeContainer.hpp
-        src/UniqueMergeContainer.cpp
+        include/DoubleBufferContainer.hpp
+        src/DoubleBufferContainer.cpp
         include/Rect.hpp
         src/Rect.cpp
         include/Color.hpp

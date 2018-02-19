@@ -8,14 +8,14 @@
 namespace UTILS_MODULE_NS
 {
     /**
- * \brief Class, controlling unique elements merging.
- * Shall be used in GameObject, Scene and GameObjectController.
- */
+     * \brief Class, controlling unique elements merging.
+     * Shall be used in GameObject, Scene and GameObjectController.
+     */
     template<
         typename T,
         typename ContainerType=std::vector<T>
     >
-    class UniqueMergeContainer
+    class DoubleBufferContainer
     {
     public:
         using container = ContainerType;
@@ -27,7 +27,7 @@ namespace UTILS_MODULE_NS
          * @brief Default constructor creates no elements.
          * @return
          */
-        UniqueMergeContainer() :
+        DoubleBufferContainer() :
             m_removable(),
             m_added(),
             m_current()
@@ -39,7 +39,7 @@ namespace UTILS_MODULE_NS
          * @brief Copy constructor. It's copying states.
          * @param container Copying object.
          */
-        UniqueMergeContainer(const UniqueMergeContainer<T, ContainerType> &container) :
+        DoubleBufferContainer(const DoubleBufferContainer<T, ContainerType> &container) :
             m_removable(container.m_removable),
             m_added(container.m_added),
             m_current(container.m_current)
@@ -51,7 +51,7 @@ namespace UTILS_MODULE_NS
          * @brief Move constructor. It's just moving container data.
          * @param container Movable container.
          */
-        UniqueMergeContainer(UniqueMergeContainer<T, ContainerType>&& container) :
+        DoubleBufferContainer(DoubleBufferContainer<T, ContainerType>&& container) :
             m_removable(std::move(container.m_removable)),
             m_added(std::move(container.m_added)),
             m_current(std::move(container.m_current))
@@ -62,7 +62,7 @@ namespace UTILS_MODULE_NS
         /**
          * @brief Destructor.
          */
-        ~UniqueMergeContainer() = default;
+        ~DoubleBufferContainer() = default;
 
         /**
          * @brief Adding element to add queue. This elements
@@ -142,7 +142,7 @@ namespace UTILS_MODULE_NS
          * @param rhs Right hand container.
          * @return Reference to this container.
          */
-        UniqueMergeContainer<T, ContainerType>& operator=(const UniqueMergeContainer<T, ContainerType>& rhs)
+        DoubleBufferContainer<T, ContainerType>& operator=(const DoubleBufferContainer<T, ContainerType>& rhs)
         {
             m_current   = rhs.m_current;
             m_removable = rhs.m_removable;
@@ -156,7 +156,7 @@ namespace UTILS_MODULE_NS
          * @param rhs Right hand container.
          * @return Reference to this container.
          */
-        UniqueMergeContainer<T, ContainerType>& operator=(UniqueMergeContainer<T, ContainerType>&& rhs)
+        DoubleBufferContainer<T, ContainerType>& operator=(DoubleBufferContainer<T, ContainerType>&& rhs)
         {
             m_current   = std::move(rhs.m_current);
             m_removable = std::move(rhs.m_removable);
