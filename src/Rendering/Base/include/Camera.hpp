@@ -186,7 +186,7 @@ namespace RENDERING_BASE_MODULE_NS
 
         /**
          * @brief Method for setting viewport.
-         * @param rect
+         * @param rect Viewport rectangle.
          */
         void setViewport(const HG::Utils::Rect &rect);
 

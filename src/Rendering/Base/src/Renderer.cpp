@@ -1,20 +1,42 @@
 #include <CurrentLogger.hpp>
 #include "Renderer.hpp"
 
-HG::Rendering::Base::Renderer::Renderer() :
+RENDERING_BASE_MODULE_NS::Renderer::Renderer() :
     m_pipeline(nullptr)
 {
     Debug() << "Creating renderer.";
 }
 
-HG::Rendering::Base::Renderer::~Renderer()
+RENDERING_BASE_MODULE_NS::Renderer::~Renderer()
 {
     delete m_pipeline;
 
     Debug() << "Destroying renderer.";
 }
 
-void HG::Rendering::Base::Renderer::render()
+bool RENDERING_BASE_MODULE_NS::Renderer::init()
 {
+    if (m_pipeline == nullptr)
+    {
+        Error() << "No rendering pipeline set.";
+        return false;
+    }
 
+    return m_pipeline->init();
+}
+
+void RENDERING_BASE_MODULE_NS::Renderer::render(const CORE_MODULE_NS::Scene::GameObjectsContainer& gameObjects)
+{
+    if (m_pipeline == nullptr)
+    {
+        Error() << "No rendering pipeline set.";
+        return;
+    }
+
+    m_pipeline->render(gameObjects);
+}
+
+RENDERING_BASE_MODULE_NS::RenderingPipeline* RENDERING_BASE_MODULE_NS::Renderer::pipeline()
+{
+    return m_pipeline;
 }

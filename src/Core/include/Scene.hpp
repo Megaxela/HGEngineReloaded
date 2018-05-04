@@ -2,11 +2,18 @@
 
 #include <chrono>
 #include <DoubleBufferContainer.hpp>
-#include "Application.hpp"
 #include "GameObject.hpp"
+
+namespace RENDERING_BASE_MODULE_NS
+{
+    class Renderer;
+}
 
 namespace CORE_MODULE_NS
 {
+    // Forward definition
+    class Application;
+
     /**
      * @brief Class, that describes
      * application scene.
@@ -14,6 +21,8 @@ namespace CORE_MODULE_NS
     class Scene
     {
     public:
+
+        using GameObjectsContainer = UTILS_MODULE_NS::DoubleBufferContainer<GameObject*>;
 
         /**
          * @brief Constructor.
@@ -48,7 +57,7 @@ namespace CORE_MODULE_NS
          * @brief Method, that's called every frame,
          * after `update` method.
          */
-        void render();
+        void render(::RENDERING_BASE_MODULE_NS::Renderer* renderer);
 
         /**
          * @brief Method, that's called on scene start.
@@ -74,7 +83,7 @@ namespace CORE_MODULE_NS
     private:
         Application* m_mainApplication;
 
-        UTILS_MODULE_NS::DoubleBufferContainer<GameObject*> m_gameObjects;
+        GameObjectsContainer m_gameObjects;
     };
 }
 

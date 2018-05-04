@@ -1,5 +1,7 @@
 #include <GameObjectCache.hpp>
+#include <CurrentLogger.hpp>
 #include "Scene.hpp"
+#include "Renderer.hpp"
 
 CORE_MODULE_NS::Scene::Scene() :
     m_mainApplication(nullptr),
@@ -28,12 +30,15 @@ void CORE_MODULE_NS::Scene::update()
     }
 }
 
-void CORE_MODULE_NS::Scene::render()
+void CORE_MODULE_NS::Scene::render(RENDERING_BASE_MODULE_NS::Renderer* renderer)
 {
-    for (auto&& gameObject : m_gameObjects)
+    if (renderer == nullptr)
     {
-        gameObject->update();
+        Error() << "No renderer is set.";
+        return;
     }
+
+    renderer->render(m_gameObjects);
 }
 
 void CORE_MODULE_NS::Scene::start()

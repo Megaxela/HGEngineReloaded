@@ -11,7 +11,14 @@ add_library(HGRenderingBase STATIC
     include/Renderer.hpp
     src/Renderer.cpp
     include/RenderingPipeline.hpp
-    src/RenderingPipeline.cpp)
+    src/RenderingPipeline.cpp
+    src/RenderBehaviour.cpp
+    include/RenderBehaviour.hpp
+    src/Behaviours/Mesh.cpp
+    include/Behaviours/Mesh.hpp
+    src/SystemController.cpp
+    include/SystemController.hpp
+)
 
 target_include_directories(HGRenderingBase PUBLIC
         include

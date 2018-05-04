@@ -4,7 +4,7 @@ project(HGCore)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(HGCore STATIC
-        src/Application.tpp
+        src/Application.cpp
         include/Application.hpp
         src/Scene.cpp
         include/Scene.hpp
@@ -21,6 +21,8 @@ add_library(HGCore STATIC
         src/ResourceManager.cpp
         include/ResourceManager.hpp
         include/ResourceAccessor.hpp
+        src/TimeStatistics.cpp
+        include/TimeStatistics.hpp
 )
 
 target_include_directories(HGCore PUBLIC

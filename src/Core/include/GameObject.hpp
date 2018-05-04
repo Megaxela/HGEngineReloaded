@@ -3,6 +3,11 @@
 #include <DoubleBufferContainer.hpp>
 #include "Transform.hpp"
 
+namespace RENDERING_BASE_MODULE_NS
+{
+    class RenderBehaviour;
+}
+
 namespace CORE_MODULE_NS
 {
     // Forward declaration
@@ -26,12 +31,6 @@ namespace CORE_MODULE_NS
         void update();
 
         /**
-         * @brief Method for calling gameobject
-         * rendering behaviours.
-         */
-        void render();
-
-        /**
          * @brief Method for getting parent scene.
          * @return Pointer to parent scene.
          */
@@ -42,6 +41,13 @@ namespace CORE_MODULE_NS
          * @param behaviour New behaviour.
          */
         void addBehaviour(Behaviour* behaviour);
+
+        /**
+         * @brief Method for adding new render behaviour.
+         * For example MeshRenderer.
+         * @param renderBehaviour Render behaviour.
+         */
+        void addRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour);
 
         /**
          * @brief Method for setting internal game object
@@ -62,7 +68,7 @@ namespace CORE_MODULE_NS
          * transform.
          * @return Pointer to transform.
          */
-        Transform* transform() const;
+        Transform* transform();
 
         /**
          * @brief Method for clearing gameobject.
@@ -93,7 +99,8 @@ namespace CORE_MODULE_NS
          */
         GameObject();
 
-        UTILS_MODULE_NS::DoubleBufferContainer<Behaviour*> m_behaviours;
+        ::UTILS_MODULE_NS::DoubleBufferContainer<Behaviour*> m_behaviours;
+        ::UTILS_MODULE_NS::DoubleBufferContainer<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_renderBehaviours;
 
         Transform m_transform;
 

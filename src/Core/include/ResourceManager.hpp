@@ -44,7 +44,9 @@ namespace CORE_MODULE_NS
          * implementation.
          */
         template<typename Accessor>
-        void setResourceAccessor()
+        typename std::enable_if<
+            std::is_base_of<ResourceAccessor, Accessor>::value
+        >::type setResourceAccessor()
         {
             if (m_accessor != nullptr)
             {

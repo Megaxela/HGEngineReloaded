@@ -2,6 +2,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Camera.hpp"
 
+std::vector<RENDERING_BASE_MODULE_NS::Camera*> RENDERING_BASE_MODULE_NS::Camera::m_cameras;
+
 RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::OrthogonalSettings() :
     m_zoom(1.0f),
     m_size(1),

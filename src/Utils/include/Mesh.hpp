@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "Vertex.hpp"
 
 namespace UTILS_MODULE_NS
@@ -30,6 +31,8 @@ namespace UTILS_MODULE_NS
         void calculateTangentBitangentVectors();
 
     };
+
+    using MeshPtr = std::shared_ptr<Mesh>;
 }
 
 

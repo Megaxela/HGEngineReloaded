@@ -7,6 +7,14 @@ namespace CORE_MODULE_NS
     /**
      * @brief Singleton builder
      * for game objects.
+     *
+     * Sample usage:
+     * ```cpp
+     * GameObject* go = HG::Core::GameObjectBuilder()
+     *                      .setName("SomeName")
+     *                      .setPosition(glm::vec3(1, 2, 3))
+     *                      .addBehaviour(new SomeBehaviour);
+     * ```
      */
     class GameObjectBuilder
     {
@@ -43,6 +51,14 @@ namespace CORE_MODULE_NS
          * @return Reference to builder.
          */
         GameObjectBuilder& addBehaviour(Behaviour* behaviour);
+
+        /**
+         * @brief Method for adding rendering behaviour
+         * to game object.
+         * @param renderingBehaviour Pointer to rendering behaviour.
+         * @return Reference to builder.
+         */
+        GameObjectBuilder& addRenderingBehaviour(RENDERING_BASE_MODULE_NS::RenderBehaviour* renderingBehaviour);
 
         /**
          * @brief Method to set game object local position.

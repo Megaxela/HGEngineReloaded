@@ -13,6 +13,9 @@ namespace RENDERING_BASE_MODULE_NS
     {
     public:
 
+        /**
+         * @brief Type of light.
+         */
         enum class Type
         {
             Point,

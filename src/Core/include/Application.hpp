@@ -2,6 +2,7 @@
 
 #include <Renderer.hpp>
 #include "ResourceManager.hpp"
+#include "TimeStatistics.hpp"
 
 namespace CORE_MODULE_NS
 {
@@ -60,14 +61,21 @@ namespace CORE_MODULE_NS
          * application renderer.
          * @return Pointer to renderer.
          */
-        Rendering::Base::Renderer* renderer() const;
+        ::RENDERING_BASE_MODULE_NS::Renderer* renderer();
 
         /**
          * @brief Method for getting pointer to application
          * resource manager.
          * @return Pointer to resource manager.
          */
-        ResourceManager* resourceManager() const;
+        ResourceManager* resourceManager();
+
+        /**
+         * @brief Method for getting method for time
+         * calculations.
+         * @return Pointer to time statistics object.
+         */
+        TimeStatistics* timeStatistics();
 
     private:
 
@@ -78,10 +86,13 @@ namespace CORE_MODULE_NS
         void proceedScene();
 
         // Renderer object
-        Rendering::Base::Renderer m_renderer;
+        ::RENDERING_BASE_MODULE_NS::Renderer m_renderer;
 
         // Resource manager
         ResourceManager m_resourceManager;
+
+        // Time statistics
+        TimeStatistics m_timeStatistics;
 
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.

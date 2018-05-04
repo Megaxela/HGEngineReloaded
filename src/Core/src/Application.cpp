@@ -40,23 +40,49 @@ void CORE_MODULE_NS::Application::stop()
 
 int CORE_MODULE_NS::Application::exec()
 {
+    // Preparing renderer
+    if (!m_renderer.init())
+    {
+        // todo: Place error code here
+        return 2;
+    }
+
     m_working = true;
 
     // Preparing deltaTime calculation
 
     while (m_working)
     {
+        // Start counting frame time
+        m_timeStatistics.tickTimerBegin(TimeStatistics::FrameTime);
+
         // Checking for new scene, etc
         proceedScene();
 
-        // Calling update on scene.
-        m_currentScene->update();
+        {
+            // Start counting update time
+            m_timeStatistics.tickTimerBegin(TimeStatistics::UpdateTime);
 
-        // Calling render on scene
-        m_currentScene->render();
+            // Calling update on scene.
+            m_currentScene->update();
 
-        // Executing rendering pipeline.
+            // Finishing counting update time
+            m_timeStatistics.tickTimerEnd(TimeStatistics::UpdateTime);
+        }
 
+        {
+            // Start counting rendering time
+            m_timeStatistics.tickTimerBegin(TimeStatistics::RenderTime);
+
+            // Executing rendering pipeline.
+            m_currentScene->render(&m_renderer);
+
+            // Finishing counting rendering time
+            m_timeStatistics.tickTimerEnd(TimeStatistics::RenderTime);
+        }
+
+        // Finishing counting frame time
+        m_timeStatistics.tickTimerEnd(TimeStatistics::FrameTime);
     }
 
     if (m_currentScene != nullptr)
@@ -88,12 +114,17 @@ void CORE_MODULE_NS::Application::proceedScene()
     }
 }
 
-RENDERING_BASE_MODULE_NS::Renderer* CORE_MODULE_NS::Application::renderer() const
+RENDERING_BASE_MODULE_NS::Renderer* CORE_MODULE_NS::Application::renderer()
 {
     return &m_renderer;
 }
 
-CORE_MODULE_NS::ResourceManager* CORE_MODULE_NS::Application::resourceManager() const
+CORE_MODULE_NS::ResourceManager* CORE_MODULE_NS::Application::resourceManager()
 {
     return &m_resourceManager;
+}
+
+CORE_MODULE_NS::TimeStatistics* CORE_MODULE_NS::Application::timeStatistics()
+{
+    return &m_timeStatistics;
 }

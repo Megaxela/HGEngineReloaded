@@ -8,7 +8,7 @@
 namespace UTILS_MODULE_NS
 {
     /**
-     * \brief Class, controlling unique elements merging.
+     * @brief Class, controlling unique elements merging.
      * Shall be used in GameObject, Scene and GameObjectController.
      */
     template<
@@ -135,6 +135,16 @@ namespace UTILS_MODULE_NS
         {
             m_removable.clear();
             m_added.clear();
+        }
+
+        /**
+         * @brief Method for clearing container.
+         */
+        void clear()
+        {
+            m_added.clear();
+            m_current.clear();
+            m_removable.clear();
         }
 
         /**

@@ -12,7 +12,9 @@ target_include_directories(Example1 PRIVATE
 )
 
 target_link_libraries(Example1
+    HGEngineReloaded
     HGCore
     HGUtils
     HGRenderingBase
+    HGRenderingOGL
 )
