@@ -15,7 +15,7 @@ namespace OGL_RENDERING_MODULE_NS
         /**
          * @brief Constructor.
          */
-        ForwardRenderingPipeline();
+        explicit ForwardRenderingPipeline(::CORE_MODULE_NS::Application* application);
 
         /**
          * @brief Actual render method.
@@ -24,6 +24,7 @@ namespace OGL_RENDERING_MODULE_NS
         void render(const HG::Core::Scene::GameObjectsContainer& objects) override;
 
     private:
+
 
 
     };

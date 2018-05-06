@@ -16,34 +16,12 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Constructor.
          */
-        RenderingPipeline();
+        explicit RenderingPipeline(::CORE_MODULE_NS::Application* application);
 
         /**
          * @brief Desturctor.
          */
-        virtual ~RenderingPipeline();
-
-        /**
-         * @brief Method for setting system controller.
-         * @tparam T Type of system controller. It must be
-         * derived from `HG::Rendering::Base::SystemController`.
-         */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<T, SystemController>::value
-        >::type setSystemController()
-        {
-            delete m_systemController;
-
-            m_systemController = new T();
-        };
-
-        /**
-         * @brief Method for getting system controller.
-         * @return Pointer to system controller or
-         * `nullptr` if there is no such.
-         */
-        SystemController* systemController() const;
+        virtual ~RenderingPipeline() = default;
 
         /**
          * @brief Method for initializing pipeline.
@@ -58,9 +36,15 @@ namespace RENDERING_BASE_MODULE_NS
          */
         virtual void render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects) = 0;
 
+        /**
+         * @brief Method for getting parent application.
+         * @return Pointer to parent application.
+         */
+        ::CORE_MODULE_NS::Application* application() const;
+
     private:
 
-        SystemController* m_systemController;
+        ::CORE_MODULE_NS::Application* m_parentApplication;
     };
 }
 

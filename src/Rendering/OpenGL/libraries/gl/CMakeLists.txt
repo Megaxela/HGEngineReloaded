@@ -120,6 +120,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include> PRIVATE source)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
+message("GL libraries: ${PROJECT_LIBRARIES}")
 target_link_libraries     (${PROJECT_NAME} PUBLIC ${PROJECT_LIBRARIES})
 set_target_properties     (${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 

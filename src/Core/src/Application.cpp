@@ -3,13 +3,19 @@
 #include "Scene.hpp"
 
 CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
-    m_renderer(),
+    m_renderer(this),
+    m_systemController(nullptr),
     m_resourceManager(),
     m_currentScene(nullptr),
     m_cachedScene(nullptr),
     m_working(false)
 {
 
+}
+
+CORE_MODULE_NS::Application::~Application()
+{
+    delete m_systemController;
 }
 
 void CORE_MODULE_NS::Application::setScene(CORE_MODULE_NS::Scene* scene)
@@ -55,6 +61,13 @@ int CORE_MODULE_NS::Application::exec()
     {
         // Start counting frame time
         m_timeStatistics.tickTimerBegin(TimeStatistics::FrameTime);
+
+        // Polling events
+        if (m_renderer.pipeline() != nullptr &&
+            systemController() != nullptr)
+        {
+            systemController()->pollEvents();
+        }
 
         // Checking for new scene, etc
         proceedScene();
@@ -127,4 +140,14 @@ CORE_MODULE_NS::ResourceManager* CORE_MODULE_NS::Application::resourceManager()
 CORE_MODULE_NS::TimeStatistics* CORE_MODULE_NS::Application::timeStatistics()
 {
     return &m_timeStatistics;
+}
+
+const CORE_MODULE_NS::Input *CORE_MODULE_NS::Application::input() const
+{
+    return nullptr;
+}
+
+::RENDERING_BASE_MODULE_NS::SystemController *CORE_MODULE_NS::Application::systemController() const
+{
+    return m_systemController;
 }

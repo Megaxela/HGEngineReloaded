@@ -12,7 +12,7 @@ CORE_MODULE_NS::TimeStatistics::TimeStatistics() :
 
 std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::frameDeltaTime()
 {
-    return getTimerEstimate(FrameTime);
+    return getTimerLastFrame(FrameTime);
 }
 
 std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::lastFrameRenderTime()

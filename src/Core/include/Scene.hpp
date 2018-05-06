@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <DoubleBufferContainer.hpp>
-#include "GameObject.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -13,6 +12,7 @@ namespace CORE_MODULE_NS
 {
     // Forward definition
     class Application;
+    class GameObject;
 
     /**
      * @brief Class, that describes

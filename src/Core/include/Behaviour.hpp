@@ -2,6 +2,10 @@
 
 #include <GameObject.hpp>
 
+// Declarations for simple behaviour coding
+#include <Scene.hpp>
+#include <Application.hpp>
+
 namespace CORE_MODULE_NS
 {
     /**

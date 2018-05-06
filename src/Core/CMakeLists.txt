@@ -23,7 +23,8 @@ add_library(HGCore STATIC
         include/ResourceAccessor.hpp
         src/TimeStatistics.cpp
         include/TimeStatistics.hpp
-)
+        src/Input.cpp
+        include/Input.hpp)
 
 target_include_directories(HGCore PUBLIC
         include

@@ -13,6 +13,7 @@ endif()
 if (${HGRenderingOGL_USE_GLFW})
     message("Rendering library: GLFW")
     set(RENDERER_DEFINITION GRAPHICS_USE_GLFW)
+    set(RENDERER_LIBRARY glfw3)
 
 elseif(${HGRenderingOGL_USE_Qt})
     message("Rendering library: Qt")
@@ -42,6 +43,7 @@ target_link_libraries(HGRenderingOGL
          # DoubleBufferContainer
         gl
         HGRenderingBase
+        ${RENDERER_LIBRARY}
 )
 
 target_compile_definitions(HGRenderingOGL

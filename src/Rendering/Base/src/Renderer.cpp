@@ -1,7 +1,8 @@
 #include <CurrentLogger.hpp>
 #include "Renderer.hpp"
 
-RENDERING_BASE_MODULE_NS::Renderer::Renderer() :
+RENDERING_BASE_MODULE_NS::Renderer::Renderer(::CORE_MODULE_NS::Application* application) :
+    m_parentApplication(application),
     m_pipeline(nullptr)
 {
     Debug() << "Creating renderer.";

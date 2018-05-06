@@ -3,6 +3,7 @@
 #include <Renderer.hpp>
 #include "ResourceManager.hpp"
 #include "TimeStatistics.hpp"
+#include "Input.hpp"
 
 namespace CORE_MODULE_NS
 {
@@ -26,7 +27,7 @@ namespace CORE_MODULE_NS
         /**
          * @brief Destructor.
          */
-        ~Application() = default;
+        ~Application();
 
         /**
          * @brief Method for setting current scene.
@@ -77,6 +78,35 @@ namespace CORE_MODULE_NS
          */
         TimeStatistics* timeStatistics();
 
+        /**
+         * @brief Method for receiving pointer to
+         * input controller/receiver.
+         * @return
+         */
+        const Input* input() const;
+
+        /**
+         * @brief Method for setting system controller.
+         * @tparam T Type of system controller. It must be
+         * derived from `HG::Rendering::Base::SystemController`.
+         */
+        template<typename T>
+        typename std::enable_if<
+            std::is_base_of<::RENDERING_BASE_MODULE_NS::SystemController, T>::value
+        >::type setSystemController()
+        {
+            delete m_systemController;
+
+            m_systemController = new T(this);
+        };
+
+        /**
+         * @brief Method for getting system controller.
+         * @return Pointer to system controller or
+         * `nullptr` if there is no such.
+         */
+        ::RENDERING_BASE_MODULE_NS::SystemController* systemController() const;
+
     private:
 
         /**
@@ -87,6 +117,12 @@ namespace CORE_MODULE_NS
 
         // Renderer object
         ::RENDERING_BASE_MODULE_NS::Renderer m_renderer;
+
+        // Application system controller
+        ::RENDERING_BASE_MODULE_NS::SystemController* m_systemController;
+
+        // Input receiver/productor
+        Input m_input;
 
         // Resource manager
         ResourceManager m_resourceManager;

@@ -17,7 +17,7 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Default constructor.
          */
-        Renderer();
+        explicit Renderer(::CORE_MODULE_NS::Application* application);
 
         /**
          * @brief Destructor.
@@ -35,7 +35,7 @@ namespace RENDERING_BASE_MODULE_NS
         >::type
         setPipeline()
         {
-            m_pipeline = new PipelineType();
+            m_pipeline = new PipelineType(m_parentApplication);
         }
 
         /**
@@ -55,6 +55,8 @@ namespace RENDERING_BASE_MODULE_NS
         void render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& gameObjects);
 
     private:
+        ::CORE_MODULE_NS::Application* m_parentApplication;
+
         ::RENDERING_BASE_MODULE_NS::RenderingPipeline* m_pipeline;
 
     };
