@@ -3,6 +3,12 @@
 #include <CurrentLogger.hpp>
 #include "ResourceAccessor.hpp"
 
+namespace UTILS_MODULE_NS
+{
+    class Mesh;
+    using MeshPtr = std::shared_ptr<Mesh>;
+}
+
 namespace CORE_MODULE_NS
 {
     /**
@@ -15,6 +21,7 @@ namespace CORE_MODULE_NS
 
     public:
 
+        // Disable copying
         ResourceManager(const ResourceManager&) = delete;
         ResourceManager& operator=(const ResourceManager&) = delete;
 
@@ -50,7 +57,7 @@ namespace CORE_MODULE_NS
         {
             if (m_accessor != nullptr)
             {
-                Warning() << "Redefining ResourceManager accessor is bad practice.";
+                Warning() << "Redefining ResourceAccessor accessor is bad practice.";
                 delete m_accessor;
                 m_accessor = nullptr;
             }
@@ -58,7 +65,35 @@ namespace CORE_MODULE_NS
             m_accessor = new Accessor;
         }
 
+        /**
+         * @brief Method for loading mesh with
+         * using of specified mesh formatter.
+         * @tparam MeshLoader Mesh formatter object.
+         * @param id Resource id for resource accessor.
+         * @return
+         */
+        template<typename MeshLoader>
+        ::UTILS_MODULE_NS::MeshPtr loadMesh(const std::string& id)
+        {
+            if (m_accessor == nullptr)
+            {
+                Error() << "Trying to load \"" << id << "\" resource, without ResourceAccessor.";
+                return nullptr;
+            }
 
+            auto data = m_accessor->loadRaw(id);
+
+            if (data == nullptr)
+            {
+                Error() << "Can't load \"" << id << "\" mesh resource. See errors above.";
+
+                return nullptr;
+            }
+
+            MeshLoader loader;
+
+            return loader.load(data);
+        }
 
     private:
 

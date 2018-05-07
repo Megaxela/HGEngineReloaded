@@ -32,6 +32,8 @@ namespace CORE_MODULE_NS
 
         };
 
+        using DataPtr = std::shared_ptr<Data>;
+
         /**
          * @brief Virtual destructor.
          */
@@ -42,7 +44,7 @@ namespace CORE_MODULE_NS
          * @param id ID of resource.
          * @return Loaded data.
          */
-        virtual std::unique_ptr<Data> loadRaw(const std::string& id) = 0;
+        virtual DataPtr loadRaw(const std::string& id) = 0;
     };
 }
 

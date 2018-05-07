@@ -3,9 +3,9 @@
 #include <algorithm>
 
 CORE_MODULE_NS::Input::Keyboard::Keyboard() :
-    m_pushed(std::size_t(Key::Last) - 1, false),
+    m_pushed  (std::size_t(Key::Last) - 1, false),
     m_released(std::size_t(Key::Last) - 1, false),
-    m_pressed(std::size_t(Key::Last) - 1, false),
+    m_pressed (std::size_t(Key::Last) - 1, false),
     m_pressedModifiers(0),
     m_pressedCharacter(0)
 {
@@ -417,10 +417,27 @@ void CORE_MODULE_NS::Input::Gamepads::tick()
     }
 }
 
+CORE_MODULE_NS::Input::Window::Window() :
+    m_closed(false)
+{
+
+}
+
+bool CORE_MODULE_NS::Input::Window::isClosed() const
+{
+    return m_closed;
+}
+
+void CORE_MODULE_NS::Input::Window::setClosed(bool closed)
+{
+    m_closed = closed;
+}
+
 CORE_MODULE_NS::Input::Input() :
     m_keyboard(),
     m_mouse(),
-    m_gamepads()
+    m_gamepads(),
+    m_window()
 {
 
 }
@@ -438,6 +455,11 @@ const CORE_MODULE_NS::Input::Mouse *CORE_MODULE_NS::Input::mouse() const
 const CORE_MODULE_NS::Input::Gamepads *CORE_MODULE_NS::Input::gamepads() const
 {
     return &m_gamepads;
+}
+
+const CORE_MODULE_NS::Input::Window* CORE_MODULE_NS::Input::window() const
+{
+    return &m_window;
 }
 
 void CORE_MODULE_NS::Input::tickControllers()

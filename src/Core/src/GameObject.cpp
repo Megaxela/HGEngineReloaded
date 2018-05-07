@@ -62,6 +62,11 @@ void CORE_MODULE_NS::GameObject::addBehaviour(CORE_MODULE_NS::Behaviour* behavio
     m_behaviours.add(behaviour);
 }
 
+void CORE_MODULE_NS::GameObject::addRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour)
+{
+    m_renderBehaviours.add(renderBehaviour);
+}
+
 void CORE_MODULE_NS::GameObject::clear()
 {
     m_parentScene = nullptr;

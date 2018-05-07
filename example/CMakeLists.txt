@@ -16,4 +16,5 @@ target_link_libraries(Example1
     HGUtils
     HGRenderingBase
     HGRenderingOGL
+    HGStandard
 )

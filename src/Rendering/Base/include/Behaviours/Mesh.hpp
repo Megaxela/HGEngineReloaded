@@ -2,7 +2,12 @@
 
 #include <RenderBehaviour.hpp>
 #include <type_traits>
-#include <Mesh.hpp>
+
+namespace UTILS_MODULE_NS
+{
+    class Mesh;
+    using MeshPtr = std::shared_ptr<Mesh>;
+}
 
 namespace RENDERING_BASE_MODULE_NS::Behaviours
 {

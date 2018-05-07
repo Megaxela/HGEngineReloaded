@@ -15,7 +15,8 @@ add_library(HGUtils STATIC
         include/Vertex.hpp
         src/Vertex.cpp
         include/Mesh.hpp
-        src/Mesh.cpp)
+        src/Mesh.cpp
+)
 
 target_include_directories(HGUtils PUBLIC
         include

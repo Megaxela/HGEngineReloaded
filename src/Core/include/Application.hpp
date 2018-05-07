@@ -52,7 +52,21 @@ namespace CORE_MODULE_NS
         void stop();
 
         /**
+         * @brief Initialization.
+         * @return Initialization success.
+         */
+        bool init();
+
+        /**
+         * @brief Method for performing one game cycle.
+         * @return Cycle success.
+         */
+        bool performCycle();
+
+        /**
          * @brief Method for executing application.
+         * (Automatically performs initialization and
+         * performing cycles until window closed)
          * @return Result code.
          */
         int exec();
@@ -80,7 +94,9 @@ namespace CORE_MODULE_NS
 
         /**
          * @brief Method for receiving pointer to
-         * input controller/receiver.
+         * input controller/receiver. If you are
+         * coding behaviour, you shall not using
+         * `const_cast` with this pointer.
          * @return
          */
         const Input* input() const;
@@ -134,8 +150,5 @@ namespace CORE_MODULE_NS
         // Using caching new scene, until new frame will begin.
         Scene* m_currentScene;
         Scene* m_cachedScene;
-
-        // While this variable is true, game cycle is active
-        bool m_working;
     };
 }

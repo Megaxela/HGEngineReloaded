@@ -10,5 +10,7 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const HG::Core::Scene::GameObjectsContainer& objects)
 {
+
+
     application()->systemController()->swapBuffers();
 }

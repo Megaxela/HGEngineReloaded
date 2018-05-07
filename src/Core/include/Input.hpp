@@ -550,6 +550,39 @@ namespace CORE_MODULE_NS
         };
 
         /**
+         * @brief Method for checking any of
+         * inputs on window.
+         */
+        class Window
+        {
+        public:
+
+            /**
+             * @brief Constructor.
+             */
+            Window();
+
+            /**
+             * @brief Method for checking is window closed.
+             * @return Is window closed requested.
+             */
+            bool isClosed() const;
+
+            // Control method from now
+
+            /**
+             * @brief Method for setting is window
+             * closed.
+             * @param closed Closed state.
+             */
+            void setClosed(bool closed);
+
+        private:
+
+            bool m_closed;
+        };
+
+        /**
          * @brief Constructor.
          */
         Input();
@@ -576,6 +609,13 @@ namespace CORE_MODULE_NS
         const Gamepads* gamepads() const;
 
         /**
+         * @brief Method for getting pointer
+         * to window info.
+         * @return Pointer to window input info.
+         */
+        const Window* window() const;
+
+        /**
          * @brief Method for notifying input controllers
          * about frame changed to clean released and pushed states.
          */
@@ -586,5 +626,7 @@ namespace CORE_MODULE_NS
         Keyboard m_keyboard;
         Mouse m_mouse;
         Gamepads m_gamepads;
+
+        Window m_window;
     };
 }

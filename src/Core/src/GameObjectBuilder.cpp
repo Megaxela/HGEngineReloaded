@@ -98,3 +98,10 @@ CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setParent(
 
     return (*this);
 }
+
+CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::addRenderingBehaviour(RENDERING_BASE_MODULE_NS::RenderBehaviour* renderingBehaviour)
+{
+    m_currentGameObject->addRenderingBehaviour(renderingBehaviour);
+
+    return (*this);
+}

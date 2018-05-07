@@ -13,7 +13,12 @@ endif()
 if (${HGRenderingOGL_USE_GLFW})
     message("Rendering library: GLFW")
     set(RENDERER_DEFINITION GRAPHICS_USE_GLFW)
-    set(RENDERER_LIBRARY glfw3)
+
+    if (WIN32)
+        set(RENDERER_LIBRARY glfw3)
+    else()
+        set(RENDERER_LIBRARY glfw)
+    endif()
 
 elseif(${HGRenderingOGL_USE_Qt})
     message("Rendering library: Qt")

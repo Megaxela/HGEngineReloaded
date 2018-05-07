@@ -52,6 +52,45 @@ namespace OGL_RENDERING_MODULE_NS
 
     private:
 
+        /**
+         * @brief Method for handling gamepad events.
+         */
+        void handleGamepadsEvents();
+
+        /**
+         * @brief Method for handling window events.
+         */
+        void handleWindowEvents();
+
+        /**
+         * @brief GLFW callback for pressing keys.
+         * @param key Key code.
+         * @param action Action (Press/release)
+         */
+        static void keyPressCallback(GLFWwindow*, int key, int, int action, int);
+
+        /**
+         * @brief GLFW callback for moving cursor.
+         * @param x X coordinate, locally to window.
+         * @param y Y coordinate, locally to window.
+         */
+        static void cursorPosCallback(GLFWwindow *, double x, double y);
+
+        /**
+         * @brief GLFW callback for connecting/disconnecting
+         * gamepads.
+         * @param gamepad Gamepad index.
+         * @param event Event.
+         */
+        static void joystickCallback(int gamepad, int event);
+
+        /**
+         * @brief GLFW callback for mouse buttons.
+         * @param button Mouse button index.
+         * @param action Action code.
+         */
+        static void mouseButtonCallback(GLFWwindow*, int button, int action, int);
+
         GLFWwindow* m_window;
 
     };
