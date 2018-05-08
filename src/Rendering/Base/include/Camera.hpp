@@ -129,6 +129,14 @@ namespace RENDERING_BASE_MODULE_NS
         };
 
         /**
+         * @brief Method for getting currently
+         * active camera. Or `nullptr` if there
+         * is no such.
+         * @return Pointer to camera.
+         */
+        static Camera* active();
+
+        /**
          * @brief Method for getting all cameras
          * on scene.
          * @return Const reference to container.
@@ -174,6 +182,12 @@ namespace RENDERING_BASE_MODULE_NS
          * @return Matrix 4x4
          */
         glm::mat4 projectionMatrix() const;
+
+        /**
+         * @brief Method to get view matrix.
+         * @return
+         */
+        glm::mat4 Camera::viewMatrix() const;
 
         /**
          * @brief Method for setting viewport rect.
@@ -224,6 +238,8 @@ namespace RENDERING_BASE_MODULE_NS
         void onStart() override;
 
     private:
+
+        static Camera* m_active;
 
         static std::vector<Camera*> m_cameras;
 

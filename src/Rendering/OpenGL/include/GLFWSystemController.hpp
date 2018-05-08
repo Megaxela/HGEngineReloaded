@@ -91,6 +91,13 @@ namespace OGL_RENDERING_MODULE_NS
          */
         static void mouseButtonCallback(GLFWwindow*, int button, int action, int);
 
+        /**
+         * @brief GLFW callback for framebuffer size changed.
+         * @param width New width.
+         * @param height New height.
+         */
+        static void framebufferSizeCallback(GLFWwindow*, int width, int height);
+
         GLFWwindow* m_window;
 
     };

@@ -3,6 +3,7 @@
 #include "Camera.hpp"
 
 std::vector<RENDERING_BASE_MODULE_NS::Camera*> RENDERING_BASE_MODULE_NS::Camera::m_cameras;
+RENDERING_BASE_MODULE_NS::Camera* RENDERING_BASE_MODULE_NS::Camera::m_active = nullptr;
 
 RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings::OrthogonalSettings() :
     m_zoom(1.0f),
@@ -98,6 +99,11 @@ RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& RENDERING_BASE_MODULE_NS:
     return (*this);
 }
 
+RENDERING_BASE_MODULE_NS::Camera* RENDERING_BASE_MODULE_NS::Camera::active()
+{
+    return m_active;
+}
+
 const std::vector<RENDERING_BASE_MODULE_NS::Camera*>& RENDERING_BASE_MODULE_NS::Camera::allCameras()
 {
     return m_cameras;
@@ -120,6 +126,12 @@ RENDERING_BASE_MODULE_NS::Camera::Camera() :
 {
     m_orthogonalSettings.m_parentCam = this;
     m_perspectiveSettings.m_parentCam = this;
+
+    // First added camera has to be first
+    if (m_active == nullptr)
+    {
+        m_active = this;
+    }
 }
 
 RENDERING_BASE_MODULE_NS::Camera::~Camera()
@@ -132,6 +144,12 @@ RENDERING_BASE_MODULE_NS::Camera::~Camera()
         ),
         Camera::m_cameras.end()
     );
+
+    // If active camera removed, clean value
+    if (m_active == this)
+    {
+        m_active = nullptr;
+    }
 }
 
 RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& RENDERING_BASE_MODULE_NS::Camera::orthogonalSettings()
@@ -142,6 +160,26 @@ RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& RENDERING_BASE_MODULE_NS::
 RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& RENDERING_BASE_MODULE_NS::Camera::perspectiveSettings()
 {
     return m_perspectiveSettings;
+}
+
+glm::mat4 RENDERING_BASE_MODULE_NS::Camera::viewMatrix() const
+{
+    GameObject* parentGO = gameObject();
+    if (!parentGO)
+    {
+        Error() << "Can't get game object of active camera.";
+        return glm::mat4();
+    }
+
+    glm::vec3 pos = parentGO->transform()->globalPosition();
+    glm::quat rot = parentGO->transform()->globalRotation();
+
+//    auto matrix = glm::mat4_cast(rot);
+    glm::mat4 matrix(1.0f);
+    matrix = glm::translate(matrix, pos * -1.0f);
+    matrix = glm::mat4_cast(glm::inverse(rot)) * matrix;
+
+    return matrix;
 }
 
 glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const

@@ -48,6 +48,7 @@ target_link_libraries(HGRenderingOGL
          # DoubleBufferContainer
         gl
         HGRenderingBase
+        HGCore
         ${RENDERER_LIBRARY}
 )
 

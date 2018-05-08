@@ -2,6 +2,7 @@
 
 #include <RenderBehaviour.hpp>
 #include <type_traits>
+#include <memory>
 
 namespace UTILS_MODULE_NS
 {
@@ -17,6 +18,9 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
     class Mesh : public RenderBehaviour
     {
     public:
+
+        // Mesh type id
+        static constexpr std::size_t Id = __COUNTER__;
 
         /**
          * @brief Class, that describes abstract external data

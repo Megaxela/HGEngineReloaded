@@ -75,6 +75,22 @@ namespace CORE_MODULE_NS
          */
         void clear();
 
+        /**
+         * @brief Method for receiving
+         * rendering behaviours of gameobject.
+         * @tparam Container Container type.
+         * @param container Container object.
+         */
+        template<typename Container>
+        void findRenderingBehaviours(Container& container)
+        {
+            for (auto&& behaviour : m_renderBehaviours)
+            {
+                container.push_back(behaviour);
+            }
+        }
+
+
     protected:
 
         friend class Scene;

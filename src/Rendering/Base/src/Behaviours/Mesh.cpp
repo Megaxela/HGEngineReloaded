@@ -2,7 +2,7 @@
 #include "Behaviours/Mesh.hpp"
 
 RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Mesh() :
-    RenderBehaviour(typeid(Mesh).hash_code()),
+    RenderBehaviour(Id),
     m_externalData(nullptr)
 {
 

@@ -384,4 +384,9 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::handleWindowEvents()
     )->setClosed(static_cast<bool>(glfwWindowShouldClose(m_window)));
 }
 
+void OGL_RENDERING_MODULE_NS::GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
 #endif
