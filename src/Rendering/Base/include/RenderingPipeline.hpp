@@ -2,6 +2,7 @@
 
 #include "SystemController.hpp"
 #include "Scene.hpp"
+#include "RenderBehaviour.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -41,6 +42,12 @@ namespace RENDERING_BASE_MODULE_NS
          * @return Pointer to parent application.
          */
         ::CORE_MODULE_NS::Application* application() const;
+
+        /**
+         * @brief Method for setting up render behaviour.
+         * @param behaviour Pointer to render behaviour.
+         */
+        virtual void setup(RenderBehaviour* behaviour) = 0;
 
     private:
 

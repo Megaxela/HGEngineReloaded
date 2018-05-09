@@ -15,12 +15,17 @@ int main(int argc, char** argv)
 {
     CurrentLogger::setCurrentLogger(std::make_shared<Loggers::BasicLogger>());
 
+    InfoF() << "Creating application";
     HG::Core::Application application(argc, argv);
-
+    application.setSystemController<HG::Rendering::OpenGL::GLFWSystemController>();
     application.renderer()
         ->setPipeline<HG::Rendering::OpenGL::ForwardRenderingPipeline>();
 
-    application.setSystemController<HG::Rendering::OpenGL::GLFWSystemController>();
+    if (!application.init())
+    {
+        ErrorF() << "Can't init application.";
+        return -1;
+    }
 
     auto* scene = new HG::Core::Scene();
 
@@ -44,17 +49,20 @@ int main(int argc, char** argv)
     auto meshRenderer = new HG::Rendering::Base::Behaviours::Mesh;
     meshRenderer->setMesh(mesh);
 
+    application.renderer()->setupRenderingBehaviour(meshRenderer);
+
     scene->addGameObject(
         HG::Core::GameObjectBuilder()
             .setName("Camera")
             .addBehaviour(new HG::Rendering::Base::Camera)
+            .setGlobalPosition(glm::vec3(0, 0, 0))
     );
 
     scene->addGameObject(
         HG::Core::GameObjectBuilder()
             .setName("Object")
             .addRenderingBehaviour(meshRenderer)
-            .setGlobalPosition(glm::vec3(1, 1, 1))
+            .setGlobalPosition(glm::vec3(0, 0, -1))
     );
 
     scene->addGameObject(HG::Core::GameObjectBuilder());

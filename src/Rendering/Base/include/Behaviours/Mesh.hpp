@@ -54,7 +54,7 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<T, MeshExternalData>::value,
+            std::is_base_of<MeshExternalData, T>::value,
             T*
         >::type externalData() const
         {
@@ -67,7 +67,7 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<T, MeshExternalData>::value
+            std::is_base_of<MeshExternalData, T>::value
         >::type setExternalData()
         {
             delete m_externalData;

@@ -52,6 +52,14 @@ namespace OGL_RENDERING_MODULE_NS
 
     private:
 
+        static void glDebugOutput(GLenum source,
+                                  GLenum type,
+                                  GLuint id,
+                                  GLenum severity,
+                                  GLsizei,
+                                  const GLchar* mess,
+                                  const void*);
+
         /**
          * @brief Method for handling gamepad events.
          */

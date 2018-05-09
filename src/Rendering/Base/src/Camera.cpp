@@ -1,6 +1,7 @@
 #include <CurrentLogger.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Camera.hpp"
+#include <GameObject.hpp>
 
 std::vector<RENDERING_BASE_MODULE_NS::Camera*> RENDERING_BASE_MODULE_NS::Camera::m_cameras;
 RENDERING_BASE_MODULE_NS::Camera* RENDERING_BASE_MODULE_NS::Camera::m_active = nullptr;
@@ -164,7 +165,7 @@ RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings& RENDERING_BASE_MODULE_NS:
 
 glm::mat4 RENDERING_BASE_MODULE_NS::Camera::viewMatrix() const
 {
-    GameObject* parentGO = gameObject();
+    auto parentGO = gameObject();
     if (!parentGO)
     {
         Error() << "Can't get game object of active camera.";
@@ -174,7 +175,6 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::viewMatrix() const
     glm::vec3 pos = parentGO->transform()->globalPosition();
     glm::quat rot = parentGO->transform()->globalRotation();
 
-//    auto matrix = glm::mat4_cast(rot);
     glm::mat4 matrix(1.0f);
     matrix = glm::translate(matrix, pos * -1.0f);
     matrix = glm::mat4_cast(glm::inverse(rot)) * matrix;

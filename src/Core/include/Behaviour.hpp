@@ -24,7 +24,7 @@ namespace CORE_MODULE_NS
         /**
          * @brief Destructor.
          */
-        virtual ~Behaviour() = default;
+        virtual ~Behaviour();
 
         /**
          * @brief Public method for calling

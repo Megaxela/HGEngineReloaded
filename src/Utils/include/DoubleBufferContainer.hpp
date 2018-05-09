@@ -99,6 +99,21 @@ namespace UTILS_MODULE_NS
         }
 
         /**
+         * @brief Method for checking is element removing from
+         * container.
+         * @param e Element.
+         * @return Is it's removing now?
+         */
+        bool isRemoving(T e)
+        {
+            return std::find(
+                m_removable.begin(),
+                m_removable.end(),
+                e
+            ) != m_removable.end();
+        }
+
+        /**
          * @brief Method to merge all elements. At the beginning it will
          * remove elements from add queue and from current elements container.
          * After that left new elements will be added to current elements container.
@@ -182,10 +197,12 @@ namespace UTILS_MODULE_NS
          */
         T& operator[](int i)
         {
+#ifndef NDEBUG
             if (i < 0 || i >= size())
             {
                 throw std::out_of_range("Size: " + std::to_string(size()) + ", Index: " + std::to_string(i));
             }
+#endif
 
             return m_current[i];
         }
@@ -197,10 +214,12 @@ namespace UTILS_MODULE_NS
          */
         T operator[](int i) const
         {
+#ifndef NDEBUG
             if (i < 0 || i >= size())
             {
                 throw std::out_of_range("Size: " + std::to_string(size()) + ", Index: " + std::to_string(i));
             }
+#endif
 
             return m_current[i];
         }

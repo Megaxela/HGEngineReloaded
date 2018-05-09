@@ -43,11 +43,33 @@ namespace CORE_MODULE_NS
         void addBehaviour(Behaviour* behaviour);
 
         /**
+         * @brief Method for removing behaviour from
+         * game object. If behaviour is deleting
+         * this method will be called from `Behaviour` destructor.
+         * If behaviour was not deleted it has to be
+         * deleted manually, because GameObject `clear`
+         * method fill not handle this behaviour anymore.
+         * @param behaviour Pointer to behaviour.
+         */
+        void removeBehaviour(Behaviour* behaviour);
+
+        /**
          * @brief Method for adding new render behaviour.
          * For example MeshRenderer.
          * @param renderBehaviour Render behaviour.
          */
         void addRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour);
+
+        /**
+         * @brief Method for removing rendering behaviour.
+         * If behaviour is deleting
+         * this method will be called from `Behaviour` destructor.
+         * If behaviour was not deleted it has to be
+         * deleted manually, because GameObject `clear`
+         * method fill not handle this behaviour anymore.
+         * @param renderBehaviour Render behaviour.
+         */
+        void removeRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour);
 
         /**
          * @brief Method for setting internal game object
@@ -86,6 +108,11 @@ namespace CORE_MODULE_NS
         {
             for (auto&& behaviour : m_renderBehaviours)
             {
+                if (m_renderBehaviours.isRemoving(behaviour))
+                {
+                    continue;
+                }
+
                 container.push_back(behaviour);
             }
         }

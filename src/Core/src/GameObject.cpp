@@ -43,8 +43,33 @@ void CORE_MODULE_NS::GameObject::update()
     // Executing update on existing behaviours
     for (auto&& iter : m_behaviours)
     {
+        // Will this behaviour removed on 
+        // next frame. If yes - behaviour
+        // will be skipped, because it can
+        // be already deleted. So on the next frame
+        // this behaviour will be removed from container.
+        if (m_behaviours.isRemoving(iter))
+        {
+            continue;
+        }
+        
         iter->update();
     }
+}
+
+void CORE_MODULE_NS::GameObject::removeBehaviour(CORE_MODULE_NS::Behaviour *behaviour)
+{
+#ifndef NDEBUG
+    if (behaviour->gameObject() != this)
+    {
+        Error() << "Trying to remove behaviour from GameObject, that's not it's parent.";
+        return;
+    }
+#endif
+
+    // Remove this gameobject as parent
+    behaviour->setParentGameObject(nullptr);
+    m_behaviours.remove(behaviour);
 }
 
 CORE_MODULE_NS::Scene* CORE_MODULE_NS::GameObject::scene() const
@@ -59,68 +84,52 @@ void CORE_MODULE_NS::GameObject::setParentScene(CORE_MODULE_NS::Scene* parent)
 
 void CORE_MODULE_NS::GameObject::addBehaviour(CORE_MODULE_NS::Behaviour* behaviour)
 {
+    behaviour->setParentGameObject(this);
     m_behaviours.add(behaviour);
 }
 
 void CORE_MODULE_NS::GameObject::addRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour)
 {
+    renderBehaviour->setParentGameObject(this);
     m_renderBehaviours.add(renderBehaviour);
+}
+
+void CORE_MODULE_NS::GameObject::removeRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour *renderBehaviour)
+{
+#ifndef NDEBUG
+    if (renderBehaviour->gameObject() != this)
+    {
+        Error() << "Trying to remove behaviour from GameObject, that's not it's parent.";
+        return;
+    }
+#endif
+
+    // Remove this gameobject as parent
+    renderBehaviour->setParentGameObject(nullptr);
+    m_renderBehaviours.remove(renderBehaviour);
 }
 
 void CORE_MODULE_NS::GameObject::clear()
 {
     m_parentScene = nullptr;
 
+    // Merge, to prevent double free 
+    m_behaviours.merge();
+    
     // Removing behaviours
-    for (auto iter = m_behaviours.addedBegin(),
-              end  = m_behaviours.addedEnd();
-         iter != end;
-         ++iter)
+    for (auto& m_behaviour : m_behaviours)
     {
-        delete *iter;
-    }
-
-    for (auto iter = m_behaviours.removableBegin(),
-              end  = m_behaviours.removableEnd();
-         iter != end;
-         ++iter)
-    {
-        delete *iter;
-    }
-
-    for (auto iter = m_behaviours.begin(),
-              end  = m_behaviours.end();
-         iter != end;
-         ++iter)
-    {
-        delete *iter;
+        delete m_behaviour;
     }
 
     m_behaviours.clear();
 
-    // Removing rendering behaviours
-    for (auto iter = m_renderBehaviours.addedBegin(),
-              end  = m_renderBehaviours.addedEnd();
-         iter != end;
-         ++iter)
+    // Merge, to prevent double free
+    m_renderBehaviours.merge();
+    
+    for (auto& m_renderBehaviour : m_renderBehaviours)
     {
-        delete *iter;
-    }
-
-    for (auto iter = m_renderBehaviours.removableBegin(),
-              end  = m_renderBehaviours.removableEnd();
-         iter != end;
-         ++iter)
-    {
-        delete *iter;
-    }
-
-    for (auto iter = m_renderBehaviours.begin(),
-              end  = m_renderBehaviours.end();
-         iter != end;
-         ++iter)
-    {
-        delete *iter;
+        delete m_renderBehaviour;
     }
 
     m_renderBehaviours.clear();

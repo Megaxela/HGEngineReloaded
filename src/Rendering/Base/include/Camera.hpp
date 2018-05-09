@@ -187,7 +187,7 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Method to get view matrix.
          * @return
          */
-        glm::mat4 Camera::viewMatrix() const;
+        glm::mat4 viewMatrix() const;
 
         /**
          * @brief Method for setting viewport rect.

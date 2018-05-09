@@ -1,8 +1,18 @@
 #include "Behaviour.hpp"
 
-CORE_MODULE_NS::Behaviour::Behaviour()
+CORE_MODULE_NS::Behaviour::Behaviour() :
+    m_parent(nullptr)
 {
 
+}
+
+CORE_MODULE_NS::Behaviour::~Behaviour()
+{
+    if (m_parent)
+    {
+        m_parent->removeBehaviour(this);
+        m_parent = nullptr;
+    }
 }
 
 void CORE_MODULE_NS::Behaviour::update()

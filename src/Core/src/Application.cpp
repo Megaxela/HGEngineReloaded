@@ -94,11 +94,11 @@ bool CORE_MODULE_NS::Application::performCycle()
 int CORE_MODULE_NS::Application::exec()
 {
     // Preparing renderer
-    if (!init())
-    {
-        // todo: Place error code here
-        return 2;
-    }
+//    if (!init())
+//    {
+//        // todo: Place error code here
+//        return 2;
+//    }
 
     // Preparing deltaTime calculation
 
