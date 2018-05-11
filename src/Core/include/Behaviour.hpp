@@ -50,6 +50,13 @@ namespace CORE_MODULE_NS
          */
         Scene* scene() const;
 
+        /**
+         * @brief Method for getting input controller
+         * from application;
+         * @return Constant pointer to input controller.
+         */
+        const Input* input() const;
+
     protected:
 
         /**

@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include <glm/vec2.hpp>
+#include <functional>
 
 namespace CORE_MODULE_NS
 {
@@ -310,7 +311,31 @@ namespace CORE_MODULE_NS
              */
             glm::vec2 getMousePosition() const;
 
+            /**
+             * @brief Method for locking mouse cursor.
+             * @param locked Is cursor has to be locked.
+             */
+            void setCursorDisabled(bool locked) const;
+
+            /**
+             * @brief Method for hiding mouse cursor.
+             * @param hidden Is cursor has to be hidden.
+             */
+            void setCursorHidden(bool hidden) const;
+
             // Control methods from now
+
+            /**
+             * @brief Method for setting cursor disabling action.
+             * @param disabledAction Function with actual setting.
+             */
+            void setCursorDisabledAction(std::function<void(bool)> disabledAction);
+
+            /**
+             * @brief Method for setting cursor hiding action.
+             * @param hiddenAction Function with actual setting.
+             */
+            void setCursorHiddenAction(std::function<void(bool)> hiddenAction);
 
             /**
              * @brief Method for setting mouse position. Locally to window.
@@ -344,6 +369,8 @@ namespace CORE_MODULE_NS
             glm::vec2 m_mousePos;
             std::map<uint8_t, ButtonState> m_buttonStates;
 
+            std::function<void(bool)> m_disabledAction;
+            std::function<void(bool)> m_hiddenAction;
         };
 
         /*

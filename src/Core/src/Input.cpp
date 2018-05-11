@@ -79,7 +79,16 @@ void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard
     }
 #endif
 
-    m_pressed[std::size_t(key)] = pressed;
+
+    if (pressed)
+    {
+        m_pushed[std::size_t(key)] = true;
+        m_pressed[std::size_t(key)] = true;
+    }
+    else
+    {
+        m_released[std::size_t(key)]= true;
+    }
 }
 
 void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard::Modifiers modifier, bool pressed)
@@ -176,6 +185,38 @@ bool CORE_MODULE_NS::Input::Mouse::isReleased(uint8_t button) const
 glm::vec2 CORE_MODULE_NS::Input::Mouse::getMousePosition() const
 {
     return m_mousePos;
+}
+
+void CORE_MODULE_NS::Input::Mouse::setCursorDisabled(bool locked) const
+{
+    if (m_disabledAction == nullptr)
+    {
+        Error() << "Can't disable cursor, in case of unavailable action.";
+        return;
+    }
+        
+    m_disabledAction(locked);
+}
+
+void CORE_MODULE_NS::Input::Mouse::setCursorHidden(bool hidden) const
+{
+    if (m_hiddenAction == nullptr)
+    {
+        Error() << "Can't hide cursor, in case of unavailable action.";
+        return;
+    }
+    
+    m_hiddenAction(hidden);
+}
+
+void CORE_MODULE_NS::Input::Mouse::setCursorDisabledAction(std::function<void(bool)> disabledAction)
+{
+    m_disabledAction = std::move(disabledAction);
+}
+
+void CORE_MODULE_NS::Input::Mouse::setCursorHiddenAction(std::function<void(bool)> hiddenAction)
+{
+    m_hiddenAction = std::move(hiddenAction);
 }
 
 void CORE_MODULE_NS::Input::Mouse::setMousePosition(int x, int y)

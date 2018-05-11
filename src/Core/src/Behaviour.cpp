@@ -15,6 +15,11 @@ CORE_MODULE_NS::Behaviour::~Behaviour()
     }
 }
 
+const CORE_MODULE_NS::Input *HG::Core::Behaviour::input() const
+{
+    return scene()->application()->input();
+}
+
 void CORE_MODULE_NS::Behaviour::update()
 {
     onUpdate();

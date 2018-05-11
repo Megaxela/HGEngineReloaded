@@ -1,18 +1,29 @@
 #include "Behaviours/FPSCameraMovement.hpp"
 
-HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
-    m_enabled(true),
+STD_MODULE_NS::Behaviours::FPSCameraMovement::FPSCameraMovement() :
+    m_enabled(false),
     m_first(false),
     m_lastMousePosition(),
     m_front(glm::vec3(0.0f, 0.0f, 1.0f)),
     m_yaw(90),
     m_pitch(0),
-    m_camera(nullptr)
+    m_camera(nullptr),
+    m_sensitivity(3)
 {
 
 }
 
-void HG::Standard::Behaviours::FPSCameraMovement::onStart()
+void STD_MODULE_NS::Behaviours::FPSCameraMovement::setSensitivity(float sens)
+{
+    m_sensitivity = sens;
+}
+
+float STD_MODULE_NS::Behaviours::FPSCameraMovement::sensitivity() const
+{
+    return m_sensitivity;
+}
+
+void STD_MODULE_NS::Behaviours::FPSCameraMovement::onStart()
 {
     m_camera = gameObject()->findBehaviour<::RENDERING_BASE_MODULE_NS::Camera>();
 
@@ -22,51 +33,52 @@ void HG::Standard::Behaviours::FPSCameraMovement::onStart()
     }
 }
 
-void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
+void STD_MODULE_NS::Behaviours::FPSCameraMovement::onUpdate()
 {
     if (m_camera == nullptr)
     {
         return;
     }
 
-    if (scene()->application()->input()->keyboard()->isPushed(
+    if (input()->keyboard()->isPushed(
         ::CORE_MODULE_NS::Input::Keyboard::Key::R
     ))
     {
         m_enabled = !m_enabled;
+
+        if (m_enabled)
+        {
+            m_lastMousePosition = input()->mouse()->getMousePosition();
+        }
+
+        input()->mouse()->setCursorHidden  (m_enabled);
+        input()->mouse()->setCursorDisabled(m_enabled);
+    }
+
+    if (input()->keyboard()->isPushed(
+        ::CORE_MODULE_NS::Input::Keyboard::Key::ESC
+    ))
+    {
+        m_enabled = false;
+
+        input()->mouse()->setCursorHidden  (false);
+        input()->mouse()->setCursorDisabled(false);
     }
 
     if (m_enabled)
     {
-        // Keyboard
-        float keyboardSens = (float) (0.00005f * scene()->application()->timeStatistics()->frameDeltaTime().count());
-//        if (Input::Keyboard::isPressed(Input::Keyboard::Key ::ArrowLeft))
-//        {
-//            m_yaw -= keyboardSens;
-//        }
-//        if (Input::Keyboard::isPressed(Input::Keyboard::Key::ArrowRight))
-//        {
-//            m_yaw += keyboardSens;
-//        }
-//        if (Input::Keyboard::isPressed(Input::Keyboard::Key::ArrowUp))
-//        {
-//            m_pitch -= keyboardSens;
-//        }
-//        if (Input::Keyboard::isPressed(Input::Keyboard::Key::ArrowDown))
-//        {
-//            m_pitch += keyboardSens;
-//        }
-
-        float mouseSens = 0.2f;
+        // Frame sens
+        float frameSensitivity =
+            m_sensitivity / 10;
 
         // Mouse
-        auto mousePosition = scene()->application()->input()->mouse()->getMousePosition();
+        auto mousePosition = input()->mouse()->getMousePosition();
         mousePosition -= m_lastMousePosition;
 
-        m_yaw += mousePosition.x * mouseSens;
-        m_pitch += mousePosition.y * mouseSens;
+        m_yaw += mousePosition.x * frameSensitivity;
+        m_pitch += mousePosition.y * frameSensitivity;
 
-        m_lastMousePosition = scene()->application()->input()->mouse()->getMousePosition();
+        m_lastMousePosition = input()->mouse()->getMousePosition();
 
         if (m_pitch >= 89.0f)
         {

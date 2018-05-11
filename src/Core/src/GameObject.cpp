@@ -21,13 +21,7 @@ void CORE_MODULE_NS::GameObject::update()
     // Merging rendering behaviours
     m_renderBehaviours.merge();
 
-    // Executing start on new behaviours
-    for (auto iter = m_behaviours.addedBegin(), end = m_behaviours.addedEnd();
-         iter != end;
-         ++iter)
-    {
-        (*iter)->start();
-    }
+    std::vector<Behaviour*> newBehaviours(m_behaviours.addedBegin(), m_behaviours.addedEnd());
 
     // Removing behaviours
     for (auto iter = m_behaviours.removableBegin(), end = m_behaviours.removableEnd();
@@ -39,6 +33,12 @@ void CORE_MODULE_NS::GameObject::update()
 
     // Merging
     m_behaviours.merge();
+
+    // Executing start on new behaviours
+    for (auto&& iter : newBehaviours)
+    {
+        iter->start();
+    }
 
     // Executing update on existing behaviours
     for (auto&& iter : m_behaviours)

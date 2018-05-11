@@ -74,6 +74,39 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
     glfwSetJoystickCallback       (          &GLFWSystemController::joystickCallback);
     glfwSetFramebufferSizeCallback(m_window, &GLFWSystemController::framebufferSizeCallback);
 
+    const_cast<::CORE_MODULE_NS::Input::Mouse*>(
+        controller->application()->input()->mouse()
+    )->setCursorDisabledAction(
+        [=](bool disable)
+        {
+            if (disable)
+            {
+                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            }
+            else
+            {
+                // todo: Add checking is it hidden and hide cursor
+                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            }
+        }
+    );
+
+    const_cast<::CORE_MODULE_NS::Input::Mouse*>(
+        controller->application()->input()->mouse()
+    )->setCursorHiddenAction(
+        [=](bool hidden)
+        {
+            if (hidden)
+            {
+                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+            }
+            else
+            {
+                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            }
+        }
+    );
+
     // todo: Add char callback
 //    glfwSetCharCallback(m_window, []());
 
@@ -87,6 +120,7 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
         return false;
     }
 
+#ifndef DNDEBUG
     GLint flags;
     glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
@@ -98,6 +132,7 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
         glDebugMessageCallback(&::OGL_RENDERING_MODULE_NS::GLFWSystemController::glDebugOutput, nullptr);
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
+#endif
 
     gl::set_viewport({0, 0}, {static_cast<GLsizei>(width), static_cast<GLsizei>(height)});
 

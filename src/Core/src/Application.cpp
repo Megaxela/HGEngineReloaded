@@ -53,6 +53,9 @@ bool CORE_MODULE_NS::Application::performCycle()
     // Start counting frame time
     m_timeStatistics.tickTimerBegin(TimeStatistics::FrameTime);
 
+    // Ticking pushed/released values in input subsystem
+    m_input.tickControllers();
+
     // Polling events
     if (m_renderer.pipeline() != nullptr &&
         systemController() != nullptr)
@@ -93,13 +96,6 @@ bool CORE_MODULE_NS::Application::performCycle()
 
 int CORE_MODULE_NS::Application::exec()
 {
-    // Preparing renderer
-//    if (!init())
-//    {
-//        // todo: Place error code here
-//        return 2;
-//    }
-
     // Preparing deltaTime calculation
 
     while (!m_input.window()->isClosed())
