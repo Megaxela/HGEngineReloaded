@@ -33,21 +33,23 @@ bool HG::Rendering::OpenGL::ForwardRenderingPipeline::init()
     gl::shader fragmentShader(GL_FRAGMENT_SHADER);
 
     vertexShader.set_source(
-        "#version 420 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "layout (location = 2) in vec2 aTexCoord;\n"
-        "\n"
-        "out vec2 TexCoord;\n"
-        "\n"
-        "uniform mat4 model;\n"
-        "uniform mat4 view;\n"
-        "uniform mat4 projection;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "\tgl_Position = projection * view * model * vec4(aPos, 1.0f);\n"
-        "\tTexCoord = vec2(aTexCoord.x, aTexCoord.y);\n"
-        "}"
+        R"(
+#version 420 core
+layout (location = 0) in vec3 inPosition;
+layout (location = 2) in vec2 inTexCoords;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main()
+{
+    gl_Position = projection * view * model * vec4(inPosition, 1.0f);
+    TexCoords = inTexCoords;
+}
+)"
     );
 
     if (!vertexShader.compile())
@@ -57,20 +59,20 @@ bool HG::Rendering::OpenGL::ForwardRenderingPipeline::init()
     }
 
     fragmentShader.set_source(
-        "#version 420 core\n"
-        "out vec4 FragColor;\n"
-        "\n"
-        "in vec2 TexCoord;\n"
-        "\n"
-        "// texture samplers\n"
-        "uniform sampler2D texture1;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "\t// linearly interpolate between both textures (80% container, 20% awesomeface)\n"
-        "\t//FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);\n"
-        "\tFragColor = vec4(1.0, 0.0, 0.0, 1.0);"
-        "}"
+        R"(
+#version 420 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+
+// texture samplers
+uniform sampler2D fallbackTexture;
+
+void main()
+{
+    FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}
+)"
     );
 
     if (!fragmentShader.compile())
@@ -91,8 +93,10 @@ bool HG::Rendering::OpenGL::ForwardRenderingPipeline::init()
     if (!m_meshFallback.link())
     {
         Error() << "Can't link fallback shader.";
-        return true;
+        return false;
     }
+
+    return true;
 }
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects)
@@ -105,14 +109,21 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
         return;
     }
 
-    m_behavoursCache.clear();
+    // Clearing main buffer
+    gl::set_clear_color({0.0f, 0.0f, 0.0f, 1.0f});
+
+    gl::clear(
+        GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
+    );
+
+    m_behavioursCache.clear();
 
     for (auto&& gameObject : objects)
     {
         // Getting rendering behaviours of GO
-        gameObject->findRenderingBehaviours(m_behavoursCache);
+        gameObject->findRenderingBehaviours(m_behavioursCache);
 
-        for (auto&& behaviour : m_behavoursCache)
+        for (auto&& behaviour : m_behavioursCache)
         {
             switch (behaviour->behaviourType())
             {
@@ -190,60 +201,22 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setupMesh(::RENDERING_BA
         mesh->Indices.data()
     );
 
-    // Position
-    glVertexAttribPointer(
-        0,
-        3,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(::UTILS_MODULE_NS::Vertex),
-        nullptr
-    );
-    glEnableVertexAttribArray(0);
+    // Binding vertex buffer
+    data->VAO.set_vertex_buffer(0, data->VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
 
-    // Normal
-    glVertexAttribPointer(
-        1,
-        3,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(::UTILS_MODULE_NS::Vertex),
-        (GLvoid*) (3 * sizeof(GLfloat))
-    );
-    glEnableVertexAttribArray(1);
+    // Enabling attributes
+    data->VAO.set_attribute_enabled(0, true);
+    data->VAO.set_attribute_enabled(1, true);
+    data->VAO.set_attribute_enabled(2, true);
+    data->VAO.set_attribute_enabled(3, true);
+    data->VAO.set_attribute_enabled(4, true);
 
-    // Texture coordinates
-    glVertexAttribPointer(
-        2,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(::UTILS_MODULE_NS::Vertex),
-        (GLvoid*) (6 * sizeof(GLfloat))
-    );
-    glEnableVertexAttribArray(2);
-
-    // Tangent
-    glVertexAttribPointer(
-        3,
-        3,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(::UTILS_MODULE_NS::Vertex),
-        (GLvoid*) (8 * sizeof(GLfloat))
-    );
-    glEnableVertexAttribArray(3);
-
-    // Bitangent
-    glVertexAttribPointer(
-        4,
-        3,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(::UTILS_MODULE_NS::Vertex),
-        (GLvoid*) (11 * sizeof(GLfloat))
-    );
-    glEnableVertexAttribArray(4);
+    // Setting
+    data->VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, position)));
+    data->VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, normal)));
+    data->VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, uv)));
+    data->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, tangent)));
+    data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, bitangent)));
 
 }
 
@@ -301,11 +274,14 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
     );
 
     data->VAO.bind();
-    gl::draw_elements(
-        GL_TRIANGLES,
-        (GLsizei) meshBehaviour->mesh()->Indices.size(),
-        GL_UNSIGNED_INT,
-        nullptr
+
+    gl::draw_range_elements(
+        GL_TRIANGLES, // mode
+        0,            // start
+        static_cast<GLuint>(meshBehaviour->mesh()->Indices.size()),
+        static_cast<GLsizei>(meshBehaviour->mesh()->Indices.size()),
+        GL_UNSIGNED_INT
     );
+
     data->VAO.unbind();
 }

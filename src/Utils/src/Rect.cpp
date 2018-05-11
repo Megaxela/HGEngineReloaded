@@ -1,6 +1,6 @@
 #include "Rect.hpp"
 
-HG::Utils::Rect::Rect() :
+UTILS_MODULE_NS::Rect::Rect() :
     x(0),
     y(0),
     w(0),
@@ -9,7 +9,7 @@ HG::Utils::Rect::Rect() :
 
 }
 
-HG::Utils::Rect::Rect(int x, int y, int w, int h) :
+UTILS_MODULE_NS::Rect::Rect(int x, int y, int w, int h) :
     x(x),
     y(y),
     w(w),
@@ -18,12 +18,19 @@ HG::Utils::Rect::Rect(int x, int y, int w, int h) :
 
 }
 
-bool HG::Utils::Rect::operator==(const HG::Utils::Rect& rhs)
+bool UTILS_MODULE_NS::Rect::operator==(const UTILS_MODULE_NS::Rect& rhs)
 {
     return x == rhs.x && y == rhs.y && w == rhs.w && h == rhs.h;
 }
 
-bool HG::Utils::Rect::operator!=(const HG::Utils::Rect& rhs)
+bool UTILS_MODULE_NS::Rect::operator!=(const UTILS_MODULE_NS::Rect& rhs)
 {
     return x != rhs.x || y != rhs.y || w != rhs.w || h != rhs.h;
+}
+
+std::ostream& operator<<(std::ostream& stream, const UTILS_MODULE_NS::Rect& r)
+{
+    stream << "Rect(x=" << r.x << ", y=" << r.y << " " << r.w << "x" << r.h << ')';
+
+    return stream;
 }

@@ -12,6 +12,13 @@ namespace OGL_RENDERING_MODULE_NS
     /**
      * @brief Class, that describes OpenGL default
      * forward rendering pipeline.
+     *
+     * Mesh shader attributes layout:
+     * 0. vec3 position
+     * 1. vec3 normal
+     * 2. vec2 uv
+     * 3. vec3 tangent
+     * 4. vec3 bitangent
      */
     class ForwardRenderingPipeline : public RENDERING_BASE_MODULE_NS::RenderingPipeline
     {
@@ -33,6 +40,10 @@ namespace OGL_RENDERING_MODULE_NS
          */
         void setup(::RENDERING_BASE_MODULE_NS::RenderBehaviour *behaviour) override;
 
+        /**
+         * @brief Init method.
+         * @return Init success.
+         */
         bool init() override;
 
     private:
@@ -64,7 +75,7 @@ namespace OGL_RENDERING_MODULE_NS
             ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh* meshBehaviour
         );
 
-        std::vector<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_behavoursCache;
+        std::vector<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_behavioursCache;
 
         // Fallback mesh program
         gl::program m_meshFallback;

@@ -234,6 +234,21 @@ namespace RENDERING_BASE_MODULE_NS
          */
         CullType getFar() const;
 
+        /**
+         * @brief Method for rotating gameobject
+         * towards point.
+         * @param point Point position.
+         */
+        void lookAt(const glm::vec3& point);
+
+        /**
+         * @brief Method for rotating gameobject
+         * towards point with changed up vector.
+         * @param point Point position.
+         * @param upVector Up vector.
+         */
+        void lookAt(const glm::vec3& point, const glm::vec3& upVector);
+
     protected:
         void onStart() override;
 

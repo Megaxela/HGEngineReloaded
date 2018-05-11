@@ -50,6 +50,8 @@ namespace OGL_RENDERING_MODULE_NS
          */
         void pollEvents() override;
 
+        Utils::Rect viewport() const override;
+
     private:
 
         static void glDebugOutput(GLenum source,

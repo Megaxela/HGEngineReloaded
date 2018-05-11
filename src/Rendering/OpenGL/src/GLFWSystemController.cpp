@@ -1,6 +1,8 @@
 #include <CurrentLogger.hpp>
 #include <Input.hpp>
 #include <Application.hpp>
+#include <Camera.hpp>
+#include <gl/all.hpp>
 #include "GLFWSystemController.hpp"
 
 #ifdef GRAPHICS_USE_GLFW
@@ -66,10 +68,11 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
     controller = this;
 
     // Setting event callbacks
-    glfwSetKeyCallback        (m_window, &GLFWSystemController::keyPressCallback);
-    glfwSetCursorPosCallback  (m_window, &GLFWSystemController::cursorPosCallback);
-    glfwSetMouseButtonCallback(m_window, &GLFWSystemController::mouseButtonCallback);
-    glfwSetJoystickCallback   (          &GLFWSystemController::joystickCallback);
+    glfwSetKeyCallback            (m_window, &GLFWSystemController::keyPressCallback);
+    glfwSetCursorPosCallback      (m_window, &GLFWSystemController::cursorPosCallback);
+    glfwSetMouseButtonCallback    (m_window, &GLFWSystemController::mouseButtonCallback);
+    glfwSetJoystickCallback       (          &GLFWSystemController::joystickCallback);
+    glfwSetFramebufferSizeCallback(m_window, &GLFWSystemController::framebufferSizeCallback);
 
     // todo: Add char callback
 //    glfwSetCharCallback(m_window, []());
@@ -89,13 +92,15 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
     {
         Info() << "Turning on OpenGL debug output.";
-        glEnable(GL_DEBUG_OUTPUT);
-        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        gl::set_debug_output_enabled(true);
+        gl::set_syncronous_debug_output_enabled(true);
+
         glDebugMessageCallback(&::OGL_RENDERING_MODULE_NS::GLFWSystemController::glDebugOutput, nullptr);
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
 
-    glViewport(0, 0, width, height);
+    gl::set_viewport({0, 0}, {static_cast<GLsizei>(width), static_cast<GLsizei>(height)});
+
 
     return true;
 }
@@ -408,11 +413,17 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::handleWindowEvents()
 
 void OGL_RENDERING_MODULE_NS::GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
-    glViewport(0, 0, width, height);
+    gl::set_viewport({0, 0}, {width, height});
+    ::RENDERING_BASE_MODULE_NS::Camera::active()->setViewport(0, 0, width, height);
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei,
-                                                                const GLchar *message, const void *)
+void OGL_RENDERING_MODULE_NS::GLFWSystemController::glDebugOutput(GLenum source,
+                                                                GLenum type,
+                                                                GLuint id,
+                                                                GLenum severity,
+                                                                GLsizei,
+                                                                const GLchar *message,
+                                                                const void *)
 {
     // ignore non-significant error/warning codes
 //    if(id == 131169 ||
@@ -483,6 +494,15 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source, G
         WarningEx("OpenGL::RendererController")
             << "OpenGL Warning:\n" << ss.str();
     }
+}
+
+UTILS_MODULE_NS::Rect OGL_RENDERING_MODULE_NS::GLFWSystemController::viewport() const
+{
+    ::UTILS_MODULE_NS::Rect rect;
+
+    glGetIntegerv(GL_VIEWPORT, reinterpret_cast<GLint*>(&rect));
+
+    return rect;
 }
 
 #endif

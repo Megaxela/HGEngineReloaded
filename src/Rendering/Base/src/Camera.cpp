@@ -2,6 +2,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Camera.hpp"
 #include <GameObject.hpp>
+#include <glmex.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 std::vector<RENDERING_BASE_MODULE_NS::Camera*> RENDERING_BASE_MODULE_NS::Camera::m_cameras;
 RENDERING_BASE_MODULE_NS::Camera* RENDERING_BASE_MODULE_NS::Camera::m_active = nullptr;
@@ -225,6 +227,7 @@ void RENDERING_BASE_MODULE_NS::Camera::setViewport(int x, int y, int w, int h)
     m_viewport.y = y;
     m_viewport.w = w;
     m_viewport.h = h;
+    m_projectionMatrixChanged = true;
 }
 
 void RENDERING_BASE_MODULE_NS::Camera::setViewport(const HG::Utils::Rect& rect)
@@ -259,5 +262,72 @@ RENDERING_BASE_MODULE_NS::Camera::CullType RENDERING_BASE_MODULE_NS::Camera::get
 
 void RENDERING_BASE_MODULE_NS::Camera::onStart()
 {
+#ifndef NDEBUG
+
+    if (std::find(
+        Camera::m_cameras.begin(),
+        Camera::m_cameras.end(),
+        this
+    ) != Camera::m_cameras.end())
+    {
+        Error() << "Trying to add camera to global camera system, several times.";
+    }
+
+#endif
     Camera::m_cameras.push_back(this);
+
+    // Getting current viewport
+#ifndef NDEBUG
+    if (scene() == nullptr)
+    {
+        Error() << "No scene set. Can't determine initial viewport.";
+        return;
+    }
+
+    if (scene()->application() == nullptr)
+    {
+        Error() << "No application set in scene. Can't determine initial viewport.";
+        return;
+    }
+
+    if (scene()->application()->systemController() == nullptr)
+    {
+        Error() << "No system controller set in application. Can't determine initial viewport.";
+        return;
+    }
+#endif
+
+    auto viewport = scene()->application()->systemController()->viewport();
+    m_viewport = viewport;
+}
+
+void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point)
+{
+    lookAt(point, glmex::vec3::up);
+}
+
+void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
+{
+    auto position = gameObject()->transform()->localPosition();
+    auto resultMatrix = glm::lookAt(point, position, upVector);
+
+    // Taking data back
+    glm::vec3 scale;
+    glm::quat rotation;
+    glm::vec3 translation;
+    glm::vec3 skew;
+    glm::vec4 perspective;
+    glm::decompose(resultMatrix, scale, rotation, translation, skew, perspective);
+
+#ifndef NDEBUG
+
+    if (gameObject() == nullptr)
+    {
+        Error() << "Can't make camera look at without gameobject.";
+        return;
+    }
+
+#endif
+
+    gameObject()->transform()->setLocalRotation(rotation);
 }

@@ -9,15 +9,15 @@
 #  ifndef GL_EXPORT
 #    ifdef gl_EXPORTS
         /* We are building this library */
-#      define GL_EXPORT __declspec(dllexport)
+#      define GL_EXPORT __attribute__((visibility("default")))
 #    else
         /* We are using this library */
-#      define GL_EXPORT __declspec(dllimport)
+#      define GL_EXPORT __attribute__((visibility("default")))
 #    endif
 #  endif
 
 #  ifndef GL_NO_EXPORT
-#    define GL_NO_EXPORT 
+#    define GL_NO_EXPORT __attribute__((visibility("hidden")))
 #  endif
 #endif
 
@@ -39,4 +39,4 @@
 #  endif
 #endif
 
-#endif
+#endif /* GL_EXPORT_H */

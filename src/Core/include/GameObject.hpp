@@ -117,6 +117,26 @@ namespace CORE_MODULE_NS
             }
         }
 
+        template<typename Behaviour>
+        Behaviour* findBehaviour()
+        {
+            for (auto&& behaviour : m_behaviours)
+            {
+                if (m_behaviours.isRemoving(behaviour))
+                {
+                    continue;
+                }
+
+                auto casted = dynamic_cast<Behaviour*>(behaviour);
+
+                if (casted != nullptr)
+                {
+                    return casted;
+                }
+            }
+
+            return nullptr;
+        }
 
     protected:
 

@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(HGStandard STATIC
     src/MeshLoaders/OBJ.cpp
     include/MeshLoaders/OBJ.hpp
+    src/Behaviours/FPSCameraMovement.cpp
+    include/Behaviours/FPSCameraMovement.hpp
 )
 
 target_include_directories(HGStandard PUBLIC

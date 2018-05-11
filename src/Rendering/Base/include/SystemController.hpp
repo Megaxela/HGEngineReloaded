@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <string>
+#include <Rect.hpp>
 
 namespace CORE_MODULE_NS
 {
@@ -55,6 +56,14 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Method for polling events.
          */
         virtual void pollEvents() = 0;
+
+        /**
+         * @brief Method for getting current viewport.
+         * Camera uses this method to determine initial
+         * viewport at `start` stage.
+         * @return Viewport.
+         */
+        virtual ::UTILS_MODULE_NS::Rect viewport() const = 0;
 
         /**
          * @brief Method for getting parent application.

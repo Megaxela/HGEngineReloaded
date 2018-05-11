@@ -7,6 +7,7 @@
 #include <Loggers/BasicLogger.hpp>
 #include <Mesh.hpp>
 #include <Behaviours/Mesh.hpp>
+#include <Behaviours/FPSCameraMovement.hpp>
 #include "Behaviour.hpp"
 #include "ForwardRenderingPipeline.hpp"
 #include "GLFWSystemController.hpp"
@@ -30,7 +31,7 @@ int main(int argc, char** argv)
     auto* scene = new HG::Core::Scene();
 
     // Initial mesh
-    HG::Utils::MeshPtr mesh = std::make_shared<HG::Utils::Mesh>();
+    auto mesh = std::make_shared<HG::Utils::Mesh>();
 
     mesh->Vertices = {
         // position            // uv
@@ -55,6 +56,7 @@ int main(int argc, char** argv)
         HG::Core::GameObjectBuilder()
             .setName("Camera")
             .addBehaviour(new HG::Rendering::Base::Camera)
+            .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)
             .setGlobalPosition(glm::vec3(0, 0, 0))
     );
 
