@@ -96,14 +96,14 @@ namespace RENDERING_BASE_MODULE_NS
 
             /**
              * @brief Method for setting camera
-             * field of view.
+             * field of view. In degrees.
              * @param fov Field of view.
              */
             void setFieldOfView(float fov);
 
             /**
              * @brief Method for getting camera
-             * field of view.
+             * field of view. In degrees.
              * @return Field of view value.
              */
             float fieldOfView() const;

@@ -3,6 +3,9 @@ project(HGRenderingBase)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(RENDER_OPENGL On)
+add_subdirectory(libraries)
+
 add_library(HGRenderingBase STATIC
     include/Camera.hpp
     src/Camera.cpp
@@ -27,6 +30,7 @@ target_include_directories(HGRenderingBase PUBLIC
 target_link_libraries(HGRenderingBase
         HGCore
         HGUtils
+        Gwork
 )
 
 target_compile_definitions(HGRenderingBase

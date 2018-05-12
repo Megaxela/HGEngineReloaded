@@ -59,7 +59,7 @@ RENDERING_BASE_MODULE_NS::Camera::OrthogonalSettings& RENDERING_BASE_MODULE_NS::
 }
 
 RENDERING_BASE_MODULE_NS::Camera::PerspectiveSettings::PerspectiveSettings() :
-    m_fov(80),
+    m_fov(90),
     m_parentCam(nullptr)
 {
 
@@ -177,11 +177,9 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::viewMatrix() const
     glm::vec3 pos = parentGO->transform()->globalPosition();
     glm::quat rot = parentGO->transform()->globalRotation();
 
-    glm::mat4 matrix(1.0f);
-    matrix = glm::translate(matrix, pos * -1.0f);
-    matrix = glm::mat4_cast(glm::inverse(rot)) * matrix;
+    glm::vec3 front = glmex::vec3::forward * rot;
 
-    return matrix;
+    return glm::lookAt(pos, pos + front, glmex::vec3::up);
 }
 
 glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
@@ -195,7 +193,7 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
     {
     case Projection::Perspective:
         m_projectionMatrix = glm::perspective(
-            m_perspectiveSettings.fieldOfView(),
+            glm::radians(m_perspectiveSettings.fieldOfView()),
             (float) m_viewport.w / (float) m_viewport.h,
             m_near,
             m_far
@@ -204,10 +202,10 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
         break;
     case Projection::Orthogonal:
         m_projectionMatrix = glm::ortho(
-            (float) m_viewport.x - (m_viewport.w / 2) * m_orthogonalSettings.zoom(),
-            (float) m_viewport.w / 2                  * m_orthogonalSettings.zoom(),
-            (float) m_viewport.y - (m_viewport.h / 2) * m_orthogonalSettings.zoom(),
-            (float) m_viewport.h / 2                  * m_orthogonalSettings.zoom(),
+            (float) m_viewport.x - (m_viewport.w / 2.0f) * m_orthogonalSettings.zoom(),
+            (float) m_viewport.w / 2                     * m_orthogonalSettings.zoom(),
+            (float) m_viewport.y - (m_viewport.h / 2.0f) * m_orthogonalSettings.zoom(),
+            (float) m_viewport.h / 2                     * m_orthogonalSettings.zoom(),
             m_near,
             m_far
         );

@@ -3,6 +3,7 @@
 // Only if using GLFW library
 #include <SystemController.hpp>
 #include <GL/gl_ordered.hpp>
+#include <Gwork/Input/OpenGL.h>
 
 #ifdef GRAPHICS_USE_GLFW
 
@@ -110,6 +111,8 @@ namespace OGL_RENDERING_MODULE_NS
 
         GLFWwindow* m_window;
 
+        // GUI library
+//        Gwk::Input::GLFW m_gworkInput;
     };
 }
 #endif
