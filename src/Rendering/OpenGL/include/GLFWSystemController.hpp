@@ -112,7 +112,7 @@ namespace OGL_RENDERING_MODULE_NS
         GLFWwindow* m_window;
 
         // GUI library
-//        Gwk::Input::GLFW m_gworkInput;
+        Gwk::Input::GLFW m_gworkInput;
     };
 }
 #endif

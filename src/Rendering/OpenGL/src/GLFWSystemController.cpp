@@ -4,6 +4,7 @@
 #include <Camera.hpp>
 #include <gl/all.hpp>
 #include "GLFWSystemController.hpp"
+#include "../../Base/libraries/GWork/source/platform/include/Gwork/PlatformCommon.h"
 
 #ifdef GRAPHICS_USE_GLFW
 
@@ -41,7 +42,7 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::init()
     // Setting OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
     return true;
@@ -461,18 +462,19 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::glDebugOutput(GLenum source,
                                                                 const void *)
 {
     // ignore non-significant error/warning codes
-//    if(id == 131169 ||
-//       id == 131185 ||
-//       id == 131218 ||
-//       id == 131204 ||
-//       id == 8 ||
-//       id == 22 || /* CPU mapping a bisy "streamed data" BO stalled */
-//       id == 20 || /* GTT mapping a busy "miptree" BO stalled */
-//       id == 14 || /* CPU mapping a busy "miptree" BO stalled */
-//       id == 18    /* CPU mapping a busy "streamed data" BO stalled */)
-//    {
-//        return;
-//    }
+    if(id == 131169 ||
+       id == 3203   ||
+       id == 131185 ||
+       id == 131218 ||
+       id == 131204 ||
+       id == 8 ||
+       id == 22 || /* CPU mapping a bisy "streamed data" BO stalled */
+       id == 20 || /* GTT mapping a busy "miptree" BO stalled */
+       id == 14 || /* CPU mapping a busy "miptree" BO stalled */
+       id == 18    /* CPU mapping a busy "streamed data" BO stalled */)
+    {
+        return;
+    }
 
     if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
     {

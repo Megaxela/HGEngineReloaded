@@ -31,6 +31,11 @@ target_link_libraries(HGRenderingBase
         HGCore
         HGUtils
         Gwork
+        GworkOpenGL
+        -liconv
+
+        glfw3
+        opengl32
 )
 
 target_compile_definitions(HGRenderingBase
