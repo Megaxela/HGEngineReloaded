@@ -8,9 +8,19 @@
 #include <Mesh.hpp>
 #include <Behaviours/Mesh.hpp>
 #include <Behaviours/FPSCameraMovement.hpp>
+#include <imgui.h>
 #include "Behaviour.hpp"
 #include "ForwardRenderingPipeline.hpp"
 #include "GLFWSystemController.hpp"
+
+class GUIBehaviour : public HG::Core::Behaviour
+{
+protected:
+    virtual void onUpdate() override
+    {
+        ImGui::Button("Example", {200, 20});
+    }
+};
 
 int main(int argc, char** argv)
 {
@@ -57,6 +67,7 @@ int main(int argc, char** argv)
             .setName("Camera")
             .addBehaviour(new HG::Rendering::Base::Camera)
             .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)
+            .addBehaviour(new GUIBehaviour)
             .setGlobalPosition(glm::vec3(0, 0, 0))
     );
 

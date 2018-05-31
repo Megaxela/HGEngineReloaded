@@ -6,21 +6,14 @@
 #include <Scene.hpp>
 #include <Mesh.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
-#include <Gwork/Controls/Canvas.h>
 
 // Rendering behaviours
 #include <Behaviours/Mesh.hpp>
 #include <gl/all.hpp>
-#include <Gwork/Renderers/OpenGL.h>
-#include <Gwork/Controls/Button.h>
 
 OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CORE_MODULE_NS::Application* application) :
     RenderingPipeline(application),
-    m_meshFallback(gl::invalid_id),
-    m_paths("./"),
-    m_resourceLoader(m_paths),
-    m_defaultGuiSkin(nullptr),
-    m_rootCanvas(nullptr)
+    m_meshFallback(gl::invalid_id)
 {
 
 }
@@ -103,27 +96,6 @@ void main()
         return false;
     }
 
-    Info() << "Initializing GUI subsystem";
-
-    // todo: Add as class field and delete in destructor.
-    auto* gwkRenderer = new Gwk::Renderer::OpenGL(m_resourceLoader, Gwk::Rect(Gwk::Point(0, 0), Gwk::Point(800, 600)));
-
-    gwkRenderer->Init();
-
-    // Creating skin
-    Info() << "Creating default GUI skin";
-    m_defaultGuiSkin  = new Gwk::Skin::TexturedBase(gwkRenderer);
-    m_defaultGuiSkin->Init("DefaultSkin.png");
-    m_defaultGuiSkin->SetDefaultFont("OpenSans.ttf", 11);
-
-    // Creating root canvas
-    m_rootCanvas = new Gwk::Controls::Canvas(m_defaultGuiSkin);
-    m_rootCanvas->SetSize(800, 600);
-    m_rootCanvas->SetDrawBackground(false);
-
-    // Creating sample button
-    auto* button = new Gwk::Controls::Button(m_rootCanvas, "Sample");
-
     return true;
 }
 
@@ -172,12 +144,6 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
                 break;
             }
         }
-    }
-
-    // Rendering GUI
-    if (m_rootCanvas)
-    {
-        m_rootCanvas->RenderCanvas();
     }
 
     application()->systemController()->swapBuffers();

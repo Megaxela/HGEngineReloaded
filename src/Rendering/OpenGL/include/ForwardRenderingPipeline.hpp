@@ -6,9 +6,6 @@
 #include <Behaviours/Mesh.hpp>
 #include <gl/program.hpp>
 #include <gl/vertex_array.hpp>
-#include <Gwork/Skins/TexturedBase.h>
-#include <Gwork/PlatformCommon.h>
-#include <Gwork/Renderers/OpenGL.h>
 
 namespace OGL_RENDERING_MODULE_NS
 {
@@ -82,12 +79,6 @@ namespace OGL_RENDERING_MODULE_NS
 
         // Fallback mesh program
         gl::program m_meshFallback;
-
-        // GUI subsystem
-        Gwk::Platform::RelativeToExecutablePaths m_paths;
-        Gwk::Renderer::OpenGLResourceLoader m_resourceLoader;
-        Gwk::Skin::TexturedBase* m_defaultGuiSkin;
-        Gwk::Controls::Canvas* m_rootCanvas;
     };
 }
 

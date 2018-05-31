@@ -30,12 +30,7 @@ target_include_directories(HGRenderingBase PUBLIC
 target_link_libraries(HGRenderingBase
         HGCore
         HGUtils
-        Gwork
-        GworkOpenGL
-        -liconv
-
-        glfw3
-        opengl32
+        imgui
 )
 
 target_compile_definitions(HGRenderingBase

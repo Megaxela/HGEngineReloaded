@@ -14,15 +14,15 @@ if (${HGRenderingOGL_USE_GLFW})
     message("Rendering library: GLFW")
     set(RENDERER_DEFINITION GRAPHICS_USE_GLFW)
 
-#    if (WIN32)
-#        set(RENDERER_LIBRARY glfw3)
-#    else()
-#        set(RENDERER_LIBRARY glfw)
-#    endif()
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/../Base/libraries/GWork/cmake/Modules/")
-    find_package(GLFW REQUIRED)
-
-    set(RENDERER_LIBRARY ${GLFW_LIBRARIES} ${GLFW_DEPENDENCIES})
+    if (WIN32)
+        set(RENDERER_LIBRARY glfw3)
+    else()
+        set(RENDERER_LIBRARY glfw)
+    endif()
+#    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/../Base/libraries/GWork/cmake/Modules/")
+#    find_package(GLFW REQUIRED)
+#
+#    set(RENDERER_LIBRARY ${GLFW_LIBRARIES} ${GLFW_DEPENDENCIES})
 
 elseif(${HGRenderingOGL_USE_Qt})
     message("Rendering library: Qt")
@@ -42,18 +42,6 @@ add_library(HGRenderingOGL STATIC
         include/GLFWSystemController.hpp
 )
 
-
-set(GWK_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Base/libraries/GWork)
-
-target_include_directories(HGRenderingOGL PUBLIC
-        include
-
-        ${GWK_SOURCE_DIR}/source/platform/include
-        ${GWK_SOURCE_DIR}/source/gwork/include
-        #        ${GWK_RENDER_INCLUDES}
-        ${GWK_SOURCE_DIR}/source/test/include
-)
-
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 
 target_link_libraries(HGRenderingOGL
@@ -62,6 +50,10 @@ target_link_libraries(HGRenderingOGL
         HGRenderingBase
         HGCore
         ${RENDERER_LIBRARY}
+)
+
+target_include_directories(HGRenderingOGL PUBLIC
+        include
 )
 
 target_compile_definitions(HGRenderingOGL

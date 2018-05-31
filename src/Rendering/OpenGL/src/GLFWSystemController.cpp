@@ -4,7 +4,6 @@
 #include <Camera.hpp>
 #include <gl/all.hpp>
 #include "GLFWSystemController.hpp"
-#include "../../Base/libraries/GWork/source/platform/include/Gwork/PlatformCommon.h"
 
 #ifdef GRAPHICS_USE_GLFW
 
