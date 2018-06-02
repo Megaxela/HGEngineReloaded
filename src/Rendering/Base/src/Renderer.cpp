@@ -41,14 +41,3 @@ RENDERING_BASE_MODULE_NS::RenderingPipeline* RENDERING_BASE_MODULE_NS::Renderer:
 {
     return m_pipeline;
 }
-
-void RENDERING_BASE_MODULE_NS::Renderer::setupRenderingBehaviour(RENDERING_BASE_MODULE_NS::RenderBehaviour *behaviour)
-{
-    if (m_pipeline == nullptr)
-    {
-        Error() << "Can't setup rendering behaviour without set pipeline.";
-        return;
-    }
-
-    m_pipeline->setup(behaviour);
-}

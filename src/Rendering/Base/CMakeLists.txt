@@ -21,6 +21,10 @@ add_library(HGRenderingBase STATIC
     include/Behaviours/Mesh.hpp
     src/SystemController.cpp
     include/SystemController.hpp
+    src/Material.cpp
+    include/Material.hpp
+    src/Texture.cpp
+    include/Texture.hpp
 )
 
 target_include_directories(HGRenderingBase PUBLIC

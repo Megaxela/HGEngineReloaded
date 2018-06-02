@@ -3,6 +3,7 @@
 #include <RenderBehaviour.hpp>
 #include <type_traits>
 #include <memory>
+#include <CurrentLogger.hpp>
 
 namespace UTILS_MODULE_NS
 {
@@ -70,6 +71,14 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
             std::is_base_of<MeshExternalData, T>::value
         >::type setExternalData()
         {
+
+#ifndef NDEBUG
+            if (m_externalData)
+            {
+                Info() << "Recreating existing external data for mesh.";
+            }
+#endif
+
             delete m_externalData;
 
             m_externalData = new T();

@@ -1,5 +1,7 @@
 #include "Lights/AbstractLight.hpp"
 
+std::vector<RENDERING_BASE_MODULE_NS::AbstractLight*> RENDERING_BASE_MODULE_NS::AbstractLight::m_lights;
+
 RENDERING_BASE_MODULE_NS::AbstractLight::AbstractLight(RENDERING_BASE_MODULE_NS::AbstractLight::Type type) :
     m_type(type),
     m_ambient(),
@@ -11,7 +13,16 @@ RENDERING_BASE_MODULE_NS::AbstractLight::AbstractLight(RENDERING_BASE_MODULE_NS:
 
 RENDERING_BASE_MODULE_NS::AbstractLight::~AbstractLight()
 {
+    // Removing from db
 
+    AbstractLight::m_lights.erase(
+        std::find(
+            AbstractLight::m_lights.begin(),
+            AbstractLight::m_lights.end(),
+            this
+        ),
+        AbstractLight::m_lights.end()
+    );
 }
 
 RENDERING_BASE_MODULE_NS::AbstractLight::Type RENDERING_BASE_MODULE_NS::AbstractLight::type()
@@ -51,7 +62,18 @@ UTILS_MODULE_NS::Color RENDERING_BASE_MODULE_NS::AbstractLight::diffuse() const
 
 void RENDERING_BASE_MODULE_NS::AbstractLight::onStart()
 {
-    Behaviour::onStart();
+#ifndef NDEBUG
 
-    // todo: Add registration to lighting database
+    if (std::find(
+        AbstractLight::m_lights.begin(),
+        AbstractLight::m_lights.end(),
+        this
+    ) != AbstractLight::m_lights.end())
+    {
+        Error() << "Trying to add light to global light system, several times.";
+    }
+
+#endif
+
+    AbstractLight::m_lights.push_back(this);
 }

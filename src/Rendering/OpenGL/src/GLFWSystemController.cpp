@@ -3,6 +3,8 @@
 #include <Application.hpp>
 #include <Camera.hpp>
 #include <gl/all.hpp>
+#include <imgui.h>
+#include <imgui_impl_glfw_gl3.h>
 #include "GLFWSystemController.hpp"
 
 #ifdef GRAPHICS_USE_GLFW
@@ -16,6 +18,7 @@ OGL_RENDERING_MODULE_NS::GLFWSystemController::GLFWSystemController(::CORE_MODUL
 
 OGL_RENDERING_MODULE_NS::GLFWSystemController::~GLFWSystemController()
 {
+    ImGui::DestroyContext();
     glfwTerminate();
     m_window = nullptr;
 }
@@ -44,6 +47,8 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::init()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
+    ImGui::CreateContext();
+
     return true;
 }
 
@@ -64,6 +69,8 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
         glfwTerminate();
         return false;
     }
+
+    ImGui_ImplGlfwGL3_Init(m_window, true);
 
     controller = this;
 
@@ -134,14 +141,24 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
     }
 #endif
 
-    gl::set_viewport({0, 0}, {static_cast<GLsizei>(width), static_cast<GLsizei>(height)});
+    // Enabling cull face to clockwise
+    gl::set_polygon_face_culling_enabled(true);
+    gl::set_cull_face(GL_BACK);
+    gl::set_front_face(GL_CW);
 
+    // Enabling depth test
+    gl::set_depth_test_enabled(true);
+    gl::set_depth_function(GL_LESS);
+
+    // Setting viewport
+    gl::set_viewport({0, 0}, {static_cast<GLsizei>(width), static_cast<GLsizei>(height)});
 
     return true;
 }
 
 void OGL_RENDERING_MODULE_NS::GLFWSystemController::swapBuffers()
 {
+    ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(m_window);
 }
 
@@ -150,6 +167,7 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::pollEvents()
     glfwPollEvents();
     handleGamepadsEvents();
     handleWindowEvents();
+    ImGui_ImplGlfwGL3_NewFrame();
 }
 
 void OGL_RENDERING_MODULE_NS::GLFWSystemController::handleGamepadsEvents()

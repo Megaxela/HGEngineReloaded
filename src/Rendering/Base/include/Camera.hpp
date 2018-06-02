@@ -185,7 +185,7 @@ namespace RENDERING_BASE_MODULE_NS
 
         /**
          * @brief Method to get view matrix.
-         * @return
+         * @return Matrix 4x4
          */
         glm::mat4 viewMatrix() const;
 

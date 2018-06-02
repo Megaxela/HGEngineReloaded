@@ -299,12 +299,12 @@ void RENDERING_BASE_MODULE_NS::Camera::onStart()
     m_viewport = viewport;
 }
 
-void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point)
+void RENDERING_BASE_MODULE_NS::Camera::lookAt(const glm::vec3& point)
 {
     lookAt(point, glmex::vec3::up);
 }
 
-void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
+void RENDERING_BASE_MODULE_NS::Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
 {
     auto position = gameObject()->transform()->localPosition();
     auto resultMatrix = glm::lookAt(point, position, upVector);

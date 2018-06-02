@@ -10,6 +10,7 @@
 // Rendering behaviours
 #include <Behaviours/Mesh.hpp>
 #include <gl/all.hpp>
+#include <imgui.h>
 
 OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CORE_MODULE_NS::Application* application) :
     RenderingPipeline(application),
@@ -116,10 +117,10 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
         GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
     );
 
-    m_behavioursCache.clear();
-
     for (auto&& gameObject : objects)
     {
+        m_behavioursCache.clear();
+
         // Getting rendering behaviours of GO
         gameObject->findRenderingBehaviours(m_behavioursCache);
 
@@ -145,6 +146,8 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
             }
         }
     }
+
+    ImGui::Render();
 
     application()->systemController()->swapBuffers();
 }
@@ -217,6 +220,39 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setupMesh(::RENDERING_BA
     data->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, tangent)));
     data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, bitangent)));
 
+}
+
+void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_MODULE_NS::Texture* texture)
+{
+    // Checking surface on texture
+    if (texture->surface() == nullptr)
+    {
+        Error() << "Can't setup texture without surface on it.";
+        return;
+    }
+
+    // Creating external data if not presented
+    if (texture->externalData<TextureData>() == nullptr)
+    {
+        texture->setExternalData<TextureData>();
+    }
+
+    auto externalData = texture->externalData<TextureData>();
+
+    externalData->Texture.set_min_filter(GL_LINEAR);
+    externalData->Texture.set_mag_filter(GL_LINEAR);
+
+    // Loading data into texture
+    externalData->Texture.set_sub_image(
+        0, // Level
+        0, // X offset
+        0, // Y Offset
+        texture->surface()->Width,  // Width
+        texture->surface()->Height, // Height
+        GL_RGBA,          // Format
+        GL_UNSIGNED_BYTE, // Type
+        texture->surface()->Data
+    );
 }
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE_NS::GameObject* gameObject,

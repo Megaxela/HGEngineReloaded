@@ -6,16 +6,19 @@ CORE_MODULE_NS::TimeStatistics::TimeStatistics() :
     m_timers()
 {
     addTimer(Timers::FrameTime);
+    changeEstimateBuffer(Timers::FrameTime,  60);
     addTimer(Timers::RenderTime);
+    changeEstimateBuffer(Timers::RenderTime, 60);
     addTimer(Timers::UpdateTime);
+    changeEstimateBuffer(Timers::UpdateTime, 60);
 }
 
 std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::frameDeltaTime()
 {
-    return getTimerLastFrame(FrameTime);
+    return getTimerEstimate(FrameTime);
 }
 
-std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::lastFrameRenderTime()
+std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::lastFrameDeltaTime()
 {
     return getTimerLastFrame(FrameTime);
 }
@@ -25,7 +28,7 @@ std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::renderTime()
     return getTimerEstimate(RenderTime);
 }
 
-std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::lastFrameUpdateTime()
+std::chrono::microseconds HG::Core::TimeStatistics::lastFrameRenderTime()
 {
     return getTimerLastFrame(RenderTime);
 }
@@ -33,6 +36,11 @@ std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::lastFrameUpdateTime()
 std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::updateTime()
 {
     return getTimerEstimate(UpdateTime);
+}
+
+std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::lastFrameUpdateTime()
+{
+    return getTimerLastFrame(UpdateTime);
 }
 
 std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::getTimerEstimate(int timer) const
@@ -182,7 +190,7 @@ std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::Timer::tickEnd()
 
 std::chrono::microseconds CORE_MODULE_NS::TimeStatistics::Timer::estimateTime() const
 {
-    uint64_t currentEstimate = 0;
+    int64_t currentEstimate = 0;
 
     for (std::size_t i = 0; i < m_bufferSize; ++i)
     {

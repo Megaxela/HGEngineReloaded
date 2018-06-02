@@ -7,7 +7,6 @@ add_subdirectory(libraries)
 
 add_library(HGUtils STATIC
         include/DoubleBufferContainer.hpp
-        src/DoubleBufferContainer.cpp
         include/Rect.hpp
         src/Rect.cpp
         include/Color.hpp
@@ -16,7 +15,12 @@ add_library(HGUtils STATIC
         src/Vertex.cpp
         include/Mesh.hpp
         src/Mesh.cpp
-        include/glmex.hpp)
+        include/glmex.hpp
+        src/Surface.cpp
+        include/Surface.hpp
+        src/Loaders/STBImageLoader.cpp
+        include/Loaders/STBImageLoader.hpp
+)
 
 target_include_directories(HGUtils PUBLIC
         include
@@ -25,6 +29,7 @@ target_include_directories(HGUtils PUBLIC
 target_link_libraries(HGUtils
         ALogger
         glm
+        stb
 )
 
 target_compile_definitions(HGUtils

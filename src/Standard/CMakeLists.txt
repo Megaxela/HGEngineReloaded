@@ -8,6 +8,8 @@ add_library(HGStandard STATIC
     include/MeshLoaders/OBJ.hpp
     src/Behaviours/FPSCameraMovement.cpp
     include/Behaviours/FPSCameraMovement.hpp
+        src/Behaviours/ServiceInformationOverlay.cpp
+        include/Behaviours/ServiceInformationOverlay.hpp
 )
 
 target_include_directories(HGStandard PUBLIC

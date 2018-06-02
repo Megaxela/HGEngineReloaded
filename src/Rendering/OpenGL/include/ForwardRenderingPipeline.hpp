@@ -36,9 +36,15 @@ namespace OGL_RENDERING_MODULE_NS
 
         /**
          * @brief Method for setting up behaviours for forward rendering.
-         * @param behaviour
+         * @param behaviour Rendering behaviour.
          */
         void setup(::RENDERING_BASE_MODULE_NS::RenderBehaviour *behaviour) override;
+
+        /**
+         * @brief Method for setting up textures for forward rendering.
+         * @param texture Texture.
+         */
+        void setup(::RENDERING_BASE_MODULE_NS::Texture* texture) override;
 
         /**
          * @brief Init method.
@@ -58,6 +64,13 @@ namespace OGL_RENDERING_MODULE_NS
             gl::vertex_array VAO;
             gl::buffer VBO;
             gl::buffer EBO;
+        };
+
+        class TextureData : public ::RENDERING_BASE_MODULE_NS::Texture::TextureExternalData
+        {
+        public:
+
+            gl::texture<GL_TEXTURE_2D> Texture;
         };
 
         // Setup methods

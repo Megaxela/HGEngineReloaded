@@ -19,8 +19,10 @@ namespace CORE_MODULE_NS
         enum Timers
         {
             FrameTime = 0,
+            FirstSystemTimer = FrameTime,
             RenderTime = 1,
-            UpdateTime = 2
+            UpdateTime = 2,
+            LastSystemTimer
         };
 
         /**
@@ -39,9 +41,9 @@ namespace CORE_MODULE_NS
 
         /**
          * @brief Method for getting last frame render time.
-         * @return Last frame render time in microseconds.
+         * @return Last frame time in microseconds.
          */
-        std::chrono::microseconds lastFrameRenderTime();
+        std::chrono::microseconds lastFrameDeltaTime();
 
         /**
          * @brief Method for getting estimate render time
@@ -53,11 +55,10 @@ namespace CORE_MODULE_NS
         std::chrono::microseconds renderTime();
 
         /**
-         * @brief Method for getting last frame update (logic) time
-         * in microseconds.
-         * @return Last frame update (logic) time in microseconds.
+         * @brief Method for getting last frame render time.
+         * @return Last frame render time.
          */
-        std::chrono::microseconds lastFrameUpdateTime();
+        std::chrono::microseconds lastFrameRenderTime();
 
         /**
          * @brief Method for getting estimate update (logic) time
@@ -67,6 +68,13 @@ namespace CORE_MODULE_NS
          * @return Estimate update (logic) time in microseconds.
          */
         std::chrono::microseconds updateTime();
+
+        /**
+         * @brief Method for getting last frame update (logic) time
+         * in microseconds.
+         * @return Last frame update (logic) time in microseconds.
+         */
+        std::chrono::microseconds lastFrameUpdateTime();
 
         /**
          * @brief Method for changing estimate buffer size.

@@ -3,12 +3,6 @@
 #include <CurrentLogger.hpp>
 #include "ResourceAccessor.hpp"
 
-namespace UTILS_MODULE_NS
-{
-    class Mesh;
-    using MeshPtr = std::shared_ptr<Mesh>;
-}
-
 namespace CORE_MODULE_NS
 {
     /**
@@ -66,14 +60,48 @@ namespace CORE_MODULE_NS
         }
 
         /**
-         * @brief Method for loading mesh with
-         * using of specified mesh formatter.
-         * @tparam MeshLoader Mesh formatter object.
+         * @brief Method for loading some resource
+         * with using of specified formatter.
+         * @tparam Loader Formatter object.
+         *
+         * Formatter object concept:
+         *
+         * concept Loader
+         * {
+         * public:
+         *     using ResultType;
+         *
+         *     ResultType load(const std::byte* data, std::size_t size);
+         * }
+         *
          * @param id Resource id for resource accessor.
-         * @return
+         * @return Loaded resource or nullptr if error aquired.
          */
-        template<typename MeshLoader>
-        ::UTILS_MODULE_NS::MeshPtr loadMesh(const std::string& id)
+        template<typename Loader>
+        typename Loader::ResultType load(const std::string& id)
+        {
+            auto data = loadRawFromAccessor(id);
+
+            if (data == nullptr)
+            {
+                return nullptr;
+            }
+
+            Loader loader;
+
+            return loader.load(data);
+        }
+
+    private:
+
+        /**
+         * @brief Method for loading data from accessor and
+         * log errors if smth will go wrong.
+         * @param id Resource id for resource accessor.
+         * @return Pointer to raw data, or nullptr if
+         * some error acquired.
+         */
+        ResourceAccessor::DataPtr loadRawFromAccessor(const std::string& id)
         {
             if (m_accessor == nullptr)
             {
@@ -90,12 +118,8 @@ namespace CORE_MODULE_NS
                 return nullptr;
             }
 
-            MeshLoader loader;
-
-            return loader.load(data);
+            return data;
         }
-
-    private:
 
         ResourceAccessor* m_accessor;
     };

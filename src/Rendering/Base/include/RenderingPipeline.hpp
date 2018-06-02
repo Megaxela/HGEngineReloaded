@@ -3,6 +3,7 @@
 #include "SystemController.hpp"
 #include "Scene.hpp"
 #include "RenderBehaviour.hpp"
+#include "Texture.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -48,6 +49,12 @@ namespace RENDERING_BASE_MODULE_NS
          * @param behaviour Pointer to render behaviour.
          */
         virtual void setup(RenderBehaviour* behaviour) = 0;
+
+        /**
+         * @brief Method for setting up textures for rendering.
+         * @param texture Pointer to texture.
+         */
+        virtual void setup(Texture* texture) = 0;
 
     private:
 

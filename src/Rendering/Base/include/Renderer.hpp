@@ -56,11 +56,21 @@ namespace RENDERING_BASE_MODULE_NS
         void render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& gameObjects);
 
         /**
-         * @brief Method for setting up rendering
-         * behaviour with specified rendering pipeline.
-         * @param behaviour Render behavour.
+         * @brief Method for setting up objects
+         * with specified rendering pipeline.
+         * @param obj Object.
          */
-        void setupRenderingBehaviour(RenderBehaviour* behaviour);
+        template<typename T>
+        void setupRenderingBehaviour(T obj)
+        {
+            if (m_pipeline == nullptr)
+            {
+                Error() << "Can't setup rendering behaviour without set pipeline.";
+                return;
+            }
+
+            m_pipeline->setup(obj);
+        }
 
     private:
         ::CORE_MODULE_NS::Application* m_parentApplication;

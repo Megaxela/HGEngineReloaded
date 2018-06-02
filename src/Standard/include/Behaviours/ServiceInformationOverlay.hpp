@@ -5,20 +5,20 @@
 namespace STD_MODULE_NS::Behaviours
 {
     /**
-     * @brief Behaviour for popup with service 
+     * @brief Behaviour for popup with service
      * information of render info.
      */
-    class ServiceInformationPopup : public ::CORE_MODULE_NS::Behaviour
+    class ServiceInformationOverlay : public ::CORE_MODULE_NS::Behaviour
     {
-    public:
-        
-        /**
-         * @brief Default constructor.
-         */
-        ServiceInformationPopup();
-
     protected:
         void onUpdate() override;
+
+    private:
+
+        void updateFrameGraph();
+
+        const int m_framesCount = 240;
+        float m_frames[240];
     };
 }
 

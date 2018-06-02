@@ -2,6 +2,7 @@
 
 #include <Color.hpp>
 #include <Behaviour.hpp>
+#include <Camera.hpp>
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -79,6 +80,8 @@ namespace RENDERING_BASE_MODULE_NS
         void onStart() override;
 
     private:
+        static std::vector<AbstractLight*> m_lights;
+
         Type m_type;
         UTILS_MODULE_NS::Color m_specular;
         UTILS_MODULE_NS::Color m_ambient;

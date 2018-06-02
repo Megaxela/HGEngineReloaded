@@ -39,4 +39,4 @@
 #  endif
 #endif
 
-#endif
+#endif /* GL_EXPORT_H */
