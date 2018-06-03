@@ -105,14 +105,6 @@ namespace RENDERING_BASE_MODULE_NS
          *
          * Internal structures:
          * ```glsl
-         * struct DirectionalLight
-         * {
-         *     vec3 direction;
-         *
-         *     vec3 ambient;
-         *     vec3 diffuse;
-         *     vec3 specular;
-         * }
          *
          * struct PointLight
          * {
@@ -121,6 +113,15 @@ namespace RENDERING_BASE_MODULE_NS
          *     float constant;
          *     float linear;
          *     float quadratic;
+         *
+         *     vec3 ambient;
+         *     vec3 diffuse;
+         *     vec3 specular;
+         * }
+         *
+         * struct DirectionalLight
+         * {
+         *     vec3 direction;
          *
          *     vec3 ambient;
          *     vec3 diffuse;
@@ -155,8 +156,12 @@ namespace RENDERING_BASE_MODULE_NS
          * mat4 - model - Model matrix;
          * mat4 - view - View matrix;
          * mat4 - projection - Projection matrix;
-         *
-         *
+         * PointLight[MAX_POINT_LIGHTS] - pointLights - Array with point lights in scene.
+         * int - numberOfPointLights - real amount of point lights in scene.
+         * DirectionalLight[MAX_DIRECTIONAL_LIGHTS] - directionalLights - Array with directional lights in scene.
+         * int - numberOfDirectionalLights - real amount of directional lights in scene.
+         * SpotLight[MAX_SPOT_LIGHTS] - spotLights - Array with spot lights in scene.
+         * int - numberOfSpotLights - real amount of spot lights in scene.
          * @param text Shader text.
          */
         void setShaderText(std::string text);

@@ -17,22 +17,46 @@ namespace RENDERING_BASE_MODULE_NS::Lights
         PointLight();
 
         /**
-         * @brief Method for getting point light
-         * radius.
-         * @return Radius.
+         * @brief Method for setting constant radius.
+         * @param value Value.
          */
-        float radius() const;
+        void setConstant(float value);
 
         /**
-         * @brief Method for setting point light
-         * radius.
-         * @param rad Radius.
+         * @brief Method for getting constant radius.
+         * @return Value.
          */
-        void setRadius(float rad);
+        float constant() const;
+
+        /**
+         * @brief Method for setting linear radius.
+         * @param value Value.
+         */
+        void setLinear(float value);
+
+        /**
+         * @brief Method for getting linear radius.
+         * @return Value.
+         */
+        float linear() const;
+
+        /**
+         * @brief Method for setting quadratic radius.
+         * @param value Value.
+         */
+        void setQuadratic(float value);
+
+        /**
+         * @brief Method for getting quadratic radius.
+         * @return Value.
+         */
+        float quadratic() const;
 
     private:
 
-        float m_radius;
+        float m_constant;
+        float m_linear;
+        float m_quadratic;
     };
 }
 

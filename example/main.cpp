@@ -12,6 +12,7 @@
 #include <Behaviours/ServiceInformationOverlay.hpp>
 #include <FilesystemResourceAccessor.hpp>
 #include <Loaders/STBImageLoader.hpp>
+#include <Lights/PointLight.hpp>
 #include "Behaviour.hpp"
 #include "ForwardRenderingPipeline.hpp"
 #include "GLFWSystemController.hpp"
@@ -68,48 +69,48 @@ int main(int argc, char** argv)
     auto mesh = std::make_shared<HG::Utils::Mesh>();
 
     mesh->Vertices = {
-        // Back face
-        {{-0.5f, -0.5f, -0.5f},  {0.0f, 0.0f}}, // Bottom-left
-        {{ 0.5f, -0.5f, -0.5f},  {1.0f, 0.0f}}, // bottom-right
-        {{ 0.5f,  0.5f, -0.5f},  {1.0f, 1.0f}}, // top-right
-        {{ 0.5f,  0.5f, -0.5f},  {1.0f, 1.0f}}, // top-right
-        {{-0.5f,  0.5f, -0.5f},  {0.0f, 1.0f}}, // top-left
-        {{-0.5f, -0.5f, -0.5f},  {0.0f, 0.0f}}, // bottom-left
+//        // Back face
+        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // Bottom-left
+        {{ 0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 0.0f}}, // bottom-right
+        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
+        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
+        {{-0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 1.0f}}, // top-left
+        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // bottom-left
         // Front face
-        {{-0.5f, -0.5f,  0.5f},  {0.0f, 0.0f}}, // bottom-left
-        {{ 0.5f,  0.5f,  0.5f},  {1.0f, 1.0f}}, // top-right
-        {{ 0.5f, -0.5f,  0.5f},  {1.0f, 0.0f}}, // bottom-right
-        {{ 0.5f,  0.5f,  0.5f},  {1.0f, 1.0f}}, // top-right
-        {{-0.5f, -0.5f,  0.5f},  {0.0f, 0.0f}}, // bottom-left
-        {{-0.5f,  0.5f,  0.5f},  {0.0f, 1.0f}}, // top-left
+        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 0.0f}}, // bottom-right
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
+        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
+        {{-0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 1.0f}}, // top-left
         // Left face
-        {{-0.5f,  0.5f,  0.5f},  {1.0f, 0.0f}}, // top-right
-        {{-0.5f, -0.5f, -0.5f},  {0.0f, 1.0f}}, // bottom-left
-        {{-0.5f,  0.5f, -0.5f},  {1.0f, 1.0f}}, // top-left
-        {{-0.5f, -0.5f, -0.5f},  {0.0f, 1.0f}}, // bottom-left
-        {{-0.5f,  0.5f,  0.5f},  {1.0f, 0.0f}}, // top-right
-        {{-0.5f, -0.5f,  0.5f},  {0.0f, 0.0f}}, // bottom-right
+        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
+        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
+        {{-0.5f,  0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-left
+        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
+        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
+        {{-0.5f, -0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
         // Right face
-        {{ 0.5f,  0.5f,  0.5f},  {1.0f, 0.0f}}, // top-left
-        {{ 0.5f,  0.5f, -0.5f},  {1.0f, 1.0f}}, // top-right
-        {{ 0.5f, -0.5f, -0.5f},  {0.0f, 1.0f}}, // bottom-right
-        {{ 0.5f, -0.5f, -0.5f},  {0.0f, 1.0f}}, // bottom-right
-        {{ 0.5f, -0.5f,  0.5f},  {0.0f, 0.0f}}, // bottom-left
-        {{ 0.5f,  0.5f,  0.5f},  {1.0f, 0.0f}}, // top-left
+        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
+        {{ 0.5f,  0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-right
+        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
+        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
+        {{ 0.5f, -0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
+        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
         // Bottom face
-        {{-0.5f, -0.5f, -0.5f},  {0.0f, 1.0f}}, // top-right
-        {{ 0.5f, -0.5f,  0.5f},  {1.0f, 0.0f}}, // bottom-left
-        {{ 0.5f, -0.5f, -0.5f},  {1.0f, 1.0f}}, // top-left
-        {{ 0.5f, -0.5f,  0.5f},  {1.0f, 0.0f}}, // bottom-left
-        {{-0.5f, -0.5f, -0.5f},  {0.0f, 1.0f}}, // top-right
-        {{-0.5f, -0.5f,  0.5f},  {0.0f, 0.0f}}, // bottom-right
+        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
+        {{ 0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 1.0f}}, // top-left
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
+        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
+        {{-0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
         // Top face
-        {{-0.5f,  0.5f, -0.5f},  {0.0f, 1.0f}}, // top-left
-        {{ 0.5f,  0.5f, -0.5f},  {1.0f, 1.0f}}, // top-right
-        {{ 0.5f,  0.5f,  0.5f},  {1.0f, 0.0f}}, // bottom-right
-        {{ 0.5f,  0.5f,  0.5f},  {1.0f, 0.0f}}, // bottom-right
-        {{-0.5f,  0.5f,  0.5f},  {0.0f, 0.0f}}, // bottom-left
-        {{-0.5f,  0.5f, -0.5f},  {0.0f, 1.0f}}  // top-left
+        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}, // top-left
+        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 1.0f}}, // top-right
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
+        {{-0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
+        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}  // top-left
     };
 
     mesh->Indices = {
@@ -149,7 +150,11 @@ layout (location = 0) in vec3 inPosition;
 layout (location = 1) in vec3 inNormal;
 layout (location = 2) in vec2 inTexCoords;
 
-out vec2 TexCoords;
+out VS_OUT {
+    vec3 FragPos;
+    vec3 Normal;
+    vec2 TexCoords;
+} vs_out;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -158,22 +163,64 @@ uniform mat4 projection;
 void main()
 {
     gl_Position = projection * view * model * vec4(inPosition, 1.0f);
-    TexCoords = inTexCoords;
+    vs_out.FragPos = inPosition;
+    vs_out.Normal = inNormal;
+    vs_out.TexCoords = inTexCoords;
 }
 #endif
 
 #ifdef FragmentShader
 out vec4 FragColor;
 
+in VS_OUT {
+    vec3 FragPos;
+    vec3 Normal;
+    vec2 TexCoords;
+} fs_in;
+
 in vec2 TexCoords;
 
+uniform vec3 viewPos;
+
 // texture samplers
-uniform sampler2D someTexture;
+uniform sampler2D diffuseTexture;
+
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform int numberOfPointLights;
 
 void main()
 {
     //FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-    FragColor = texture(someTexture, TexCoords);
+    //FragColor = texture(someTexture, TexCoords);
+    vec3 color = texture(diffuseTexture, fs_in.TexCoords).rgb;
+
+    // Ambient
+    vec3 ambient = 0.05 * color;
+
+    if (numberOfPointLights == 0)
+    {
+        FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        return;
+    }
+
+    // Diffuse
+    vec3 lightDir = normalize(pointLights[0].position - fs_in.FragPos);
+    vec3 normal = normalize(fs_in.Normal);
+
+    float diff = max(dot(lightDir, normal), 0.0);
+    vec3 diffuse = diff * color;
+
+    // Specular
+    vec3 viewDir = normalize(viewPos - fs_in.FragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+
+    // Assuming bright white light color
+    vec3 specular = vec3(0.3) * spec;
+
+    FragColor = vec4(ambient + diffuse + specular, 1.0);
 }
 #endif
 )"
@@ -187,7 +234,7 @@ void main()
 
     // Setting up material
     material->setShader(shader);
-    material->set("someTexture", texture);
+    material->set("diffuseTexture", texture);
 
     // Creating mesh renderer
     auto meshRenderer = new HG::Rendering::Base::Behaviours::Mesh;
@@ -210,8 +257,17 @@ void main()
         HG::Core::GameObjectBuilder()
             .setName("Object")
             .addRenderingBehaviour(meshRenderer)
-            .addBehaviour(new RotationBehaviour)
+//            .addBehaviour(new RotationBehaviour)
             .setGlobalPosition(glm::vec3(0, 0, -2))
+    );
+
+    scene->addGameObject(
+        HG::Core::GameObjectBuilder()
+            .setName("Light")
+            .addBehaviour(new HG::Rendering::Base::Lights::PointLight)
+            .setGlobalPosition(glm::vec3(-1, 0.0, -1))
+//            .addRenderingBehaviour(meshRenderer)
+            .setScale(glm::vec3(0.2, 0.2, 0.2))
     );
 
     application.setScene(scene);

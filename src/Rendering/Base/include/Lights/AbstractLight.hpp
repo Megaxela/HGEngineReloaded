@@ -76,6 +76,12 @@ namespace RENDERING_BASE_MODULE_NS
          */
         UTILS_MODULE_NS::Color diffuse() const;
 
+        /**
+         * @brief Method for getting all lights on scene.
+         * @return Constant reference on lights vector.
+         */
+        static const std::vector<AbstractLight*>& totalLights();
+
     protected:
         void onStart() override;
 

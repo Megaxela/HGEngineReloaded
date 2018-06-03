@@ -11,15 +11,55 @@
 #include <Behaviours/Mesh.hpp>
 #include <gl/all.hpp>
 #include <imgui.h>
+#include <Lights/AbstractLight.hpp>
+#include <Lights/PointLight.hpp>
+#include <Lights/DirectionalLight.hpp>
+
+#define SHADER_DEFAULT_STRUCTS \
+"#define MAX_POINT_LIGHTS 128\n" \
+"#define MAX_DIRECTIONAL_LIGHTS 2\n" \
+"#define MAX_SPOT_LIGHTS 32\n" \
+"struct DirectionalLight\n" \
+"{\n" \
+"    vec3 direction;\n" \
+"    vec3 ambient;\n" \
+"    vec3 diffuse;\n" \
+"    vec3 specular;\n" \
+"};\n" \
+"struct PointLight\n" \
+"{\n" \
+"    vec3 position;\n" \
+"    float linear;\n" \
+"    float constant;\n" \
+"    float quadratic;\n" \
+"    vec3 ambient;\n" \
+"    vec3 diffuse;\n" \
+"    vec3 specular;\n" \
+"};\n" \
+"struct SpotLight\n" \
+"{\n" \
+"    vec3 position;\n" \
+"    vec3 direction;\n" \
+"    float cutOff;\n" \
+"    float outerCutOff;\n" \
+"    float constant;\n" \
+"    float linear;\n" \
+"    float quadratic;\n" \
+"    vec3 ambient;\n" \
+"    vec3 diffuse;\n" \
+"    vec3 specular;\n" \
+"};\n"
 
 OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CORE_MODULE_NS::Application* application) :
     RenderingPipeline(application),
+    m_textureNumber(0),
+    m_behavioursCache(),
     m_meshFallback(gl::invalid_id)
 {
 
 }
 
-bool HG::Rendering::OpenGL::ForwardRenderingPipeline::init()
+bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::init()
 {
     if (!RenderingPipeline::init())
     {
@@ -305,6 +345,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
 
     vertexShader.set_source(
         "#version 420 core\n"
+        SHADER_DEFAULT_STRUCTS
         "#define VertexShader\n" +
         shader->shaderText()
     );
@@ -315,11 +356,13 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
         return /* false */;
     }
 
-    fragmentShader.set_source(
+    std::string fragmentShaderSource =
         "#version 420 core\n"
+        SHADER_DEFAULT_STRUCTS
         "#define FragmentShader\n" +
-        shader->shaderText()
-    );
+        shader->shaderText();
+
+    fragmentShader.set_source(fragmentShaderSource);
 
     if (!fragmentShader.compile())
     {
@@ -392,24 +435,151 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
     }
 
     // Checking for VBO, VAO and EBO
-    auto modelMatrix = gameObject->transform()->localToWorldMatrix();
-    auto viewMatrix = ::RENDERING_BASE_MODULE_NS::Camera::active()->viewMatrix();
-    auto projectionMatrix = ::RENDERING_BASE_MODULE_NS::Camera::active()->projectionMatrix();
 
-    program->set_uniform(
-        program->uniform_location("model"),
-        modelMatrix
-    );
+    GLint location;
 
-    program->set_uniform(
-        program->uniform_location("view"),
-        viewMatrix
-    );
+    if ((location = program->uniform_location("model")) != -1)
+    {
+        program->set_uniform(
+            location,
+            gameObject->transform()->localToWorldMatrix()
+        );
+    }
 
-    program->set_uniform(
-        program->uniform_location("projection"),
-        projectionMatrix
-    );
+    if ((location = program->uniform_location("view")) != -1)
+    {
+        program->set_uniform(
+            location,
+            ::RENDERING_BASE_MODULE_NS::Camera::active()->viewMatrix()
+        );
+    }
+
+    if ((location = program->uniform_location("projection")) != -1)
+    {
+        program->set_uniform(location, ::RENDERING_BASE_MODULE_NS::Camera::active()->projectionMatrix());
+    }
+
+    // Setting lighting uniforms
+    auto& lights = ::RENDERING_BASE_MODULE_NS::AbstractLight::totalLights();
+
+    int pointLightIndex = 0;
+    int directionalLightIndex = 0;
+    int spotLightIndex = 0;
+
+    for (auto&& light : lights)
+    {
+        switch (light->type())
+        {
+        case ::RENDERING_BASE_MODULE_NS::AbstractLight::Type::Point:
+        {
+            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::PointLight*>(light);
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].position")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->gameObject()->transform()->globalPosition()
+                );
+            }
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].constant")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->constant()
+                );
+            }
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].linear")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->linear()
+                );
+            }
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].quadratic")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->quadratic()
+                );
+            }
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].ambient")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->ambient().toRGBVector()
+                );
+            }
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].diffuse")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->diffuse().toRGBVector()
+                );
+            }
+
+            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].specular")) != -1)
+            {
+                program->set_uniform(
+                    location,
+                    castedLight->specular().toRGBVector()
+                );
+            }
+
+            ++pointLightIndex;
+            break;
+        }
+        case ::RENDERING_BASE_MODULE_NS::AbstractLight::Type::Directional:
+        {
+            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::DirectionalLight*>(light);
+
+            ++directionalLightIndex;
+            break;
+        }
+        case ::RENDERING_BASE_MODULE_NS::AbstractLight::Type::Spot:
+        {
+//            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::*>(light);
+
+            ++spotLightIndex;
+            break;
+        }
+        }
+    }
+
+    // todo: Add lighting caching
+    // Setting number of point lights
+    if ((location = program->uniform_location("numberOfPointLights")) != -1)
+    {
+        program->set_uniform(location, pointLightIndex);
+    }
+
+    // Setting number of directional lights
+    if ((location = program->uniform_location("numberOfDirectionalLights")) != -1)
+    {
+        program->set_uniform(location, directionalLightIndex);
+    }
+
+    // Setting number of spot lights
+    if ((location = program->uniform_location("numberOfSpotLights")) != -1)
+    {
+        program->set_uniform(location, spotLightIndex);
+    }
+
+    // Setting camera position to shader
+    if ((location = program->uniform_location("viewPos")) != -1)
+    {
+        program->set_uniform(
+            location,
+            ::RENDERING_BASE_MODULE_NS::Camera::active()
+                ->gameObject()
+                ->transform()
+                ->globalPosition()
+        );
+    }
 
     data->VAO.bind();
 
@@ -495,7 +665,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setShaderUniform(gl::pro
             m_textureNumber
         );
 
-        glActiveTexture(GL_TEXTURE0 + m_textureNumber);
+        value.texture->externalData<TextureData>()->Texture.set_active(m_textureNumber);
         value.texture->externalData<TextureData>()->Texture.bind();
 
         ++m_textureNumber;

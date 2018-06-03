@@ -4,9 +4,9 @@ std::vector<RENDERING_BASE_MODULE_NS::AbstractLight*> RENDERING_BASE_MODULE_NS::
 
 RENDERING_BASE_MODULE_NS::AbstractLight::AbstractLight(RENDERING_BASE_MODULE_NS::AbstractLight::Type type) :
     m_type(type),
-    m_ambient(),
-    m_diffuse(),
-    m_specular()
+    m_ambient(0.2f, 0.2f, 0.2f),
+    m_diffuse(1.0f, 1.0f, 1.0f),
+    m_specular(1.0f, 1.0f, 1.0f)
 {
 
 }
@@ -76,4 +76,9 @@ void RENDERING_BASE_MODULE_NS::AbstractLight::onStart()
 #endif
 
     AbstractLight::m_lights.push_back(this);
+}
+
+const std::vector<RENDERING_BASE_MODULE_NS::AbstractLight *> &RENDERING_BASE_MODULE_NS::AbstractLight::totalLights()
+{
+    return m_lights;
 }
