@@ -10,6 +10,8 @@
 #include <Behaviours/FPSCameraMovement.hpp>
 #include <imgui.h>
 #include <Behaviours/ServiceInformationOverlay.hpp>
+#include <FilesystemResourceAccessor.hpp>
+#include <Loaders/STBImageLoader.hpp>
 #include "Behaviour.hpp"
 #include "ForwardRenderingPipeline.hpp"
 #include "GLFWSystemController.hpp"
@@ -42,7 +44,15 @@ int main(int argc, char** argv)
 
     InfoF() << "Creating application";
     HG::Core::Application application(argc, argv);
+
+    // Setting resource accessor implementation
+    application.resourceManager()
+            ->setResourceAccessor<HG::Standard::FilesystemResourceAccessor>();
+
+    // Setting system controller
     application.setSystemController<HG::Rendering::OpenGL::GLFWSystemController>();
+
+    // Setting rendering to forward
     application.renderer()
         ->setPipeline<HG::Rendering::OpenGL::ForwardRenderingPipeline>();
 
@@ -103,19 +113,89 @@ int main(int argc, char** argv)
     };
 
     mesh->Indices = {
-        0, 1, 2, 3, 4, 5,
-        6, 7, 8, 9, 10, 11,
+        // Back face
+         0,  1,  2,  3,  4,  5,
+        // Front face
+         6,  7,  8,  9, 10, 11,
+        // Left face
         12, 13, 14, 15, 16, 17,
+        // Right face
         18, 19, 20, 21, 22, 23,
+        // Bottom face
         24, 25, 26, 27, 28, 29,
+        // Top face
         30, 31, 32, 33, 34, 35
     };
 
-    // Setting up mesh renderer
+    // Loading surface
+    auto surface = application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/container2.png");
+
+    // Loading texture
+    auto texture = new HG::Rendering::Base::Texture(surface);
+
+    // Setting up texture
+    application.renderer()->setup(texture);
+
+    // Now surface can be set to null
+
+    // Creating shader
+    auto shader = new HG::Rendering::Base::Shader();
+
+    shader->setShaderText(
+        R"(
+#ifdef VertexShader
+layout (location = 0) in vec3 inPosition;
+layout (location = 1) in vec3 inNormal;
+layout (location = 2) in vec2 inTexCoords;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main()
+{
+    gl_Position = projection * view * model * vec4(inPosition, 1.0f);
+    TexCoords = inTexCoords;
+}
+#endif
+
+#ifdef FragmentShader
+out vec4 FragColor;
+
+in vec2 TexCoords;
+
+// texture samplers
+uniform sampler2D someTexture;
+
+void main()
+{
+    //FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+    FragColor = texture(someTexture, TexCoords);
+}
+#endif
+)"
+    );
+
+    // Setting up shader
+    application.renderer()->setup(shader);
+
+    // Creating material
+    auto material = new HG::Rendering::Base::Material();
+
+    // Setting up material
+    material->setShader(shader);
+    material->set("someTexture", texture);
+
+    // Creating mesh renderer
     auto meshRenderer = new HG::Rendering::Base::Behaviours::Mesh;
     meshRenderer->setMesh(mesh);
+    meshRenderer->setMaterial(material);
 
-    application.renderer()->setupRenderingBehaviour(meshRenderer);
+    // Setting up mesh renderer
+    application.renderer()->setup(meshRenderer);
 
     scene->addGameObject(
         HG::Core::GameObjectBuilder()
@@ -131,11 +211,8 @@ int main(int argc, char** argv)
             .setName("Object")
             .addRenderingBehaviour(meshRenderer)
             .addBehaviour(new RotationBehaviour)
-            .setGlobalPosition(glm::vec3(0, 0, -1))
+            .setGlobalPosition(glm::vec3(0, 0, -2))
     );
-
-    scene->addGameObject(HG::Core::GameObjectBuilder());
-    scene->addGameObject(HG::Core::GameObjectBuilder());
 
     application.setScene(scene);
 

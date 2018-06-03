@@ -47,6 +47,12 @@ namespace OGL_RENDERING_MODULE_NS
         void setup(::RENDERING_BASE_MODULE_NS::Texture* texture) override;
 
         /**
+         * @brief Method for setting up shaders for forward rendering.
+         * @param shader Shader.
+         */
+        void setup(::RENDERING_BASE_MODULE_NS::Shader* shader) override;
+
+        /**
          * @brief Init method.
          * @return Init success.
          */
@@ -66,11 +72,24 @@ namespace OGL_RENDERING_MODULE_NS
             gl::buffer EBO;
         };
 
+        /**
+         * @brief External data implementation for textures.
+         */
         class TextureData : public ::RENDERING_BASE_MODULE_NS::Texture::TextureExternalData
         {
         public:
 
-            gl::texture<GL_TEXTURE_2D> Texture;
+            gl::texture_2d Texture;
+        };
+
+        /**
+         * @brief External data implementation for shaders.
+         */
+        class ShaderData : public ::RENDERING_BASE_MODULE_NS::Shader::ShaderExternalData
+        {
+        public:
+
+            gl::program Program;
         };
 
         // Setup methods
@@ -87,6 +106,18 @@ namespace OGL_RENDERING_MODULE_NS
             ::CORE_MODULE_NS::GameObject* gameObject,
             ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh* meshBehaviour
         );
+
+        /**
+         * @brief Method for setting program uniform value.
+         * @param program Pointer to program.
+         * @param name Uniform name.
+         * @param value Value.
+         */
+        void setShaderUniform(gl::program* program,
+                              const std::string& name,
+                              const ::RENDERING_BASE_MODULE_NS::Material::Value& value);
+
+        GLuint m_textureNumber;
 
         std::vector<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_behavioursCache;
 

@@ -4,6 +4,7 @@
 #include <type_traits>
 #include <memory>
 #include <CurrentLogger.hpp>
+#include <Material.hpp>
 
 namespace UTILS_MODULE_NS
 {
@@ -103,10 +104,23 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
          */
         void setMesh(UTILS_MODULE_NS::MeshPtr mesh);
 
+        /**
+         * @brief Method for getting material for rendering.
+         * @return Pointer to material.
+         */
+        Material* material() const;
+
+        /**
+         * @brief Method for setting material for rendering.
+         * @param material Pointer to material.
+         */
+        void setMaterial(Material* material);
+
     private:
         MeshExternalData* m_externalData;
 
         UTILS_MODULE_NS::MeshPtr m_mesh;
+        Material* m_material;
     };
 }
 

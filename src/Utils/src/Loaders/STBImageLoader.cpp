@@ -1,5 +1,7 @@
 #include "Loaders/STBImageLoader.hpp"
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <CurrentLogger.hpp>
 
 UTILS_MODULE_NS::STBImageLoader::STBImageLoader()
 {
@@ -19,11 +21,12 @@ UTILS_MODULE_NS::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(cons
         &width,
         &height,
         &bpp,
-        4
+        0
     );
 
     if (resultData == nullptr)
     {
+        Error() << "Can't load image from memory. Error: " << stbi_failure_reason();
         return nullptr;
     }
 

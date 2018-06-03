@@ -4,6 +4,7 @@
 #include "Scene.hpp"
 #include "RenderBehaviour.hpp"
 #include "Texture.hpp"
+#include "Shader.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -55,6 +56,12 @@ namespace RENDERING_BASE_MODULE_NS
          * @param texture Pointer to texture.
          */
         virtual void setup(Texture* texture) = 0;
+
+        /**
+         * @brief Method for setting up shaders for rendering.
+         * @param shader Pointer to shader.
+         */
+        virtual void setup(Shader* shader) = 0;
 
     private:
 

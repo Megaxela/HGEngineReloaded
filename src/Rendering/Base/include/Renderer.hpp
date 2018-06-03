@@ -61,7 +61,7 @@ namespace RENDERING_BASE_MODULE_NS
          * @param obj Object.
          */
         template<typename T>
-        void setupRenderingBehaviour(T obj)
+        void setup(T obj)
         {
             if (m_pipeline == nullptr)
             {

@@ -119,6 +119,8 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
 
     glfwMakeContextCurrent(m_window);
 
+    glfwSwapInterval(0);
+
     glewExperimental = GL_TRUE;
     GLenum error;
     if ((error = glewInit()) != GLEW_OK)

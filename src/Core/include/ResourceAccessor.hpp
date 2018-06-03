@@ -22,13 +22,13 @@ namespace CORE_MODULE_NS
              * size.
              * @return Size in bytes.
              */
-            virtual std::size_t size() = 0;
+            virtual std::size_t size() const = 0;
 
             /**
              * @brief Method for getting data.
              * @return Data.
              */
-            virtual std::byte* data() const = 0;
+            virtual const std::byte* data() const = 0;
 
         };
 

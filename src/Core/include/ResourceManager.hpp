@@ -89,7 +89,7 @@ namespace CORE_MODULE_NS
 
             Loader loader;
 
-            return loader.load(data);
+            return loader.load(data->data(), data->size());
         }
 
     private:

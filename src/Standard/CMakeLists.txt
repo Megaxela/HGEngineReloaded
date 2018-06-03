@@ -10,7 +10,7 @@ add_library(HGStandard STATIC
     include/Behaviours/FPSCameraMovement.hpp
         src/Behaviours/ServiceInformationOverlay.cpp
         include/Behaviours/ServiceInformationOverlay.hpp
-)
+        src/FilesystemResourceAccessor.cpp include/FilesystemResourceAccessor.hpp)
 
 target_include_directories(HGStandard PUBLIC
     include

@@ -7,6 +7,7 @@
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
 #include "Texture.hpp"
+#include "Shader.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -56,6 +57,11 @@ namespace RENDERING_BASE_MODULE_NS
 
         using VariablesContainer = std::map<std::string, Value>;
 
+        /**
+         * @brief Constructor.
+         */
+        Material();
+
         // Different type setters
         void set(const std::string& name, int value);
         void set(const std::string& name, float value);
@@ -85,6 +91,18 @@ namespace RENDERING_BASE_MODULE_NS
          */
         VariablesContainer::const_iterator end() const;
 
+        /**
+         * @brief Method for setting shader to material.
+         * @param shader Pointer to shader.
+         */
+        void setShader(Shader* shader);
+
+        /**
+         * @brief Method for getting material shader.
+         * @return Pointer to shader.
+         */
+        Shader* shader() const;
+
     protected:
         /**
          * @brief Method, that's called from `set` methods
@@ -96,6 +114,8 @@ namespace RENDERING_BASE_MODULE_NS
 
     private:
         VariablesContainer m_variableContainer;
+
+        Shader* m_shader;
     };
 }
 

@@ -1,5 +1,12 @@
 #include "Material.hpp"
 
+RENDERING_BASE_MODULE_NS::Material::Material() :
+    m_variableContainer(),
+    m_shader(nullptr)
+{
+
+}
+
 void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, int value)
 {
     Value val{};
@@ -95,7 +102,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, RENDERING_
     m_variableContainer[name] = value;
 }
 
-void HG::Rendering::Base::Material::erase(const std::string& name)
+void RENDERING_BASE_MODULE_NS::Material::erase(const std::string& name)
 {
     m_variableContainer.erase(name);
 }
@@ -110,4 +117,14 @@ RENDERING_BASE_MODULE_NS::Material::VariablesContainer::const_iterator
 RENDERING_BASE_MODULE_NS::Material::end() const
 {
     return m_variableContainer.end();
+}
+
+void RENDERING_BASE_MODULE_NS::Material::setShader(RENDERING_BASE_MODULE_NS::Shader *shader)
+{
+    m_shader = shader;
+}
+
+RENDERING_BASE_MODULE_NS::Shader *RENDERING_BASE_MODULE_NS::Material::shader() const
+{
+    return m_shader;
 }

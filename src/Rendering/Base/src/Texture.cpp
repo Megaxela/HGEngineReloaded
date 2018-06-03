@@ -7,6 +7,13 @@ RENDERING_BASE_MODULE_NS::Texture::Texture() :
 
 }
 
+HG::Rendering::Base::Texture::Texture(::UTILS_MODULE_NS::SurfacePtr ptr) :
+    m_externalData(nullptr),
+    m_surface(ptr)
+{
+
+}
+
 RENDERING_BASE_MODULE_NS::Texture::~Texture()
 {
     clearExternalData();

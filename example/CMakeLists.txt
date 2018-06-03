@@ -18,3 +18,5 @@ target_link_libraries(Example1
     HGRenderingBase
     HGStandard
 )
+
+configure_file(Assets/container2.png Assets/container2.png COPYONLY)

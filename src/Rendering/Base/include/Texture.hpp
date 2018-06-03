@@ -22,6 +22,7 @@ namespace RENDERING_BASE_MODULE_NS
         class TextureExternalData
         {
         public:
+
             /**
              * @brief Default virtual constructor.
              */
@@ -32,6 +33,11 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Constructor.
          */
         Texture();
+
+        /**
+         * @brief Constructor from surface.
+         */
+        explicit Texture(::UTILS_MODULE_NS::SurfacePtr ptr);
 
         /**
          * @brief Destructor.
