@@ -88,6 +88,7 @@ void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard
     else
     {
         m_released[std::size_t(key)]= true;
+        m_pressed[std::size_t(key)] = false;
     }
 }
 
@@ -101,7 +102,14 @@ void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard
     }
 #endif
 
-    m_pressedModifiers |= (1u << uint32_t(modifier));
+    if (pressed)
+    {
+        m_pressedModifiers |= (1u << uint32_t(modifier));
+    }
+    else
+    {
+        m_pressedModifiers &= ~(1u << uint32_t(modifier));
+    }
 }
 
 void CORE_MODULE_NS::Input::Keyboard::setCharacterEntered(uint32_t codepoint)

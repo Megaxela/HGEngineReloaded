@@ -37,8 +37,11 @@ namespace STD_MODULE_NS::Behaviours
 
         void onUpdate() override;
 
-
     private:
+
+        void handleKeyboardMovement();
+
+        void handleMouseRotation();
 
         bool m_enabled;
         bool m_first;

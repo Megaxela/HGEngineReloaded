@@ -144,9 +144,9 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::createWindow(uint32_t width,
 #endif
 
     // Enabling cull face to clockwise
-    gl::set_polygon_face_culling_enabled(true);
-    gl::set_cull_face(GL_BACK);
-    gl::set_front_face(GL_CW);
+//    gl::set_polygon_face_culling_enabled(true);
+//    gl::set_cull_face(GL_BACK);
+//    gl::set_front_face(GL_CW);
 
     // Enabling depth test
     gl::set_depth_test_enabled(true);

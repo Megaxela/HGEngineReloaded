@@ -19,6 +19,15 @@
 
 class RotationBehaviour : public HG::Core::Behaviour
 {
+public:
+    RotationBehaviour(glm::vec3 center, float radius) :
+        m_radius(radius),
+        m_center(center),
+        m_radiansValue(0)
+    {
+
+    }
+
 protected:
 
     void onUpdate() override
@@ -28,15 +37,34 @@ protected:
             ->timeStatistics()
             ->lastFrameDeltaTime().count() / 1000000.0;
 
+        m_radiansValue += M_PI_2 * dt;
+
         gameObject()
             ->transform()
-            ->setLocalRotation(
-                gameObject()
-                    ->transform()
-                    ->localRotation() *
-                glm::quat(glm::vec3(0, glm::radians(90.0f) * dt, 0))
+            ->setGlobalPosition(
+                m_center +
+                glm::vec3(
+                    std::cos(m_radiansValue) * m_radius,
+                    0,
+                    std::sin(m_radiansValue) * m_radius
+                )
         );
+
+//        gameObject()
+//            ->transform()
+//            ->setLocalRotation(
+//                gameObject()
+//                    ->transform()
+//                    ->localRotation() *
+//                glm::quat(glm::vec3(0, glm::radians(90.0f) * dt, 0))
+//        );
     }
+
+private:
+    float m_radius;
+    glm::vec3 m_center;
+
+    double m_radiansValue;
 };
 
 int main(int argc, char** argv)
@@ -69,48 +97,90 @@ int main(int argc, char** argv)
     auto mesh = std::make_shared<HG::Utils::Mesh>();
 
     mesh->Vertices = {
+        // positions          // normals           // texture coords
+        {{-0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f},  {0.0f,  0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f},  {1.0f,  0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f},  {1.0f,  1.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f},  {1.0f,  1.0f}},
+        {{-0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f},  {0.0f,  1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f},  {0.0f,  0.0f}},
+
+        {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  1.0f}},
+        {{-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  0.0f}},
+
+        {{-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f,  0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f,  1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f,  1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f,  1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f,  0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f,  0.0f}},
+
+        {{ 0.5f,  0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f},  {1.0f,  0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f},  {1.0f,  1.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f},  {0.0f,  1.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f},  {0.0f,  1.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f},  {0.0f,  0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f},  {1.0f,  0.0f}},
+
+        {{-0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f},  {0.0f,  1.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f},  {1.0f,  1.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f},  {1.0f,  0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f},  {1.0f,  0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f},  {0.0f,  0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f},  {0.0f,  1.0f}},
+
+        {{-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f},  {0.0f,  1.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f},  {1.0f,  1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f},  {1.0f,  0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f},  {1.0f,  0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f},  {0.0f,  0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f},  {0.0f,  1.0f}}
 //        // Back face
-        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // Bottom-left
-        {{ 0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 0.0f}}, // bottom-right
-        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
-        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
-        {{-0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 1.0f}}, // top-left
-        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // bottom-left
-        // Front face
-        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
-        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
-        {{ 0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 0.0f}}, // bottom-right
-        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
-        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
-        {{-0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 1.0f}}, // top-left
-        // Left face
-        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
-        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
-        {{-0.5f,  0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-left
-        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
-        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
-        {{-0.5f, -0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
-        // Right face
-        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
-        {{ 0.5f,  0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-right
-        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
-        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
-        {{ 0.5f, -0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
-        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
-        // Bottom face
-        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
-        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
-        {{ 0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 1.0f}}, // top-left
-        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
-        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
-        {{-0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
-        // Top face
-        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}, // top-left
-        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 1.0f}}, // top-right
-        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
-        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
-        {{-0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
-        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}  // top-left
+//        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // Bottom-left
+//        {{ 0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 0.0f}}, // bottom-right
+//        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
+//        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
+//        {{-0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 1.0f}}, // top-left
+//        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // bottom-left
+//        // Front face
+//        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
+//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
+//        {{ 0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 0.0f}}, // bottom-right
+//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
+//        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
+//        {{-0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 1.0f}}, // top-left
+//        // Left face
+//        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
+//        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
+//        {{-0.5f,  0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-left
+//        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
+//        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
+//        {{-0.5f, -0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
+//        // Right face
+//        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
+//        {{ 0.5f,  0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-right
+//        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
+//        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
+//        {{ 0.5f, -0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
+//        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
+//        // Bottom face
+//        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
+//        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
+//        {{ 0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 1.0f}}, // top-left
+//        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
+//        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
+//        {{-0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
+//        // Top face
+//        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}, // top-left
+//        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 1.0f}}, // top-right
+//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
+//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
+//        {{-0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
+//        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}  // top-left
     };
 
     mesh->Indices = {
@@ -163,8 +233,8 @@ uniform mat4 projection;
 void main()
 {
     gl_Position = projection * view * model * vec4(inPosition, 1.0f);
-    vs_out.FragPos = inPosition;
-    vs_out.Normal = inNormal;
+    vs_out.FragPos = vec3(model * vec4(inPosition, 1.0));
+    vs_out.Normal = mat3(transpose(inverse(model))) * inNormal;
     vs_out.TexCoords = inTexCoords;
 }
 #endif
@@ -188,14 +258,14 @@ uniform sampler2D diffuseTexture;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform int numberOfPointLights;
 
+vec4 proceedPointLight(PointLight light, vec3 ambient, vec3 color);
+
 void main()
 {
-    //FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-    //FragColor = texture(someTexture, TexCoords);
     vec3 color = texture(diffuseTexture, fs_in.TexCoords).rgb;
 
     // Ambient
-    vec3 ambient = 0.05 * color;
+    vec3 ambient = 0.2 * color;
 
     if (numberOfPointLights == 0)
     {
@@ -203,8 +273,20 @@ void main()
         return;
     }
 
+    vec4 mixedColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+    for (int i = 0; i < numberOfPointLights; ++i)
+    {
+        mixedColor += proceedPointLight(pointLights[i], ambient, color);
+    }
+
+    FragColor = mixedColor;
+}
+
+vec4 proceedPointLight(PointLight light, vec3 ambient, vec3 color)
+{
     // Diffuse
-    vec3 lightDir = normalize(pointLights[0].position - fs_in.FragPos);
+    vec3 lightDir = normalize(light.position - fs_in.FragPos);
     vec3 normal = normalize(fs_in.Normal);
 
     float diff = max(dot(lightDir, normal), 0.0);
@@ -220,8 +302,9 @@ void main()
     // Assuming bright white light color
     vec3 specular = vec3(0.3) * spec;
 
-    FragColor = vec4(ambient + diffuse + specular, 1.0);
+    return vec4(ambient + diffuse + specular, 1.0);
 }
+
 #endif
 )"
     );
@@ -241,8 +324,12 @@ void main()
     meshRenderer->setMesh(mesh);
     meshRenderer->setMaterial(material);
 
+    auto lightRenderer = new HG::Rendering::Base::Behaviours::Mesh;
+    lightRenderer->setMesh(mesh);
+
     // Setting up mesh renderer
     application.renderer()->setup(meshRenderer);
+    application.renderer()->setup(lightRenderer);
 
     scene->addGameObject(
         HG::Core::GameObjectBuilder()
@@ -257,7 +344,6 @@ void main()
         HG::Core::GameObjectBuilder()
             .setName("Object")
             .addRenderingBehaviour(meshRenderer)
-//            .addBehaviour(new RotationBehaviour)
             .setGlobalPosition(glm::vec3(0, 0, -2))
     );
 
@@ -266,8 +352,9 @@ void main()
             .setName("Light")
             .addBehaviour(new HG::Rendering::Base::Lights::PointLight)
             .setGlobalPosition(glm::vec3(-1, 0.0, -1))
-//            .addRenderingBehaviour(meshRenderer)
-            .setScale(glm::vec3(0.2, 0.2, 0.2))
+            .addRenderingBehaviour(lightRenderer)
+            .addBehaviour(new RotationBehaviour(glm::vec3(0, 0, -2), 2))
+            .setScale(glm::vec3(0.1, 0.1, 0.1))
     );
 
     application.setScene(scene);
