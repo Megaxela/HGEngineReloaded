@@ -2,9 +2,21 @@
 #include "RenderBehaviour.hpp"
 
 RENDERING_BASE_MODULE_NS::RenderBehaviour::RenderBehaviour(std::size_t type) :
-    m_type(type)
+    m_externalData(nullptr),
+    m_type(type),
+    m_parent(nullptr)
 {
 
+}
+
+RENDERING_BASE_MODULE_NS::RenderBehaviour::~RenderBehaviour()
+{
+    clearExternalData();
+}
+
+void RENDERING_BASE_MODULE_NS::RenderBehaviour::clearExternalData()
+{
+    delete m_externalData;
 }
 
 std::size_t RENDERING_BASE_MODULE_NS::RenderBehaviour::behaviourType()

@@ -20,3 +20,9 @@ target_link_libraries(Example1
 )
 
 configure_file(Assets/container2.png Assets/container2.png COPYONLY)
+configure_file(Assets/Skybox/back.jpg Assets/Skybox/back.jpg COPYONLY)
+configure_file(Assets/Skybox/bottom.jpg Assets/Skybox/bottom.jpg COPYONLY)
+configure_file(Assets/Skybox/front.jpg Assets/Skybox/front.jpg COPYONLY)
+configure_file(Assets/Skybox/left.jpg Assets/Skybox/left.jpg COPYONLY)
+configure_file(Assets/Skybox/right.jpg Assets/Skybox/right.jpg COPYONLY)
+configure_file(Assets/Skybox/top.jpg Assets/Skybox/top.jpg COPYONLY)

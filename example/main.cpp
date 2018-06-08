@@ -49,15 +49,6 @@ protected:
                     std::sin(m_radiansValue) * m_radius
                 )
         );
-
-//        gameObject()
-//            ->transform()
-//            ->setLocalRotation(
-//                gameObject()
-//                    ->transform()
-//                    ->localRotation() *
-//                glm::quat(glm::vec3(0, glm::radians(90.0f) * dt, 0))
-//        );
     }
 
 private:
@@ -65,6 +56,28 @@ private:
     glm::vec3 m_center;
 
     double m_radiansValue;
+};
+
+class LocalRotationBehaviour : public HG::Core::Behaviour
+{
+protected:
+    void onUpdate() override
+    {
+
+        auto dt = scene()
+              ->application()
+              ->timeStatistics()
+              ->lastFrameDeltaTime().count() / 1000000.0;
+
+        gameObject()
+            ->transform()
+            ->setLocalRotation(
+                gameObject()
+                    ->transform()
+                    ->localRotation() *
+                glm::quat(glm::vec3(0, glm::radians(22.5f) * dt, 0))
+        );
+    }
 };
 
 int main(int argc, char** argv)
@@ -139,48 +152,6 @@ int main(int argc, char** argv)
         {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f},  {1.0f,  0.0f}},
         {{-0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f},  {0.0f,  0.0f}},
         {{-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f},  {0.0f,  1.0f}}
-//        // Back face
-//        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // Bottom-left
-//        {{ 0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 0.0f}}, // bottom-right
-//        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
-//        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {1.0f, 1.0f}}, // top-right
-//        {{-0.5f,  0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 1.0f}}, // top-left
-//        {{-0.5f, -0.5f, -0.5f}, { 0.0,  0.0,  1.0},  {0.0f, 0.0f}}, // bottom-left
-//        // Front face
-//        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
-//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
-//        {{ 0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 0.0f}}, // bottom-right
-//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {1.0f, 1.0f}}, // top-right
-//        {{-0.5f, -0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 0.0f}}, // bottom-left
-//        {{-0.5f,  0.5f,  0.5f}, { 0.0,  0.0, -1.0}, {0.0f, 1.0f}}, // top-left
-//        // Left face
-//        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
-//        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
-//        {{-0.5f,  0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-left
-//        {{-0.5f, -0.5f, -0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-left
-//        {{-0.5f,  0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-right
-//        {{-0.5f, -0.5f,  0.5f}, {-1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
-//        // Right face
-//        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
-//        {{ 0.5f,  0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 1.0f}}, // top-right
-//        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
-//        {{ 0.5f, -0.5f, -0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 1.0f}}, // bottom-right
-//        {{ 0.5f, -0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
-//        {{ 0.5f,  0.5f,  0.5f}, { 1.0,  0.0,  0.0}, {1.0f, 0.0f}}, // top-left
-//        // Bottom face
-//        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
-//        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
-//        {{ 0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 1.0f}}, // top-left
-//        {{ 0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {1.0f, 0.0f}}, // bottom-left
-//        {{-0.5f, -0.5f, -0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 1.0f}}, // top-right
-//        {{-0.5f, -0.5f,  0.5f}, { 0.0, -1.0,  0.0}, {0.0f, 0.0f}}, // bottom-right
-//        // Top face
-//        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}, // top-left
-//        {{ 0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 1.0f}}, // top-right
-//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
-//        {{ 0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {1.0f, 0.0f}}, // bottom-right
-//        {{-0.5f,  0.5f,  0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 0.0f}}, // bottom-left
-//        {{-0.5f,  0.5f, -0.5f}, { 0.0,  1.0,  0.0}, {0.0f, 1.0f}}  // top-left
     };
 
     mesh->Indices = {
@@ -342,8 +313,9 @@ vec4 proceedPointLight(PointLight light, vec3 ambient, vec3 color)
 
     scene->addGameObject(
         HG::Core::GameObjectBuilder()
-            .setName("Object")
+            .setName("Cube")
             .addRenderingBehaviour(meshRenderer)
+            .addBehaviour(new LocalRotationBehaviour)
             .setGlobalPosition(glm::vec3(0, 0, -2))
     );
 

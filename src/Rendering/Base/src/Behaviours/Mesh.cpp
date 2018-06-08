@@ -3,7 +3,6 @@
 
 RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Mesh() :
     RenderBehaviour(Id),
-    m_externalData(nullptr),
     m_material(nullptr)
 {
 
@@ -12,11 +11,6 @@ RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Mesh() :
 RENDERING_BASE_MODULE_NS::Behaviours::Mesh::~Mesh()
 {
     clearExternalData();
-}
-
-void RENDERING_BASE_MODULE_NS::Behaviours::Mesh::clearExternalData()
-{
-    delete m_externalData;
 }
 
 UTILS_MODULE_NS::MeshPtr RENDERING_BASE_MODULE_NS::Behaviours::Mesh::mesh() const

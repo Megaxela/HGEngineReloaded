@@ -27,7 +27,7 @@ add_library(HGRenderingBase STATIC
     include/Texture.hpp
     src/Shader.cpp
     include/Shader.hpp
-        src/Lights/PointLight.cpp include/Lights/PointLight.hpp src/Lights/DirectionalLight.cpp include/Lights/DirectionalLight.hpp)
+        src/Lights/PointLight.cpp include/Lights/PointLight.hpp src/Lights/DirectionalLight.cpp include/Lights/DirectionalLight.hpp src/Behaviours/CubeMap.cpp include/Behaviours/CubeMap.hpp)
 
 target_include_directories(HGRenderingBase PUBLIC
         include

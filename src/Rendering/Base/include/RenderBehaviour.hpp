@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <GameObject.hpp>
+#include <CurrentLogger.hpp>
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -13,6 +14,21 @@ namespace RENDERING_BASE_MODULE_NS
     {
     public:
 
+
+        /**
+         * @brief Class, that describes abstract external data
+         * for mesh rendering, that can be used by pipeline to
+         * attach some specific information to mesh.
+         */
+        class ExternalData
+        {
+        public:
+            /**
+             * @brief Default virtual destructor.
+             */
+            virtual ~ExternalData() = default;
+        };
+
         /**
          * @brief Constructor.
          * @param type Derived class `typeid(*this).hash_code()` value.
@@ -22,7 +38,7 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Default virtual destructor.
          */
-        virtual ~RenderBehaviour() = default;
+        virtual ~RenderBehaviour();
 
         /**
          * @brief Method for getting behaviour type.
@@ -37,6 +53,48 @@ namespace RENDERING_BASE_MODULE_NS
          */
         ::CORE_MODULE_NS::GameObject* gameObject();
 
+        /**
+         * @brief Method for clearing external data.
+         */
+        void clearExternalData();
+
+        /**
+         * @brief Method for getting external data, casted
+         * to some type.
+         * @tparam T Type to cast.
+         * @return Pointer to external data.
+         */
+        template<typename T>
+        typename std::enable_if<
+            std::is_base_of<ExternalData, T>::value,
+            T*
+        >::type externalData() const
+        {
+            return static_cast<T*>(m_externalData);
+        }
+
+        /**
+         * @brief Method for setting external data.
+         * @tparam T Type of actual external data.
+         */
+        template<typename T>
+        typename std::enable_if<
+            std::is_base_of<ExternalData, T>::value
+        >::type setExternalData()
+        {
+
+#ifndef NDEBUG
+            if (m_externalData)
+            {
+                Info() << "Recreating existing external data.";
+            }
+#endif
+
+            delete m_externalData;
+
+            m_externalData = new T();
+        };
+
     protected:
         friend class ::CORE_MODULE_NS::GameObject;
 
@@ -47,6 +105,7 @@ namespace RENDERING_BASE_MODULE_NS
         void setParentGameObject(::CORE_MODULE_NS::GameObject* gameObject);
 
     private:
+        ExternalData* m_externalData;
 
         std::size_t m_type;
 

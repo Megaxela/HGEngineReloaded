@@ -63,7 +63,7 @@ namespace OGL_RENDERING_MODULE_NS
         /**
          * @brief External data implementation for mesh rendering behaviour
          */
-        class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::MeshExternalData
+        class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::ExternalData
         {
         public:
 
