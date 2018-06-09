@@ -53,6 +53,9 @@ bool CORE_MODULE_NS::Application::performCycle()
     // Start counting frame time
     m_timeStatistics.tickTimerBegin(TimeStatistics::FrameTime);
 
+    // Start counting update time (events are in update section)
+    m_timeStatistics.tickTimerBegin(TimeStatistics::UpdateTime);
+
     // Ticking pushed/released values in input subsystem
     m_input.tickControllers();
 
@@ -67,8 +70,6 @@ bool CORE_MODULE_NS::Application::performCycle()
     proceedScene();
 
     {
-        // Start counting update time
-        m_timeStatistics.tickTimerBegin(TimeStatistics::UpdateTime);
 
         // Calling update on scene.
         m_currentScene->update();
