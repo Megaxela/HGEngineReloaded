@@ -45,8 +45,9 @@ void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
             m_frames,
             m_framesCount,
             0,
-            "FPS",
-            0
+            "Frame time",
+            0,
+            1000
         );
 
         ImGui::End();
@@ -61,10 +62,9 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::updateFrameGraph()
         m_frames[i - 1] = m_frames[i];
     }
 
-    m_frames[m_framesCount - 1] =
-        1000000.0f / scene()
+    m_frames[m_framesCount - 1] = scene()
                          ->application()
                          ->timeStatistics()
                          ->lastFrameDeltaTime()
-                         .count();
+                         .count() / 1000.0f;
 }
