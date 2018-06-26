@@ -16,6 +16,26 @@ namespace RENDERING_BASE_MODULE_NS
     public:
 
         /**
+         * @brief Texture filtering methods.
+         */
+        enum Filtering
+        {
+            Nearest,
+            Linear
+        };
+
+        /**
+         * @brief Texture wrapping methods.
+         */
+        enum Wrapping
+        {
+            Repeat,
+            MirroredRepeat,
+            ClampToEdge,
+            ClampToBorder
+        };
+
+        /**
          * @brief Class, that describes abstract
          * external data for texture.
          */
@@ -40,7 +60,7 @@ namespace RENDERING_BASE_MODULE_NS
         explicit Texture(::UTILS_MODULE_NS::SurfacePtr ptr);
 
         /**
-         * @brief Destructor.
+         * @brief Destructor. Clears external data.
          */
         ~Texture();
 
@@ -98,10 +118,72 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void setSurface(::UTILS_MODULE_NS::SurfacePtr ptr);
 
+        /**
+         * @brief Method for changing current magnification
+         * method. This value change requires setup in renderer.
+         * @param value Method value.
+         */
+        void setMagnificationMethod(Filtering value);
+
+        /**
+         * @brief Method for getting current magnification
+         * method.
+         * @return Method value.
+         */
+        Filtering magnificationMethod() const;
+
+        /**
+         * @brief Method for changing current minification
+         * method. This value change requires setup in renderer.
+         * @param value Method value.
+         */
+        void setMinificationMethod(Filtering value);
+
+        /**
+         * @brief Method for getting current minification
+         * method.
+         * @return Method value.
+         */
+        Filtering minificationMethod() const;
+
+        /**
+         * @brief Method for setting s coordinate wrapping
+         * method.
+         * @param method Method value.
+         */
+        void setSWrapping(Wrapping method);
+
+        /**
+         * @brief Method for getting s coordinate wrapping
+         * method.
+         * @return Method value.
+         */
+        Wrapping sWrapping() const;
+
+        /**
+         * @brief Method for setting t coordinate wrapping
+         * method.
+         * @param method Method value.
+         */
+        void setTWrapping(Wrapping method);
+
+        /**
+         * @brief Method for getting t coordinate wrapping
+         * method.
+         * @return Method value.
+         */
+        Wrapping tWrapping() const;
+
     private:
         TextureExternalData* m_externalData;
 
         ::UTILS_MODULE_NS::SurfacePtr m_surface;
+
+        Filtering m_minFiltering;
+        Filtering m_magFiltering;
+        Wrapping m_sWrapping;
+        Wrapping m_tWrapping;
+
     };
 }
 

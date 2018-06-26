@@ -58,6 +58,28 @@ private:
     double m_radiansValue;
 };
 
+HG::Rendering::Base::CubeMapTexture* loadCubemap(HG::Core::Application& application)
+{
+    auto cubeMap = new HG::Rendering::Base::CubeMapTexture(
+        application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/right.png"),
+        application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/left.png"),
+        application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/top.png"),
+        application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/bottom.png"),
+        application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/front.png"),
+        application.resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/back.png")
+    );
+
+    application.renderer()->setup(cubeMap);
+
+    return cubeMap;
+}
+
 class LocalRotationBehaviour : public HG::Core::Behaviour
 {
 protected:
@@ -279,6 +301,8 @@ vec4 proceedPointLight(PointLight light, vec3 ambient, vec3 color)
 #endif
 )"
     );
+
+    loadCubemap(application);
 
     // Setting up shader
     application.renderer()->setup(shader);

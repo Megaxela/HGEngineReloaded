@@ -53,6 +53,12 @@ namespace OGL_RENDERING_MODULE_NS
         void setup(::RENDERING_BASE_MODULE_NS::Shader* shader) override;
 
         /**
+         * @brief Method for setting up cube maps for forward rendering.
+         * @param texture Cube map texture.
+         */
+        void setup(::RENDERING_BASE_MODULE_NS::CubeMapTexture* texture) override;
+
+        /**
          * @brief Init method.
          * @return Init success.
          */
@@ -80,6 +86,13 @@ namespace OGL_RENDERING_MODULE_NS
         public:
 
             gl::texture_2d Texture;
+        };
+
+        class CubeMapTextureData : public ::RENDERING_BASE_MODULE_NS::CubeMapTexture::CubeMapTextureExternalData
+        {
+        public:
+
+            gl::cubemap_texture Texture;
         };
 
         /**
@@ -116,6 +129,32 @@ namespace OGL_RENDERING_MODULE_NS
         void setShaderUniform(gl::program* program,
                               const std::string& name,
                               const ::RENDERING_BASE_MODULE_NS::Material::Value& value);
+
+        /**
+         * @brief Method for converting texture enum to
+         * gl enum filtering mode.
+         * @param filter Texture enum.
+         * @return GL enum.
+         */
+        GLuint getFilter(::RENDERING_BASE_MODULE_NS::Texture::Filtering filter);
+
+        /**
+         * @brief Method for converting texture enum to
+         * gl enum wrapping mode.
+         * @param wrapping Texture enum.
+         * @return GL enum.
+         */
+        GLuint getWrapping(::RENDERING_BASE_MODULE_NS::Texture::Wrapping wrapping);
+
+        /**
+         * @brief Method for setting up one of cube side.
+         * @param surface Surface for setting up.
+         * @param texture GL texture.
+         * @param side GL side.
+         */
+        void setupCubeMapSide(const ::UTILS_MODULE_NS::SurfacePtr& surface,
+                              gl::cubemap_texture& texture,
+                              GLuint side);
 
         GLuint m_textureNumber;
 

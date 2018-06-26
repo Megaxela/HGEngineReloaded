@@ -103,6 +103,8 @@ namespace CORE_MODULE_NS
          */
         ResourceAccessor::DataPtr loadRawFromAccessor(const std::string& id)
         {
+            Info() << "Loading resource \"" << id << "\"";
+
             if (m_accessor == nullptr)
             {
                 Error() << "Trying to load \"" << id << "\" resource, without ResourceAccessor.";

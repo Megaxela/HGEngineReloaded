@@ -5,6 +5,7 @@
 #include "RenderBehaviour.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
+#include "CubeMapTexture.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -62,6 +63,12 @@ namespace RENDERING_BASE_MODULE_NS
          * @param shader Pointer to shader.
          */
         virtual void setup(Shader* shader) = 0;
+
+        /**
+         * @brief Method for setting up cube map textures for rendering.
+         * @param texture Pointer to cube map.
+         */
+        virtual void setup(CubeMapTexture* texture) = 0;
 
     private:
 

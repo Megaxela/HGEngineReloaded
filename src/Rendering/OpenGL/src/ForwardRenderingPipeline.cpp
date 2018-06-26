@@ -157,6 +157,8 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
         GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
     );
 
+    // todo: Add cubemap rendering
+
     for (auto&& gameObject : objects)
     {
         m_behavioursCache.clear();
@@ -264,6 +266,136 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setupMesh(::RENDERING_BA
 
 }
 
+void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_MODULE_NS::CubeMapTexture* texture)
+{
+    // If one of surfaces are not available
+    // post error
+    if (texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Right) == nullptr ||
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Left) == nullptr ||
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Top) == nullptr ||
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Bottom) == nullptr ||
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Front) == nullptr ||
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Back) == nullptr)
+    {
+        Error() << "Can't setup not fully set up cube map texture.";
+        return;
+    }
+
+    // Creating external data if not presented
+    if (texture->externalData<CubeMapTextureData>() == nullptr)
+    {
+        texture->setExternalData<CubeMapTextureData>();
+    }
+
+    auto externalData = texture->externalData<CubeMapTextureData>();
+
+    // Setting up textures
+    //#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
+    //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X 0x8516
+    //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Y 0x8517
+    //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 0x8518
+    //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
+    //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
+    setupCubeMapSide(
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Right),
+        externalData->Texture,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_X
+    );
+    setupCubeMapSide(
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Left),
+        externalData->Texture,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+    );
+    setupCubeMapSide(
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Top),
+        externalData->Texture,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+    );
+    setupCubeMapSide(
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Bottom),
+        externalData->Texture,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+    );
+    setupCubeMapSide(
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Front),
+        externalData->Texture,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_Z
+    );
+    setupCubeMapSide(
+        texture->getSideSurface(::RENDERING_BASE_MODULE_NS::CubeMapTexture::Side::Back),
+        externalData->Texture,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+    );
+
+    externalData->Texture.set_min_filter(GL_LINEAR);
+    externalData->Texture.set_mag_filter(GL_LINEAR);
+
+    externalData->Texture.set_wrap_s(GL_CLAMP_TO_EDGE);
+    externalData->Texture.set_wrap_t(GL_CLAMP_TO_EDGE);
+    externalData->Texture.set_wrap_r(GL_CLAMP_TO_EDGE);
+}
+
+void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setupCubeMapSide(const ::UTILS_MODULE_NS::SurfacePtr& surface,
+                                                                         gl::cubemap_texture& texture,
+                                                                         GLuint side)
+{
+    GLuint fileFormat = GL_RGB;
+
+    // Getting type
+    switch (surface->Bpp)
+    {
+    case 1:
+        fileFormat = GL_RED;
+        break;
+
+    case 2:
+        fileFormat = GL_RG;
+        break;
+
+    case 3:
+        fileFormat = GL_RGB;
+        break;
+
+    case 4:
+        fileFormat = GL_RGBA;
+        break;
+
+    default:
+        Error() << "Can't setup texture because of unknown texture format.";
+        break;
+    }
+
+    // Loading data into texture
+    glTexImage2D(
+        side,
+        0,
+        GL_RGBA8,
+        surface->Width,
+        surface->Height,
+        0,
+        fileFormat,
+        GL_UNSIGNED_BYTE,
+        surface->Data
+    );
+
+//    texture.set_storage(
+//        1,       // Levels
+//        GL_RGBA8, // Internal format
+//        surface->Width,
+//        surface->Height
+//    );
+//    texture.set_sub_image(
+//        0, // Level
+//        0, // X offset
+//        0, // Y Offset
+//        surface->Width,  // Width
+//        surface->Height, // Height
+//        fileFormat,       // Format
+//        GL_UNSIGNED_BYTE, // Type
+//        surface->Data
+//    );
+}
+
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_MODULE_NS::Texture* texture)
 {
     // Checking surface on texture
@@ -280,9 +412,17 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
     }
 
     auto externalData = texture->externalData<TextureData>();
-
-    externalData->Texture.set_min_filter(GL_LINEAR);
-    externalData->Texture.set_mag_filter(GL_LINEAR);
+    
+    externalData->Texture.set_min_filter(
+        getFilter(
+            texture->minificationMethod()
+        )
+    );
+    externalData->Texture.set_mag_filter(
+        getFilter(
+            texture->magnificationMethod()
+        )
+    );
 
     GLuint fileFormat;
 
@@ -328,6 +468,30 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
         texture->surface()->Data
     );
     externalData->Texture.bind();
+}
+
+GLuint OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::getFilter(::RENDERING_BASE_MODULE_NS::Texture::Filtering filter)
+{
+    switch (filter)
+    {
+    case Base::Texture::Nearest: return GL_NEAREST;
+    case Base::Texture::Linear:  return GL_LINEAR;
+    }
+
+    return 0;
+}
+
+GLuint OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::getWrapping(::RENDERING_BASE_MODULE_NS::Texture::Wrapping wrapping)
+{
+    switch (wrapping)
+    {
+    case Base::Texture::Repeat:         return GL_REPEAT;
+    case Base::Texture::MirroredRepeat: return GL_MIRRORED_REPEAT;
+    case Base::Texture::ClampToEdge:    return GL_CLAMP_TO_EDGE;
+    case Base::Texture::ClampToBorder:  return GL_CLAMP_TO_BORDER;
+    }
+
+    return 0;
 }
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_MODULE_NS::Shader *shader)
@@ -412,11 +576,6 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
         meshBehaviour->material()->shader() == nullptr ||
         meshBehaviour->material()->shader()->externalData<ShaderData>() == nullptr)
     {
-//        Error()
-//            << "Mesh rendering behaviour of \""
-//            << meshBehaviour->gameObject()->name()
-//            << "\" has no material or material is wrong.";
-
         program = &m_meshFallback;
 
         program->use();
