@@ -182,6 +182,21 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::viewMatrix() const
     return glm::lookAt(pos, pos + front, glmex::vec3::up);
 }
 
+void RENDERING_BASE_MODULE_NS::Camera::setProjection(RENDERING_BASE_MODULE_NS::Camera::Projection projection)
+{
+    if (m_projection != projection)
+    {
+        m_projectionMatrixChanged = true;
+    }
+
+    m_projection = projection;
+}
+
+RENDERING_BASE_MODULE_NS::Camera::Projection HG::Rendering::Base::Camera::projection() const
+{
+    return m_projection;
+}
+
 glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
 {
     if (!m_projectionMatrixChanged)

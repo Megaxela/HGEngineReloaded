@@ -3,6 +3,12 @@ project(HGCore)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(HG_BUILD_CORE_TESTS "Build core tests" Off)
+
+if (${HG_BUILD_CORE_TESTS})
+    message(STATUS "No tests currently available for Core module")
+endif()
+
 add_library(HGCore STATIC
         src/Application.cpp
         include/Application.hpp

@@ -469,7 +469,12 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::handleWindowEvents()
 void OGL_RENDERING_MODULE_NS::GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
     gl::set_viewport({0, 0}, {width, height});
-    ::RENDERING_BASE_MODULE_NS::Camera::active()->setViewport(0, 0, width, height);
+
+    if (::RENDERING_BASE_MODULE_NS::Camera::active())
+    {
+        ::RENDERING_BASE_MODULE_NS::Camera::active()->setViewport(0, 0, width, height);
+    }
+
 }
 
 void OGL_RENDERING_MODULE_NS::GLFWSystemController::glDebugOutput(GLenum source,

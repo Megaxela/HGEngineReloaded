@@ -1,0 +1,13 @@
+set(HG_TEST_CASES
+    ${HG_TEST_CASES}
+    ${CMAKE_CURRENT_LIST_DIR}/tiled.cpp
+
+    CACHE STRING "" FORCE
+)
+
+set(HG_TEST_LIBS
+    ${HG_TEST_LIBS}
+    HGStandard
+
+    CACHE STRING "" FORCE
+)

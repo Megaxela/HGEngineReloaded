@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="1" nextobjectid="1">
+ <tileset firstgid="1" name="sokoban_tilesheet@2" tilewidth="32" tileheight="32" tilecount="1664" columns="52">
+  <image source="sokoban_tilesheet@2.png" width="1664" height="1024"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   <chunk x="-16" y="-16" width="16" height="16">
+   eJzty7cNACAQwEAawkqElQgrEQbFC9B8id7SlTZG0/7PwsEjCP6IhIwi+CsaOobgn1jYOIL/1QWr3gVJ
+  </chunk>
+   <chunk x="0" y="-16" width="16" height="16">
+   eJxjYBgFo2BoAw4GhgZ2IGYDYlYgJlW/DVCPNRBbAbElkv58IvUXAPUA1TbkAXEuGfYvAepZDMSLgHghqv0JpJpFKgAAta4Ohw==
+  </chunk>
+   <chunk x="-16" y="0" width="16" height="16">
+   eJxjYKAPWMjA4LAIiBcD8RIgJlV/LlBPHhDnA3EBGfotgXqsgNgaiG3I0M8K1MMGxOxAzEGG/lEwCgYjAAClgglJ
+  </chunk>
+   <chunk x="0" y="0" width="16" height="16">
+   eJxjYMAN8hkYDuCRhoMlQHWLgXgREC8kUg8yKADqAdmVB8S5SPqBYguI0W8D1GMNxFZAbEmG/RxAPexAzAbErGToHwWjYKgCALv2E4c=
+  </chunk>
+  </data>
+ </layer>
+ <layer name="Offset Layer" width="5" height="5" offsetx="-96" offsety="0">
+  <data encoding="base64" compression="zlib">
+   <chunk x="0" y="-16" width="16" height="16">
+   eJzty7sRwCAMwFBT8FkJwkpAVg0wULSCXXLo7pUSud3O6cPEwjb83okERCSn/zNPwYNq+BtPx8Br+LX9SjcGFQ==
+  </chunk>
+  </data>
+ </layer>
+</map>

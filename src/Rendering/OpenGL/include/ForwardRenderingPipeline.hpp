@@ -6,6 +6,7 @@
 #include <Behaviours/Mesh.hpp>
 #include <gl/program.hpp>
 #include <gl/vertex_array.hpp>
+#include <Behaviours/Sprite.hpp>
 
 namespace OGL_RENDERING_MODULE_NS
 {
@@ -67,6 +68,12 @@ namespace OGL_RENDERING_MODULE_NS
     private:
 
         /**
+         * @brief Method for processing game objects and it's behaviours.
+         * @param objects Objects.
+         */
+        void proceedGameObjects(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects);
+
+        /**
          * @brief External data implementation for mesh rendering behaviour
          */
         class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::ExternalData
@@ -121,6 +128,17 @@ namespace OGL_RENDERING_MODULE_NS
         );
 
         /**
+         * @brief Method for processing sprite renderer on
+         * gameobject.
+         * @param gameObject Owner of sprite renderer.
+         * @param spriteBehaviour Actual rendering behaviour.
+         */
+        void renderSprite(
+            ::CORE_MODULE_NS::GameObject* gameObject,
+            ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite* spriteBehaviour
+        );
+
+        /**
          * @brief Method for setting program uniform value.
          * @param program Pointer to program.
          * @param name Uniform name.
@@ -156,12 +174,22 @@ namespace OGL_RENDERING_MODULE_NS
                               gl::cubemap_texture& texture,
                               GLuint side);
 
+        bool initFallbackShader();
+
+        bool initSpriteShader();
+
         GLuint m_textureNumber;
 
         std::vector<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_behavioursCache;
 
         // Fallback mesh program
         gl::program m_meshFallback;
+
+        // Shader for sprite rendering
+        gl::program m_spriteShader;
+
+        // Sprite mesh
+        MeshData m_spriteData;
     };
 }
 

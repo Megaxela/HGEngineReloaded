@@ -4,3 +4,6 @@
 [submodule "src/Utils/libraries/glm"]
 	path = src/Utils/libraries/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "src/Rendering/Base/libraries/imgui"]
+	path = src/Rendering/Base/libraries/imgui
+	url = https://github.com/ocornut/imgui.git

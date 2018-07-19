@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="11">
+ <tileset firstgid="1" name="embedded_tileset" tilewidth="32" tileheight="32" tilecount="1664" columns="52">
+  <image source="sokoban_tilesheet@2.png" width="1664" height="1024"/>
+ </tileset>
+ <group name="Tile Layers">
+  <layer name="Tile Layer 1" width="5" height="5">
+   <data encoding="csv">
+5,6,7,8,0,
+57,58,59,60,0,
+109,110,111,112,0,
+161,162,163,164,316,
+0,0,0,367,368
+</data>
+  </layer>
+  <layer name="Tile Layer 2" width="5" height="5">
+   <data encoding="csv">
+1041,1042,1043,1044,0,
+1093,1094,1095,1096,0,
+1145,1146,1147,1148,0,
+1197,1198,1199,1200,0,
+0,0,0,0,0
+</data>
+  </layer>
+  <layer name="Tile Layer 3" width="5" height="5">
+   <data encoding="csv">
+625,626,627,628,0,
+677,678,679,680,0,
+729,730,731,732,3221225477,
+781,782,783,784,0,
+0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <objectgroup name="Object Layer 1">
+  <object id="2" x="96" y="0" width="64" height="64"/>
+  <object id="4" x="32" y="96" width="64" height="32">
+   <ellipse/>
+  </object>
+  <object id="5" x="0" y="160">
+   <polygon points="0,0 0,-64 32,-96 32,0"/>
+  </object>
+  <object id="6" x="160" y="96">
+   <polyline points="0,0 -32,32 -32,64 -64,64"/>
+  </object>
+  <object id="7" x="46.2865" y="72.8333" width="82.0938" height="17">
+   <text wrap="1">Test Text</text>
+  </object>
+ </objectgroup>
+</map>

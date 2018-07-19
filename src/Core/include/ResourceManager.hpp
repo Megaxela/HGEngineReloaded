@@ -115,7 +115,7 @@ namespace CORE_MODULE_NS
 
             if (data == nullptr)
             {
-                Error() << "Can't load \"" << id << "\" mesh resource. See errors above.";
+                Error() << "Can't load \"" << id << "\" resource. See errors above.";
 
                 return nullptr;
             }

@@ -3,14 +3,24 @@ project(HGStandard)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(HG_BUILD_STANDARD_TESTS "Build core tests" Off)
+
+if (${HG_BUILD_STANDARD_TESTS})
+    add_subdirectory(tests)
+endif()
+
 add_library(HGStandard STATIC
     src/MeshLoaders/OBJ.cpp
     include/MeshLoaders/OBJ.hpp
     src/Behaviours/FPSCameraMovement.cpp
     include/Behaviours/FPSCameraMovement.hpp
-        src/Behaviours/ServiceInformationOverlay.cpp
-        include/Behaviours/ServiceInformationOverlay.hpp
-        src/FilesystemResourceAccessor.cpp include/FilesystemResourceAccessor.hpp)
+    src/Behaviours/ServiceInformationOverlay.cpp
+    include/Behaviours/ServiceInformationOverlay.hpp
+    src/FilesystemResourceAccessor.cpp
+    include/FilesystemResourceAccessor.hpp
+    src/Behaviours/TiledMap.cpp
+    include/Behaviours/TiledMap.hpp
+)
 
 target_include_directories(HGStandard PUBLIC
     include

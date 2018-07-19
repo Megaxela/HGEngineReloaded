@@ -159,6 +159,20 @@ namespace RENDERING_BASE_MODULE_NS
         ~Camera() override;
 
         /**
+         * @brief Method for setting current projection.
+         * Orthogonal or perspective.
+         * @param projection Projection value.
+         */
+        void setProjection(Projection projection);
+
+        /**
+         * @brief Method for getting current camera
+         * projection.
+         * @return Current projection value.
+         */
+        Projection projection() const;
+
+        /**
          * @brief Method for getting orthogonal settings
          * object.You can use it to define some orthogonal
          * specified settings for camera. Made with reference

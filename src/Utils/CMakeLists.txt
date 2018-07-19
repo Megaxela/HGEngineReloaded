@@ -3,6 +3,12 @@ project(HGUtils)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(HG_BUILD_UTILS_TESTS "Build core tests" Off)
+
+if (${HG_BUILD_UTILS_TESTS})
+    message(STATUS "No tests currently available for Utils module")
+endif()
+
 add_subdirectory(libraries)
 
 add_library(HGUtils STATIC
@@ -30,6 +36,7 @@ target_link_libraries(HGUtils
         ALogger
         glm
         stb
+        rapidjson
 )
 
 target_compile_definitions(HGUtils

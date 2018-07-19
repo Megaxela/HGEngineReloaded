@@ -54,7 +54,8 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
     RenderingPipeline(application),
     m_textureNumber(0),
     m_behavioursCache(),
-    m_meshFallback(gl::invalid_id)
+    m_meshFallback(gl::invalid_id),
+    m_spriteShader(gl::invalid_id)
 {
 
 }
@@ -68,6 +69,16 @@ bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::init()
 
     Info() << "Initializing forward rendering.";
 
+    if (!initFallbackShader())
+    {
+        return false;
+    }
+
+    return initSpriteShader();
+}
+
+bool HG::Rendering::OpenGL::ForwardRenderingPipeline::initFallbackShader()
+{
     Info() << "Creating fallback shader.";
 
     gl::shader vertexShader(GL_VERTEX_SHADER);
@@ -140,23 +151,164 @@ void main()
     return true;
 }
 
+bool HG::Rendering::OpenGL::ForwardRenderingPipeline::initSpriteShader()
+{
+    Info() << "Creating sprite shader";
+
+    gl::shader vertexShader(GL_VERTEX_SHADER);
+    gl::shader fragmentShader(GL_FRAGMENT_SHADER);
+
+    vertexShader.set_source(
+        R"(
+#version 420 core
+layout (location = 0) in vec3 inPosition;
+layout (location = 2) in vec2 inTexCoords;
+
+out vec2 TexCoords;
+
+uniform vec2 size;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main()
+{
+    gl_Position = projection * view * model * vec4(inPosition * vec3(size, 1.0f), 1.0f);
+    TexCoords = inTexCoords;
+}
+)"
+    );
+
+    if (!vertexShader.compile())
+    {
+        Error() << "Can't compile fallback vertex shader.";
+        return false;
+    }
+
+    fragmentShader.set_source(
+        R"(
+#version 420 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+
+// texture samplers
+uniform sampler2D texture;
+
+void main()
+{
+    FragColor = texture(texture, TexCoord).rgba;
+}
+)"
+    );
+
+    if (!fragmentShader.compile())
+    {
+        Error() << "Can't compile fallback fragment shader.";
+        return false;
+    }
+
+    m_spriteShader = std::move(gl::program());
+
+    if (!m_spriteShader.is_valid())
+    {
+        Error() << "Fallback shader is not valid.";
+    }
+
+    m_spriteShader.attach_shader(vertexShader);
+    m_spriteShader.attach_shader(fragmentShader);
+    if (!m_spriteShader.link())
+    {
+        Error() << "Can't link fallback shader.";
+        return false;
+    }
+
+    // Initializing MeshData
+    // Binding vertex array
+    m_spriteData.VAO.bind();
+
+    // Binding vertex buffer object
+    m_spriteData.VBO.bind(GL_ARRAY_BUFFER);
+
+    ::UTILS_MODULE_NS::Mesh mesh;
+
+    mesh.Vertices = {
+        {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  1.0f}},
+        {{-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  0.0f}}
+    };
+
+    mesh.Indices = {
+        0, 1, 2, 3, 4, 5
+    };
+
+    // Loading data into VBO
+    m_spriteData.VBO.set_data(
+        mesh.Vertices.size() * sizeof(::UTILS_MODULE_NS::Vertex),
+        mesh.Vertices.data()
+    );
+
+    // Binding element buffer object
+    m_spriteData.EBO.bind(GL_ELEMENT_ARRAY_BUFFER);
+
+    // Loading data into EBO
+    m_spriteData.EBO.set_data(
+        mesh.Indices.size() * sizeof(uint32_t),
+        mesh.Indices.data()
+    );
+
+    // Binding vertex buffer
+    m_spriteData.VAO.set_vertex_buffer(0, m_spriteData.VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
+    m_spriteData.VAO.set_vertex_buffer(1, m_spriteData.VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
+    m_spriteData.VAO.set_vertex_buffer(2, m_spriteData.VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
+
+    // Enabling attributes
+    m_spriteData.VAO.set_attribute_enabled(0, true);
+    m_spriteData.VAO.set_attribute_enabled(1, true);
+    m_spriteData.VAO.set_attribute_enabled(2, true);
+    m_spriteData.VAO.set_attribute_enabled(3, true);
+    m_spriteData.VAO.set_attribute_enabled(4, true);
+
+    // Setting
+    m_spriteData.VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, position)));
+    m_spriteData.VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, normal)));
+    m_spriteData.VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, uv)));
+    m_spriteData.VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, tangent)));
+    m_spriteData.VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, bitangent)));
+
+    return true;
+}
+
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects)
 {
-    // Getting camera
-    auto camera = ::RENDERING_BASE_MODULE_NS::Camera::active();
-
-    if (camera == nullptr)
-    {
-        return;
-    }
 
     // Clearing main buffer
     gl::set_clear_color({0.0f, 0.0f, 0.0f, 1.0f});
 
     gl::clear(
-        GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
+        GL_COLOR_BUFFER_BIT |
+        GL_DEPTH_BUFFER_BIT
     );
 
+
+    // Getting camera
+    auto camera = ::RENDERING_BASE_MODULE_NS::Camera::active();
+
+    if (camera != nullptr)
+    {
+        proceedGameObjects(objects);
+    }
+
+    ImGui::Render();
+
+    application()->systemController()->swapBuffers();
+}
+
+void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects)
+{
     // todo: Add cubemap rendering
 
     for (auto&& gameObject : objects)
@@ -179,6 +331,15 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
                 );
                 break;
 
+            case ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Id:
+                renderSprite(
+                    gameObject,
+                    static_cast<::RENDERING_BASE_MODULE_NS::Behaviours::Sprite*>(
+                        behaviour
+                    )
+                );
+                break;
+
             default:
                 Info()
                     << "Trying to render unknown render behaviour \""
@@ -188,10 +349,6 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
             }
         }
     }
-
-    ImGui::Render();
-
-    application()->systemController()->swapBuffers();
 }
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(RENDERING_BASE_MODULE_NS::RenderBehaviour *behaviour)
@@ -546,6 +703,49 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
         Error() << "Can't link shader. Error: " << externalData->Program.info_log();
         return /* false */;
     }
+}
+
+void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODULE_NS::GameObject* gameObject,
+                                                                     ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite* spriteBehaviour)
+{
+    GLint location;
+
+    if ((location = m_spriteShader.uniform_location("model")) != -1)
+    {
+        m_spriteShader.set_uniform(
+            location,
+            gameObject->transform()->localToWorldMatrix()
+        );
+    }
+
+    if ((location = m_spriteShader.uniform_location("view")) != -1)
+    {
+        m_spriteShader.set_uniform(
+            location,
+            ::RENDERING_BASE_MODULE_NS::Camera::active()->viewMatrix()
+        );
+    }
+
+    if ((location = m_spriteShader.uniform_location("projection")) != -1)
+    {
+        m_spriteShader.set_uniform(
+            location,
+            ::RENDERING_BASE_MODULE_NS::Camera::active()
+                ->projectionMatrix()
+        );
+    }
+
+    m_spriteData.VAO.bind();
+
+    gl::draw_range_elements(
+        GL_TRIANGLES, // mode
+        0,            // start
+        static_cast<GLuint>(6),
+        static_cast<GLsizei>(6),
+        GL_UNSIGNED_INT
+    );
+
+    m_spriteData.VAO.unbind();
 }
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE_NS::GameObject* gameObject,
