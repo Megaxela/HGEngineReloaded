@@ -27,10 +27,3 @@ bool UTILS_MODULE_NS::Rect::operator!=(const UTILS_MODULE_NS::Rect& rhs)
 {
     return x != rhs.x || y != rhs.y || w != rhs.w || h != rhs.h;
 }
-
-std::ostream& operator<<(std::ostream& stream, const UTILS_MODULE_NS::Rect& r)
-{
-    stream << "Rect(x=" << r.x << ", y=" << r.y << " " << r.w << "x" << r.h << ')';
-
-    return stream;
-}

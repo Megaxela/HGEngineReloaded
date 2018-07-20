@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextobjectid="14">
+ <tileset firstgid="1" name="roguelikeSheet_transparent" tilewidth="16" tileheight="16" spacing="1" tilecount="1767" columns="57">
+  <image source="../../../../../../../../../Documents/Tilesets/RPG/Spritesheet/roguelikeSheet_transparent.png" width="968" height="526"/>
+ </tileset>
+ <objectgroup color="#780000" name="Object Layer">
+  <properties>
+   <property name="Boolean Property" type="bool" value="true"/>
+   <property name="Color Property" type="color" value="#ff1403c7"/>
+   <property name="File Property" type="file" value="ortho_csv_right_down_32_32_5_5.tmx"/>
+   <property name="Float Property" type="float" value="3.14"/>
+   <property name="Int Property" type="int" value="12"/>
+   <property name="String Property" value="Value"/>
+  </properties>
+  <object id="1" name="Rectangle" type="Rectangle Type" x="16" y="64" width="48" height="48"/>
+  <object id="2" name="Point" type="Point Type" x="80" y="80">
+   <point/>
+  </object>
+  <object id="3" name="Ellipse" type="Ellipse Type" x="128" y="64" width="32" height="16">
+   <ellipse/>
+  </object>
+  <object id="4" name="Polygon" type="Polygon Type" x="176" y="64">
+   <polygon points="0,0 0,32 32,32 32,-16 16,-32 -16,-32"/>
+  </object>
+  <object id="5" name="Normal" gid="303" x="112" y="125.667" width="16" height="16"/>
+  <object id="7" name="Horizonrally Flipped" gid="1073742127" x="160.667" y="109.667" width="16" height="16" rotation="180"/>
+  <object id="8" name="Vertically Flipped" gid="1073742127" x="176" y="127.667" width="16" height="16"/>
+  <object id="9" name="Both Flipped" gid="303" x="223.333" y="112" width="16" height="16" rotation="-180"/>
+  <object id="10" name="90 degrees" gid="303" x="128" y="159.667" width="16" height="16" rotation="-90"/>
+  <object id="11" name="180 degrees" gid="303" x="160" y="144.333" width="16" height="16" rotation="-180"/>
+  <object id="12" name="270 degrees" gid="303" x="175.667" y="145" width="16" height="16" rotation="90"/>
+  <object id="13" x="1.28646" y="119.167" width="100.094" height="39">
+   <text fontfamily="Noto Sans" wrap="1" color="#c4ce00" bold="1" italic="1" underline="1" strikeout="1" halign="center" valign="center">Sample Text</text>
+  </object>
+ </objectgroup>
+ <imagelayer name="Image Layer"/>
+ <group name="Group (0.7 alpha)" opacity="0.7" offsetx="3" offsety="4">
+  <group name="Internal Group">
+   <layer name="Tile Layer 1" width="30" height="30" offsetx="4" offsety="-9">
+    <data encoding="base64" compression="zlib">
+   eJztzbERgCAAQ9FwyjpMoJ6jsATaMoqjOJqhtQea/+5+kSopSCkou9c9i6TVRfXlr+rO9tv25nZ3dP79K+5y9+BfAAAAAJjtAxkmBq8=
+  </data>
+   </layer>
+  </group>
+ </group>
+</map>

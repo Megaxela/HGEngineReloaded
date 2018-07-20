@@ -2,6 +2,9 @@
 
 #include <glm/vec2.hpp>
 #include <ResourceAccessor.hpp>
+#include <vector>
+#include <Behaviour.hpp>
+#include <cstdint>
 
 namespace STD_MODULE_NS::Behaviours
 {
@@ -9,7 +12,7 @@ namespace STD_MODULE_NS::Behaviours
      * @brief Tiled map loader system.
      * Support version 1.1.5
      */
-    class TiledMap
+    class TiledMap : public ::CORE_MODULE_NS::Behaviour
     {
     public:
 
@@ -96,22 +99,23 @@ namespace STD_MODULE_NS::Behaviours
          */
         struct TileLayer : Layer
         {
-//            struct Tile
-//            {
-//                uint32_t gid;
-//
-//                inline bool isVerticallyFlipped()
-//                {
-//
-//                }
-//            };
-
             TileLayer() :
                 Layer(Type::Tile),
                 size({0, 0})
             {}
 
+
             glm::ivec2 size;
+            std::vector<uint32_t> tiles;
+
+        };
+
+        struct ObjectLayer : Layer
+        {
+            ObjectLayer() :
+                Layer(Type::Object)
+            {}
+
 
         };
 
@@ -122,15 +126,23 @@ namespace STD_MODULE_NS::Behaviours
          */
         bool loadMap(CORE_MODULE_NS::ResourceAccessor::DataPtr data);
 
-
-
     private:
+
+        // todo: Add commentary
+        bool proceedRootNode(rapidxml::xml_node<>* node, Group* target);
+
+        bool parseTileset(rapidxml::xml_node<>* node);
+
+
 
         glm::ivec2 m_tileSize;
 
         bool m_isInfinite;
         glm::ivec2 m_size; // in tiles
 
+        // Root layers group
+        std::vector<Tileset*> m_tilesets;
+        Group m_root;
     };
 }
 

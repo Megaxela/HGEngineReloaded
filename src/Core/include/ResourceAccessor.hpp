@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <string>
+#include <memory>
 
 namespace CORE_MODULE_NS
 {

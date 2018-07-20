@@ -30,6 +30,11 @@ namespace OGL_RENDERING_MODULE_NS
         explicit ForwardRenderingPipeline(::CORE_MODULE_NS::Application* application);
 
         /**
+         * @brief Destructor.
+         */
+        ~ForwardRenderingPipeline();
+
+        /**
          * @brief Actual render method.
          * @param objects Container with objects.
          */
@@ -189,7 +194,7 @@ namespace OGL_RENDERING_MODULE_NS
         gl::program m_spriteShader;
 
         // Sprite mesh
-        MeshData m_spriteData;
+        MeshData* m_spriteData;
     };
 }
 

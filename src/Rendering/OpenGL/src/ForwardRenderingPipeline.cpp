@@ -55,9 +55,15 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
     m_textureNumber(0),
     m_behavioursCache(),
     m_meshFallback(gl::invalid_id),
-    m_spriteShader(gl::invalid_id)
+    m_spriteShader(gl::invalid_id),
+    m_spriteData(nullptr)
 {
 
+}
+
+OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::~ForwardRenderingPipeline()
+{
+    delete m_spriteData;
 }
 
 bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::init()
@@ -115,7 +121,7 @@ void main()
 #version 420 core
 out vec4 FragColor;
 
-in vec2 TexCoord;
+in vec2 TexCoords;
 
 // texture samplers
 uniform sampler2D fallbackTexture;
@@ -181,7 +187,7 @@ void main()
 
     if (!vertexShader.compile())
     {
-        Error() << "Can't compile fallback vertex shader.";
+        Error() << "Can't compile sprite vertex shader.";
         return false;
     }
 
@@ -190,21 +196,21 @@ void main()
 #version 420 core
 out vec4 FragColor;
 
-in vec2 TexCoord;
+in vec2 TexCoords;
 
 // texture samplers
-uniform sampler2D texture;
+uniform sampler2D tex;
 
 void main()
 {
-    FragColor = texture(texture, TexCoord).rgba;
+    FragColor = texture(tex, TexCoords).rgba;
 }
 )"
     );
 
     if (!fragmentShader.compile())
     {
-        Error() << "Can't compile fallback fragment shader.";
+        Error() << "Can't compile sprite fragment shader.";
         return false;
     }
 
@@ -212,33 +218,35 @@ void main()
 
     if (!m_spriteShader.is_valid())
     {
-        Error() << "Fallback shader is not valid.";
+        Error() << "Sprite shader is not valid.";
     }
 
     m_spriteShader.attach_shader(vertexShader);
     m_spriteShader.attach_shader(fragmentShader);
     if (!m_spriteShader.link())
     {
-        Error() << "Can't link fallback shader.";
+        Error() << "Can't link sprite shader. Error: " << m_spriteShader.info_log();
         return false;
     }
 
     // Initializing MeshData
+    m_spriteData = new MeshData();
+
     // Binding vertex array
-    m_spriteData.VAO.bind();
+    m_spriteData->VAO.bind();
 
     // Binding vertex buffer object
-    m_spriteData.VBO.bind(GL_ARRAY_BUFFER);
+    m_spriteData->VBO.bind(GL_ARRAY_BUFFER);
 
     ::UTILS_MODULE_NS::Mesh mesh;
 
     mesh.Vertices = {
-        {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  0.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  1.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {1.0f,  1.0f}},
-        {{-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  1.0f}},
-        {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f},  {0.0f,  0.0f}}
+        {{-0.5f, -0.5f,  0.5f}, {1.0f,  0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {0.0f,  0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {0.0f,  1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {0.0f,  1.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {1.0f,  1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {1.0f,  0.0f}}
     };
 
     mesh.Indices = {
@@ -246,38 +254,38 @@ void main()
     };
 
     // Loading data into VBO
-    m_spriteData.VBO.set_data(
+    m_spriteData->VBO.set_data(
         mesh.Vertices.size() * sizeof(::UTILS_MODULE_NS::Vertex),
         mesh.Vertices.data()
     );
 
     // Binding element buffer object
-    m_spriteData.EBO.bind(GL_ELEMENT_ARRAY_BUFFER);
+    m_spriteData->EBO.bind(GL_ELEMENT_ARRAY_BUFFER);
 
     // Loading data into EBO
-    m_spriteData.EBO.set_data(
+    m_spriteData->EBO.set_data(
         mesh.Indices.size() * sizeof(uint32_t),
         mesh.Indices.data()
     );
 
     // Binding vertex buffer
-    m_spriteData.VAO.set_vertex_buffer(0, m_spriteData.VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
-    m_spriteData.VAO.set_vertex_buffer(1, m_spriteData.VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
-    m_spriteData.VAO.set_vertex_buffer(2, m_spriteData.VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
+    m_spriteData->VAO.set_vertex_buffer(0, m_spriteData->VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
+    m_spriteData->VAO.set_vertex_buffer(1, m_spriteData->VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
+    m_spriteData->VAO.set_vertex_buffer(2, m_spriteData->VBO, 0, sizeof(::UTILS_MODULE_NS::Vertex));
 
     // Enabling attributes
-    m_spriteData.VAO.set_attribute_enabled(0, true);
-    m_spriteData.VAO.set_attribute_enabled(1, true);
-    m_spriteData.VAO.set_attribute_enabled(2, true);
-    m_spriteData.VAO.set_attribute_enabled(3, true);
-    m_spriteData.VAO.set_attribute_enabled(4, true);
+    m_spriteData->VAO.set_attribute_enabled(0, true);
+    m_spriteData->VAO.set_attribute_enabled(1, true);
+    m_spriteData->VAO.set_attribute_enabled(2, true);
+    m_spriteData->VAO.set_attribute_enabled(3, true);
+    m_spriteData->VAO.set_attribute_enabled(4, true);
 
     // Setting
-    m_spriteData.VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, position)));
-    m_spriteData.VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, normal)));
-    m_spriteData.VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, uv)));
-    m_spriteData.VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, tangent)));
-    m_spriteData.VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, bitangent)));
+    m_spriteData->VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, position)));
+    m_spriteData->VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, normal)));
+    m_spriteData->VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, uv)));
+    m_spriteData->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, tangent)));
+    m_spriteData->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::UTILS_MODULE_NS::Vertex, bitangent)));
 
     return true;
 }
@@ -311,6 +319,10 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const
 {
     // todo: Add cubemap rendering
 
+    static std::map<float, ::RENDERING_BASE_MODULE_NS::RenderBehaviour*> sorted;
+
+    sorted.clear();
+
     for (auto&& gameObject : objects)
     {
         m_behavioursCache.clear();
@@ -320,33 +332,39 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const
 
         for (auto&& behaviour : m_behavioursCache)
         {
-            switch (behaviour->behaviourType())
-            {
-            case ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Id:
-                renderMesh(
-                    gameObject,
-                    static_cast<::RENDERING_BASE_MODULE_NS::Behaviours::Mesh*>(
-                        behaviour
-                    )
-                );
-                break;
+            sorted[gameObject->transform()->globalPosition().z] =
+                behaviour;
+        }
+    }
 
-            case ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Id:
-                renderSprite(
-                    gameObject,
-                    static_cast<::RENDERING_BASE_MODULE_NS::Behaviours::Sprite*>(
-                        behaviour
-                    )
-                );
-                break;
+    for (auto& [order, behaviour] : sorted)
+    {
+        switch (behaviour->behaviourType())
+        {
+        case ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Id:
+            renderMesh(
+                behaviour->gameObject(),
+                static_cast<::RENDERING_BASE_MODULE_NS::Behaviours::Mesh*>(
+                    behaviour
+                )
+            );
+            break;
 
-            default:
-                Info()
-                    << "Trying to render unknown render behaviour \""
-                    << SystemTools::getTypeName(behaviour)
-                    << "\"";
-                break;
-            }
+        case ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Id:
+            renderSprite(
+                behaviour->gameObject(),
+                static_cast<::RENDERING_BASE_MODULE_NS::Behaviours::Sprite*>(
+                    behaviour
+                )
+            );
+            break;
+
+        default:
+            Info()
+                << "Trying to render unknown render behaviour \""
+                << SystemTools::getTypeName(behaviour)
+                << "\"";
+            break;
         }
     }
 }
@@ -708,6 +726,8 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODULE_NS::GameObject* gameObject,
                                                                      ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite* spriteBehaviour)
 {
+    m_spriteShader.use();
+
     GLint location;
 
     if ((location = m_spriteShader.uniform_location("model")) != -1)
@@ -735,7 +755,33 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODU
         );
     }
 
-    m_spriteData.VAO.bind();
+    if ((location = m_spriteShader.uniform_location("size")) != -1)
+    {
+        m_spriteShader.set_uniform(
+            location,
+            glm::vec2(
+                spriteBehaviour->texture()->surface()->Width,
+                spriteBehaviour->texture()->surface()->Height
+            )
+        );
+    }
+
+
+    if ((location = m_spriteShader.uniform_location("tex")) != -1)
+    {
+        m_spriteShader.set_uniform_1i(
+            location,
+            m_textureNumber
+        );
+
+        spriteBehaviour->texture()->externalData<TextureData>()->Texture.set_active(m_textureNumber);
+        spriteBehaviour->texture()->externalData<TextureData>()->Texture.bind();
+    }
+
+    m_spriteData->VAO.bind();
+
+    gl::set_blending_enabled(true);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     gl::draw_range_elements(
         GL_TRIANGLES, // mode
@@ -745,7 +791,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODU
         GL_UNSIGNED_INT
     );
 
-    m_spriteData.VAO.unbind();
+    m_spriteData->VAO.unbind();
 }
 
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE_NS::GameObject* gameObject,

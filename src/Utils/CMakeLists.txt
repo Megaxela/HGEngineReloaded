@@ -36,7 +36,7 @@ target_link_libraries(HGUtils
         ALogger
         glm
         stb
-        rapidjson
+        rapidxml
 )
 
 target_compile_definitions(HGUtils

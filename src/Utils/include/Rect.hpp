@@ -6,6 +6,13 @@ namespace UTILS_MODULE_NS
 {
     class Rect
     {
+        friend std::ostream& operator<<(std::ostream& stream, const UTILS_MODULE_NS::Rect& r)
+        {
+            stream << "Rect(x=" << r.x << ", y=" << r.y << " " << r.w << "x" << r.h << ')';
+
+            return stream;
+        }
+
     public:
         /**
          * @brief Default constructor;
@@ -37,4 +44,3 @@ namespace UTILS_MODULE_NS
     };
 }
 
-std::ostream& operator<<(std::ostream& stream, const UTILS_MODULE_NS::Rect& r);

@@ -22,7 +22,7 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
     public:
 
         // Mesh type id
-        static constexpr std::size_t Id = __COUNTER__;
+        static constexpr std::size_t Id = 1;
 
         /**
          * @brief Constructor.

@@ -12,12 +12,18 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
     {
     public:
 
-        static constexpr std::size_t Id = __COUNTER__;
+        static constexpr std::size_t Id = 0;
 
         /**
          * @brief Constructor.
          */
         Sprite();
+
+        /**
+         * @brief Initialize constructor.
+         * @param texture Pointer to texture.
+         */
+        explicit Sprite(Texture* texture);
 
         /**
          * @brief Destructor.

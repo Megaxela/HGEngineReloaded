@@ -8,6 +8,13 @@ RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Sprite() :
 
 }
 
+RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Sprite(HG::Rendering::Base::Texture* texture) :
+    RenderBehaviour(Id),
+    m_texture(texture)
+{
+
+}
+
 RENDERING_BASE_MODULE_NS::Behaviours::Sprite::~Sprite()
 {
 
