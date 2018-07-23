@@ -187,6 +187,8 @@ namespace OGL_RENDERING_MODULE_NS
 
         std::vector<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_behavioursCache;
 
+        std::multimap<float, ::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_sortedBehaviours;
+
         // Fallback mesh program
         gl::program m_meshFallback;
 

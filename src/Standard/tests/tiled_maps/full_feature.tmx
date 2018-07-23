@@ -20,6 +20,9 @@
    <ellipse/>
   </object>
   <object id="4" name="Polygon" type="Polygon Type" x="176" y="64">
+   <properties>
+    <property name="Object Custom Property" type="int" value="42"/>
+   </properties>
    <polygon points="0,0 0,32 32,32 32,-16 16,-32 -16,-32"/>
   </object>
   <object id="5" name="Normal" gid="303" x="112" y="125.667" width="16" height="16"/>
@@ -36,6 +39,9 @@
  <imagelayer name="Image Layer"/>
  <group name="Group (0.7 alpha)" opacity="0.7" offsetx="3" offsety="4">
   <group name="Internal Group">
+   <properties>
+    <property name="Group Property" type="int" value="84"/>
+   </properties>
    <layer name="Tile Layer 1" width="30" height="30" offsetx="4" offsety="-9">
     <data encoding="base64" compression="zlib">
    eJztzbERgCAAQ9FwyjpMoJ6jsATaMoqjOJqhtQea/+5+kSopSCkou9c9i6TVRfXlr+rO9tv25nZ3dP79K+5y9+BfAAAAAJjtAxkmBq8=

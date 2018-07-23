@@ -37,6 +37,31 @@ namespace UTILS_MODULE_NS
         static Color fromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a=255);
 
         /**
+         * @brief Color creator from hex string
+         * ("#FFAAFFAA" / "FFAAFFAA" / "FFAAFF")
+         * @param hex C string.
+         * @param len C string len.
+         * @return Created color. (White color on error)
+         */
+        static Color fromHex(const char* hex, std::size_t len);
+
+        /**
+         * @brief Color creator from raw RGBA data.
+         * 0x04030201 (r = 1, g = 2, b = 3, a = 4)
+         * @param data Data.
+         * @return Color.
+         */
+        static Color fromRaw(uint32_t data);
+
+        /**
+         * @brief Color creator from hex string
+         * ("#FFAAFFAA" / "FFAAFFAA" / "FFAAFF")
+         * @param s String.
+         * @return Created color. (White color on error)
+         */
+        static Color fromHex(const std::string& s);
+
+        /**
          * @brief Method to get red channel.
          * @return Color red channel. 0 - 255
          */

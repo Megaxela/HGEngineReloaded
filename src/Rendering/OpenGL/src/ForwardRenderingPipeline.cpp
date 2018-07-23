@@ -54,6 +54,7 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
     RenderingPipeline(application),
     m_textureNumber(0),
     m_behavioursCache(),
+    m_sortedBehaviours(),
     m_meshFallback(gl::invalid_id),
     m_spriteShader(gl::invalid_id),
     m_spriteData(nullptr)
@@ -319,10 +320,23 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const
 {
     // todo: Add cubemap rendering
 
-    static std::map<float, ::RENDERING_BASE_MODULE_NS::RenderBehaviour*> sorted;
+    m_sortedBehaviours.clear();
 
-    sorted.clear();
+    // Getting camera positions
+    glm::vec3 cameraPos(0.0f, 0.0f, 0.0f);
+    glm::quat cameraRot;
 
+    {
+        auto* camera = HG::Rendering::Base::Camera::active();
+
+        if (camera)
+        {
+            cameraPos = camera->gameObject()->transform()->globalPosition();
+            cameraRot = camera->gameObject()->transform()->globalRotation();
+        }
+    }
+
+    // Using multimap for sorting objects by distance from camera
     for (auto&& gameObject : objects)
     {
         m_behavioursCache.clear();
@@ -332,12 +346,17 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const
 
         for (auto&& behaviour : m_behavioursCache)
         {
-            sorted[gameObject->transform()->globalPosition().z] =
-                behaviour;
+            auto cameraSpace = gameObject->transform()->globalPosition() - cameraPos;
+
+            // Not inverting, because Z is positive towards camera)
+            m_sortedBehaviours.insert({
+                (cameraSpace * glm::inverse(cameraRot)).z,
+                behaviour
+            });
         }
     }
 
-    for (auto& [order, behaviour] : sorted)
+    for (auto& [distance, behaviour] : m_sortedBehaviours)
     {
         switch (behaviour->behaviourType())
         {
