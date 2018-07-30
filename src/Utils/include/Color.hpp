@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <glm/glm.hpp>
+#include <string>
 
 namespace UTILS_MODULE_NS
 {
@@ -55,7 +56,7 @@ namespace UTILS_MODULE_NS
 
         /**
          * @brief Color creator from hex string
-         * ("#FFAAFFAA" / "FFAAFFAA" / "FFAAFF")
+         * ("#FFAAFFAA" / "FFAAFFAA" / "FFAAFF") (ARGB)/(RGB)
          * @param s String.
          * @return Created color. (White color on error)
          */
@@ -128,6 +129,11 @@ namespace UTILS_MODULE_NS
          * @return Brighten copy of initial color.
          */
         static Color brighten(const Color& color, float factor);
+
+        /**
+         * @brief Method for checking equality of colors.
+         */
+        bool operator==(const Color& rhs) const;
 
     private:
         float m_r;

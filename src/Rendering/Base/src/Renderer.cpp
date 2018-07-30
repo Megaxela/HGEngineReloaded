@@ -35,6 +35,13 @@ void RENDERING_BASE_MODULE_NS::Renderer::render(const CORE_MODULE_NS::Scene::Gam
     }
 
     m_pipeline->render(gameObjects);
+
+    m_gizmos.clear();
+}
+
+::RENDERING_BASE_MODULE_NS::Gizmos *::RENDERING_BASE_MODULE_NS::Renderer::gizmos()
+{
+    return &m_gizmos;
 }
 
 RENDERING_BASE_MODULE_NS::RenderingPipeline* RENDERING_BASE_MODULE_NS::Renderer::pipeline()

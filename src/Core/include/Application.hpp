@@ -4,6 +4,7 @@
 #include "ResourceManager.hpp"
 #include "TimeStatistics.hpp"
 #include "Input.hpp"
+#include "PhysicsController.hpp"
 
 namespace CORE_MODULE_NS
 {
@@ -114,7 +115,37 @@ namespace CORE_MODULE_NS
             delete m_systemController;
 
             m_systemController = new T(this);
-        };
+        }
+
+        /**
+         * @brief Method for setting physics controller.
+         * @tparam T Type of physics controller. It must be
+         * derived form `HG::Physics::Base::PhysicsController`.
+         */
+        template<typename T>
+        typename std::enable_if<
+            std::is_base_of<::PHYSICS_BASE_MODULE_NS::PhysicsController, T>::value
+        >::type setPhysicsController()
+        {
+            delete m_physicsController;
+
+            m_physicsController = new T(this);
+        }
+
+        /**
+         * @brief Method for getting physics controller.
+         * @tparam T Type of physics controller. It must be
+         * derived from `HG::Physics::Base::PhysicsController`.
+         * @return Pointer to physics controller.
+         */
+        template<typename T>
+        typename std::enable_if<
+            std::is_base_of<::PHYSICS_BASE_MODULE_NS::PhysicsController, T>::value,
+            T*
+        >::type physicsController()
+        {
+            return static_cast<T*>(m_physicsController);
+        }
 
         /**
          * @brief Method for getting system controller.
@@ -136,6 +167,9 @@ namespace CORE_MODULE_NS
 
         // Application system controller
         ::RENDERING_BASE_MODULE_NS::SystemController* m_systemController;
+
+        // Physics controller
+        ::PHYSICS_BASE_MODULE_NS::PhysicsController* m_physicsController;
 
         // Input receiver/productor
         Input m_input;

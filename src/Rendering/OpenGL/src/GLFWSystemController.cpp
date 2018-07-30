@@ -49,6 +49,10 @@ bool OGL_RENDERING_MODULE_NS::GLFWSystemController::init()
 
     ImGui::CreateContext();
 
+    auto& io = ImGui::GetIO();
+
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
     return true;
 }
 
@@ -277,7 +281,7 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::cursorPosCallback(GLFWwindow
     );
 }
 
-void OGL_RENDERING_MODULE_NS::GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int, int action, int)
+void OGL_RENDERING_MODULE_NS::GLFWSystemController::keyPressCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
 {
     static std::map<int, ::CORE_MODULE_NS::Input::Keyboard::Key> keys = {
         {GLFW_KEY_0,                ::CORE_MODULE_NS::Input::Keyboard::Key::N0},
@@ -447,6 +451,8 @@ void OGL_RENDERING_MODULE_NS::GLFWSystemController::keyPressCallback(GLFWwindow*
             }
         }
     }
+
+    ImGui_ImplGlfw_KeyCallback(nullptr, key, scancode, action, mods);
 }
 
 void OGL_RENDERING_MODULE_NS::GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)

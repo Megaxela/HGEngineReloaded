@@ -3,6 +3,7 @@
 #include <Scene.hpp>
 #include "RenderingPipeline.hpp"
 #include "RenderBehaviour.hpp"
+#include "Gizmos.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -56,6 +57,12 @@ namespace RENDERING_BASE_MODULE_NS
         void render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& gameObjects);
 
         /**
+         * @brief Method for getting gizmos object.
+         * @return Pointer to gizmos.
+         */
+        ::RENDERING_BASE_MODULE_NS::Gizmos* gizmos();
+
+        /**
          * @brief Method for setting up objects
          * with specified rendering pipeline.
          * @param obj Object.
@@ -73,9 +80,12 @@ namespace RENDERING_BASE_MODULE_NS
         }
 
     private:
+
         ::CORE_MODULE_NS::Application* m_parentApplication;
 
         ::RENDERING_BASE_MODULE_NS::RenderingPipeline* m_pipeline;
+
+        ::RENDERING_BASE_MODULE_NS::Gizmos m_gizmos;
 
     };
 }

@@ -5,6 +5,7 @@
 CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
     m_renderer(this),
     m_systemController(nullptr),
+    m_physicsController(nullptr),
     m_resourceManager(),
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
@@ -15,6 +16,7 @@ CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
 CORE_MODULE_NS::Application::~Application()
 {
     delete m_systemController;
+    delete m_physicsController;
 }
 
 void CORE_MODULE_NS::Application::setScene(CORE_MODULE_NS::Scene* scene)
@@ -50,8 +52,24 @@ bool CORE_MODULE_NS::Application::init()
 
 bool CORE_MODULE_NS::Application::performCycle()
 {
+    // Saving last deltatime
+    auto dt = m_timeStatistics.lastFrameDeltaTime();
+
     // Start counting frame time
     m_timeStatistics.tickTimerBegin(TimeStatistics::FrameTime);
+
+
+    if (m_physicsController)
+    {
+        // Start counting physics time
+        m_timeStatistics.tickTimerBegin(TimeStatistics::PhysicsTime);
+
+        // Processing physics, if available
+        m_physicsController->tick(dt);
+
+        // Finish counting physics time
+        m_timeStatistics.tickTimerEnd(TimeStatistics::PhysicsTime);
+    }
 
     // Start counting update time (events are in update section)
     m_timeStatistics.tickTimerBegin(TimeStatistics::UpdateTime);

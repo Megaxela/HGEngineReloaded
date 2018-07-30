@@ -2,6 +2,12 @@
 #include <algorithm>
 #include "Transform.hpp"
 
+CORE_MODULE_NS::Transform::Transform() :
+    Transform(nullptr)
+{
+
+}
+
 CORE_MODULE_NS::Transform::Transform(GameObject* owner) :
     m_localRotation(0.0f, 0.0f, 0.0f, 1.0f), // Initial
     m_localScale(1.0f, 1.0f, 1.0f),

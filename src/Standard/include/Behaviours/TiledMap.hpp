@@ -7,6 +7,7 @@
 #include <ResourceAccessor.hpp>
 #include <Behaviour.hpp>
 #include <Color.hpp>
+#include <rapidxml.hpp>
 
 namespace STD_MODULE_NS::Behaviours
 {
@@ -48,6 +49,7 @@ namespace STD_MODULE_NS::Behaviours
         {
             enum class Type
             {
+                Unknown,
                 Boolean,
                 Color,
                 File,
@@ -63,6 +65,11 @@ namespace STD_MODULE_NS::Behaviours
                 float,
                 int
             >;
+
+            Property() :
+                value(),
+                type(Type::Unknown)
+            {}
 
             explicit Property(bool boolean) :
                 value(boolean),
@@ -133,6 +140,9 @@ namespace STD_MODULE_NS::Behaviours
 
             explicit Layer(Type t) :
                 type(t),
+                name(),
+                offset(),
+                opacity(1.0f),
                 properties()
             {}
 
@@ -140,6 +150,8 @@ namespace STD_MODULE_NS::Behaviours
 
             Type type;
             std::string name;
+            glm::ivec2 offset;
+            float opacity;
             Properties properties;
         };
 
@@ -265,7 +277,7 @@ namespace STD_MODULE_NS::Behaviours
 
                 // This points are relative to `position` field.
                 std::vector<
-                    glm::vec2
+                    glm::ivec2
                 > points;
             };
 
@@ -291,6 +303,7 @@ namespace STD_MODULE_NS::Behaviours
 
                 Text() :
                     Object(Type::Text),
+                    value(),
                     size({0, 0}),
                     fontFamily(),
                     color(),
@@ -303,6 +316,7 @@ namespace STD_MODULE_NS::Behaviours
                     horizontalAlign(HorizontalAlign::Left)
                 {}
 
+                std::string value;
                 glm::vec2 size;
                 std::string fontFamily;
                 HG::Utils::Color color;
@@ -329,7 +343,7 @@ namespace STD_MODULE_NS::Behaviours
                 {}
 
                 uint32_t gid; // Unwrapped
-                glm::vec2 size;
+                glm::ivec2 size;
                 float rotation; // Clockwise in degrees
             };
 
@@ -340,6 +354,37 @@ namespace STD_MODULE_NS::Behaviours
             std::vector<Object*> objects;
             HG::Utils::Color color;
         };
+
+        struct MapProperties
+        {
+            MapProperties() :
+                version(),
+                tiledVersion(),
+                orientation(Orientation::Orthogonal),
+                renderOrder(TileRenderOrder::RightDown),
+                size({0, 0}),
+                tileSize({0, 0})
+            {
+
+            }
+
+            std::string version;
+            std::string tiledVersion;
+            Orientation orientation;
+            TileRenderOrder renderOrder;
+            glm::ivec2 size;
+            glm::ivec2 tileSize;
+        };
+
+        /**
+         * @brief Default constructor.
+         */
+        TiledMap();
+
+        /**
+         * @brief Destructor.
+         */
+        ~TiledMap() override;
 
         /**
          * @brief Method for loading map from TMX file.
@@ -353,6 +398,23 @@ namespace STD_MODULE_NS::Behaviours
          */
         void clear();
 
+        /**
+         * @brief Method for getting const reference
+         * to map properties.
+         * @return Constant reference to map properties.
+         */
+        const MapProperties& properties() const;
+
+        /**
+         * @brief Method for getting tilesets.
+         */
+        const std::vector<Tileset*>& tilesets() const;
+
+        /**
+         * @brief Method for getting root group with layers.
+         */
+        const Group* rootGroup() const;
+
     private:
 
         void clearGroup(Group* grp);
@@ -360,7 +422,7 @@ namespace STD_MODULE_NS::Behaviours
         bool parseTileset(rapidxml::xml_node<>* node);
 
         // todo: Add commentary
-        bool proceedRootNode(rapidxml::xml_node<>* node, Group* target);
+        bool proceedRootNode(rapidxml::xml_node<>* node, Group* target, bool proceedLikeLayer=false);
 
         // todo: Add commentary
         bool proceedObjectGroupNode(rapidxml::xml_node<>* node, Group* target);
@@ -398,10 +460,19 @@ namespace STD_MODULE_NS::Behaviours
         // todo: Add commentary
         bool proceedProperties(rapidxml::xml_node<>* node, Properties& properties);
 
-        glm::ivec2 m_tileSize;
+        // todo: Add commentary
+        bool performTileLayerDecoding(const char* data,
+                                      std::size_t dataSize,
+                                      std::string_view encoding,
+                                      std::string_view compression,
+                                      std::vector<uint32_t>& result);
 
-        bool m_isInfinite;
-        glm::ivec2 m_size; // in tiles
+        // todo: Add commentary
+        bool proceedCSVTileData(const char* data,
+                                std::size_t dataSize,
+                                std::vector<uint32_t>& result);
+
+        MapProperties m_properties;
 
         // Root layers group
         std::vector<Tileset*> m_tilesets;

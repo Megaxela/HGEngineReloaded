@@ -20,6 +20,8 @@ add_library(HGStandard STATIC
     include/FilesystemResourceAccessor.hpp
     src/Behaviours/TiledMap.cpp
     include/Behaviours/TiledMap.hpp
+    src/Behaviours/DebugControllerOverlay.cpp
+    include/Behaviours/DebugControllerOverlay.hpp
 )
 
 target_include_directories(HGStandard PUBLIC

@@ -80,6 +80,40 @@ namespace CORE_MODULE_NS
          */
         void addGameObject(GameObject* gameObject);
 
+        /**
+         * @brief Method for searching for gameobject by name.
+         * @param name Gameobject name.
+         * @return Pointer to found game object or nullptr if
+         * game object was not found.
+         */
+        GameObject* findGameObject(const std::string& name);
+
+        /**
+         * @brief Method for searching several objects by name.
+         * @param name Game Object name.
+         * @param container Container for results.
+         */
+        void findGameObjects(const std::string& name, std::vector<GameObject*>& container);
+
+        /**
+         * @brief Method for getting all active gameobjects.
+         * @tparam Container Container type.
+         * @param container Container object.
+         */
+        template<typename Container>
+        void getGameObjects(Container& container)
+        {
+            for (auto&& gameObject : m_gameObjects)
+            {
+                if (m_gameObjects.isRemoving(gameObject))
+                {
+                    continue;
+                }
+
+                container.push_back(gameObject);
+            }
+        }
+
     private:
         Application* m_mainApplication;
 

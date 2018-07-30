@@ -6,6 +6,7 @@
 #include "Texture.hpp"
 #include "Shader.hpp"
 #include "CubeMapTexture.hpp"
+#include "Gizmos.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {

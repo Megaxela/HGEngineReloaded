@@ -18,6 +18,11 @@ namespace CORE_MODULE_NS
     public:
 
         /**
+         * @brief Default constructor.
+         */
+        Transform();
+
+        /**
          * @brief Constructor.
          */
         explicit Transform(GameObject* owner);

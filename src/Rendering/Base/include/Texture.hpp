@@ -4,6 +4,7 @@
 #include <memory>
 #include <CurrentLogger.hpp>
 #include <Surface.hpp>
+#include <glm/vec2.hpp>
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -119,6 +120,12 @@ namespace RENDERING_BASE_MODULE_NS
         void setSurface(::UTILS_MODULE_NS::SurfacePtr ptr);
 
         /**
+         * @brief Method for getting texture size in pixels.
+         * @return Texture size in pixels.
+         */
+        glm::ivec2 size() const;
+
+        /**
          * @brief Method for changing current magnification
          * method. This value change requires setup in renderer.
          * @param value Method value.
@@ -183,6 +190,8 @@ namespace RENDERING_BASE_MODULE_NS
         Filtering m_magFiltering;
         Wrapping m_sWrapping;
         Wrapping m_tWrapping;
+
+        glm::ivec2 m_size;
 
     };
 }

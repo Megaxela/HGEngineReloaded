@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include <PhysicalResource.hpp>
 #include "Behaviours/ServiceInformationOverlay.hpp"
 
 void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
@@ -25,16 +26,21 @@ void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
     {
         auto timeStat = scene()->application()->timeStatistics();
 
+        auto totalRam = UTILS_MODULE_NS::PhysicalResource::getTotalRAM();
+
         ImGui::Text(
             "FPS: %f\n"
             "Timings:\n"
-            "    Frame : %f ms =\n"
-            "    Render: %f ms +\n"
-            "    Update: %f ms\n",
+            "    Render:  %f ms\n"
+            "  + Update:  %f ms\n"
+            "  + Physics: %f ms\n"
+            "------------------------\n"
+            "    Frame :  %f ms\n",
             1000000.0 / timeStat->frameDeltaTime().count(),
-            timeStat->frameDeltaTime ().count() / 1000.0f,
             timeStat->renderTime()     .count() / 1000.0f,
-            timeStat->updateTime()     .count() / 1000.0f
+            timeStat->updateTime()     .count() / 1000.0f,
+            timeStat->physicsTime()    .count() / 1000.0f,
+            timeStat->frameDeltaTime() .count() / 1000.0f
         );
 
         // Moving all elements to left
@@ -48,6 +54,14 @@ void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
             "Frame time",
             0,
             1000
+        );
+
+        ImGui::Text(
+            "RAM: %.1fMB / %.1fMB\n"
+            "Used RAM: %.1fMB\n",
+            (totalRam - UTILS_MODULE_NS::PhysicalResource::getFreeRAM()) / 1000.0f / 1000.0f,
+            totalRam / 1000.0f / 1000.0f,
+            UTILS_MODULE_NS::PhysicalResource::getProcessRAMUsed() / 1000.0f / 1000.0f
         );
 
         ImGui::End();

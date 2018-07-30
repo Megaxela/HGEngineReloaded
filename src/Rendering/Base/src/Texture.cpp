@@ -33,6 +33,11 @@ void RENDERING_BASE_MODULE_NS::Texture::clearExternalData()
     m_externalData = nullptr;
 }
 
+glm::ivec2 RENDERING_BASE_MODULE_NS::Texture::size() const
+{
+    return m_size;
+}
+
 ::UTILS_MODULE_NS::SurfacePtr RENDERING_BASE_MODULE_NS::Texture::surface() const
 {
     return m_surface;
@@ -41,6 +46,15 @@ void RENDERING_BASE_MODULE_NS::Texture::clearExternalData()
 void RENDERING_BASE_MODULE_NS::Texture::setSurface(::UTILS_MODULE_NS::SurfacePtr ptr)
 {
     m_surface = std::move(ptr);
+
+    if (m_surface)
+    {
+        m_size = glm::vec2(m_surface->Width, m_surface->Height);
+    }
+    else
+    {
+        m_size = glm::ivec2();
+    }
 }
 
 void RENDERING_BASE_MODULE_NS::Texture::setMagnificationMethod(RENDERING_BASE_MODULE_NS::Texture::Filtering value)

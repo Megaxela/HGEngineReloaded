@@ -22,6 +22,7 @@ namespace CORE_MODULE_NS
             FirstSystemTimer = FrameTime,
             RenderTime = 1,
             UpdateTime = 2,
+            PhysicsTime = 3,
             LastSystemTimer
         };
 
@@ -44,6 +45,15 @@ namespace CORE_MODULE_NS
          * @return Last frame time in microseconds.
          */
         std::chrono::microseconds lastFrameDeltaTime();
+
+        /**
+         * @brief Method for getting estimage physics time
+         * for several last frames. Number of frames for
+         * estimation can be changed by method
+         * `changeEstimateBuffer` with `PhysicsTime` timer.
+         * @return Estimate physics time in microseconds.
+         */
+        std::chrono::microseconds physicsTime();
 
         /**
          * @brief Method for getting estimate render time

@@ -6,37 +6,47 @@ set(CMAKE_CXX_STANDARD 17)
 option(HG_BUILD_UTILS_TESTS "Build core tests" Off)
 
 if (${HG_BUILD_UTILS_TESTS})
-    message(STATUS "No tests currently available for Utils module")
+    add_subdirectory(tests)
 endif()
 
 add_subdirectory(libraries)
 
+find_package(ZLIB REQUIRED)
+
 add_library(HGUtils STATIC
-        include/DoubleBufferContainer.hpp
-        include/Rect.hpp
-        src/Rect.cpp
-        include/Color.hpp
-        src/Color.cpp
-        include/Vertex.hpp
-        src/Vertex.cpp
-        include/Mesh.hpp
-        src/Mesh.cpp
-        include/glmex.hpp
-        src/Surface.cpp
-        include/Surface.hpp
-        src/Loaders/STBImageLoader.cpp
-        include/Loaders/STBImageLoader.hpp
+    include/DoubleBufferContainer.hpp
+    include/Rect.hpp
+    src/Rect.cpp
+    include/Color.hpp
+    src/Color.cpp
+    include/Vertex.hpp
+    src/Vertex.cpp
+    include/Mesh.hpp
+    src/Mesh.cpp
+    include/glmex.hpp
+    src/Surface.cpp
+    include/Surface.hpp
+    src/Loaders/STBImageLoader.cpp
+    include/Loaders/STBImageLoader.hpp
+    include/base64.hpp
+    include/zlib.hpp
+    src/PhysicalResource.cpp
+    include/PhysicalResource.hpp
+    include/Platform.hpp
 )
 
 target_include_directories(HGUtils PUBLIC
-        include
+    include
+    ${ZLIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(HGUtils
-        ALogger
-        glm
-        stb
-        rapidxml
+    ALogger
+    glm
+    stb
+    rapidxml
+    bytearray
+    ${ZLIB_LIBRARIES}
 )
 
 target_compile_definitions(HGUtils

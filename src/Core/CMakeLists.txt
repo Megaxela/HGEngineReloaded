@@ -39,6 +39,7 @@ target_include_directories(HGCore PUBLIC
 target_link_libraries(HGCore
         HGUtils # DoubleBufferContainer
         HGRenderingBase #
+        HGPhysicsBase
 )
 
 target_compile_definitions(HGCore

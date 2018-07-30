@@ -48,7 +48,7 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
         --len;
     }
 
-    if (len % 2 != 0)
+    if (len != 6 && len != 8)
     {
         return UTILS_MODULE_NS::Color();
     }
@@ -58,6 +58,7 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
     auto first = true;
     uint8_t firstValue = 0;
     uint8_t secondValue = 0;
+    auto isRGB = len == 6;
 
     while (len > 0)
     {
@@ -111,6 +112,16 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
         --len;
     }
 
+    uint8_t alpha = 0xFF;
+
+    if (!isRGB)
+    {
+        alpha = static_cast<uint8_t>((data & 0xFF000000) >> 24);
+    }
+
+    data <<= 8;
+    data |= alpha;
+
     return fromRaw(data);
 }
 
@@ -118,10 +129,10 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromRaw(uint32_t data)
 {
     Color c;
 
-    c.m_r = ( data & 0xFFU      )        / 255.0f;
-    c.m_g = ((data & 0xFF00U    ) >> 8 ) / 255.0f;
-    c.m_b = ((data & 0xFF0000U  ) >> 16) / 255.0f;
-    c.m_a = ((data & 0xFF000000U) >> 24) / 255.0f;
+    c.m_a = ( data & 0xFFU      )        / 255.0f;
+    c.m_b = ((data & 0xFF00U    ) >> 8 ) / 255.0f;
+    c.m_g = ((data & 0xFF0000U  ) >> 16) / 255.0f;
+    c.m_r = ((data & 0xFF000000U) >> 24) / 255.0f;
 
     return c;
 }
@@ -184,4 +195,12 @@ glm::vec4 UTILS_MODULE_NS::Color::toRGBAVector() const
 UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::brighten(const UTILS_MODULE_NS::Color& color, float factor)
 {
     return Color(color.m_r * factor, color.m_g * factor, color.m_b * factor, color.m_a);
+}
+
+bool UTILS_MODULE_NS::Color::operator==(const UTILS_MODULE_NS::Color &rhs) const
+{
+    return std::abs(rhs.m_r - m_r) < 0.01 &&
+           std::abs(rhs.m_g - m_g) < 0.01 &&
+           std::abs(rhs.m_b - m_b) < 0.01 &&
+           std::abs(rhs.m_a - m_a) < 0.01;
 }

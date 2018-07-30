@@ -11,3 +11,9 @@ set(HG_TEST_LIBS
 
     CACHE STRING "" FORCE
 )
+
+set(HG_TEST_ASSETS
+    ${HG_TEST_ASSETS}
+
+    CACHE_STRING "" FORCE
+)

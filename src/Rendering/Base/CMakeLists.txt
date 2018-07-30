@@ -34,7 +34,12 @@ add_library(HGRenderingBase STATIC
     src/Behaviours/CubeMap.cpp
     include/Behaviours/CubeMap.hpp
     include/CubeMapTexture.hpp
-    src/CubeMapTexture.cpp src/Behaviours/Sprite.cpp include/Behaviours/Sprite.hpp)
+    src/CubeMapTexture.cpp
+    src/Behaviours/Sprite.cpp
+    include/Behaviours/Sprite.hpp
+    src/Gizmos.cpp
+    include/Gizmos.hpp
+)
 
 target_include_directories(HGRenderingBase PUBLIC
         include

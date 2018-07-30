@@ -2,6 +2,7 @@
 
 #include <RenderBehaviour.hpp>
 #include <Texture.hpp>
+#include <Rect.hpp>
 
 namespace RENDERING_BASE_MODULE_NS::Behaviours
 {
@@ -42,8 +43,21 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
          */
         Texture* texture() const;
 
+        /**
+         * @brief Method for getting sprite clipping.
+         * @param rect Rectangle.
+         */
+        void setClipping(const ::UTILS_MODULE_NS::Rect& rect);
+
+        /**
+         * @brief Method for getting sprite clipping.
+         * @return Rectangle.
+         */
+        ::UTILS_MODULE_NS::Rect clipping() const;
+
     private:
         Texture* m_texture;
+        ::UTILS_MODULE_NS::Rect m_clipping;
     };
 }
 

@@ -32,7 +32,7 @@ namespace OGL_RENDERING_MODULE_NS
         /**
          * @brief Destructor.
          */
-        ~ForwardRenderingPipeline();
+        ~ForwardRenderingPipeline() override;
 
         /**
          * @brief Actual render method.
@@ -117,6 +117,20 @@ namespace OGL_RENDERING_MODULE_NS
             gl::program Program;
         };
 
+        /**
+         * @brief Class, for rendering gizmos system.
+         */
+        class GizmosVisitor
+        {
+        public:
+            void line(const ::RENDERING_BASE_MODULE_NS::Gizmos::LineData& line);
+            void sphere(const ::RENDERING_BASE_MODULE_NS::Gizmos::SphereData& sphere);
+            void hexahedron(const ::RENDERING_BASE_MODULE_NS::Gizmos::HexahedronData& hexahedron);
+
+        private:
+
+        };
+
         // Setup methods
         void setupMesh(::RENDERING_BASE_MODULE_NS::Behaviours::Mesh* behaviour);
 
@@ -179,6 +193,11 @@ namespace OGL_RENDERING_MODULE_NS
                               gl::cubemap_texture& texture,
                               GLuint side);
 
+        /**
+         * @brief Method, that's executing after all `render` methods.
+         */
+        void finishRendering();
+
         bool initFallbackShader();
 
         bool initSpriteShader();
@@ -190,10 +209,10 @@ namespace OGL_RENDERING_MODULE_NS
         std::multimap<float, ::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_sortedBehaviours;
 
         // Fallback mesh program
-        gl::program m_meshFallback;
+        ::RENDERING_BASE_MODULE_NS::Shader m_meshFallback;
 
         // Shader for sprite rendering
-        gl::program m_spriteShader;
+        ::RENDERING_BASE_MODULE_NS::Shader m_spriteShader;
 
         // Sprite mesh
         MeshData* m_spriteData;

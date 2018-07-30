@@ -7,3 +7,9 @@
 [submodule "src/Rendering/Base/libraries/imgui"]
 	path = src/Rendering/Base/libraries/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "src/Utils/libraries/ByteArray"]
+	path = src/Utils/libraries/ByteArray
+	url = https://github.com/Megaxela/ByteArray.git
+[submodule "src/Physics/PlayRho/libraries/PlayRho"]
+	path = src/Physics/PlayRho/libraries/PlayRho
+	url = https://github.com/louis-langholtz/PlayRho.git

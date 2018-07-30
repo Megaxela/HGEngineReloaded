@@ -11,8 +11,10 @@ if (${HGRenderingOGL_USE_GLFW} AND ${HGRenderingOGL_USE_Qt})
 endif()
 
 if (${HGRenderingOGL_USE_GLFW})
-    message("Rendering library: GLFW")
+    message(STATUS "Rendering library: GLFW")
     set(RENDERER_DEFINITION GRAPHICS_USE_GLFW)
+
+    set(OpenGL_GL_PREFERENCE LEGACY)
 
     if (WIN32)
         set(RENDERER_LIBRARY glfw3)
@@ -25,7 +27,7 @@ if (${HGRenderingOGL_USE_GLFW})
 #    set(RENDERER_LIBRARY ${GLFW_LIBRARIES} ${GLFW_DEPENDENCIES})
 
 elseif(${HGRenderingOGL_USE_Qt})
-    message("Rendering library: Qt")
+    message(STATUS "Rendering library: Qt")
     set(RENDERER_DEFINITION GRAPHICS_USE_QT)
 
 else()

@@ -1,20 +1,43 @@
 #include <rapidxml.hpp>
 #include "Behaviours/TiledMap.hpp"
+#include <charconv>
+#include <base64.hpp>
+#include <zlib.hpp>
+
+STD_MODULE_NS::Behaviours::TiledMap::TiledMap() :
+    m_properties(),
+    m_tilesets(),
+    m_root()
+{
+
+}
+
+STD_MODULE_NS::Behaviours::TiledMap::~TiledMap()
+{
+    clear();
+}
+
+const std::vector<STD_MODULE_NS::Behaviours::TiledMap::Tileset *> &STD_MODULE_NS::Behaviours::TiledMap::tilesets() const
+{
+    return m_tilesets;
+}
+
+const STD_MODULE_NS::Behaviours::TiledMap::Group *STD_MODULE_NS::Behaviours::TiledMap::rootGroup() const
+{
+    return &m_root;
+}
 
 bool STD_MODULE_NS::Behaviours::TiledMap::loadMap(CORE_MODULE_NS::ResourceAccessor::DataPtr data)
 {
     // Parsing received data
     rapidxml::xml_document<> doc{};
 
+    // RapidXML requires data copy to edit it
+    std::string copy(reinterpret_cast<const char*>(data->data()),
+                     data->size());
+
     // 0 - no flags
-    doc.parse<0>(
-        const_cast<char*>(
-            std::string(
-                reinterpret_cast<const char*>(data->data()),
-                data->size()
-            ).c_str()
-        )
-    );
+    doc.parse<0>(const_cast<char*>(copy.c_str()));
 
     auto* mapNode = doc.first_node("map");
 
@@ -23,6 +46,83 @@ bool STD_MODULE_NS::Behaviours::TiledMap::loadMap(CORE_MODULE_NS::ResourceAccess
         Error() << "Can't find root <map> tag.";
         return false;
     }
+
+    rapidxml::xml_attribute<>* attribute;
+
+    // Parsing map metadata
+    if (!(attribute = mapNode->first_attribute("version")))
+    {
+        return false;
+    }
+
+    m_properties.version = attribute->value();
+
+    if (!(attribute = mapNode->first_attribute("tiledversion")))
+    {
+        return false;
+    }
+
+    m_properties.tiledVersion = attribute->value();
+
+    if (!(attribute = mapNode->first_attribute("orientation")))
+    {
+        return false;
+    }
+
+    std::string_view sv(attribute->value(), attribute->value_size());
+
+    if (sv == "orthogonal")
+    {
+        m_properties.orientation = Orientation::Orthogonal;
+    }
+    else
+    {
+        Warning() << sv << " orientation is not supported.";
+    }
+
+    if (!(attribute = mapNode->first_attribute("renderorder")))
+    {
+        return false;
+    }
+
+    sv = std::string_view(attribute->value(), attribute->value_size());
+
+    if (sv == "right-down")
+    {
+        m_properties.renderOrder = TileRenderOrder::RightDown;
+    }
+    else
+    {
+        Warning() << sv << " render order is not supported.";
+    }
+
+    if (!(attribute = mapNode->first_attribute("width")))
+    {
+        return false;
+    }
+
+    m_properties.size.x = std::atoi(attribute->value());
+
+    if (!(attribute = mapNode->first_attribute("height")))
+    {
+        return false;
+    }
+
+    m_properties.size.y = std::atoi(attribute->value());
+
+    if (!(attribute = mapNode->first_attribute("tilewidth")))
+    {
+        return false;
+    }
+
+    m_properties.tileSize.x = std::atoi(attribute->value());
+
+    if (!(attribute = mapNode->first_attribute("tileheight")))
+    {
+        return false;
+    }
+
+    m_properties.tileSize.y = std::atoi(attribute->value());
 
     return proceedRootNode(mapNode, &m_root);
 }
@@ -38,19 +138,38 @@ void STD_MODULE_NS::Behaviours::TiledMap::clear()
 
     m_tilesets.clear();
 
-    m_tileSize = {0, 0};
-    m_isInfinite = false;
-    m_size = {0, 0};
+    m_properties = MapProperties();
+}
+
+const STD_MODULE_NS::Behaviours::TiledMap::MapProperties &STD_MODULE_NS::Behaviours::TiledMap::properties() const
+{
+    return m_properties;
 }
 
 void STD_MODULE_NS::Behaviours::TiledMap::clearGroup(STD_MODULE_NS::Behaviours::TiledMap::Group* grp)
 {
     for (auto&& layer : grp->layers)
     {
-        if (layer->type == Layer::Type::Group)
+        switch (layer->type)
         {
+        case Layer::Type::Group:
             clearGroup(static_cast<Group*>(layer));
+            break;
+        case Layer::Type::Object:
+        {
+            auto objectLayer = static_cast<ObjectLayer*>(layer);
+
+            for (auto&& object : objectLayer->objects)
+            {
+                delete object;
+            }
+
+            break;
         }
+        case Layer::Type::Tile:break;
+        case Layer::Type::Image:break;
+        }
+
 
         delete layer;
     }
@@ -58,9 +177,29 @@ void STD_MODULE_NS::Behaviours::TiledMap::clearGroup(STD_MODULE_NS::Behaviours::
     grp->layers.clear();
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* root, Group* target)
+bool STD_MODULE_NS::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* root, Group* target, bool proceedLikeLayer)
 {
-    for (auto* node = root->first_node(); node; node->next_sibling())
+    if (proceedLikeLayer)
+    {
+        if (!proceedBaseLayer(root, target))
+        {
+            return false;
+        }
+
+        rapidxml::xml_attribute<>* attribute = nullptr;
+
+        if ((attribute = root->first_attribute("offsetx")))
+        {
+            target->offset.x = std::atoi(attribute->value());
+        }
+
+        if ((attribute = root->first_attribute("offsety")))
+        {
+            target->offset.y = std::atoi(attribute->value());
+        }
+    }
+
+    for (auto* node = root->first_node(); node; node = node->next_sibling())
     {
         std::string_view name(node->name());
 
@@ -75,7 +214,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* 
         {
             auto newGroup = new Group();
 
-            if (!proceedRootNode(node, newGroup))
+            if (!proceedRootNode(node, newGroup, true))
             {
                 return false;
             }
@@ -126,9 +265,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
             return false;
         }
 
-        tileset->firstGID = static_cast<uint32_t>(
-            std::atoi(std::string(attribute->value(), attribute->value_size()).c_str())
-        );
+        tileset->firstGID = std::atoi(attribute->value());
 
         if (tileset->firstGID == 0)
         {
@@ -154,8 +291,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
             return false;
         }
 
-        tileset->tileSize.x =
-            std::atoi(std::string(attribute->value(), attribute->value_size()).c_str());
+        tileset->tileSize.x = std::atoi(attribute->value());
     }
 
     { // Height
@@ -165,8 +301,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
             return false;
         }
 
-        tileset->tileSize.y =
-            std::atoi(std::string(attribute->value(), attribute->value_size()).c_str());
+        tileset->tileSize.y = std::atoi(attribute->value());
     }
 
     { // Spacing
@@ -176,9 +311,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
             return false;
         }
 
-        tileset->spacing = static_cast<uint32_t>(
-            std::atoi(std::string(attribute->value(), attribute->value_size()).c_str())
-        );
+        tileset->spacing = std::atoi(attribute->value());
     }
 
     { // Tile Count
@@ -188,9 +321,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
             return false;
         }
 
-        tileset->spacing = static_cast<uint32_t>(
-            std::atoi(std::string(attribute->value(), attribute->value_size()).c_str())
-        );
+        tileset->tileCount = std::atoi(attribute->value());
     }
 
     { // Columns
@@ -200,9 +331,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
             return false;
         }
 
-        tileset->spacing = static_cast<uint32_t>(
-            std::atoi(std::string(attribute->value(), attribute->value_size()).c_str())
-        );
+        tileset->columns = std::atoi(attribute->value());
     }
 
     { // Image source
@@ -246,7 +375,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_n
     // Iterating through objects
     for (auto* objectNode = node->first_node("object");
          objectNode;
-         objectNode->next_sibling())
+         objectNode = objectNode->next_sibling())
     {
         if (!proceedObjectNode(objectNode, objectGroup))
         {
@@ -302,14 +431,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>
 {
     for (auto propertyNode = node->first_node("property");
          propertyNode;
-         propertyNode = node->next_sibling())
+         propertyNode = propertyNode->next_sibling())
     {
-        auto* typeAttribute = propertyNode->first_attribute("type");
-
-        if (!typeAttribute)
-        {
-            return false;
-        }
 
         auto* valueAttribute = propertyNode->first_attribute("value");
 
@@ -318,32 +441,50 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>
             return false;
         }
 
-        std::string_view type(typeAttribute->value(), typeAttribute->value_size());
+        auto* nameAttribute = propertyNode->first_attribute("name");
+
+        if (!nameAttribute)
+        {
+            return false;
+        }
+
+        auto* typeAttribute = propertyNode->first_attribute("type");
+
         std::string value(valueAttribute->value(), valueAttribute->value_size());
+        std::string name(nameAttribute->value(), nameAttribute->value_size());
+
+        // It's string
+        if (!typeAttribute)
+        {
+            properties.emplace_back(name, Property(value, Property::Type::String));
+            continue;
+        }
+
+        std::string_view type(typeAttribute->value(), typeAttribute->value_size());
 
         if (type == "bool")
         {
-            properties.emplace_back(value == "true");
+            properties.emplace_back(name, value == "true");
         }
         else if (type == "int")
         {
-            properties.emplace_back(std::atoi(value.c_str()));
+            properties.emplace_back(name, std::atoi(value.c_str()));
         }
         else if (type == "color")
         {
-            properties.emplace_back(UTILS_MODULE_NS::Color::fromHex(value));
+            properties.emplace_back(name, UTILS_MODULE_NS::Color::fromHex(value));
         }
         else if (type == "file")
         {
-            properties.emplace_back(value, Property::Type::File);
+            properties.emplace_back(name, Property(value, Property::Type::File));
         }
         else if (type == "float")
         {
-            properties.emplace_back(std::atof(value.c_str()));
+            properties.emplace_back(name, (float) std::atof(value.c_str()));
         }
-        else // String
+        else
         {
-            properties.emplace_back(value, Property::Type::String);
+            Warning() << "Found unknown type \"" << type << "\".";
         }
     }
 
@@ -371,6 +512,22 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>*
 
     layer->name = std::string(childAttribute->value(), childAttribute->value_size());
 
+
+    if ((childAttribute = node->first_attribute("offsetx")))
+    {
+        layer->offset.x = std::atoi(childAttribute->value());
+    }
+
+    if ((childAttribute = node->first_attribute("offsety")))
+    {
+        layer->offset.y = std::atoi(childAttribute->value());
+    }
+
+    if ((childAttribute = node->first_attribute("opacity")))
+    {
+        layer->opacity = std::atof(childAttribute->value());
+    }
+
     return true;
 }
 
@@ -388,13 +545,18 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>
         }
     }
 
+    if ((childAttribute = node->first_attribute("name")))
     {
-        if (!(childAttribute = node->first_attribute("name")))
+        object->name = std::string(childAttribute->value(), childAttribute->value_size());
+    }
+
+    {
+        if (!(childAttribute = node->first_attribute("id")))
         {
             return false;
         }
 
-        object->name = std::string(childAttribute->value(), childAttribute->value_size());
+        object->id = std::atoi(childAttribute->value());
     }
 
     {
@@ -403,11 +565,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>
             return false;
         }
 
-        object->position.x = static_cast<uint32_t>(
-            std::atoi(
-                std::string(childAttribute->value(), childAttribute->value_size()).c_str()
-            )
-        );
+        object->position.x = std::atof(childAttribute->value());
     }
 
     {
@@ -416,11 +574,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>
             return false;
         }
 
-        object->position.y = static_cast<uint32_t>(
-            std::atoi(
-                std::string(childAttribute->value(), childAttribute->value_size()).c_str()
-            )
-        );
+        object->position.y = std::atof(childAttribute->value());
     }
 
     {
@@ -452,8 +606,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_n
         return false;
     }
 
-    rectangle->size.x =
-        std::atoi(std::string(childAttribute->value(), childAttribute->value_size()).c_str());
+    rectangle->size.x = std::atoi(childAttribute->value());
 
     if (!(childAttribute = node->first_attribute("height")))
     {
@@ -461,8 +614,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_n
         return false;
     }
 
-    rectangle->size.y =
-        std::atoi(std::string(childAttribute->value(), childAttribute->value_size()).c_str());
+    rectangle->size.y = std::atoi(childAttribute->value());
 
     layer->objects.push_back(rectangle);
 
@@ -504,8 +656,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_nod
         return false;
     }
 
-    ellipse->size.x =
-        std::atoi(std::string(childAttribute->value(), childAttribute->value_size()).c_str());
+    ellipse->size.x = std::atoi(childAttribute->value());
 
     if (!(childAttribute = node->first_attribute("height")))
     {
@@ -513,8 +664,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_nod
         return false;
     }
 
-    ellipse->size.y =
-        std::atoi(std::string(childAttribute->value(), childAttribute->value_size()).c_str());
+    ellipse->size.y = std::atoi(childAttribute->value());
 
     layer->objects.push_back(ellipse);
 
@@ -548,7 +698,57 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_nod
     }
 
     // Points has format "0,0 1,1 2,2 3,3 4,4"
-    
+    auto pointsLength = childAttribute->value_size();
+    const auto* pointsBegin = childAttribute->value();
+    const auto* pointsEnd = childAttribute->value() + pointsLength;
+
+    while (pointsBegin != pointsEnd)
+    {
+        glm::ivec2 point;
+
+        auto convResult = std::from_chars(pointsBegin, pointsEnd, point.x);
+
+        if ((int) convResult.ec != 0)
+        {
+            delete polygon;
+            return false;
+        }
+
+        pointsBegin = convResult.ptr;
+
+        if (*pointsBegin != ',')
+        {
+            delete polygon;
+            return false;
+        }
+
+        // Skipping ','
+        ++pointsBegin;
+
+        convResult = std::from_chars(pointsBegin, pointsEnd, point.y);
+
+        if ((int) convResult.ec != 0)
+        {
+            delete polygon;
+            return false;
+        }
+
+        pointsBegin = convResult.ptr;
+
+        if (pointsBegin != pointsEnd)
+        {
+            if (*pointsBegin != ' ')
+            {
+                delete polygon;
+                return false;
+            }
+
+            // Skipping space
+            ++pointsBegin;
+        }
+
+        polygon->points.push_back(point);
+    }
 
     layer->objects.push_back(polygon);
 
@@ -558,17 +758,305 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_nod
 bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileObject(rapidxml::xml_node<>* node,
                                                             STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
 {
-    return false;
+    auto tile = new ObjectLayer::Tile();
+
+    rapidxml::xml_attribute<>* childAttribute = nullptr;
+
+    if (!proceedBaseObject(node, tile))
+    {
+        delete tile;
+        return false;
+    }
+
+    if (!(childAttribute = node->first_attribute("gid")))
+    {
+        delete tile;
+        return false;
+    }
+
+    tile->gid = static_cast<uint32_t>(std::atoi(childAttribute->value()));
+
+    if (!(childAttribute = node->first_attribute("width")))
+    {
+        delete tile;
+        return false;
+    }
+
+    tile->size.x = std::atoi(childAttribute->value());
+
+    if (!(childAttribute = node->first_attribute("height")))
+    {
+        delete tile;
+        return false;
+    }
+
+    tile->size.y = std::atoi(childAttribute->value());
+
+    if ((childAttribute = node->first_attribute("rotation")))
+    {
+        tile->rotation = std::atoi(childAttribute->value());
+    }
+
+    layer->objects.push_back(tile);
+
+    return true;
 }
 
 bool STD_MODULE_NS::Behaviours::TiledMap::proceedTextObject(rapidxml::xml_node<>* node,
                                                             STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
 {
-    return false;
+    auto text = new ObjectLayer::Text();
+
+    rapidxml::xml_node<>* textNode = nullptr;
+    rapidxml::xml_attribute<>* attribute = nullptr;
+
+    if (!proceedBaseObject(node, text))
+    {
+        delete text;
+        return false;
+    }
+
+    if (!(textNode = node->first_node("text")))
+    {
+        delete text;
+        return false;
+    }
+
+    if (!(attribute = node->first_attribute("width")))
+    {
+        delete text;
+        return false;
+    }
+
+    text->size.x = std::atof(attribute->value());
+
+    if (!(attribute = node->first_attribute("height")))
+    {
+        delete text;
+        return false;
+    }
+
+    text->size.y = std::atof(attribute->value());
+
+    if (!(attribute = textNode->first_attribute("fontfamily")))
+    {
+        delete text;
+        return false;
+    }
+
+    text->fontFamily = std::string(attribute->value(), attribute->value_size());
+
+    if ((attribute = textNode->first_attribute("wrap")))
+    {
+        text->isWrappingEnabled = std::atoi(attribute->value()) == 1;
+    }
+
+    if ((attribute = textNode->first_attribute("color")))
+    {
+        text->color = UTILS_MODULE_NS::Color::fromHex(attribute->value(), attribute->value_size());
+    }
+
+    if ((attribute = textNode->first_attribute("bold")))
+    {
+        text->isBold = std::atoi(attribute->value()) == 1;
+    }
+
+    if ((attribute = textNode->first_attribute("italic")))
+    {
+        text->isItalic = std::atoi(attribute->value()) == 1;
+    }
+
+    if ((attribute = textNode->first_attribute("underline")))
+    {
+        text->isUnderline = std::atoi(attribute->value()) == 1;
+    }
+
+    if ((attribute = textNode->first_attribute("strikeout")))
+    {
+        text->isStrikeout = std::atoi(attribute->value()) == 1;
+    }
+
+    if ((attribute = textNode->first_attribute("halign")))
+    {
+        std::string_view sv(attribute->value(), attribute->value_size());
+
+        if (sv == "center")
+        {
+            text->horizontalAlign = ObjectLayer::Text::HorizontalAlign::Center;
+        }
+        else if (sv == "left")
+        {
+            text->horizontalAlign = ObjectLayer::Text::HorizontalAlign::Left;
+        }
+        else if (sv == "right")
+        {
+            text->horizontalAlign = ObjectLayer::Text::HorizontalAlign::Right;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    if ((attribute = textNode->first_attribute("valign")))
+    {
+        std::string_view sv(attribute->value(), attribute->value_size());
+
+        if (sv == "top")
+        {
+            text->verticalAlign = ObjectLayer::Text::VerticalAlign::Top;
+        }
+        else if (sv == "center")
+        {
+            text->verticalAlign = ObjectLayer::Text::VerticalAlign::Center;
+        }
+        else if (sv == "bottom")
+        {
+            text->verticalAlign = ObjectLayer::Text::VerticalAlign::Bottom;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    text->value = std::string(textNode->value(), textNode->value_size());
+
+    layer->objects.push_back(text);
+
+    return true;
 }
 
 bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* node,
                                                           STD_MODULE_NS::Behaviours::TiledMap::Group* target)
 {
-    
+    auto tileLayer = new TileLayer();
+
+    rapidxml::xml_node<>* childNode = nullptr;
+    rapidxml::xml_attribute<>* childAttribute = nullptr;
+
+    if (!proceedBaseLayer(node, tileLayer))
+    {
+        delete tileLayer;
+        return false;
+    }
+
+    if (!(childNode = node->first_node("data")))
+    {
+        delete tileLayer;
+        return false;
+    }
+
+    if (!(childAttribute = node->first_attribute("width")))
+    {
+        delete tileLayer;
+        return false;
+    }
+
+    tileLayer->size.x = std::atoi(childAttribute->value());
+
+    if (!(childAttribute = node->first_attribute("height")))
+    {
+        delete tileLayer;
+        return false;
+    }
+
+    tileLayer->size.y = std::atoi(childAttribute->value());
+
+    tileLayer->tiles.reserve(static_cast<std::size_t>(tileLayer->size.x * tileLayer->size.y));
+
+    std::string_view encoding;
+    std::string_view compression;
+
+    if (!(childAttribute = childNode->first_attribute("encoding")))
+    {
+        delete tileLayer;
+        return false;
+    }
+
+    encoding = childAttribute->value();
+
+    if ((childAttribute = childNode->first_attribute("compression")))
+    {
+        compression = childAttribute->value();
+    }
+
+    // Truncate whitespaces
+    auto dataValue = childNode->value();
+    auto dataSize = childNode->value_size();
+
+    // Begin
+    while (*dataValue && dataSize &&
+           (*dataValue == ' ' || *dataValue == '\n'))
+    {
+        ++dataValue;
+        --dataSize;
+    }
+
+    // End
+    auto iter = dataValue + dataSize - 1;
+
+    while (iter > dataValue &&
+           (*dataValue == ' ' || *dataValue == '\n'))
+    {
+        --dataSize;
+        --iter;
+    }
+
+    if (!performTileLayerDecoding(dataValue,
+                                  dataSize,
+                                  encoding,
+                                  compression,
+                                  tileLayer->tiles))
+    {
+        delete tileLayer;
+        return false;
+    }
+
+    target->layers.push_back(tileLayer);
+
+    return true;
+}
+
+bool STD_MODULE_NS::Behaviours::TiledMap::performTileLayerDecoding(const char *data, std::size_t dataSize,
+                                                                   std::string_view encoding,
+                                                                   std::string_view compression,
+                                                                   std::vector<uint32_t> &result)
+{
+    if (encoding == "base64")
+    {
+        auto decoded = UTILS_MODULE_NS::Base64::Decode<char>(data, dataSize);
+
+        if (compression == "zlib")
+        {
+            bool inflateResult = false;
+
+            decoded = UTILS_MODULE_NS::ZLib::Inflate<char>(decoded, &inflateResult);
+
+            if (!inflateResult)
+            {
+                return false;
+            }
+        }
+
+        auto castedData = (uint32_t*) decoded.data();
+
+        for (std::size_t i = 0; i < decoded.size() / 4; ++i)
+        {
+            result.push_back(*(castedData++));
+        }
+    }
+    else if (encoding == "csv")
+    {
+        return proceedCSVTileData(data, dataSize, result);
+    }
+
+    return true;
+}
+
+bool STD_MODULE_NS::Behaviours::TiledMap::proceedCSVTileData(const char *data, std::size_t dataSize,
+                                                             std::vector<uint32_t> &result)
+{
+    Warning() << "CSV does not supported yet.";
+    return false;
 }

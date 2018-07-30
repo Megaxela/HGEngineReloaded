@@ -55,8 +55,8 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
     m_textureNumber(0),
     m_behavioursCache(),
     m_sortedBehaviours(),
-    m_meshFallback(gl::invalid_id),
-    m_spriteShader(gl::invalid_id),
+    m_meshFallback(),
+    m_spriteShader(),
     m_spriteData(nullptr)
 {
 
@@ -88,12 +88,9 @@ bool HG::Rendering::OpenGL::ForwardRenderingPipeline::initFallbackShader()
 {
     Info() << "Creating fallback shader.";
 
-    gl::shader vertexShader(GL_VERTEX_SHADER);
-    gl::shader fragmentShader(GL_FRAGMENT_SHADER);
-
-    vertexShader.set_source(
+    m_meshFallback.setShaderText(
         R"(
-#version 420 core
+#ifdef VertexShader
 layout (location = 0) in vec3 inPosition;
 layout (location = 2) in vec2 inTexCoords;
 
@@ -108,18 +105,9 @@ void main()
     gl_Position = projection * view * model * vec4(inPosition, 1.0f);
     TexCoords = inTexCoords;
 }
-)"
-    );
+#endif
 
-    if (!vertexShader.compile())
-    {
-        Error() << "Can't compile fallback vertex shader.";
-        return false;
-    }
-
-    fragmentShader.set_source(
-        R"(
-#version 420 core
+#ifdef FragmentShader
 out vec4 FragColor;
 
 in vec2 TexCoords;
@@ -131,29 +119,9 @@ void main()
 {
     FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
+#endif
 )"
     );
-
-    if (!fragmentShader.compile())
-    {
-        Error() << "Can't compile fallback fragment shader.";
-        return false;
-    }
-
-    m_meshFallback = std::move(gl::program());
-
-    if (!m_meshFallback.is_valid())
-    {
-        Error() << "Fallback shader is not valid.";
-    }
-
-    m_meshFallback.attach_shader(vertexShader);
-    m_meshFallback.attach_shader(fragmentShader);
-    if (!m_meshFallback.link())
-    {
-        Error() << "Can't link fallback shader.";
-        return false;
-    }
 
     return true;
 }
@@ -162,12 +130,9 @@ bool HG::Rendering::OpenGL::ForwardRenderingPipeline::initSpriteShader()
 {
     Info() << "Creating sprite shader";
 
-    gl::shader vertexShader(GL_VERTEX_SHADER);
-    gl::shader fragmentShader(GL_FRAGMENT_SHADER);
-
-    vertexShader.set_source(
+    m_spriteShader.setShaderText(
         R"(
-#version 420 core
+#ifdef VertexShader
 layout (location = 0) in vec3 inPosition;
 layout (location = 2) in vec2 inTexCoords;
 
@@ -183,18 +148,9 @@ void main()
     gl_Position = projection * view * model * vec4(inPosition * vec3(size, 1.0f), 1.0f);
     TexCoords = inTexCoords;
 }
-)"
-    );
+#endif
 
-    if (!vertexShader.compile())
-    {
-        Error() << "Can't compile sprite vertex shader.";
-        return false;
-    }
-
-    fragmentShader.set_source(
-        R"(
-#version 420 core
+#ifdef FragmentShader
 out vec4 FragColor;
 
 in vec2 TexCoords;
@@ -204,31 +160,21 @@ uniform sampler2D tex;
 
 void main()
 {
-    FragColor = texture(tex, TexCoords).rgba;
+    vec4 color = texture(tex, TexCoords).rgba;
+
+    if (color.a >= 0.01)
+    {
+        FragColor = color;
+    }
+    else
+    {
+        discard;
+    }
 }
-)"
-    );
+#endif
+)");
 
-    if (!fragmentShader.compile())
-    {
-        Error() << "Can't compile sprite fragment shader.";
-        return false;
-    }
-
-    m_spriteShader = std::move(gl::program());
-
-    if (!m_spriteShader.is_valid())
-    {
-        Error() << "Sprite shader is not valid.";
-    }
-
-    m_spriteShader.attach_shader(vertexShader);
-    m_spriteShader.attach_shader(fragmentShader);
-    if (!m_spriteShader.link())
-    {
-        Error() << "Can't link sprite shader. Error: " << m_spriteShader.info_log();
-        return false;
-    }
+    setup(&m_spriteShader);
 
     // Initializing MeshData
     m_spriteData = new MeshData();
@@ -241,13 +187,15 @@ void main()
 
     ::UTILS_MODULE_NS::Mesh mesh;
 
+    float scale = 0.01f;
+
     mesh.Vertices = {
-        {{-0.5f, -0.5f,  0.5f}, {1.0f,  0.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {0.0f,  0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {0.0f,  1.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {0.0f,  1.0f}},
-        {{-0.5f,  0.5f,  0.5f}, {1.0f,  1.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {1.0f,  0.0f}}
+        {{-0.5f * scale, -0.5f * scale,  0.5f * scale}, {1.0f,  0.0f}},
+        {{ 0.5f * scale, -0.5f * scale,  0.5f * scale}, {0.0f,  0.0f}},
+        {{ 0.5f * scale,  0.5f * scale,  0.5f * scale}, {0.0f,  1.0f}},
+        {{ 0.5f * scale,  0.5f * scale,  0.5f * scale}, {0.0f,  1.0f}},
+        {{-0.5f * scale,  0.5f * scale,  0.5f * scale}, {1.0f,  1.0f}},
+        {{-0.5f * scale, -0.5f * scale,  0.5f * scale}, {1.0f,  0.0f}}
     };
 
     mesh.Indices = {
@@ -745,38 +693,48 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODULE_NS::GameObject* gameObject,
                                                                      ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite* spriteBehaviour)
 {
-    m_spriteShader.use();
+    auto* program = m_spriteShader.externalData<ShaderData>();
+    auto* spriteExternal = spriteBehaviour->texture()->externalData<TextureData>();
+
+    if (!spriteExternal)
+    {
+        // todo: Add fallback sprite image
+        Error() << "Sprite texture was not defined.";
+        return;
+    }
+
+    program->Program.use();
 
     GLint location;
 
-    if ((location = m_spriteShader.uniform_location("model")) != -1)
+    if ((location = program->Program.uniform_location("model")) != -1)
     {
-        m_spriteShader.set_uniform(
+        program->Program.set_uniform(
             location,
             gameObject->transform()->localToWorldMatrix()
         );
     }
 
-    if ((location = m_spriteShader.uniform_location("view")) != -1)
+    if ((location = program->Program.uniform_location("view")) != -1)
     {
-        m_spriteShader.set_uniform(
+        program->Program.set_uniform(
             location,
             ::RENDERING_BASE_MODULE_NS::Camera::active()->viewMatrix()
         );
     }
 
-    if ((location = m_spriteShader.uniform_location("projection")) != -1)
+    if ((location = program->Program.uniform_location("projection")) != -1)
     {
-        m_spriteShader.set_uniform(
+        program->Program.set_uniform(
             location,
             ::RENDERING_BASE_MODULE_NS::Camera::active()
                 ->projectionMatrix()
         );
     }
 
-    if ((location = m_spriteShader.uniform_location("size")) != -1)
+    if ((location = program->Program.uniform_location("size")) != -1)
     {
-        m_spriteShader.set_uniform(
+        program->Program.set_uniform(
             location,
             glm::vec2(
                 spriteBehaviour->texture()->surface()->Width,
@@ -786,15 +744,15 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODU
     }
 
 
-    if ((location = m_spriteShader.uniform_location("tex")) != -1)
+    if ((location = program->Program.uniform_location("tex")) != -1)
     {
-        m_spriteShader.set_uniform_1i(
+        program->Program.set_uniform_1i(
             location,
             m_textureNumber
         );
 
-        spriteBehaviour->texture()->externalData<TextureData>()->Texture.set_active(m_textureNumber);
-        spriteBehaviour->texture()->externalData<TextureData>()->Texture.bind();
+        spriteExternal->Texture.set_active(m_textureNumber);
+        spriteExternal->Texture.bind();
     }
 
     m_spriteData->VAO.bind();
@@ -841,7 +799,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
         meshBehaviour->material()->shader() == nullptr ||
         meshBehaviour->material()->shader()->externalData<ShaderData>() == nullptr)
     {
-        program = &m_meshFallback;
+        program = &m_meshFallback.externalData<ShaderData>()->Program;
 
         program->use();
     }
@@ -961,6 +919,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
         {
             auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::DirectionalLight*>(light);
 
+            // todo: Finish directional light uniform info
             ++directionalLightIndex;
             break;
         }
@@ -968,6 +927,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
         {
 //            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::*>(light);
 
+            // todo: Finish stop light uniform info
             ++spotLightIndex;
             break;
         }

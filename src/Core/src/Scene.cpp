@@ -61,3 +61,38 @@ void CORE_MODULE_NS::Scene::addGameObject(CORE_MODULE_NS::GameObject* gameObject
     gameObject->setParentScene(this);
     m_gameObjects.add(gameObject);
 }
+
+CORE_MODULE_NS::GameObject *CORE_MODULE_NS::Scene::findGameObject(const std::string &name)
+{
+    for (auto&& gameObject : m_gameObjects)
+    {
+        if (m_gameObjects.isRemoving(gameObject))
+        {
+            continue;
+        }
+
+        if (gameObject->name() == name)
+        {
+            return gameObject;
+        }
+    }
+
+    return nullptr;
+}
+
+void CORE_MODULE_NS::Scene::findGameObjects(const std::string &name,
+                                            std::vector<CORE_MODULE_NS::GameObject *> &container)
+{
+    for (auto&& gameObject : m_gameObjects)
+    {
+        if (m_gameObjects.isRemoving(gameObject))
+        {
+            continue;
+        }
+
+        if (gameObject->name() == name)
+        {
+            container.push_back(gameObject);
+        }
+    }
+}
