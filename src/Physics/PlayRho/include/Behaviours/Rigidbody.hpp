@@ -41,8 +41,6 @@ namespace PLAYRHO_PHYSICS_MODULE_NS::Behaviours
 
         void onUpdate() override;
 
-    protected:
-
 
     private:
         void applyCurrentGameObjectTransform();

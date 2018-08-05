@@ -31,6 +31,12 @@ namespace CORE_MODULE_NS
              */
             virtual const std::byte* data() const = 0;
 
+            /**
+             * @brief Method for getting data id.
+             * @return ID.
+             */
+            virtual std::string id() const = 0;
+
         };
 
         using DataPtr = std::shared_ptr<Data>;

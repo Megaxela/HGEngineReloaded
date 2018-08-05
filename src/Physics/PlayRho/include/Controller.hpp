@@ -4,6 +4,7 @@
 #include <chrono>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include "PhysicsController.hpp"
+#include "DebugDraw.hpp"
 
 namespace PLAYRHO_PHYSICS_MODULE_NS
 {
@@ -30,6 +31,8 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
 
 
     private:
+
+        DebugDraw m_drawer;
 
         playrho::StepConf m_stepConfiguration;
 

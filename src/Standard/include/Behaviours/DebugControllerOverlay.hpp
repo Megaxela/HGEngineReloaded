@@ -16,6 +16,8 @@ namespace STD_MODULE_NS::Behaviours
 
     private:
 
+        void proceedParentedGameObjects(::CORE_MODULE_NS::Transform* parent);
+
         std::vector<::CORE_MODULE_NS::GameObject*> m_gameObjects;
 
     };

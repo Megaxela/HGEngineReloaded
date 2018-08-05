@@ -241,8 +241,6 @@ in VS_OUT {
     vec2 TexCoords;
 } fs_in;
 
-in vec2 TexCoords;
-
 uniform vec3 viewPos;
 
 // texture samplers

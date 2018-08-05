@@ -50,6 +50,12 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onStart()
             ->physicsController<Controller>()
             ->world()
             ->CreateBody(m_configuration);
+
+        m_body->CreateFixture(
+            playrho::d2::Shape{
+                playrho::d2::PolygonShapeConf{}.SetAsBox(1, 1)
+            }
+        );
     }
 
     applyCurrentGameObjectTransform();
@@ -75,7 +81,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onUpdate()
         glm::quat(glm::vec3(
             0.0f,
             0.0f,
-            m_body->GetAngle() + M_PI
+            m_body->GetAngle()
         ))
     );
 }

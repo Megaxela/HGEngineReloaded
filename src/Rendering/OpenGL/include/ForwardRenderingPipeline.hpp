@@ -7,6 +7,7 @@
 #include <gl/program.hpp>
 #include <gl/vertex_array.hpp>
 #include <Behaviours/Sprite.hpp>
+#include "GizmosRenderer.hpp"
 
 namespace OGL_RENDERING_MODULE_NS
 {
@@ -24,6 +25,48 @@ namespace OGL_RENDERING_MODULE_NS
     class ForwardRenderingPipeline : public RENDERING_BASE_MODULE_NS::RenderingPipeline
     {
     public:
+
+
+
+        /**
+         * @brief External data implementation for mesh rendering behaviour
+         */
+        class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::ExternalData
+        {
+        public:
+
+            gl::vertex_array VAO;
+            gl::buffer VBO;
+            gl::buffer EBO;
+        };
+
+        /**
+         * @brief External data implementation for textures.
+         */
+        class TextureData : public ::RENDERING_BASE_MODULE_NS::Texture::TextureExternalData
+        {
+        public:
+
+            gl::texture_2d Texture;
+        };
+
+        class CubeMapTextureData : public ::RENDERING_BASE_MODULE_NS::CubeMapTexture::CubeMapTextureExternalData
+        {
+        public:
+
+            gl::cubemap_texture Texture;
+        };
+
+        /**
+         * @brief External data implementation for shaders.
+         */
+        class ShaderData : public ::RENDERING_BASE_MODULE_NS::Shader::ShaderExternalData
+        {
+        public:
+
+            gl::program Program;
+        };
+
         /**
          * @brief Constructor.
          */
@@ -77,59 +120,6 @@ namespace OGL_RENDERING_MODULE_NS
          * @param objects Objects.
          */
         void proceedGameObjects(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects);
-
-        /**
-         * @brief External data implementation for mesh rendering behaviour
-         */
-        class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::ExternalData
-        {
-        public:
-
-            gl::vertex_array VAO;
-            gl::buffer VBO;
-            gl::buffer EBO;
-        };
-
-        /**
-         * @brief External data implementation for textures.
-         */
-        class TextureData : public ::RENDERING_BASE_MODULE_NS::Texture::TextureExternalData
-        {
-        public:
-
-            gl::texture_2d Texture;
-        };
-
-        class CubeMapTextureData : public ::RENDERING_BASE_MODULE_NS::CubeMapTexture::CubeMapTextureExternalData
-        {
-        public:
-
-            gl::cubemap_texture Texture;
-        };
-
-        /**
-         * @brief External data implementation for shaders.
-         */
-        class ShaderData : public ::RENDERING_BASE_MODULE_NS::Shader::ShaderExternalData
-        {
-        public:
-
-            gl::program Program;
-        };
-
-        /**
-         * @brief Class, for rendering gizmos system.
-         */
-        class GizmosVisitor
-        {
-        public:
-            void line(const ::RENDERING_BASE_MODULE_NS::Gizmos::LineData& line);
-            void sphere(const ::RENDERING_BASE_MODULE_NS::Gizmos::SphereData& sphere);
-            void hexahedron(const ::RENDERING_BASE_MODULE_NS::Gizmos::HexahedronData& hexahedron);
-
-        private:
-
-        };
 
         // Setup methods
         void setupMesh(::RENDERING_BASE_MODULE_NS::Behaviours::Mesh* behaviour);
@@ -193,11 +183,6 @@ namespace OGL_RENDERING_MODULE_NS
                               gl::cubemap_texture& texture,
                               GLuint side);
 
-        /**
-         * @brief Method, that's executing after all `render` methods.
-         */
-        void finishRendering();
-
         bool initFallbackShader();
 
         bool initSpriteShader();
@@ -216,6 +201,9 @@ namespace OGL_RENDERING_MODULE_NS
 
         // Sprite mesh
         MeshData* m_spriteData;
+
+        // Gizmos rendering object
+        GizmosRenderer m_gizmosRenderer;
     };
 }
 

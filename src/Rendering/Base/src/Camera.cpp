@@ -216,14 +216,21 @@ glm::mat4 RENDERING_BASE_MODULE_NS::Camera::projectionMatrix() const
         m_projectionMatrixChanged = false;
         break;
     case Projection::Orthogonal:
+    {
+        auto metersPerHighestSide = 10;
+
+        auto width =  m_viewport.w / (float) std::min(m_viewport.w, m_viewport.h) * metersPerHighestSide;
+        auto height = m_viewport.h / (float) std::min(m_viewport.w, m_viewport.h) * metersPerHighestSide;
+
         m_projectionMatrix = glm::ortho(
-            (float) m_viewport.x - (m_viewport.w / 2.0f) * m_orthogonalSettings.zoom(),
-            (float) m_viewport.w / 2                     * m_orthogonalSettings.zoom(),
-            (float) m_viewport.y - (m_viewport.h / 2.0f) * m_orthogonalSettings.zoom(),
-            (float) m_viewport.h / 2                     * m_orthogonalSettings.zoom(),
+            (float) -(width / 2.0f)  * m_orthogonalSettings.zoom(),
+            (float)   width / 2      * m_orthogonalSettings.zoom(),
+            (float) -(height / 2.0f) * m_orthogonalSettings.zoom(),
+            (float)   height / 2     * m_orthogonalSettings.zoom(),
             m_near,
             m_far
         );
+    }
         m_projectionMatrixChanged = false;
         break;
     default:

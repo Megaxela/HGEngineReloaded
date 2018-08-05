@@ -62,6 +62,12 @@ namespace RENDERING_BASE_MODULE_NS
          */
         Material();
 
+        /**
+         * @brief Initialization constructor.
+         * @param shader Pointer to shader.
+         */
+        explicit Material(Shader* shader);
+
         // Different type setters
         void set(const std::string& name, int value);
         void set(const std::string& name, float value);

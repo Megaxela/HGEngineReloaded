@@ -57,7 +57,8 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
     m_sortedBehaviours(),
     m_meshFallback(),
     m_spriteShader(),
-    m_spriteData(nullptr)
+    m_spriteData(nullptr),
+    m_gizmosRenderer(application)
 {
 
 }
@@ -80,6 +81,8 @@ bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::init()
     {
         return false;
     }
+
+    m_gizmosRenderer.init();
 
     return initSpriteShader();
 }
@@ -189,13 +192,14 @@ void main()
 
     float scale = 0.01f;
 
+    // Image is flipped by y
     mesh.Vertices = {
-        {{-0.5f * scale, -0.5f * scale,  0.5f * scale}, {1.0f,  0.0f}},
-        {{ 0.5f * scale, -0.5f * scale,  0.5f * scale}, {0.0f,  0.0f}},
-        {{ 0.5f * scale,  0.5f * scale,  0.5f * scale}, {0.0f,  1.0f}},
-        {{ 0.5f * scale,  0.5f * scale,  0.5f * scale}, {0.0f,  1.0f}},
-        {{-0.5f * scale,  0.5f * scale,  0.5f * scale}, {1.0f,  1.0f}},
-        {{-0.5f * scale, -0.5f * scale,  0.5f * scale}, {1.0f,  0.0f}}
+        {{-0.5f * scale, -0.5f * scale,  0}, {1.0f,  1.0f}},
+        {{ 0.5f * scale,  0.5f * scale,  0}, {0.0f,  0.0f}},
+        {{ 0.5f * scale, -0.5f * scale,  0}, {0.0f,  1.0f}},
+        {{ 0.5f * scale,  0.5f * scale,  0}, {0.0f,  0.0f}},
+        {{-0.5f * scale, -0.5f * scale,  0}, {1.0f,  1.0f}},
+        {{-0.5f * scale,  0.5f * scale,  0}, {1.0f,  0.0f}},
     };
 
     mesh.Indices = {
@@ -259,8 +263,15 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::render(const ::CORE_MODU
         proceedGameObjects(objects);
     }
 
+    // Render Gizmos
+    application()->renderer()->gizmos()->visitShapes(m_gizmosRenderer);
+
+    m_gizmosRenderer.render();
+
+    // Render ImGui
     ImGui::Render();
 
+    // Swapping graphics buffers
     application()->systemController()->swapBuffers();
 }
 
@@ -274,15 +285,10 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const
     glm::vec3 cameraPos(0.0f, 0.0f, 0.0f);
     glm::quat cameraRot;
 
-    {
-        auto* camera = HG::Rendering::Base::Camera::active();
+    auto* camera = HG::Rendering::Base::Camera::active();
 
-        if (camera)
-        {
-            cameraPos = camera->gameObject()->transform()->globalPosition();
-            cameraRot = camera->gameObject()->transform()->globalRotation();
-        }
-    }
+    cameraPos = camera->gameObject()->transform()->globalPosition();
+    cameraRot = camera->gameObject()->transform()->globalRotation();
 
     // Using multimap for sorting objects by distance from camera
     for (auto&& gameObject : objects)

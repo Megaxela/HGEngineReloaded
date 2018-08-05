@@ -2,7 +2,9 @@
 
 void RENDERING_BASE_MODULE_NS::Gizmos::clear()
 {
-
+    m_linesBuffer.clear();
+    m_sphereBuffer.clear();
+    m_hexahedronBuffer.clear();
 }
 
 void RENDERING_BASE_MODULE_NS::Gizmos::line(const glm::vec3 &from, 

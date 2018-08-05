@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextobjectid="14">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextobjectid="14">
  <tileset firstgid="1" name="roguelikeSheet_transparent" tilewidth="16" tileheight="16" spacing="1" tilecount="1767" columns="57">
-  <image source="../../../../../../../../../Documents/Tilesets/RPG/Spritesheet/roguelikeSheet_transparent.png" width="968" height="526"/>
+  <image source="roguelikeSheet_transparent.png" width="968" height="526"/>
+  <tile id="416">
+   <animation>
+    <frame tileid="416" duration="200"/>
+    <frame tileid="417" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="470">
+   <animation>
+    <frame tileid="470" duration="100"/>
+    <frame tileid="471" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="473">
+   <animation>
+    <frame tileid="473" duration="100"/>
+    <frame tileid="474" duration="200"/>
+   </animation>
+  </tile>
  </tileset>
  <objectgroup color="#780000" name="Object Layer">
   <properties>

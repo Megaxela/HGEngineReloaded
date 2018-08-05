@@ -87,7 +87,14 @@ CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setName(st
 
 CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setParent(CORE_MODULE_NS::GameObject* parent)
 {
-    m_currentGameObject->transform()->setParent(parent->transform());
+    if (parent == nullptr)
+    {
+        m_currentGameObject->transform()->setParent(nullptr);
+    }
+    else
+    {
+        m_currentGameObject->transform()->setParent(parent->transform());
+    }
 
     return (*this);
 }

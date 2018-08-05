@@ -28,13 +28,24 @@ namespace CORE_MODULE_NS
         explicit Transform(GameObject* owner);
 
         /**
+         * @brief Copy constructor. On copy - parent will not be copied.
+         * Local position will be set with global position value.
+         * @param transform RHS transform.
+         */
+        Transform(const Transform& transform);
+
+        /**
+         * @brief Copy operator. On copy - parent will not be copied.
+         * Local position will be set with global position value.
+         * @param transform RHS transform.
+         * @return Reference to this object. (STD)
+         */
+        Transform& operator=(const Transform& transform);
+
+        /**
          * @brief Destructor.
          */
         ~Transform();
-
-        // Disabling copying
-        Transform(const Transform&) = default;
-        Transform& operator=(const Transform&) = default;
 
         /**
          * @brief Method to rotate transform information
@@ -54,6 +65,18 @@ namespace CORE_MODULE_NS
          * @param scale Local object Vector3 scale.
          */
         void setLocalScale(const glm::vec3 &scale);
+
+        /**
+         * @brief Method for getting global object scale.
+         * @return Global object Vector3 scale.
+         */
+        glm::vec3 globalScale() const;
+
+        /**
+         * @brief Method for setting global object scale.
+         * @param scale Global object scale.
+         */
+        void setGlobalScale(const glm::vec3& scale);
 
         /**
          * @brief Method for getting local object rotation.

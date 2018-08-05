@@ -22,6 +22,10 @@ add_library(HGStandard STATIC
     include/Behaviours/TiledMap.hpp
     src/Behaviours/DebugControllerOverlay.cpp
     include/Behaviours/DebugControllerOverlay.hpp
+    src/Behaviours/TiledMapRenderer.cpp
+    include/Behaviours/TiledMapRenderer.hpp
+    src/Behaviours/TiledMapCollider.cpp
+    include/Behaviours/TiledMapCollider.hpp
 )
 
 target_include_directories(HGStandard PUBLIC
@@ -31,6 +35,7 @@ target_include_directories(HGStandard PUBLIC
 target_link_libraries(HGStandard
     HGCore
     HGUtils
+    HGPhysicsBase
     ALogger
 )
 

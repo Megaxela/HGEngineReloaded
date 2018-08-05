@@ -1,8 +1,18 @@
+
+#include <Material.hpp>
+
 #include "Material.hpp"
 
 RENDERING_BASE_MODULE_NS::Material::Material() :
     m_variableContainer(),
     m_shader(nullptr)
+{
+
+}
+
+RENDERING_BASE_MODULE_NS::Material::Material(RENDERING_BASE_MODULE_NS::Shader *shader) :
+    m_variableContainer(),
+    m_shader(shader)
 {
 
 }

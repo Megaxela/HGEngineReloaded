@@ -4,9 +4,14 @@
 #include <base64.hpp>
 #include <zlib.hpp>
 
+namespace {
+    const char* SUPPORTED_VERSION = "1.1.6";
+}
+
 STD_MODULE_NS::Behaviours::TiledMap::TiledMap() :
     m_properties(),
     m_tilesets(),
+    m_animatedTiles(),
     m_root()
 {
 
@@ -47,6 +52,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::loadMap(CORE_MODULE_NS::ResourceAccess
         return false;
     }
 
+    m_properties.mapPath = data->id();
+
     rapidxml::xml_attribute<>* attribute;
 
     // Parsing map metadata
@@ -63,6 +70,11 @@ bool STD_MODULE_NS::Behaviours::TiledMap::loadMap(CORE_MODULE_NS::ResourceAccess
     }
 
     m_properties.tiledVersion = attribute->value();
+
+    if (m_properties.tiledVersion != SUPPORTED_VERSION)
+    {
+        Warning() << "Tiled map parser supports " << SUPPORTED_VERSION << " tiled maps, trying to load " << m_properties.tiledVersion;
+    }
 
     if (!(attribute = mapNode->first_attribute("orientation")))
     {
@@ -144,6 +156,11 @@ void STD_MODULE_NS::Behaviours::TiledMap::clear()
 const STD_MODULE_NS::Behaviours::TiledMap::MapProperties &STD_MODULE_NS::Behaviours::TiledMap::properties() const
 {
     return m_properties;
+}
+
+const STD_MODULE_NS::Behaviours::TiledMap::AnimatedTiles &STD_MODULE_NS::Behaviours::TiledMap::animatedTiles() const
+{
+    return m_animatedTiles;
 }
 
 void STD_MODULE_NS::Behaviours::TiledMap::clearGroup(STD_MODULE_NS::Behaviours::TiledMap::Group* grp)
@@ -246,7 +263,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* 
 
 bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node)
 {
-    auto* image = node->first_node("image");
+    auto *image = node->first_node("image");
 
     // If <image> tag does not exists
     if (!image)
@@ -254,9 +271,9 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
         return false;
     }
 
-    auto* tileset = new Tileset();
+    auto *tileset = new Tileset();
 
-    rapidxml::xml_attribute<>* attribute = nullptr;
+    rapidxml::xml_attribute<> *attribute = nullptr;
 
     { // First gID
         if (!(attribute = node->first_attribute("firstgid")))
@@ -305,13 +322,10 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
     }
 
     { // Spacing
-        if (!(attribute = node->first_attribute("spacing")))
+        if ((attribute = node->first_attribute("spacing")))
         {
-            delete tileset;
-            return false;
+            tileset->spacing = std::atoi(attribute->value());
         }
-
-        tileset->spacing = std::atoi(attribute->value());
     }
 
     { // Tile Count
@@ -344,7 +358,106 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
         tileset->path = std::string(attribute->value(), attribute->value_size());
     }
 
+    {
+        if (!(attribute = image->first_attribute("width")))
+        {
+            delete tileset;
+            return false;
+        }
+
+        tileset->imageSize.x = std::atoi(attribute->value());
+    }
+
+    {
+        if (!(attribute = image->first_attribute("height")))
+        {
+            delete tileset;
+            return false;
+        }
+
+        tileset->imageSize.y = std::atoi(attribute->value());
+    }
+
+    for (auto tileNode = node->first_node("tile");
+         tileNode;
+         tileNode = tileNode->next_sibling("tile"))
+    {
+        proceedTileNode(tileNode);
+    }
+
     m_tilesets.push_back(tileset);
+
+    return true;
+}
+
+bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *node)
+{
+    rapidxml::xml_attribute<> *attribute = nullptr;
+
+    uint32_t id = 0;
+
+    { // First gID
+        if (!(attribute = node->first_attribute("id")))
+        {
+            return false;
+        }
+
+        id = std::atoi(attribute->value());
+
+        if (id == 0)
+        {
+            return false;
+        }
+    }
+
+    for (auto childNode = node->first_node();
+         childNode;
+         childNode = childNode->next_sibling())
+    {
+        std::string_view sv(childNode->name(), childNode->name_size());
+
+        if (sv == "animation")
+        {
+            if (!proceedAnimation(childNode, id))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool STD_MODULE_NS::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<> *node, uint32_t tileId)
+{
+    TileAnimation animation;
+
+    rapidxml::xml_attribute<>* attribute = nullptr;
+
+    for (auto frameNode = node->first_node("frame");
+         frameNode;
+         frameNode = frameNode->next_sibling("frame"))
+    {
+        TileAnimation::Frame frame;
+
+        if (!(attribute = frameNode->first_attribute("tileid")))
+        {
+            return false;
+        }
+
+        frame.tile = std::atoi(attribute->value());
+
+        if (!(attribute = frameNode->first_attribute("duration")))
+        {
+            return false;
+        }
+
+        frame.duration = std::chrono::milliseconds(std::atoi(attribute->value()));
+
+        animation.frames.emplace_back(frame);
+    }
+
+    m_animatedTiles[tileId] = std::move(animation);
 
     return true;
 }
@@ -1038,6 +1151,11 @@ bool STD_MODULE_NS::Behaviours::TiledMap::performTileLayerDecoding(const char *d
                 return false;
             }
         }
+        else if (compression == "gzip")
+        {
+            Error() << "GZIP compression is not supported yet.";
+            return false;
+        }
 
         auto castedData = (uint32_t*) decoded.data();
 
@@ -1059,4 +1177,27 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedCSVTileData(const char *data, s
 {
     Warning() << "CSV does not supported yet.";
     return false;
+}
+
+STD_MODULE_NS::Behaviours::TiledMap::TileLayer::DecodedTile STD_MODULE_NS::Behaviours::TiledMap::TileLayer::decodeTile(uint32_t tile)
+{
+    constexpr uint32_t IS_HORIZONTALLY_FLIPPED = 0x80000000;
+    constexpr uint32_t IS_VERTICALLY_FLIPPED   = 0x40000000;
+    constexpr uint32_t IS_DIAGONALLY_FLIPPED   = 0x20000000;
+
+    DecodedTile decoded{};
+
+    if (tile == 0)
+    {
+        return decoded;
+    }
+
+    decoded.horizontallyFlipped = static_cast<bool>(tile & IS_HORIZONTALLY_FLIPPED);
+    decoded.verticallyFlipped   = static_cast<bool>(tile & IS_VERTICALLY_FLIPPED);
+    decoded.diagonallyFlipped   = static_cast<bool>(tile & IS_DIAGONALLY_FLIPPED);
+    decoded.actualTile          = tile & ~(IS_HORIZONTALLY_FLIPPED |
+                                           IS_VERTICALLY_FLIPPED |
+                                           IS_DIAGONALLY_FLIPPED);
+
+    return decoded;
 }

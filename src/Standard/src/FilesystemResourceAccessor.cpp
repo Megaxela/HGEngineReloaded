@@ -2,8 +2,9 @@
 #include <CurrentLogger.hpp>
 #include "FilesystemResourceAccessor.hpp"
 
-STD_MODULE_NS::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data) :
-    m_data(std::move(data))
+STD_MODULE_NS::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
+    m_data(std::move(data)),
+    m_id(std::move(id))
 {
 
 }
@@ -16,6 +17,11 @@ std::size_t STD_MODULE_NS::FilesystemResourceAccessor::VectorData::size() const
 const std::byte *STD_MODULE_NS::FilesystemResourceAccessor::VectorData::data() const
 {
     return m_data.data();
+}
+
+std::string HG::Standard::FilesystemResourceAccessor::VectorData::id() const
+{
+    return m_id;
 }
 
 ::CORE_MODULE_NS::ResourceAccessor::DataPtr
@@ -40,7 +46,7 @@ STD_MODULE_NS::FilesystemResourceAccessor::loadRaw(const std::string &id)
 
     file.read(reinterpret_cast<char *>(data.data()), size);
 
-    return std::make_shared<VectorData>(std::move(data));
+    return std::make_shared<VectorData>(std::move(data), id);
 }
 
 

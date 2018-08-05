@@ -46,6 +46,7 @@ target_link_libraries(HGUtils
     stb
     rapidxml
     bytearray
+    stdc++fs
     ${ZLIB_LIBRARIES}
 )
 

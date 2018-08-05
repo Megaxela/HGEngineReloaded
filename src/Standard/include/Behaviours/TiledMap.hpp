@@ -121,6 +121,8 @@ namespace STD_MODULE_NS::Behaviours
             uint32_t tileCount;
             uint32_t columns;
 
+            glm::ivec2 imageSize;
+
             std::string path;
         };
 
@@ -180,6 +182,20 @@ namespace STD_MODULE_NS::Behaviours
                 size({0, 0})
             {}
 
+            struct DecodedTile
+            {
+                bool horizontallyFlipped = false;
+                bool verticallyFlipped = false;
+                bool diagonallyFlipped = false;
+                uint32_t actualTile = 0;
+            };
+
+            /**
+             * @brief Method for decoding tile.
+             * @param tile Encoded tile info.
+             * @return Decoded tile.
+             */
+            static DecodedTile decodeTile(uint32_t tile);
 
             glm::ivec2 size;
             std::vector<uint32_t> tiles;
@@ -363,7 +379,8 @@ namespace STD_MODULE_NS::Behaviours
                 orientation(Orientation::Orthogonal),
                 renderOrder(TileRenderOrder::RightDown),
                 size({0, 0}),
-                tileSize({0, 0})
+                tileSize({0, 0}),
+                mapPath()
             {
 
             }
@@ -374,7 +391,28 @@ namespace STD_MODULE_NS::Behaviours
             TileRenderOrder renderOrder;
             glm::ivec2 size;
             glm::ivec2 tileSize;
+
+            std::string mapPath;
         };
+
+        struct TileAnimation
+        {
+            struct Frame
+            {
+                Frame() :
+                    tile(0),
+                    duration(0)
+                {}
+
+                uint32_t tile;
+                std::chrono::milliseconds duration;
+            };
+
+            std::vector<Frame> frames;
+        };
+
+        // <TileID,
+        using AnimatedTiles = std::map<uint32_t, TileAnimation>;
 
         /**
          * @brief Default constructor.
@@ -404,6 +442,13 @@ namespace STD_MODULE_NS::Behaviours
          * @return Constant reference to map properties.
          */
         const MapProperties& properties() const;
+
+        /**
+         * @brief Method for getting animated tiles
+         * information.
+         * @return Constant reference to animated tiles.
+         */
+        const AnimatedTiles& animatedTiles() const;
 
         /**
          * @brief Method for getting tilesets.
@@ -461,6 +506,12 @@ namespace STD_MODULE_NS::Behaviours
         bool proceedProperties(rapidxml::xml_node<>* node, Properties& properties);
 
         // todo: Add commentary
+        bool proceedTileNode(rapidxml::xml_node<>* node);
+
+        // todo: Add commentary
+        bool proceedAnimation(rapidxml::xml_node<>* node, uint32_t tileId);
+
+        // todo: Add commentary
         bool performTileLayerDecoding(const char* data,
                                       std::size_t dataSize,
                                       std::string_view encoding,
@@ -476,6 +527,7 @@ namespace STD_MODULE_NS::Behaviours
 
         // Root layers group
         std::vector<Tileset*> m_tilesets;
+        AnimatedTiles m_animatedTiles;
         Group m_root;
     };
 }

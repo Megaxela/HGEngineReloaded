@@ -18,7 +18,7 @@ TEST(Standard, TiledLoad1)
     auto properties = map.properties();
 
     ASSERT_EQ(properties.version, "1.0");
-    ASSERT_EQ(properties.tiledVersion, "1.1.5");
+    ASSERT_EQ(properties.tiledVersion, "1.1.6");
     ASSERT_EQ(properties.orientation, STD_MODULE_NS::Behaviours::TiledMap::Orientation::Orthogonal);
     ASSERT_EQ(properties.renderOrder, STD_MODULE_NS::Behaviours::TiledMap::TileRenderOrder::RightDown);
     ASSERT_EQ(properties.size, glm::ivec2(30, 30));
@@ -40,7 +40,36 @@ TEST(Standard, TiledLoad1)
     ASSERT_EQ(tileset->spacing, 1);
     ASSERT_EQ(tileset->tileCount, 1767);
     ASSERT_EQ(tileset->columns, 57);
-    ASSERT_EQ(tileset->path, "../../../../../../../../../Documents/Tilesets/RPG/Spritesheet/roguelikeSheet_transparent.png");
+    ASSERT_EQ(tileset->imageSize, glm::ivec2(968, 526));
+    ASSERT_EQ(tileset->path, "roguelikeSheet_transparent.png");
+
+    // Checking animation tiles
+    auto tileIterator = map.animatedTiles().find(416);
+
+    ASSERT_NE(tileIterator, map.animatedTiles().end());
+    ASSERT_EQ(tileIterator->second.frames.size(), 2);
+    ASSERT_EQ(tileIterator->second.frames[0].tile, 416);
+    ASSERT_EQ(tileIterator->second.frames[0].duration, std::chrono::milliseconds(200));
+    ASSERT_EQ(tileIterator->second.frames[1].tile, 417);
+    ASSERT_EQ(tileIterator->second.frames[1].duration, std::chrono::milliseconds(100));
+
+    tileIterator = map.animatedTiles().find(470);
+
+    ASSERT_NE(tileIterator, map.animatedTiles().end());
+    ASSERT_EQ(tileIterator->second.frames.size(), 2);
+    ASSERT_EQ(tileIterator->second.frames[0].tile, 470);
+    ASSERT_EQ(tileIterator->second.frames[0].duration, std::chrono::milliseconds(100));
+    ASSERT_EQ(tileIterator->second.frames[1].tile, 471);
+    ASSERT_EQ(tileIterator->second.frames[1].duration, std::chrono::milliseconds(100));
+
+    tileIterator = map.animatedTiles().find(473);
+
+    ASSERT_NE(tileIterator, map.animatedTiles().end());
+    ASSERT_EQ(tileIterator->second.frames.size(), 2);
+    ASSERT_EQ(tileIterator->second.frames[0].tile, 473);
+    ASSERT_EQ(tileIterator->second.frames[0].duration, std::chrono::milliseconds(100));
+    ASSERT_EQ(tileIterator->second.frames[1].tile, 474);
+    ASSERT_EQ(tileIterator->second.frames[1].duration, std::chrono::milliseconds(200));
 
     // Checking layers
     auto* rootGroup = map.rootGroup();

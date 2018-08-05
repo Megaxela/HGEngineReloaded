@@ -25,7 +25,7 @@ namespace STD_MODULE_NS
              * @brief Constructor.
              * @param data Movable data.
              */
-            explicit VectorData(std::vector<std::byte> data);
+            explicit VectorData(std::vector<std::byte> data, std::string id);
 
             /**
              * @brief Method for getting amount of data
@@ -39,8 +39,16 @@ namespace STD_MODULE_NS
              */
             const std::byte* data() const override;
 
+            /**
+             * @brief Method for getting data id.
+             * @return ID.
+             */
+            std::string id() const override;
+
         private:
             std::vector<std::byte> m_data;
+
+            std::string m_id;
         };
 
         std::shared_ptr<Data> loadRaw(const std::string &id) override;

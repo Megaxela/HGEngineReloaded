@@ -1,5 +1,6 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <algorithm>
+#include <CurrentLogger.hpp>
 #include "Transform.hpp"
 
 CORE_MODULE_NS::Transform::Transform() :
@@ -9,7 +10,7 @@ CORE_MODULE_NS::Transform::Transform() :
 }
 
 CORE_MODULE_NS::Transform::Transform(GameObject* owner) :
-    m_localRotation(0.0f, 0.0f, 0.0f, 1.0f), // Initial
+    m_localRotation(1.0f, 0.0f, 0.0f, 0.0f), // Initial
     m_localScale(1.0f, 1.0f, 1.0f),
     m_localPosition(),
     m_owner(owner),
@@ -71,6 +72,31 @@ void CORE_MODULE_NS::Transform::setLocalScale(const glm::vec3& scale)
     m_localScale = scale;
 }
 
+glm::vec3 CORE_MODULE_NS::Transform::globalScale() const
+{
+    // Calculate
+    if (m_parent == nullptr)
+    {
+        return m_localScale;
+    }
+    else
+    {
+        return m_parent->globalScale() * m_localScale;
+    }
+}
+
+void CORE_MODULE_NS::Transform::setGlobalScale(const glm::vec3 &scale)
+{
+    if (m_parent == nullptr)
+    {
+        m_localScale = scale;
+    }
+    else
+    {
+        m_localScale = (scale / m_parent->globalScale());
+    }
+}
+
 glm::quat CORE_MODULE_NS::Transform::localRotation() const
 {
     return m_localRotation;
@@ -114,7 +140,9 @@ void CORE_MODULE_NS::Transform::setGlobalPosition(const glm::vec3& globalPositio
     }
     else
     {
-        m_localPosition = (globalPosition - m_parent->globalPosition()) * glm::inverse(m_parent->globalRotation());
+        m_localPosition =
+            (globalPosition - m_parent->globalPosition()) *
+             glm::inverse(m_parent->globalRotation());
     }
 
 }
@@ -185,7 +213,7 @@ glm::mat4 CORE_MODULE_NS::Transform::localToWorldMatrix() const
 {
     auto model = glm::translate(glm::mat4(1.0f), globalPosition());
     model = model * glm::mat4_cast(globalRotation());
-    model = glm::scale(model, localScale());
+    model = glm::scale(model, globalScale());
     
     return model;
 }
@@ -203,4 +231,22 @@ CORE_MODULE_NS::Transform* CORE_MODULE_NS::Transform::child(size_t index) const
 CORE_MODULE_NS::GameObject* CORE_MODULE_NS::Transform::gameObject() const
 {
     return m_owner;
+}
+
+CORE_MODULE_NS::Transform::Transform(const CORE_MODULE_NS::Transform &transform) :
+    Transform()
+{
+    (*this) = transform;
+}
+
+CORE_MODULE_NS::Transform &CORE_MODULE_NS::Transform::operator=(const CORE_MODULE_NS::Transform &transform)
+{
+    // todo: Recalculate local rotation from current parent's rotation
+    m_localRotation = transform.globalRotation();
+
+    // todo: If global scale will appear, maybe global info must be copied here
+    setGlobalScale(transform.globalScale());
+    setGlobalPosition(transform.globalPosition());
+
+    return *this;
 }
