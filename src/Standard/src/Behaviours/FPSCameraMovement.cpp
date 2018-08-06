@@ -140,6 +140,18 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
         inputDirection.x += speed;
     }
 
+    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::F))
+    {
+        if (m_camera->projection() == RENDERING_BASE_MODULE_NS::Camera::Projection::Orthogonal)
+        {
+            m_camera->setProjection(RENDERING_BASE_MODULE_NS::Camera::Projection::Perspective);
+        }
+        else
+        {
+            m_camera->setProjection(RENDERING_BASE_MODULE_NS::Camera::Projection::Orthogonal);
+        }
+    }
+
     gameObject()->transform()->setGlobalPosition(
         gameObject()->transform()->globalPosition() +
             inputDirection * m_camera->gameObject()->transform()->globalRotation()

@@ -14,7 +14,7 @@ add_library(HGPhysicsPlayRho STATIC
     include/TiledMap/Remover.hpp
     src/DebugDraw.cpp
     include/DebugDraw.hpp
-)
+        include/DebugSettings.hpp)
 
 target_link_libraries(HGPhysicsPlayRho
     PlayRho

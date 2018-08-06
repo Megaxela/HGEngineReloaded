@@ -23,8 +23,6 @@ void STD_MODULE_NS::Behaviours::TiledMapCollider::prepare()
     clear();
 
     proceedGroupLayer(m_renderer->map()->rootGroup(), {0, 0});
-
-    Info() << "Created " << m_bodies.size() << " bodies.";
 }
 
 void STD_MODULE_NS::Behaviours::TiledMapCollider::proceedGroupLayer(const STD_MODULE_NS::Behaviours::TiledMap::Group *group,

@@ -22,7 +22,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::DebugDraw::drawPolygon(const playrho::Length2 *v
 
     line.push_back(line[0]);
 
-    m_gizmos->multiLine(line);
+    m_gizmos->multiLine(line, color);
 }
 
 void PLAYRHO_PHYSICS_MODULE_NS::DebugDraw::drawSolidPolygon(const playrho::Length2 *vertices,
@@ -40,7 +40,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::DebugDraw::drawSolidPolygon(const playrho::Lengt
 
     line.push_back(line[0]);
 
-    m_gizmos->multiLine(line);
+    m_gizmos->multiLine(line, color);
 }
 
 void PLAYRHO_PHYSICS_MODULE_NS::DebugDraw::drawCircle(const playrho::Length2 &center,

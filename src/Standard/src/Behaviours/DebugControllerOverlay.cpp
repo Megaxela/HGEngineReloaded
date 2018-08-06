@@ -29,13 +29,19 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedInspector()
     auto originPosition = m_activeGameObject->transform()->globalPosition();
     originPosition.z = 0.5f;
 
-    scene()->application()->renderer()->gizmos()->multiLine({
-        originPosition + glm::vec3(-m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z),
-        originPosition + glm::vec3( m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z),
-        originPosition + glm::vec3( m_propertyOriginSize.x,  m_propertyOriginSize.y, originPosition.z),
-        originPosition + glm::vec3(-m_propertyOriginSize.x,  m_propertyOriginSize.y, originPosition.z),
-        originPosition + glm::vec3(-m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z)
-    }, m_propertyOriginColor);
+//    scene()->application()->renderer()->gizmos()->multiLine({
+//        originPosition + glm::vec3(-m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z),
+//        originPosition + glm::vec3( m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z),
+//        originPosition + glm::vec3( m_propertyOriginSize.x,  m_propertyOriginSize.y, originPosition.z),
+//        originPosition + glm::vec3(-m_propertyOriginSize.x,  m_propertyOriginSize.y, originPosition.z),
+//        originPosition + glm::vec3(-m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z)
+//    }, m_propertyOriginColor);
+
+    scene()->application()->renderer()->gizmos()->circle(
+        originPosition,
+        0.4f,
+        m_propertyOriginColor
+    );
 
     m_behaviours.clear();
 

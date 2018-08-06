@@ -16,6 +16,8 @@ namespace RENDERING_BASE_MODULE_NS
     {
     public:
 
+        static UTILS_MODULE_NS::Color defaultColor;
+
         using LineSegment = std::pair<glm::vec3, glm::vec3>;
 
         using Line = std::vector<glm::vec3>;
@@ -103,7 +105,7 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void line(const glm::vec3& from,
                   const glm::vec3& to,
-                  UTILS_MODULE_NS::Color color=UTILS_MODULE_NS::Color::fromRGB(0, 0, 180, 180));
+                  UTILS_MODULE_NS::Color color=defaultColor);
 
         /**
          * @brief Method for drawing line with
@@ -119,18 +121,50 @@ namespace RENDERING_BASE_MODULE_NS
                   const UTILS_MODULE_NS::Color& toColor);
 
         /**
+         * @brief Method for drawing circle on x/y without any rotation.
+         * @param position Position.
+         * @param radius Radius.
+         * @param color Color.
+         */
+        void circle(const glm::vec3& position,
+                    float radius,
+                    const UTILS_MODULE_NS::Color& color=defaultColor);
+
+        /**
+         * @brief Method for drawing crcle on x/y without any rotation.
+         * @param position Position.
+         * @param size Size.
+         * @param color Color.
+         */
+        void circle(const glm::vec3& position,
+                    glm::vec2 size,
+                    const UTILS_MODULE_NS::Color& color=defaultColor);
+
+        /**
+         * @brief Method for drawing circle.
+         * @param transform Transformation (scale will affect size)
+         * @param size Circle size.
+         * @param parts Number of parts in circle.
+         * @param color Circle color.
+         */
+        void circle(const CORE_MODULE_NS::Transform& transform,
+                    glm::vec2 size,
+                    uint32_t parts,
+                    const UTILS_MODULE_NS::Color& color);
+
+        /**
          * @brief Method for drawing line of multiple segments.
          * @param line Line data.
          */
         void multiLine(const Line& lineData,
-                       UTILS_MODULE_NS::Color color=UTILS_MODULE_NS::Color::fromRGB(0, 0, 180, 180));
+                       UTILS_MODULE_NS::Color color=defaultColor);
 
         /**
          * @brief Method for drawing line.
          * @param lineSegment Line segment.
          */
         void line(const LineSegment& lineSegment,
-                  UTILS_MODULE_NS::Color color=UTILS_MODULE_NS::Color::fromRGB(0, 0, 180, 180));
+                  UTILS_MODULE_NS::Color color=defaultColor);
 
         /**
          * @brief Method for drawing sphere.
@@ -140,7 +174,7 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void sphere(const CORE_MODULE_NS::Transform &transform,
                     float radius,
-                    UTILS_MODULE_NS::Color color=UTILS_MODULE_NS::Color::fromRGB(0, 0, 180, 180));
+                    UTILS_MODULE_NS::Color color=defaultColor);
 
         /**
          * @brief Method for drawing sphere.
@@ -152,7 +186,7 @@ namespace RENDERING_BASE_MODULE_NS
         void sphere(const CORE_MODULE_NS::Transform &transform,
                     float radius,
                     int dividings,
-                    UTILS_MODULE_NS::Color color = UTILS_MODULE_NS::Color::fromRGB(0, 0, 180, 180));
+                    UTILS_MODULE_NS::Color color = defaultColor);
 
         /**
          * @brief Method for drawing hexahedron.
@@ -162,7 +196,7 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void hexahedron(const CORE_MODULE_NS::Transform &transform,
                         float sideSize,
-                        UTILS_MODULE_NS::Color color=UTILS_MODULE_NS::Color::fromRGB(0,0, 180, 180));
+                        UTILS_MODULE_NS::Color color=defaultColor);
 
         /**
          * @brief Template method for getting shapes, that was prepared

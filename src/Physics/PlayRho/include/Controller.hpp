@@ -5,6 +5,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include "PhysicsController.hpp"
 #include "DebugDraw.hpp"
+#include "DebugSettings.hpp"
 
 namespace PLAYRHO_PHYSICS_MODULE_NS
 {
@@ -31,6 +32,8 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
 
 
     private:
+
+        DebugSettings m_settings;
 
         DebugDraw m_drawer;
 

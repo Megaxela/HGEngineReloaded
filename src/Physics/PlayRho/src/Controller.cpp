@@ -5,75 +5,13 @@
 #include <DebugDraw.hpp>
 #include <Application.hpp>
 #include <set>
+#include "DebugSettings.hpp"
 
 using FixtureSet = std::set<playrho::d2::Fixture*>;
 
 namespace {
 
     using namespace playrho;
-
-    struct Settings
-    {
-        float maxTranslation = static_cast<float>(playrho::Real{
-            playrho::DefaultMaxTranslation / playrho::Meter});
-        float maxRotation = 90; // in degrees
-
-        float dt = 1.0f / 60; // in seconds.
-        float minDt = 1.0f / 120;
-        float maxDt = 1.0f / 5;
-
-        float minStillTimeToSleep = static_cast<float>(playrho::Real{
-            playrho::DefaultMinStillTimeToSleep / playrho::Second});
-        float maxLinearCorrection = static_cast<float>(playrho::Real{
-            playrho::DefaultMaxLinearCorrection / playrho::Meter}); // in meters
-        float maxAngularCorrection = static_cast<float>(playrho::Real{
-            playrho::DefaultMaxAngularCorrection / playrho::Degree}); // in degrees
-
-        /// @brief Linear slop.
-        /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
-        float linearSlop = static_cast<float>(playrho::Real{
-            playrho::DefaultLinearSlop / playrho::Meter});
-
-        /// @brief Angular slop.
-        /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
-        float angularSlop = static_cast<float>(playrho::Real{
-            playrho::DefaultAngularSlop / playrho::Degree}); // in degrees
-
-        float regMinSeparation = static_cast<float>(playrho::Real{
-            playrho::DefaultLinearSlop / playrho::Meter}) * -3.0f;
-        float toiMinSeparation = static_cast<float>(playrho::Real{
-            playrho::DefaultLinearSlop / playrho::Meter}) * -1.5f;
-
-        float aabbExtension = static_cast<float>(playrho::Real{playrho::DefaultAabbExtension / playrho::Meter}); // in meters
-        float tolerance = static_cast<float>(playrho::Real{playrho::DefaultLinearSlop / playrho::Real{4} / Meter}); // in meters
-
-        float cameraZoom = 1.0f;
-
-        int regPosResRate = 20; // in percent
-        int toiPosResRate = 75; // in percent
-        int regVelocityIterations = 8;
-        int regPositionIterations = 3;
-        int toiVelocityIterations = 8;
-        int toiPositionIterations = 20;
-        int maxSubSteps = playrho::DefaultMaxSubSteps;
-        int maxToiRootIters = playrho::DefaultMaxToiRootIters;
-        bool drawShapes = true;
-        bool drawSkins = false;
-        bool drawLabels = false;
-        bool drawJoints = true;
-        bool drawAABBs = false;
-        bool drawContactPoints = false;
-        bool drawContactNormals = false;
-        bool drawContactImpulse = false;
-        bool drawFrictionImpulse = false;
-        bool drawCOMs = false;
-        bool enableWarmStarting = true;
-        bool enableContinuous = true;
-        bool enableSubStepping = false;
-        bool enableSleep = true;
-        bool pause = false;
-        bool singleStep = false;
-    };
 
     struct VisitorData
     {
@@ -415,7 +353,7 @@ namespace {
 
     bool DrawWorld(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
                    const playrho::d2::World& world,
-                   const Settings& settings,
+                   const PLAYRHO_PHYSICS_MODULE_NS::DebugSettings& settings,
                    const FixtureSet& selected)
     {
         auto found = false;
@@ -482,6 +420,70 @@ namespace {
 
         return found;
     }
+
+//    void DrawContactInfo(const PLAYRHO_PHYSICS_MODULE_NS::DebugSettings& settings,
+//                         PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer)
+//    {
+//        const auto k_impulseScale = 0.1_s / 1_kg;
+//        const auto k_axisScale = 0.3_m;
+//        const auto addStateColor = UTILS_MODULE_NS::Color{0.3f, 0.9f, 0.3f}; // greenish
+//        const auto persistStateColor = UTILS_MODULE_NS::Color{0.3f, 0.3f, 0.9f}; // blueish
+//        const auto contactNormalColor = UTILS_MODULE_NS::Color{0.7f, 0.7f, 0.7f}; // light gray
+//        const auto normalImpulseColor = UTILS_MODULE_NS::Color{0.9f, 0.9f, 0.3f}; // yellowish
+//        const auto frictionImpulseColor = UTILS_MODULE_NS::Color{0.9f, 0.9f, 0.3f}; // yellowish
+//
+//        const auto selectedFixtures = GetSelectedFixtures();
+//        const auto lighten = 1.3f;
+//        const auto darken = 0.9f;
+//
+//        for (auto& point: m_points)
+//        {
+//            const auto selected = HasFixture(point, selectedFixtures);
+//
+//            if (settings.drawContactPoints)
+//            {
+//                if (point.state == PointState::AddState)
+//                {
+//                    drawer.DrawPoint(point.position, 7.0f,
+//                                     Brighten(addStateColor, selected? lighten: darken));
+//                }
+//                else if (point.state == PointState::PersistState)
+//                {
+//                    // Persist
+//                    drawer.DrawPoint(point.position, 5.0f,
+//                                     Brighten(persistStateColor, selected? lighten: darken));
+//                }
+//            }
+//
+//            if (settings.drawContactImpulse)
+//            {
+//                const auto length = k_impulseScale * point.normalImpulse;
+//                const auto headLength = length / Real(10);
+//                const auto p1 = point.position;
+//                const auto p2 = p1 + length * point.normal;
+//                const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec::GetTopRight());
+//                const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec::GetBottomRight());
+//                drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
+//                drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
+//                drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));
+//            }
+//
+//            if (settings.drawFrictionImpulse)
+//            {
+//                const auto tangent = GetFwdPerpendicular(point.normal);
+//                const auto p1 = point.position;
+//                const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
+//                drawer.DrawSegment(p1, p2, Brighten(frictionImpulseColor, selected? lighten: darken));
+//            }
+//
+//            if (settings.drawContactNormals)
+//            {
+//                const auto p1 = point.position;
+//                const auto p2 = p1 + k_axisScale * point.normal;
+//                drawer.DrawSegment(p1, p2, Brighten(contactNormalColor, selected? lighten: darken));
+//            }
+//        }
+//    }
 }
 
 PLAYRHO_PHYSICS_MODULE_NS::Controller::Controller(::CORE_MODULE_NS::Application *parent) :
@@ -506,15 +508,10 @@ void PLAYRHO_PHYSICS_MODULE_NS::Controller::tick(std::chrono::microseconds delta
 
     m_world.Step(m_stepConfiguration);
 
-    Settings s{};
-
-    DrawWorld(m_drawer, m_world, s, FixtureSet());
-
-//    playrho::d2::Fixture* fix;
-//
-//    playrho::Visit(fix->GetShape(), nullptr);
-
-//    playrho::d2::Shape::Accept(fix->GetShape(), )
+    if (m_settings.enabled)
+    {
+        DrawWorld(m_drawer, m_world, m_settings, FixtureSet());
+    }
 }
 
 // Compiletime visitor implementation
@@ -561,3 +558,25 @@ namespace playrho {
     }
 
 } // namespace playrho
+
+//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::BeginContact(d2::Contact &contact)
+//{
+//
+//}
+//
+//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::EndContact(d2::Contact &contact)
+//{
+//
+//}
+//
+//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::PreSolve(d2::Contact &contact, const d2::Manifold &oldManifold)
+//{
+//
+//}
+//
+//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::PostSolve(d2::Contact &contact,
+//                                                                       const d2::ContactImpulsesList &impulses,
+//                                                                       d2::ContactListener::iteration_type solved)
+//{
+//
+//}

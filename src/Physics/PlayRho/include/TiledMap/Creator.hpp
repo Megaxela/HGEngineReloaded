@@ -18,18 +18,15 @@ namespace PLAYRHO_PHYSICS_MODULE_NS::TiledMap
             return nullptr;
         }
 
-        InfoF() << "Creating body " << x << ", " << y << ", " << w << ", " << h;
-        // x, y is top left position
-
         auto body = castedController->world()->CreateBody(
             playrho::d2::BodyConf{}
-                .UseLocation(playrho::Length2(x - w / 2, y - h / 2))
+                .UseLocation(playrho::Length2(x + w / 2, y - h / 2))
                 .UseType(playrho::BodyType::Static)
         );
 
         body->CreateFixture(
             playrho::d2::Shape{
-                playrho::d2::PolygonShapeConf{}.SetAsBox(w, h)
+                playrho::d2::PolygonShapeConf{}.SetAsBox(w / 2, h / 2)
             }
         );
 
