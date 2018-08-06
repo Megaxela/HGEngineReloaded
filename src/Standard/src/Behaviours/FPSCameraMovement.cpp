@@ -7,20 +7,9 @@ STD_MODULE_NS::Behaviours::FPSCameraMovement::FPSCameraMovement() :
     m_front(glm::vec3(0.0f, 0.0f, 1.0f)),
     m_yaw(90),
     m_pitch(0),
-    m_camera(nullptr),
-    m_sensitivity(3)
+    m_camera(nullptr)
 {
 
-}
-
-void STD_MODULE_NS::Behaviours::FPSCameraMovement::setSensitivity(float sens)
-{
-    m_sensitivity = sens;
-}
-
-float STD_MODULE_NS::Behaviours::FPSCameraMovement::sensitivity() const
-{
-    return m_sensitivity;
 }
 
 void STD_MODULE_NS::Behaviours::FPSCameraMovement::onStart()
@@ -77,7 +66,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleMouseRotation()
 {
     // Frame sens
     float frameSensitivity =
-        m_sensitivity / 10;
+        m_propertySensitivity / 10;
 
     // Mouse
     auto mousePosition = input()->mouse()->getMousePosition();
@@ -119,7 +108,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
 
     glm::vec3 inputDirection(0.0f, 0.0f, 0.0f);
 
-    float speed = static_cast<float>(2.0f * dt);
+    float speed = static_cast<float>(m_propertyMovementSpeed * dt);
 
     if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::Q))
     {

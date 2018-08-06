@@ -26,6 +26,11 @@ void CORE_MODULE_NS::Scene::update()
 
     for (auto&& gameObject : m_gameObjects)
     {
+        if (!gameObject->isEnabled())
+        {
+            continue;
+        }
+
         gameObject->update();
     }
 }

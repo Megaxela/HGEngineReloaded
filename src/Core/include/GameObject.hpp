@@ -86,6 +86,19 @@ namespace CORE_MODULE_NS
         std::string name() const;
 
         /**
+         * @brief Method for checking is gameobject enabled.
+         * If gameobject is disabled, no behaviours will be updated.
+         * @return
+         */
+        bool isEnabled() const;
+
+        /**
+         * @brief Method for setting gameobject enabled state.
+         * @param value Enabled state.
+         */
+        void setEnabled(bool value);
+
+        /**
          * @brief Method for getting game object
          * transform.
          * @return Pointer to transform.
@@ -104,7 +117,7 @@ namespace CORE_MODULE_NS
          * @param container Container object.
          */
         template<typename Container>
-        void findRenderingBehaviours(Container& container)
+        void getRenderingBehaviours(Container& container)
         {
             for (auto&& behaviour : m_renderBehaviours)
             {
@@ -117,6 +130,7 @@ namespace CORE_MODULE_NS
             }
         }
 
+        // todo: Add commentary
         template<typename Behaviour>
         Behaviour* findBehaviour()
         {
@@ -136,6 +150,41 @@ namespace CORE_MODULE_NS
             }
 
             return nullptr;
+        }
+
+        // todo: Add commentary
+        template<typename Behaviour, typename Container>
+        void findBehaviours(Container& container)
+        {
+            for (auto&& behaviour : m_behaviours)
+            {
+                if (m_behaviours.isRemoving(behaviour))
+                {
+                    continue;
+                }
+
+                auto casted = dynamic_cast<Behaviour*>(behaviour);
+
+                if (casted != nullptr)
+                {
+                    container.push_back(behaviour);
+                }
+            }
+        }
+
+        // todo: Add commentary
+        template<typename Container>
+        void getBehaviours(Container& container)
+        {
+            for (auto&& behaviour : m_behaviours)
+            {
+                if (m_behaviours.isRemoving(behaviour))
+                {
+                    continue;
+                }
+
+                container.push_back(behaviour);
+            }
         }
 
     protected:
@@ -170,6 +219,8 @@ namespace CORE_MODULE_NS
         std::string m_name;
 
         Scene* m_parentScene;
+
+        bool m_enabled;
     };
 }
 

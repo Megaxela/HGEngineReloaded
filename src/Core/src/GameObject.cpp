@@ -6,7 +6,8 @@
 CORE_MODULE_NS::GameObject::GameObject() :
     m_behaviours(),
     m_transform(this),
-    m_parentScene(nullptr)
+    m_parentScene(nullptr),
+    m_enabled(true)
 {
 
 }
@@ -48,7 +49,9 @@ void CORE_MODULE_NS::GameObject::update()
         // will be skipped, because it can
         // be already deleted. So on the next frame
         // this behaviour will be removed from container.
-        if (m_behaviours.isRemoving(iter))
+        // If behaviour is disabled, it shouldn't be updated.
+        if (m_behaviours.isRemoving(iter) ||
+            !iter->isEnabled())
         {
             continue;
         }
@@ -148,4 +151,14 @@ std::string CORE_MODULE_NS::GameObject::name() const
 CORE_MODULE_NS::Transform* CORE_MODULE_NS::GameObject::transform()
 {
     return &m_transform;
+}
+
+bool CORE_MODULE_NS::GameObject::isEnabled() const
+{
+    return m_enabled;
+}
+
+void CORE_MODULE_NS::GameObject::setEnabled(bool value)
+{
+    m_enabled = value;
 }

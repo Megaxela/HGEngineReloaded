@@ -1,7 +1,9 @@
 #include "Behaviour.hpp"
 
 CORE_MODULE_NS::Behaviour::Behaviour() :
-    m_parent(nullptr)
+    m_enabled(true),
+    m_parent(nullptr),
+    m_properties()
 {
 
 }
@@ -15,7 +17,17 @@ CORE_MODULE_NS::Behaviour::~Behaviour()
     }
 }
 
-const CORE_MODULE_NS::Input *HG::Core::Behaviour::input() const
+bool CORE_MODULE_NS::Behaviour::isEnabled() const
+{
+    return m_enabled;
+}
+
+void CORE_MODULE_NS::Behaviour::setEnabled(bool value)
+{
+    m_enabled = value;
+}
+
+const CORE_MODULE_NS::Input *CORE_MODULE_NS::Behaviour::input() const
 {
     return scene()->application()->input();
 }
@@ -63,4 +75,10 @@ CORE_MODULE_NS::Scene* CORE_MODULE_NS::Behaviour::scene() const
     }
 
     return m_parent->scene();
+}
+
+void CORE_MODULE_NS::Behaviour::addProperty(CORE_MODULE_NS::Behaviour::Property property)
+{
+    // todo: Add checking if property with this name already exists
+    m_properties.emplace_back(property.name(), property);
 }

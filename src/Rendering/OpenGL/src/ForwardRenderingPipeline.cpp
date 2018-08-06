@@ -293,10 +293,15 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::proceedGameObjects(const
     // Using multimap for sorting objects by distance from camera
     for (auto&& gameObject : objects)
     {
+        if (!gameObject->isEnabled())
+        {
+            continue;
+        }
+
         m_behavioursCache.clear();
 
         // Getting rendering behaviours of GO
-        gameObject->findRenderingBehaviours(m_behavioursCache);
+        gameObject->getRenderingBehaviours(m_behavioursCache);
 
         for (auto&& behaviour : m_behavioursCache)
         {

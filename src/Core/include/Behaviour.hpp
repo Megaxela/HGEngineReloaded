@@ -5,9 +5,54 @@
 // Declarations for simple behaviour coding
 #include <Scene.hpp>
 #include <Application.hpp>
+#include <any>
+
+#define HG_PROPERTY_INITIALIZER(TYPE, NAME)\
+    ::CORE_MODULE_NS::PropertyInitializer<TYPE> __ ## NAME ## Init = ::CORE_MODULE_NS::PropertyInitializer<TYPE>(\
+            this,\
+            #NAME,\
+            #TYPE,\
+            std::bind(&std::remove_reference<decltype(*this)>::type::setProperty ## NAME, this, std::placeholders::_1),\
+            std::bind(&std::remove_reference<decltype(*this)>::type::getProperty ## NAME, this)\
+        );
+
+#define HG_PROPERTY_DEFAULT(TYPE, NAME, DEFAULT_VARIABLE)\
+public:\
+    void setProperty ## NAME (TYPE value)\
+    {\
+        m_property ## NAME = value;\
+    }\
+\
+    TYPE getProperty ## NAME () const\
+    {\
+        return m_property ## NAME;\
+    }\
+\
+private:\
+    TYPE m_property ## NAME = DEFAULT_VARIABLE;\
+    HG_PROPERTY_INITIALIZER(TYPE, NAME)
+
+
+#define HG_PROPERTY(TYPE, NAME)\
+public:\
+    void setProperty ## NAME (TYPE value)\
+    {\
+        m_property ## NAME = value;\
+    }\
+\
+    TYPE getProperty ## NAME () const\
+    {\
+        return m_property ## NAME;\
+    }\
+\
+private:\
+    TYPE m_property ## NAME;\
+    HG_PROPERTY_INITIALIZER(TYPE, NAME)
+
 
 namespace CORE_MODULE_NS
 {
+
     /**
      * @brief Class, that describes abstract
      * gameobject behaviour component.
@@ -15,6 +60,58 @@ namespace CORE_MODULE_NS
     class Behaviour
     {
     public:
+
+        // Property system
+        // todo: Low std::any overhead with another api
+        struct Property
+        {
+            Property(std::string name,
+                     std::string type,
+                     std::any setter,
+                     std::any getter,
+                     const std::type_info& typeInfo) :
+                m_name(std::move(name)),
+                m_type(std::move(type)),
+                m_setter(std::move(setter)),
+                m_getter(std::move(getter)),
+                m_typeInfo(typeInfo)
+            {}
+
+            std::string name() const
+            {
+                return m_name;
+            }
+
+            std::string type() const
+            {
+                return m_type;
+            }
+
+            const std::type_info& typeInfo() const
+            {
+                return m_typeInfo;
+            }
+
+            template<typename Type>
+            std::function<Type()> getGetter() const
+            {
+                return std::any_cast<std::function<Type()>>(m_getter);
+            }
+
+            template<typename Type>
+            std::function<void(Type)> getSetter() const
+            {
+                return std::any_cast<std::function<void(Type)>>(m_setter);
+            }
+
+            std::string m_name;
+            std::string m_type;
+
+            std::any m_setter;
+            std::any m_getter;
+
+            const std::type_info& m_typeInfo;
+        };
 
         /**
          * @brief Constructor.
@@ -25,6 +122,19 @@ namespace CORE_MODULE_NS
          * @brief Destructor.
          */
         virtual ~Behaviour();
+
+        /**
+         * @brief Method for checking is behaviour enabled.
+         * If behaviour is disabled, it will not be called in update.
+         * @return Is behaviour enabled.
+         */
+        bool isEnabled() const;
+
+        /**
+         * @brief Method for setting behaviour enabled.
+         * @param value Enabled value.
+         */
+        void setEnabled(bool value);
 
         /**
          * @brief Public method for calling
@@ -57,6 +167,80 @@ namespace CORE_MODULE_NS
          */
         const Input* input() const;
 
+        /**
+         * @brief Method for adding property to behaviour.
+         * @param name Property name.
+         * @param property Property object.
+         */
+        void addProperty(Property property);
+
+        /**
+         * @brief Method for setting property value.
+         * @tparam ArgumentType Argument type.
+         * @param name Property name.
+         * @param value Value.
+         * @return Setting result.
+         */
+        template<typename ArgumentType>
+        void setProperty(const std::string& name, ArgumentType value)
+        {
+            auto propertyIter = std::find_if(
+                m_properties.begin(),
+                m_properties.end(),
+                [&name](const std::pair<std::string, Property> &pair)
+                { return pair.first == name; }
+            );
+
+            if (propertyIter == m_properties.end())
+            {
+                throw std::invalid_argument("Unknown property \"" + name + "\"");
+            }
+
+            propertyIter->second.template getSetter< ArgumentType >()(value);
+        }
+
+        /**
+         * @brief Method for getting property value.
+         * @tparam Type Argument type.
+         * @param name Property name.
+         */
+        template<typename Type>
+        Type getProperty(const std::string& name)
+        {
+            auto propertyIter = std::find_if(
+                m_properties.begin(),
+                m_properties.end(),
+                [&name](const std::pair<std::string, Property> &pair)
+                { return pair.first == name; }
+            );
+
+            if (propertyIter == m_properties.end())
+            {
+                throw std::invalid_argument("Unknown property \"" + name + "\"");
+            }
+
+            return propertyIter->second.template getGetter<Type>()();
+        }
+
+        std::vector<Property> getProperties() const
+        {
+            std::vector<Property> container;
+
+            getProperties(container);
+
+            return container;
+        }
+
+        void getProperties(std::vector<Property>& container) const
+        {
+            container.reserve(m_properties.size());
+
+            for (auto&& [name, prop] : m_properties)
+            {
+                container.push_back(prop);
+            }
+        }
+
     protected:
 
         /**
@@ -88,7 +272,37 @@ namespace CORE_MODULE_NS
 
     private:
 
+        bool m_enabled;
+
         GameObject* m_parent;
+
+        std::vector<
+            std::pair<
+                std::string,
+                Property
+            >
+        > m_properties;
+    };
+
+
+    template<typename T>
+    class PropertyInitializer
+    {
+    public:
+        PropertyInitializer(HG::Core::Behaviour* b,
+                            std::string valName,
+                            std::string typeName,
+                            std::function<void(T)> setter,
+                            std::function<T()> getter)
+        {
+            b->addProperty(CORE_MODULE_NS::Behaviour::Property(
+                std::move(valName),
+                std::move(typeName),
+                std::move(setter),
+                std::move(getter),
+                typeid(T)
+            ));
+        }
     };
 }
 
