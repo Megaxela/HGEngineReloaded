@@ -683,7 +683,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
 
     if (!fragmentShader.compile())
     {
-        Error() << "Can't compile fragment shader. Error: " << fragmentShader.info_log();
+        Error() << "Can't compile fragment shader. " << fragmentShader.info_log();
         return /* false */;
     }
 
@@ -696,7 +696,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
     externalData->Program.attach_shader(fragmentShader);
     if (!externalData->Program.link())
     {
-        Error() << "Can't link shader. Error: " << externalData->Program.info_log();
+        Error() << "Can't link shader. " << externalData->Program.info_log();
         return /* false */;
     }
 }

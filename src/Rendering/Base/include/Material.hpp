@@ -68,6 +68,11 @@ namespace RENDERING_BASE_MODULE_NS
          */
         explicit Material(Shader* shader);
 
+        /**
+         * @brief
+         */
+        virtual ~Material() = default;
+
         // Different type setters
         void set(const std::string& name, int value);
         void set(const std::string& name, float value);

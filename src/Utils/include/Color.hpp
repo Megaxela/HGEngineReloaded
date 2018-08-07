@@ -13,6 +13,15 @@ namespace UTILS_MODULE_NS
     class Color
     {
     public:
+
+        static Color Red;
+        static Color Green;
+        static Color Blue;
+        static Color White;
+        static Color Gray;
+        static Color Black;
+        static Color Transparent;
+
         /**
          * @brief Default constructor.
          */

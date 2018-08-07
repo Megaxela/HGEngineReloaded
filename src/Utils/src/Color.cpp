@@ -9,6 +9,14 @@ namespace
     }
 }
 
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Red        (1.0f, 0.0f, 0.0f);
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Green      (0.0f, 1.0f, 0.0f);
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Blue       (0.0f, 0.0f, 1.0f);
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::White      (1.0f, 1.0f, 1.0f);
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Gray       (0.8f, 0.8f, 0.8f);
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Black      (0.0f, 0.0f, 0.0f);
+UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Transparent(0.0f, 0.0f, 0.0f, 0.0f);
+
 UTILS_MODULE_NS::Color::Color() :
     m_r(0.0f),
     m_g(0.0f),

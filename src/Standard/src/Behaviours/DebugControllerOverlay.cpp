@@ -1,8 +1,50 @@
 #include <imgui.h>
 #include "Behaviours/DebugControllerOverlay.hpp"
 #include <Color.hpp>
+#include <imgui_internal.h>
+#include <Behaviours/IngameConsole.hpp>
+
 
 void STD_MODULE_NS::Behaviours::DebugControllerOverlay::onUpdate()
+{
+    displayMenu();
+    displayGameObjectsWindow();
+    displayInspectorWindow();
+}
+
+void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayMenu()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            ImGui::MenuItem("Do something");
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Scene"))
+        {
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("View"))
+        {
+            auto ingameConsole = gameObject()->findBehaviour<IngameConsole>();
+
+            if (ImGui::MenuItem("Console", nullptr, false, ingameConsole != nullptr))
+            {
+                ingameConsole->toggle();
+            }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMainMenuBar();
+    }
+}
+
+void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayGameObjectsWindow()
 {
     ImGui::Begin("GameObjects");
 
@@ -12,15 +54,26 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::onUpdate()
     proceedParentedGameObjects(nullptr);
 
     ImGui::End();
+}
 
-    ImGui::Begin("Inspector");
+void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayInspectorWindow()
+{
+    static bool opened = true;
 
     if (m_activeGameObject)
     {
-        proceedInspector();
-    }
+        opened = true;
+        ImGui::Begin("Inspector", &opened);
 
-    ImGui::End();
+        proceedInspector();
+
+        ImGui::End();
+
+        if (!opened)
+        {
+            m_activeGameObject = nullptr;
+        }
+    }
 }
 
 void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedInspector()
@@ -29,17 +82,9 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedInspector()
     auto originPosition = m_activeGameObject->transform()->globalPosition();
     originPosition.z = 0.5f;
 
-//    scene()->application()->renderer()->gizmos()->multiLine({
-//        originPosition + glm::vec3(-m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z),
-//        originPosition + glm::vec3( m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z),
-//        originPosition + glm::vec3( m_propertyOriginSize.x,  m_propertyOriginSize.y, originPosition.z),
-//        originPosition + glm::vec3(-m_propertyOriginSize.x,  m_propertyOriginSize.y, originPosition.z),
-//        originPosition + glm::vec3(-m_propertyOriginSize.x, -m_propertyOriginSize.y, originPosition.z)
-//    }, m_propertyOriginColor);
-
     scene()->application()->renderer()->gizmos()->circle(
         originPosition,
-        0.4f,
+        {m_propertyOriginSize.x, m_propertyOriginSize.y},
         m_propertyOriginColor
     );
 
@@ -78,7 +123,21 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedInspector()
 
         bool enabled = behaviour->isEnabled();
 
+        // Self skipping to prevent
+        // debug controller self disabling
+        if (behaviour == this)
+        {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
+
         ImGui::Checkbox(behaviourName.c_str(), &enabled);
+
+        if (behaviour == this)
+        {
+            ImGui::PopItemFlag();
+            ImGui::PopStyleVar(1);
+        }
 
         behaviour->setEnabled(enabled);
 

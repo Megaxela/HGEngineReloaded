@@ -26,7 +26,7 @@ add_library(HGStandard STATIC
     include/Behaviours/TiledMapRenderer.hpp
     src/Behaviours/TiledMapCollider.cpp
     include/Behaviours/TiledMapCollider.hpp
-)
+        src/Behaviours/IngameConsole.cpp include/Behaviours/IngameConsole.hpp)
 
 target_include_directories(HGStandard PUBLIC
     include

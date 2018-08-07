@@ -44,17 +44,17 @@ void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
         );
 
         // Moving all elements to left
-        updateFrameGraph();
-
-        ImGui::PlotLines(
-            "",
-            m_frames,
-            m_framesCount,
-            0,
-            "Frame time",
-            0,
-            1000
-        );
+//        updateFrameGraph();
+//
+//        ImGui::PlotLines(
+//            "",
+//            m_frames,
+//            m_framesCount,
+//            0,
+//            "Frame time",
+//            0,
+//            1000
+//        );
 
         ImGui::Text(
             "RAM: %.1fMB / %.1fMB\n"

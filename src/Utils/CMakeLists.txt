@@ -33,7 +33,9 @@ add_library(HGUtils STATIC
     src/PhysicalResource.cpp
     include/PhysicalResource.hpp
     include/Platform.hpp
-)
+    src/StringTools.cpp
+    include/StringTools.hpp
+        src/Loaders/StringLoader.cpp include/Loaders/StringLoader.hpp)
 
 target_include_directories(HGUtils PUBLIC
     include

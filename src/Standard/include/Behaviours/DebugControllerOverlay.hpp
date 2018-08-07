@@ -17,6 +17,12 @@ namespace STD_MODULE_NS::Behaviours
 
     private:
 
+        void displayMenu();
+
+        void displayGameObjectsWindow();
+
+        void displayInspectorWindow();
+
         void proceedParentedGameObjects(::CORE_MODULE_NS::Transform* parent);
 
         void proceedInspector();

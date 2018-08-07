@@ -39,6 +39,8 @@ add_library(HGRenderingBase STATIC
     include/Behaviours/Sprite.hpp
     src/Gizmos.cpp
     include/Gizmos.hpp
+    src/MaterialCollection.cpp
+    include/MaterialCollection.hpp
 )
 
 target_include_directories(HGRenderingBase PUBLIC

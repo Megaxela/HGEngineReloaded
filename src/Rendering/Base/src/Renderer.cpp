@@ -1,9 +1,13 @@
 #include <CurrentLogger.hpp>
 #include "Renderer.hpp"
+#include <Application.hpp>
+#include <Renderer.hpp>
+
 
 RENDERING_BASE_MODULE_NS::Renderer::Renderer(::CORE_MODULE_NS::Application* application) :
     m_parentApplication(application),
-    m_pipeline(nullptr)
+    m_pipeline(nullptr),
+    m_materialCollection(application->resourceManager(), this)
 {
     Debug() << "Creating renderer.";
 }
@@ -47,4 +51,9 @@ void RENDERING_BASE_MODULE_NS::Renderer::render(const CORE_MODULE_NS::Scene::Gam
 RENDERING_BASE_MODULE_NS::RenderingPipeline* RENDERING_BASE_MODULE_NS::Renderer::pipeline()
 {
     return m_pipeline;
+}
+
+::RENDERING_BASE_MODULE_NS::MaterialCollection* RENDERING_BASE_MODULE_NS::Renderer::materialCollection()
+{
+    return &m_materialCollection;
 }

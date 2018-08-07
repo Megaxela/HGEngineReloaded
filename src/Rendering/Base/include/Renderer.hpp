@@ -4,6 +4,7 @@
 #include "RenderingPipeline.hpp"
 #include "RenderBehaviour.hpp"
 #include "Gizmos.hpp"
+#include "MaterialCollection.hpp"
 
 namespace RENDERING_BASE_MODULE_NS
 {
@@ -63,6 +64,12 @@ namespace RENDERING_BASE_MODULE_NS
         ::RENDERING_BASE_MODULE_NS::Gizmos* gizmos();
 
         /**
+         * @brief Method for getting renderer material collection.
+         * @return Pointer to material collection.
+         */
+        ::RENDERING_BASE_MODULE_NS::MaterialCollection* materialCollection();
+
+        /**
          * @brief Method for setting up objects
          * with specified rendering pipeline.
          * @param obj Object.
@@ -86,6 +93,8 @@ namespace RENDERING_BASE_MODULE_NS
         ::RENDERING_BASE_MODULE_NS::RenderingPipeline* m_pipeline;
 
         ::RENDERING_BASE_MODULE_NS::Gizmos m_gizmos;
+
+        ::RENDERING_BASE_MODULE_NS::MaterialCollection m_materialCollection;
 
     };
 }

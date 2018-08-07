@@ -53,8 +53,8 @@ namespace OGL_RENDERING_MODULE_NS
 
         ::CORE_MODULE_NS::Application* m_application;
 
-        ::RENDERING_BASE_MODULE_NS::Shader m_lineShader;
-        ::RENDERING_BASE_MODULE_NS::Shader m_meshShader;
+        ::RENDERING_BASE_MODULE_NS::Material* m_lineMaterial;
+        ::RENDERING_BASE_MODULE_NS::Material* m_meshMaterial;
 
         gl::vertex_array m_linesVAO;
         gl::buffer m_linesVBO;

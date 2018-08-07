@@ -4,11 +4,13 @@
 #include <Material.hpp>
 #include <ForwardRenderingPipeline.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
+#include <Materials/GizmosLineMaterial.hpp>
+#include <Materials/GizmosMeshMaterial.hpp>
 
 OGL_RENDERING_MODULE_NS::GizmosRenderer::GizmosRenderer(::CORE_MODULE_NS::Application* application) :
     m_application(application),
-    m_lineShader(),
-    m_meshShader(),
+    m_lineMaterial(),
+    m_meshMaterial(),
     m_linesVAO(gl::invalid_id),
     m_linesVBO(gl::invalid_id)
 {
@@ -21,36 +23,8 @@ void OGL_RENDERING_MODULE_NS::GizmosRenderer::init()
     m_linesVBO = std::move(gl::buffer());
 
     // Preparing line shader
-    m_lineShader.setShaderText(
-        R"(
-#ifdef VertexShader
-layout (location = 0) in vec3 vertex;
-layout (location = 1) in vec4 color;
-out vec4 Color;
-
-uniform mat4 projection;
-uniform mat4 view;
-
-void main()
-{
-    Color = color;
-    gl_Position = projection * view * vec4(vertex, 1.0);
-}
-#endif
-
-#ifdef FragmentShader
-in vec4 Color;
-out vec4 color;
-
-void main()
-{
-    color = Color;
-}
-#endif
-)"
-    );
-
-    m_application->renderer()->setup(&m_lineShader);
+    m_lineMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosLineMaterial>();
+    m_meshMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
 
     // Preparing VAO
     m_linesVAO.bind();
@@ -107,7 +81,7 @@ void OGL_RENDERING_MODULE_NS::GizmosRenderer::renderLines()
         m_lineData.data()
     );
 
-    auto* program = &m_lineShader.externalData<ForwardRenderingPipeline::ShaderData>()->Program;
+    auto* program = &m_lineMaterial->shader()->externalData<ForwardRenderingPipeline::ShaderData>()->Program;
 
     program->set_uniform(
         program->uniform_location("projection"),

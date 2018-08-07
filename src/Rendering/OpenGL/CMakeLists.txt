@@ -42,7 +42,7 @@ add_library(HGRenderingOGL STATIC
         include/ForwardRenderingPipeline.hpp
         src/GLFWSystemController.cpp
         include/GLFWSystemController.hpp
-        src/GizmosRenderer.cpp include/GizmosRenderer.hpp)
+        src/GizmosRenderer.cpp include/GizmosRenderer.hpp src/Material/GizmosLineMaterial.cpp include/Materials/GizmosLineMaterial.hpp src/Material/GizmosMeshMaterial.cpp include/Materials/GizmosMeshMaterial.hpp)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 
