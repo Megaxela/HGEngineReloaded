@@ -37,12 +37,22 @@ endif()
 add_subdirectory(libraries)
 
 add_library(HGRenderingOGL STATIC
-        include/GL/gl_ordered.hpp
-        src/ForwardRenderingPipeline.cpp
-        include/ForwardRenderingPipeline.hpp
-        src/GLFWSystemController.cpp
-        include/GLFWSystemController.hpp
-        src/GizmosRenderer.cpp include/GizmosRenderer.hpp src/Material/GizmosLineMaterial.cpp include/Materials/GizmosLineMaterial.hpp src/Material/GizmosMeshMaterial.cpp include/Materials/GizmosMeshMaterial.hpp)
+    include/GL/gl_ordered.hpp
+    src/ForwardRenderingPipeline.cpp
+    include/ForwardRenderingPipeline.hpp
+    src/GLFWSystemController.cpp
+    include/GLFWSystemController.hpp
+    src/GizmosRenderer.cpp
+    include/GizmosRenderer.hpp
+    src/Material/GizmosLineMaterial.cpp
+    include/Materials/GizmosLineMaterial.hpp
+    src/Material/GizmosMeshMaterial.cpp
+    include/Materials/GizmosMeshMaterial.hpp
+    src/Material/MeshFallbackMaterial.cpp
+    include/Materials/MeshFallbackMaterial.hpp
+    src/Material/SpriteMaterial.cpp
+    include/Materials/SpriteMaterial.hpp
+)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 

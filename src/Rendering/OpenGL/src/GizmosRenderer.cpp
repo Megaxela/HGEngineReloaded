@@ -9,12 +9,18 @@
 
 OGL_RENDERING_MODULE_NS::GizmosRenderer::GizmosRenderer(::CORE_MODULE_NS::Application* application) :
     m_application(application),
-    m_lineMaterial(),
-    m_meshMaterial(),
+    m_lineMaterial(nullptr),
+    m_meshMaterial(nullptr),
     m_linesVAO(gl::invalid_id),
     m_linesVBO(gl::invalid_id)
 {
 
+}
+
+OGL_RENDERING_MODULE_NS::GizmosRenderer::~GizmosRenderer()
+{
+    delete m_lineMaterial;
+    delete m_meshMaterial;
 }
 
 void OGL_RENDERING_MODULE_NS::GizmosRenderer::init()

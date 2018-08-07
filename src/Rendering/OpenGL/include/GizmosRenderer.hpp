@@ -20,6 +20,11 @@ namespace OGL_RENDERING_MODULE_NS
         explicit GizmosRenderer(::CORE_MODULE_NS::Application* application);
 
         /**
+         * @brief Destructor.
+         */
+        ~GizmosRenderer();
+
+        /**
          * @brief Method for initialization gizmos renderer.
          */
         void init();

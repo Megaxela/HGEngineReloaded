@@ -56,14 +56,11 @@ namespace STD_MODULE_NS::Behaviours
          */
         void addCommand(Command c);
 
-        /**
-         * @brief Method for toggling show/hide.
-         */
-        void toggle();
-
     protected:
 
         void onUpdate() override;
+
+        void onStart() override;
 
     private:
 
@@ -170,8 +167,6 @@ namespace STD_MODULE_NS::Behaviours
                 std::string
             >
         > m_linesBuffer;
-
-        bool m_shown;
     };
 }
 

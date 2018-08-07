@@ -194,10 +194,10 @@ namespace OGL_RENDERING_MODULE_NS
         std::multimap<float, ::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_sortedBehaviours;
 
         // Fallback mesh program
-        ::RENDERING_BASE_MODULE_NS::Shader m_meshFallback;
+        ::RENDERING_BASE_MODULE_NS::Material* m_meshFallbackMaterial;
 
         // Shader for sprite rendering
-        ::RENDERING_BASE_MODULE_NS::Shader m_spriteShader;
+        ::RENDERING_BASE_MODULE_NS::Material* m_spriteMaterial;
 
         // Sprite mesh
         MeshData* m_spriteData;

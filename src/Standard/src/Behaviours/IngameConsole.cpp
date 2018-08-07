@@ -10,8 +10,7 @@
 STD_MODULE_NS::Behaviours::IngameConsole::IngameConsole() :
     m_logsListener(),
     m_commands(),
-    m_linesBuffer(),
-    m_shown(false)
+    m_linesBuffer()
 {
     connectLoggingWatcher();
 
@@ -77,11 +76,6 @@ STD_MODULE_NS::Behaviours::IngameConsole::~IngameConsole()
     }
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::toggle()
-{
-    m_shown = !m_shown;
-}
-
 void STD_MODULE_NS::Behaviours::IngameConsole::addCommand(STD_MODULE_NS::Behaviours::IngameConsole::Command c)
 {
     m_commands[UTILS_MODULE_NS::StringTools::toLower(c.command)] = std::move(c);
@@ -89,8 +83,15 @@ void STD_MODULE_NS::Behaviours::IngameConsole::addCommand(STD_MODULE_NS::Behavio
 
 void STD_MODULE_NS::Behaviours::IngameConsole::displayConsole()
 {
-    if (ImGui::Begin("Console", &m_shown))
+    bool shown = true;
+
+    if (ImGui::Begin("Console", &shown))
     {
+        if (!shown)
+        {
+            setEnabled(false);
+        }
+
         {
             const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
             ImGui::BeginChild(
@@ -145,6 +146,11 @@ void STD_MODULE_NS::Behaviours::IngameConsole::displayConsole()
 
         ImGui::End();
     }
+}
+
+void STD_MODULE_NS::Behaviours::IngameConsole::onStart()
+{
+    setEnabled(false);
 }
 
 void STD_MODULE_NS::Behaviours::IngameConsole::onUpdate()
@@ -256,6 +262,8 @@ UTILS_MODULE_NS::Color STD_MODULE_NS::Behaviours::IngameConsole::getLogColor(Abs
     case AbstractLogger::ErrorClass::Unknown:
         return UTILS_MODULE_NS::Color::White;
     }
+
+    return UTILS_MODULE_NS::Color::White;
 }
 
 void STD_MODULE_NS::Behaviours::IngameConsole::connectLoggingWatcher()

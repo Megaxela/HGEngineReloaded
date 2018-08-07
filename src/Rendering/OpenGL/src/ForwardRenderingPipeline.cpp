@@ -14,6 +14,8 @@
 #include <Lights/AbstractLight.hpp>
 #include <Lights/PointLight.hpp>
 #include <Lights/DirectionalLight.hpp>
+#include <Materials/MeshFallbackMaterial.hpp>
+#include <Materials/SpriteMaterial.hpp>
 
 #define SHADER_DEFAULT_STRUCTS \
 "#define MAX_POINT_LIGHTS 128\n" \
@@ -55,8 +57,8 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
     m_textureNumber(0),
     m_behavioursCache(),
     m_sortedBehaviours(),
-    m_meshFallback(),
-    m_spriteShader(),
+    m_meshFallbackMaterial(),
+    m_spriteMaterial(),
     m_spriteData(nullptr),
     m_gizmosRenderer(application)
 {
@@ -66,6 +68,8 @@ OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::ForwardRenderingPipeline(::CO
 OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::~ForwardRenderingPipeline()
 {
     delete m_spriteData;
+    delete m_meshFallbackMaterial;
+    delete m_spriteMaterial;
 }
 
 bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::init()
@@ -87,97 +91,26 @@ bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::init()
     return initSpriteShader();
 }
 
-bool HG::Rendering::OpenGL::ForwardRenderingPipeline::initFallbackShader()
+bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::initFallbackShader()
 {
-    Info() << "Creating fallback shader.";
+    Info() << "Creating fallback material.";
 
-    m_meshFallback.setShaderText(
-        R"(
-#ifdef VertexShader
-layout (location = 0) in vec3 inPosition;
-layout (location = 2) in vec2 inTexCoords;
-
-out vec2 TexCoords;
-
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
-void main()
-{
-    gl_Position = projection * view * model * vec4(inPosition, 1.0f);
-    TexCoords = inTexCoords;
-}
-#endif
-
-#ifdef FragmentShader
-out vec4 FragColor;
-
-in vec2 TexCoords;
-
-// texture samplers
-uniform sampler2D fallbackTexture;
-
-void main()
-{
-    FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-}
-#endif
-)"
-    );
-
+    m_meshFallbackMaterial = application()
+        ->renderer()
+        ->materialCollection()
+        ->getMaterial<Materials::MeshFallbackMaterial>();
+    
     return true;
 }
 
-bool HG::Rendering::OpenGL::ForwardRenderingPipeline::initSpriteShader()
+bool OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::initSpriteShader()
 {
     Info() << "Creating sprite shader";
 
-    m_spriteShader.setShaderText(
-        R"(
-#ifdef VertexShader
-layout (location = 0) in vec3 inPosition;
-layout (location = 2) in vec2 inTexCoords;
-
-out vec2 TexCoords;
-
-uniform vec2 size;
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
-void main()
-{
-    gl_Position = projection * view * model * vec4(inPosition * vec3(size, 1.0f), 1.0f);
-    TexCoords = inTexCoords;
-}
-#endif
-
-#ifdef FragmentShader
-out vec4 FragColor;
-
-in vec2 TexCoords;
-
-// texture samplers
-uniform sampler2D tex;
-
-void main()
-{
-    vec4 color = texture(tex, TexCoords).rgba;
-
-    if (color.a >= 0.01)
-    {
-        FragColor = color;
-    }
-    else
-    {
-        discard;
-    }
-}
-#endif
-)");
-
-    setup(&m_spriteShader);
+    m_spriteMaterial = application()
+        ->renderer()
+        ->materialCollection()
+        ->getMaterial<Materials::SpriteMaterial>();
 
     // Initializing MeshData
     m_spriteData = new MeshData();
@@ -704,7 +637,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::setup(::RENDERING_BASE_M
 void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderSprite(::CORE_MODULE_NS::GameObject* gameObject,
                                                                      ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite* spriteBehaviour)
 {
-    auto* program = m_spriteShader.externalData<ShaderData>();
+    auto* program = m_spriteMaterial->shader()->externalData<ShaderData>();
     auto* spriteExternal = spriteBehaviour->texture()->externalData<TextureData>();
 
     if (!spriteExternal)
@@ -810,7 +743,7 @@ void OGL_RENDERING_MODULE_NS::ForwardRenderingPipeline::renderMesh(::CORE_MODULE
         meshBehaviour->material()->shader() == nullptr ||
         meshBehaviour->material()->shader()->externalData<ShaderData>() == nullptr)
     {
-        program = &m_meshFallback.externalData<ShaderData>()->Program;
+        program = &m_meshFallbackMaterial->shader()->externalData<ShaderData>()->Program;
 
         program->use();
     }

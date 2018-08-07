@@ -5,6 +5,8 @@
 #include <DebugDraw.hpp>
 #include <Application.hpp>
 #include <set>
+#include <Controller.hpp>
+
 #include "DebugSettings.hpp"
 
 using FixtureSet = std::set<playrho::d2::Fixture*>;
@@ -512,6 +514,11 @@ void PLAYRHO_PHYSICS_MODULE_NS::Controller::tick(std::chrono::microseconds delta
     {
         DrawWorld(m_drawer, m_world, m_settings, FixtureSet());
     }
+}
+
+PLAYRHO_PHYSICS_MODULE_NS::DebugSettings *PLAYRHO_PHYSICS_MODULE_NS::Controller::settings()
+{
+    return &m_settings;
 }
 
 // Compiletime visitor implementation

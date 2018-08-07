@@ -11,11 +11,28 @@ namespace STD_MODULE_NS::Behaviours
      */
     class DebugControllerOverlay : public ::CORE_MODULE_NS::Behaviour
     {
+    public:
+
+        template<typename Behaviour>
+        typename std::enable_if<
+            std::is_base_of<CORE_MODULE_NS::Behaviour, Behaviour>::value,
+            DebugControllerOverlay*
+        >::type addViewBehaviour()
+        {
+
+        }
+
     protected:
 
         void onUpdate() override;
 
     private:
+
+        template<typename T>
+        struct Finder
+        {
+            
+        };
 
         void displayMenu();
 
@@ -34,6 +51,13 @@ namespace STD_MODULE_NS::Behaviours
         std::vector<::CORE_MODULE_NS::Behaviour::Property> m_properties;
 
         ::CORE_MODULE_NS::GameObject* m_activeGameObject = nullptr;
+
+        std::vector<
+            std::pair<
+                std::string,
+                std::function<::CORE_MODULE_NS::Behaviour*(::CORE_MODULE_NS::Scene*)>
+            >
+        > m_viewBehaviours;
 
         HG_PROPERTY_DEFAULT(glm::vec2, OriginSize, glm::vec2(0.3f, 0.3f));
         HG_PROPERTY_DEFAULT(::UTILS_MODULE_NS::Color, OriginColor, ::UTILS_MODULE_NS::Color::fromRGB(150, 180, 0));

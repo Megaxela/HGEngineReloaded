@@ -32,9 +32,9 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayMenu()
         {
             auto ingameConsole = gameObject()->findBehaviour<IngameConsole>();
 
-            if (ImGui::MenuItem("Console", nullptr, false, ingameConsole != nullptr))
+            if (ImGui::MenuItem("Console", nullptr, ingameConsole->isEnabled(), ingameConsole != nullptr))
             {
-                ingameConsole->toggle();
+                ingameConsole->setEnabled(ingameConsole->isEnabled());
             }
 
             ImGui::EndMenu();

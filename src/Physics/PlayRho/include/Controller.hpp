@@ -28,8 +28,17 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
          */
         playrho::d2::World* world();
 
+        /**
+         * @brief Method for ticking physics engine for some time.
+         * @param deltaTime Time in milliseconds.
+         */
         void tick(std::chrono::microseconds deltaTime) override;
 
+        /**
+         * @brief Method for getting controller settings.
+         * @return Pointer to settings.
+         */
+        DebugSettings* settings();
 
     private:
 
