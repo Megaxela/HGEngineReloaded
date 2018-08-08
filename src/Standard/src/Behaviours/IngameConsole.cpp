@@ -157,10 +157,7 @@ void STD_MODULE_NS::Behaviours::IngameConsole::onUpdate()
 {
     proceedLogs();
 
-    if (m_shown)
-    {
-        displayConsole();
-    }
+    displayConsole();
 }
 
 void STD_MODULE_NS::Behaviours::IngameConsole::proceedLogs()
@@ -178,14 +175,6 @@ void STD_MODULE_NS::Behaviours::IngameConsole::proceedLogs()
 void STD_MODULE_NS::Behaviours::IngameConsole::logText(const UTILS_MODULE_NS::Color& color, std::string text)
 {
     m_linesBuffer.emplace_back(color, text);
-
-    if (m_linesBuffer.size() > 1024)
-    {
-        m_linesBuffer.erase(
-            m_linesBuffer.begin(),
-            m_linesBuffer.begin() + (m_linesBuffer.size() - 1024)
-        );
-    }
 }
 
 void STD_MODULE_NS::Behaviours::IngameConsole::executeCommand(std::string command)
@@ -291,7 +280,7 @@ AbstractLogger::Message STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher
 {
     auto element = std::move(m_messages.front());
     
-    m_messages.pop();
+    m_messages.pop_front();
     
     return element;
 }
@@ -303,7 +292,7 @@ bool STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher::hasMessages() con
 
 void STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher::newMessage(const AbstractLogger::Message& m)
 {
-    m_messages.push(m);
+    m_messages.push_back(m);
 }
 
 int STD_MODULE_NS::Behaviours::IngameConsole::commandClEnableDebug(

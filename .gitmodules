@@ -13,3 +13,6 @@
 [submodule "src/Physics/PlayRho/libraries/PlayRho"]
 	path = src/Physics/PlayRho/libraries/PlayRho
 	url = https://github.com/louis-langholtz/PlayRho.git
+[submodule "src/Utils/libraries/RingBuffer"]
+	path = src/Utils/libraries/RingBuffer
+	url = https://github.com/Megaxela/RingBuffer.git

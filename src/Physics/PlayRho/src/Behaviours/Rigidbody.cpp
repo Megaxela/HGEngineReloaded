@@ -53,7 +53,11 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onStart()
 
         m_body->CreateFixture(
             playrho::d2::Shape{
-                playrho::d2::PolygonShapeConf{}.SetAsBox(0.03f * 16 / 2, 0.03f * 16 / 2)
+                playrho::d2::PolygonShapeConf{}.SetAsBox(
+                    0.03f * 14 / 2, 0.03f * 5 / 2,
+                    playrho::Length2(0, -0.2),
+                    0
+                )
             }
         );
     }

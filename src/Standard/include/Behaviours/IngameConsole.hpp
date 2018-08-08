@@ -2,6 +2,7 @@
 
 #include <Behaviour.hpp>
 #include <LogsListener.hpp>
+#include <ringbuffer.hpp>
 
 namespace STD_MODULE_NS::Behaviours
 {
@@ -78,7 +79,7 @@ namespace STD_MODULE_NS::Behaviours
         private:
             IngameConsole* m_console;
 
-            std::queue<AbstractLogger::Message> m_messages;
+            ringbuffer<AbstractLogger::Message, 1024> m_messages;
         };
 
         void displayConsole();
@@ -160,12 +161,12 @@ namespace STD_MODULE_NS::Behaviours
 
         std::map<std::string, Command> m_commands;
 
-        // todo: Replace with ringbuffer
-        std::vector<
+        ringbuffer<
             std::pair<
                 UTILS_MODULE_NS::Color,
                 std::string
-            >
+            >,
+            1024
         > m_linesBuffer;
     };
 }

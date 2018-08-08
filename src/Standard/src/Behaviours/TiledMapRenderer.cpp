@@ -12,8 +12,9 @@ STD_MODULE_NS::Behaviours::TiledMapRenderer::TiledMapRenderer() :
     m_map(nullptr),
     m_layers(),
     m_mapShader(),
-    m_layerZOffset(0),
-    m_metersPerPixel(0.01f)
+    m_layerZOffsetCummulative(0),
+    m_metersPerPixel(0.01f),
+    m_layerZOffset(0.01f)
 {
 
 }
@@ -22,10 +23,21 @@ STD_MODULE_NS::Behaviours::TiledMapRenderer::TiledMapRenderer(STD_MODULE_NS::Beh
     m_map(map),
     m_layers(),
     m_mapShader(),
-    m_layerZOffset(0),
-    m_metersPerPixel(0.01f)
+    m_layerZOffsetCummulative(0),
+    m_metersPerPixel(0.01f),
+    m_layerZOffset(0.01f)
 {
 
+}
+
+float STD_MODULE_NS::Behaviours::TiledMapRenderer::tiledLayersZOffset() const
+{
+    return m_layerZOffset;
+}
+
+void STD_MODULE_NS::Behaviours::TiledMapRenderer::setTiledLayerZOffset(float offset)
+{
+    m_layerZOffset = offset;
 }
 
 void STD_MODULE_NS::Behaviours::TiledMapRenderer::setMetersPerPixel(float value)
@@ -61,7 +73,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepare()
 
     m_tilesets.clear();
 
-    m_layerZOffset = 0;
+    m_layerZOffsetCummulative = 0;
 
     if (m_map)
     {
@@ -234,10 +246,10 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTileLayer(const STD_MOD
 
     pos.x =  tileLayer->offset.x * m_metersPerPixel;
     pos.y = -tileLayer->offset.y * m_metersPerPixel;
-    pos.z =  m_layerZOffset;
+    pos.z =  m_layerZOffsetCummulative;
 
     // todo: Add configuration
-    m_layerZOffset += 0.01f;
+    m_layerZOffsetCummulative += m_layerZOffset;
 
     layerGameObject->transform()->setLocalPosition(pos);
 

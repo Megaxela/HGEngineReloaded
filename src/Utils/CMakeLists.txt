@@ -49,6 +49,7 @@ target_link_libraries(HGUtils
     rapidxml
     bytearray
     stdc++fs
+    STLRoundBuffer
     ${ZLIB_LIBRARIES}
 )
 

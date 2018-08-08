@@ -13,13 +13,21 @@ namespace STD_MODULE_NS::Behaviours
     {
     public:
 
-        template<typename Behaviour>
+        template<typename B>
         typename std::enable_if<
-            std::is_base_of<CORE_MODULE_NS::Behaviour, Behaviour>::value,
+            std::is_base_of<CORE_MODULE_NS::Behaviour, B>::value,
             DebugControllerOverlay*
-        >::type addViewBehaviour()
+        >::type addViewBehaviour(const std::string& name)
         {
+            m_viewBehaviours.emplace_back(
+                name,
+                [](::CORE_MODULE_NS::GameObject* gameObject)
+                {
+                    return gameObject->findBehaviour<B>();
+                }
+            );
 
+            return this;
         }
 
     protected:
@@ -27,12 +35,6 @@ namespace STD_MODULE_NS::Behaviours
         void onUpdate() override;
 
     private:
-
-        template<typename T>
-        struct Finder
-        {
-            
-        };
 
         void displayMenu();
 
@@ -55,7 +57,7 @@ namespace STD_MODULE_NS::Behaviours
         std::vector<
             std::pair<
                 std::string,
-                std::function<::CORE_MODULE_NS::Behaviour*(::CORE_MODULE_NS::Scene*)>
+                std::function<::CORE_MODULE_NS::Behaviour*(::CORE_MODULE_NS::GameObject*)>
             >
         > m_viewBehaviours;
 

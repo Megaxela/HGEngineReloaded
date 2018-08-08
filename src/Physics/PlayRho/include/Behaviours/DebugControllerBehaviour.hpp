@@ -22,6 +22,9 @@ namespace PLAYRHO_PHYSICS_MODULE_NS::Behaviours
         void onUpdate() override;
 
         void onStart() override;
+
+    private:
+        void tooltip(const char* text);
     };
 }
 

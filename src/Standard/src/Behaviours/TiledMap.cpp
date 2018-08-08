@@ -784,6 +784,51 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_nod
     return true;
 }
 
+// todo: Remove this implementation if compiler will implement `std::from_chars` for floating.
+namespace std
+{
+    // Super stupid implementation, just to fit to API
+    from_chars_result from_chars(const char* begin, const char* end, float& f)
+    {
+        from_chars_result error;
+
+        error.ec = static_cast<errc>(0);
+
+        f = std::atof(begin);
+
+        auto iter = begin;
+
+        if (*begin == '-' ||
+            *begin == '+')
+        {
+            ++iter;
+        }
+
+        bool pointFound = false;
+
+        for (; iter < end; ++iter)
+        {
+            error.ptr = iter;
+
+            if (!isdigit(*iter) &&
+                ((*iter) != '.' ||
+                 pointFound))
+            {
+                break;
+            }
+
+            if ((*iter) == '.')
+            {
+                pointFound = true;
+            }
+        }
+
+        error.ptr = iter;
+
+        return error;
+    }
+}
+
 bool STD_MODULE_NS::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node<>* node,
                                                                STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
 {
@@ -817,7 +862,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_nod
 
     while (pointsBegin != pointsEnd)
     {
-        glm::ivec2 point;
+        glm::vec2 point;
 
         auto convResult = std::from_chars(pointsBegin, pointsEnd, point.x);
 

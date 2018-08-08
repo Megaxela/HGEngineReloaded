@@ -516,7 +516,12 @@ void PLAYRHO_PHYSICS_MODULE_NS::Controller::tick(std::chrono::microseconds delta
     }
 }
 
-PLAYRHO_PHYSICS_MODULE_NS::DebugSettings *PLAYRHO_PHYSICS_MODULE_NS::Controller::settings()
+playrho::StepConf* PLAYRHO_PHYSICS_MODULE_NS::Controller::stepConfiguration()
+{
+    return &m_stepConfiguration;
+}
+
+PLAYRHO_PHYSICS_MODULE_NS::DebugSettings *PLAYRHO_PHYSICS_MODULE_NS::Controller::debugSettings()
 {
     return &m_settings;
 }

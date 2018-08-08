@@ -38,7 +38,13 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
          * @brief Method for getting controller settings.
          * @return Pointer to settings.
          */
-        DebugSettings* settings();
+        DebugSettings* debugSettings();
+
+        /**
+         * @brief Method for getting step configuration.
+         * @return Pointer to step conf.
+         */
+        playrho::StepConf* stepConfiguration();
 
     private:
 

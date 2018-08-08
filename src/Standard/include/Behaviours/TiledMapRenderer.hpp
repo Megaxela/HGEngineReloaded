@@ -55,6 +55,20 @@ namespace STD_MODULE_NS::Behaviours
          */
         TiledMap* map() const;
 
+        /**
+         * @brief Method for getting tiled layer offset.
+         * Default: 0.01 meter.
+         * @return Offset.
+         */
+        float tiledLayersZOffset() const;
+
+        /**
+         * @brief Method for setting layer offset.
+         * Default: 0.01 meter.
+         * @param offset Offset.
+         */
+        void setTiledLayerZOffset(float offset);
+
     protected:
 
         /**
@@ -96,9 +110,11 @@ namespace STD_MODULE_NS::Behaviours
         // Map rendering shader
         RENDERING_BASE_MODULE_NS::Shader m_mapShader;
 
-        float m_layerZOffset;
+        float m_layerZOffsetCummulative;
 
         float m_metersPerPixel;
+
+        float m_layerZOffset;
     };
 }
 

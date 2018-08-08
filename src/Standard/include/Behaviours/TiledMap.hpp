@@ -293,7 +293,7 @@ namespace STD_MODULE_NS::Behaviours
 
                 // This points are relative to `position` field.
                 std::vector<
-                    glm::ivec2
+                    glm::vec2
                 > points;
             };
 

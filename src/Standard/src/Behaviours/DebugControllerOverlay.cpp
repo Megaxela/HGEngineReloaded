@@ -30,11 +30,19 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayMenu()
 
         if (ImGui::BeginMenu("View"))
         {
-            auto ingameConsole = gameObject()->findBehaviour<IngameConsole>();
-
-            if (ImGui::MenuItem("Console", nullptr, ingameConsole->isEnabled(), ingameConsole != nullptr))
+            for (auto&& viewElement : m_viewBehaviours)
             {
-                ingameConsole->setEnabled(ingameConsole->isEnabled());
+                auto behaviour = viewElement.second(gameObject());
+
+                if (ImGui::MenuItem(
+                    viewElement.first.c_str(),
+                    nullptr,
+                    behaviour ? behaviour->isEnabled() : false,
+                    behaviour != nullptr
+                ))
+                {
+                    behaviour->setEnabled(!behaviour->isEnabled());
+                }
             }
 
             ImGui::EndMenu();
