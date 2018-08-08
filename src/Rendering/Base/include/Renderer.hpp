@@ -34,11 +34,13 @@ namespace RENDERING_BASE_MODULE_NS
          */
         template<typename PipelineType>
         typename std::enable_if<
-            std::is_base_of<RenderingPipeline, PipelineType>::value
+            std::is_base_of<RenderingPipeline, PipelineType>::value,
+            PipelineType*
         >::type
         setPipeline()
         {
             m_pipeline = new PipelineType(m_parentApplication);
+            return static_cast<PipelineType*>(m_pipeline);
         }
 
         /**

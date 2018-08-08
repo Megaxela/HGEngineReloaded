@@ -7,9 +7,11 @@
 #include <gl/program.hpp>
 #include <gl/vertex_array.hpp>
 #include <Behaviours/Sprite.hpp>
+#include <Common/MeshData.hpp>
 #include "GizmosRenderer.hpp"
+#include "AbstractRenderer.hpp"
 
-namespace OGL_RENDERING_MODULE_NS
+namespace OGL_RENDERING_MODULE_NS::Forward
 {
     /**
      * @brief Class, that describes OpenGL default
@@ -22,33 +24,9 @@ namespace OGL_RENDERING_MODULE_NS
      * 3. vec3 tangent
      * 4. vec3 bitangent
      */
-    class ForwardRenderingPipeline : public RENDERING_BASE_MODULE_NS::RenderingPipeline
+    class RenderingPipeline : public RENDERING_BASE_MODULE_NS::RenderingPipeline
     {
     public:
-
-
-
-        /**
-         * @brief External data implementation for mesh rendering behaviour
-         */
-        class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::ExternalData
-        {
-        public:
-
-            gl::vertex_array VAO;
-            gl::buffer VBO;
-            gl::buffer EBO;
-        };
-
-        /**
-         * @brief External data implementation for textures.
-         */
-        class TextureData : public ::RENDERING_BASE_MODULE_NS::Texture::TextureExternalData
-        {
-        public:
-
-            gl::texture_2d Texture;
-        };
 
         class CubeMapTextureData : public ::RENDERING_BASE_MODULE_NS::CubeMapTexture::CubeMapTextureExternalData
         {
@@ -58,24 +36,21 @@ namespace OGL_RENDERING_MODULE_NS
         };
 
         /**
-         * @brief External data implementation for shaders.
-         */
-        class ShaderData : public ::RENDERING_BASE_MODULE_NS::Shader::ShaderExternalData
-        {
-        public:
-
-            gl::program Program;
-        };
-
-        /**
          * @brief Constructor.
          */
-        explicit ForwardRenderingPipeline(::CORE_MODULE_NS::Application* application);
+        explicit RenderingPipeline(::CORE_MODULE_NS::Application* application);
 
         /**
          * @brief Destructor.
          */
-        ~ForwardRenderingPipeline() override;
+        ~RenderingPipeline() override;
+
+        /**
+         * @brief Method for adding renderer to pipeline.
+         * @param renderer Pointer to renderer.
+         * @return Pointer to this pipeline.
+         */
+        RenderingPipeline* addRenderer(AbstractRenderer* renderer);
 
         /**
          * @brief Actual render method.
@@ -124,39 +99,6 @@ namespace OGL_RENDERING_MODULE_NS
         // Setup methods
         void setupMesh(::RENDERING_BASE_MODULE_NS::Behaviours::Mesh* behaviour);
 
-        // Render methods
-        /**
-         * @brief Method for processing mesh renderer on
-         * gameobject.
-         * @param gameObject Owner of mesh renderer.
-         * @param meshBehaviour Actual rendering behaviour.
-         */
-        void renderMesh(
-            ::CORE_MODULE_NS::GameObject* gameObject,
-            ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh* meshBehaviour
-        );
-
-        /**
-         * @brief Method for processing sprite renderer on
-         * gameobject.
-         * @param gameObject Owner of sprite renderer.
-         * @param spriteBehaviour Actual rendering behaviour.
-         */
-        void renderSprite(
-            ::CORE_MODULE_NS::GameObject* gameObject,
-            ::RENDERING_BASE_MODULE_NS::Behaviours::Sprite* spriteBehaviour
-        );
-
-        /**
-         * @brief Method for setting program uniform value.
-         * @param program Pointer to program.
-         * @param name Uniform name.
-         * @param value Value.
-         */
-        void setShaderUniform(gl::program* program,
-                              const std::string& name,
-                              const ::RENDERING_BASE_MODULE_NS::Material::Value& value);
-
         /**
          * @brief Method for converting texture enum to
          * gl enum filtering mode.
@@ -183,27 +125,17 @@ namespace OGL_RENDERING_MODULE_NS
                               gl::cubemap_texture& texture,
                               GLuint side);
 
-        bool initFallbackShader();
-
-        bool initSpriteShader();
-
-        GLuint m_textureNumber;
-
         std::vector<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_behavioursCache;
 
         std::multimap<float, ::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_sortedBehaviours;
 
-        // Fallback mesh program
-        ::RENDERING_BASE_MODULE_NS::Material* m_meshFallbackMaterial;
-
-        // Shader for sprite rendering
-        ::RENDERING_BASE_MODULE_NS::Material* m_spriteMaterial;
-
-        // Sprite mesh
-        MeshData* m_spriteData;
-
         // Gizmos rendering object
         GizmosRenderer m_gizmosRenderer;
+
+        std::map<
+            std::size_t,
+            AbstractRenderer*
+        > m_renderers;
     };
 }
 

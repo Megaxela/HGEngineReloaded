@@ -25,7 +25,7 @@ add_library(HGRenderingBase STATIC
     include/Material.hpp
     src/Texture.cpp
     include/Texture.hpp
-    src/Shader.cpp
+        src/ShaderData.cpp
     include/Shader.hpp
     src/Lights/PointLight.cpp
     include/Lights/PointLight.hpp

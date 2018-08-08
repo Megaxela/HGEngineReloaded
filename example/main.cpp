@@ -14,7 +14,7 @@
 #include <Loaders/STBImageLoader.hpp>
 #include <Lights/PointLight.hpp>
 #include "Behaviour.hpp"
-#include "ForwardRenderingPipeline.hpp"
+#include "HGEngineReloaded/src/Rendering/OpenGL/include/Forward/RenderingPipeline.hpp"
 #include "GLFWSystemController.hpp"
 
 class RotationBehaviour : public HG::Core::Behaviour

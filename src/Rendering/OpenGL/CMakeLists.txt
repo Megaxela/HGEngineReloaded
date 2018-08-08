@@ -38,8 +38,8 @@ add_subdirectory(libraries)
 
 add_library(HGRenderingOGL STATIC
     include/GL/gl_ordered.hpp
-    src/ForwardRenderingPipeline.cpp
-    include/ForwardRenderingPipeline.hpp
+        src/Forward/RenderingPipeline.cpp
+        include/Forward/RenderingPipeline.hpp
     src/GLFWSystemController.cpp
     include/GLFWSystemController.hpp
     src/GizmosRenderer.cpp
@@ -52,7 +52,7 @@ add_library(HGRenderingOGL STATIC
     include/Materials/MeshFallbackMaterial.hpp
     src/Material/SpriteMaterial.cpp
     include/Materials/SpriteMaterial.hpp
-)
+        src/Forward/AbstractRenderer.cpp include/Forward/AbstractRenderer.hpp src/Forward/MeshRenderer.cpp include/Forward/MeshRenderer.hpp include/Common/ShaderData.hpp include/Common/MeshData.hpp include/Common/Texture2DData.hpp src/Forward/SpriteRenderer.cpp include/Forward/SpriteRenderer.hpp)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 

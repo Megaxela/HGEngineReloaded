@@ -2,10 +2,11 @@
 #include <GizmosRenderer.hpp>
 #include <Camera.hpp>
 #include <Material.hpp>
-#include <ForwardRenderingPipeline.hpp>
+#include <Forward/RenderingPipeline.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
 #include <Materials/GizmosLineMaterial.hpp>
 #include <Materials/GizmosMeshMaterial.hpp>
+#include <Common/ShaderData.hpp>
 
 OGL_RENDERING_MODULE_NS::GizmosRenderer::GizmosRenderer(::CORE_MODULE_NS::Application* application) :
     m_application(application),
@@ -87,7 +88,7 @@ void OGL_RENDERING_MODULE_NS::GizmosRenderer::renderLines()
         m_lineData.data()
     );
 
-    auto* program = &m_lineMaterial->shader()->externalData<ForwardRenderingPipeline::ShaderData>()->Program;
+    auto* program = &m_lineMaterial->shader()->externalData<Common::ShaderData>()->Program;
 
     program->set_uniform(
         program->uniform_location("projection"),
