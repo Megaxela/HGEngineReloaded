@@ -2,13 +2,13 @@
 #include "RenderingPipeline.hpp"
 #include <Application.hpp>
 
-RENDERING_BASE_MODULE_NS::RenderingPipeline::RenderingPipeline(::CORE_MODULE_NS::Application* application) :
+HG::Rendering::Base::RenderingPipeline::RenderingPipeline(::HG::Core::Application* application) :
     m_parentApplication(application)
 {
 
 }
 
-bool RENDERING_BASE_MODULE_NS::RenderingPipeline::init()
+bool HG::Rendering::Base::RenderingPipeline::init()
 {
     if (m_parentApplication == nullptr)
     {
@@ -37,7 +37,7 @@ bool RENDERING_BASE_MODULE_NS::RenderingPipeline::init()
     return true;
 }
 
-::CORE_MODULE_NS::Application *RENDERING_BASE_MODULE_NS::RenderingPipeline::application() const
+::HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() const
 {
     return m_parentApplication;
 }

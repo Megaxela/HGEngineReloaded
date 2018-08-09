@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     /**
      * @brief Interface for classes, that

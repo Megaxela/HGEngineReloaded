@@ -5,17 +5,17 @@
 #include <Behaviours/DebugControllerBehaviour.hpp>
 
 
-PLAYRHO_PHYSICS_MODULE_NS::Behaviours::DebugControllerBehaviour::DebugControllerBehaviour()
+HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::DebugControllerBehaviour()
 {
 
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::DebugControllerBehaviour::onStart()
+void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::onStart()
 {
     setEnabled(false);
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::DebugControllerBehaviour::onUpdate()
+void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::onUpdate()
 {
     auto controller = scene()->application()->physicsController<Controller>();
 
@@ -188,7 +188,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::DebugControllerBehaviour::onUpdate()
     }
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::DebugControllerBehaviour::tooltip(const char* text)
+void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::tooltip(const char* text)
 {
     if (ImGui::IsItemHovered())
     {

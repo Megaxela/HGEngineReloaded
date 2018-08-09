@@ -19,7 +19,7 @@ TEST(Utils, ZLibDeflateDefault)
 
     std::vector<std::byte> target;
 
-    UTILS_MODULE_NS::ZLib::Deflate(data.data(), data.length(), target, UTILS_MODULE_NS::ZLib::CompressionLevel::BestCompression);
+    HG::Utils::ZLib::Deflate(data.data(), data.length(), target, HG::Utils::ZLib::CompressionLevel::BestCompression);
 
     ASSERT_EQ(target.size(), 38);
 
@@ -63,7 +63,7 @@ TEST(Utils, ZLibDeflateHuge)
 
     std::vector<std::byte> target;
 
-    UTILS_MODULE_NS::ZLib::Deflate(data.data(), data.size(), target, UTILS_MODULE_NS::ZLib::CompressionLevel::BestCompression);
+    HG::Utils::ZLib::Deflate(data.data(), data.size(), target, HG::Utils::ZLib::CompressionLevel::BestCompression);
 
     ASSERT_EQ(target.size(), 105);
 
@@ -97,7 +97,7 @@ TEST(Utils, ZLibInflateHuge)
 
     std::vector<uint8_t> target;
 
-    ASSERT_TRUE(UTILS_MODULE_NS::ZLib::Inflate(data.data(), data.size(), target)) << "Inflating failed";
+    ASSERT_TRUE(HG::Utils::ZLib::Inflate(data.data(), data.size(), target)) << "Inflating failed";
 
     ASSERT_EQ(target.size(), 20 * 1024);
 

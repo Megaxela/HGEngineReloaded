@@ -2,9 +2,9 @@
 
 #include <Material.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Materials
+namespace HG::Rendering::OpenGL::Materials
 {
-    class MeshFallbackMaterial : public RENDERING_BASE_MODULE_NS::Material
+    class MeshFallbackMaterial : public HG::Rendering::Base::Material
     {
     public:
         static const char* rawShader;

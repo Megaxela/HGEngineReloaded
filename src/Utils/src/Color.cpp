@@ -9,15 +9,15 @@ namespace
     }
 }
 
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Red        (1.0f, 0.0f, 0.0f);
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Green      (0.0f, 1.0f, 0.0f);
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Blue       (0.0f, 0.0f, 1.0f);
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::White      (1.0f, 1.0f, 1.0f);
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Gray       (0.8f, 0.8f, 0.8f);
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Black      (0.0f, 0.0f, 0.0f);
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::Transparent(0.0f, 0.0f, 0.0f, 0.0f);
+HG::Utils::Color HG::Utils::Color::Red        (1.0f, 0.0f, 0.0f);
+HG::Utils::Color HG::Utils::Color::Green      (0.0f, 1.0f, 0.0f);
+HG::Utils::Color HG::Utils::Color::Blue       (0.0f, 0.0f, 1.0f);
+HG::Utils::Color HG::Utils::Color::White      (1.0f, 1.0f, 1.0f);
+HG::Utils::Color HG::Utils::Color::Gray       (0.8f, 0.8f, 0.8f);
+HG::Utils::Color HG::Utils::Color::Black      (0.0f, 0.0f, 0.0f);
+HG::Utils::Color HG::Utils::Color::Transparent(0.0f, 0.0f, 0.0f, 0.0f);
 
-UTILS_MODULE_NS::Color::Color() :
+HG::Utils::Color::Color() :
     m_r(0.0f),
     m_g(0.0f),
     m_b(0.0f),
@@ -26,7 +26,7 @@ UTILS_MODULE_NS::Color::Color() :
 
 }
 
-UTILS_MODULE_NS::Color::Color(float r, float g, float b, float a) :
+HG::Utils::Color::Color(float r, float g, float b, float a) :
     m_r(clamp(r, 0.0f, 1.0f)),
     m_g(clamp(g, 0.0f, 1.0f)),
     m_b(clamp(b, 0.0f, 1.0f)),
@@ -35,7 +35,7 @@ UTILS_MODULE_NS::Color::Color(float r, float g, float b, float a) :
 
 }
 
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+HG::Utils::Color HG::Utils::Color::fromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     return Color(r / 255.0f,
                  g / 255.0f,
@@ -43,11 +43,11 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromRGB(uint8_t r, uint8_t g, uin
                  a / 255.0f);
 }
 
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::size_t len)
+HG::Utils::Color HG::Utils::Color::fromHex(const char* hex, std::size_t len)
 {
     if (len == 0)
     {
-        return UTILS_MODULE_NS::Color();
+        return HG::Utils::Color();
     }
 
     if (*hex == '#')
@@ -58,7 +58,7 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
 
     if (len != 6 && len != 8)
     {
-        return UTILS_MODULE_NS::Color();
+        return HG::Utils::Color();
     }
     
     uint32_t data = 0;
@@ -88,7 +88,7 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
             }
             else
             {
-                return UTILS_MODULE_NS::Color();
+                return HG::Utils::Color();
             }
         }
         else
@@ -109,7 +109,7 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
             }
             else
             {
-                return UTILS_MODULE_NS::Color();
+                return HG::Utils::Color();
             }
 
             data <<= 8;
@@ -133,7 +133,7 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const char* hex, std::siz
     return fromRaw(data);
 }
 
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromRaw(uint32_t data)
+HG::Utils::Color HG::Utils::Color::fromRaw(uint32_t data)
 {
     Color c;
 
@@ -145,67 +145,67 @@ UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromRaw(uint32_t data)
     return c;
 }
 
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::fromHex(const std::string& s)
+HG::Utils::Color HG::Utils::Color::fromHex(const std::string& s)
 {
     return fromHex(s.c_str(), s.size());
 }
 
-uint8_t UTILS_MODULE_NS::Color::red() const
+uint8_t HG::Utils::Color::red() const
 {
     return (uint8_t) (m_r * 255);
 }
 
-uint8_t UTILS_MODULE_NS::Color::green() const
+uint8_t HG::Utils::Color::green() const
 {
     return (uint8_t) (m_g * 255);
 }
 
-uint8_t UTILS_MODULE_NS::Color::blue() const
+uint8_t HG::Utils::Color::blue() const
 {
     return (uint8_t) (m_b * 255);
 }
 
-uint8_t UTILS_MODULE_NS::Color::alpha() const
+uint8_t HG::Utils::Color::alpha() const
 {
     return (uint8_t) (m_a * 255);
 }
 
-float UTILS_MODULE_NS::Color::redF() const
+float HG::Utils::Color::redF() const
 {
     return m_r;
 }
 
-float UTILS_MODULE_NS::Color::greenF() const
+float HG::Utils::Color::greenF() const
 {
     return m_g;
 }
 
-float UTILS_MODULE_NS::Color::blueF() const
+float HG::Utils::Color::blueF() const
 {
     return m_b;
 }
 
-float UTILS_MODULE_NS::Color::alphaF() const
+float HG::Utils::Color::alphaF() const
 {
     return m_a;
 }
 
-glm::vec3 UTILS_MODULE_NS::Color::toRGBVector() const
+glm::vec3 HG::Utils::Color::toRGBVector() const
 {
     return glm::vec3(redF(), greenF(), blueF());
 }
 
-glm::vec4 UTILS_MODULE_NS::Color::toRGBAVector() const
+glm::vec4 HG::Utils::Color::toRGBAVector() const
 {
     return glm::vec4(redF(), greenF(), blueF(), alphaF());
 }
 
-UTILS_MODULE_NS::Color UTILS_MODULE_NS::Color::brighten(const UTILS_MODULE_NS::Color& color, float factor)
+HG::Utils::Color HG::Utils::Color::brighten(const HG::Utils::Color& color, float factor)
 {
     return Color(color.m_r * factor, color.m_g * factor, color.m_b * factor, color.m_a);
 }
 
-bool UTILS_MODULE_NS::Color::operator==(const UTILS_MODULE_NS::Color &rhs) const
+bool HG::Utils::Color::operator==(const HG::Utils::Color &rhs) const
 {
     return std::abs(rhs.m_r - m_r) < 0.01 &&
            std::abs(rhs.m_g - m_g) < 0.01 &&

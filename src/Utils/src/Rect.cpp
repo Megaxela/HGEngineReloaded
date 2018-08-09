@@ -1,6 +1,6 @@
 #include "Rect.hpp"
 
-UTILS_MODULE_NS::Rect::Rect() :
+HG::Utils::Rect::Rect() :
     x(0),
     y(0),
     w(0),
@@ -9,7 +9,7 @@ UTILS_MODULE_NS::Rect::Rect() :
 
 }
 
-UTILS_MODULE_NS::Rect::Rect(int x, int y, int w, int h) :
+HG::Utils::Rect::Rect(int x, int y, int w, int h) :
     x(x),
     y(y),
     w(w),
@@ -18,12 +18,12 @@ UTILS_MODULE_NS::Rect::Rect(int x, int y, int w, int h) :
 
 }
 
-bool UTILS_MODULE_NS::Rect::operator==(const UTILS_MODULE_NS::Rect& rhs)
+bool HG::Utils::Rect::operator==(const HG::Utils::Rect& rhs)
 {
     return x == rhs.x && y == rhs.y && w == rhs.w && h == rhs.h;
 }
 
-bool UTILS_MODULE_NS::Rect::operator!=(const UTILS_MODULE_NS::Rect& rhs)
+bool HG::Utils::Rect::operator!=(const HG::Utils::Rect& rhs)
 {
     return x != rhs.x || y != rhs.y || w != rhs.w || h != rhs.h;
 }

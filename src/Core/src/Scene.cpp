@@ -3,24 +3,24 @@
 #include "Scene.hpp"
 #include "Renderer.hpp"
 
-CORE_MODULE_NS::Scene::Scene() :
+HG::Core::Scene::Scene() :
     m_mainApplication(nullptr),
     m_gameObjects()
 {
 
 }
 
-void CORE_MODULE_NS::Scene::setApplication(CORE_MODULE_NS::Application *application)
+void HG::Core::Scene::setApplication(HG::Core::Application *application)
 {
     m_mainApplication = application;
 }
 
-CORE_MODULE_NS::Application *CORE_MODULE_NS::Scene::application() const
+HG::Core::Application *HG::Core::Scene::application() const
 {
     return m_mainApplication;
 }
 
-void CORE_MODULE_NS::Scene::update()
+void HG::Core::Scene::update()
 {
     m_gameObjects.merge();
 
@@ -35,7 +35,7 @@ void CORE_MODULE_NS::Scene::update()
     }
 }
 
-void CORE_MODULE_NS::Scene::render(RENDERING_BASE_MODULE_NS::Renderer* renderer)
+void HG::Core::Scene::render(HG::Rendering::Base::Renderer* renderer)
 {
     if (renderer == nullptr)
     {
@@ -46,12 +46,12 @@ void CORE_MODULE_NS::Scene::render(RENDERING_BASE_MODULE_NS::Renderer* renderer)
     renderer->render(m_gameObjects);
 }
 
-void CORE_MODULE_NS::Scene::start()
+void HG::Core::Scene::start()
 {
 
 }
 
-void CORE_MODULE_NS::Scene::removeGameObject(CORE_MODULE_NS::GameObject* gameObject)
+void HG::Core::Scene::removeGameObject(HG::Core::GameObject* gameObject)
 {
     // Removing current parent scene.
     gameObject->setParentScene(nullptr);
@@ -60,14 +60,14 @@ void CORE_MODULE_NS::Scene::removeGameObject(CORE_MODULE_NS::GameObject* gameObj
     GameObjectCache::i().cache(gameObject);
 }
 
-void CORE_MODULE_NS::Scene::addGameObject(CORE_MODULE_NS::GameObject* gameObject)
+void HG::Core::Scene::addGameObject(HG::Core::GameObject* gameObject)
 {
     // Adding current scene as parent.
     gameObject->setParentScene(this);
     m_gameObjects.add(gameObject);
 }
 
-CORE_MODULE_NS::GameObject *CORE_MODULE_NS::Scene::findGameObject(const std::string &name)
+HG::Core::GameObject *HG::Core::Scene::findGameObject(const std::string &name)
 {
     for (auto&& gameObject : m_gameObjects)
     {
@@ -85,8 +85,8 @@ CORE_MODULE_NS::GameObject *CORE_MODULE_NS::Scene::findGameObject(const std::str
     return nullptr;
 }
 
-void CORE_MODULE_NS::Scene::findGameObjects(const std::string &name,
-                                            std::vector<CORE_MODULE_NS::GameObject *> &container)
+void HG::Core::Scene::findGameObjects(const std::string &name,
+                                            std::vector<HG::Core::GameObject *> &container)
 {
     for (auto&& gameObject : m_gameObjects)
     {

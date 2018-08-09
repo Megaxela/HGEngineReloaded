@@ -4,12 +4,12 @@
 #include <string>
 #include <Rect.hpp>
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     class Application;
 }
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes abstract rendering
@@ -24,7 +24,7 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Constructor.
          * @param application Pointer to parent application.
          */
-        explicit SystemController(::CORE_MODULE_NS::Application* application);
+        explicit SystemController(::HG::Core::Application* application);
 
         /**
          * @brief Destructor.
@@ -63,17 +63,17 @@ namespace RENDERING_BASE_MODULE_NS
          * viewport at `start` stage.
          * @return Viewport.
          */
-        virtual ::UTILS_MODULE_NS::Rect viewport() const = 0;
+        virtual ::HG::Utils::Rect viewport() const = 0;
 
         /**
          * @brief Method for getting parent application.
          * @return Pointer to parent application.
          */
-        ::CORE_MODULE_NS::Application* application() const;
+        ::HG::Core::Application* application() const;
 
     private:
 
-        ::CORE_MODULE_NS::Application* m_application;
+        ::HG::Core::Application* m_application;
     };
 }
 

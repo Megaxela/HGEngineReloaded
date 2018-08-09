@@ -4,7 +4,7 @@
 #include <GameObject.hpp>
 #include <CurrentLogger.hpp>
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes cross pipeline
@@ -51,7 +51,7 @@ namespace RENDERING_BASE_MODULE_NS
          * @return Parent gameobject or nullptr if
          * there is no parent.
          */
-        ::CORE_MODULE_NS::GameObject* gameObject();
+        ::HG::Core::GameObject* gameObject();
 
         /**
          * @brief Method for clearing external data.
@@ -96,20 +96,20 @@ namespace RENDERING_BASE_MODULE_NS
         };
 
     protected:
-        friend class ::CORE_MODULE_NS::GameObject;
+        friend class ::HG::Core::GameObject;
 
         /**
          * @brief Method for gameobject to set parent gameobject.
          * @param gameObject
          */
-        void setParentGameObject(::CORE_MODULE_NS::GameObject* gameObject);
+        void setParentGameObject(::HG::Core::GameObject* gameObject);
 
     private:
         ExternalData* m_externalData;
 
         std::size_t m_type;
 
-        ::CORE_MODULE_NS::GameObject* m_parent;
+        ::HG::Core::GameObject* m_parent;
     };
 }
 

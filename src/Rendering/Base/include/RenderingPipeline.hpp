@@ -8,7 +8,7 @@
 #include "CubeMapTexture.hpp"
 #include "Gizmos.hpp"
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes
@@ -21,7 +21,7 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Constructor.
          */
-        explicit RenderingPipeline(::CORE_MODULE_NS::Application* application);
+        explicit RenderingPipeline(::HG::Core::Application* application);
 
         /**
          * @brief Desturctor.
@@ -39,13 +39,13 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Rendering method.
          * @param objects Objects.
          */
-        virtual void render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& objects) = 0;
+        virtual void render(const ::HG::Core::Scene::GameObjectsContainer& objects) = 0;
 
         /**
          * @brief Method for getting parent application.
          * @return Pointer to parent application.
          */
-        ::CORE_MODULE_NS::Application* application() const;
+        ::HG::Core::Application* application() const;
 
         /**
          * @brief Method for setting up render behaviour.
@@ -73,7 +73,7 @@ namespace RENDERING_BASE_MODULE_NS
 
     private:
 
-        ::CORE_MODULE_NS::Application* m_parentApplication;
+        ::HG::Core::Application* m_parentApplication;
     };
 }
 

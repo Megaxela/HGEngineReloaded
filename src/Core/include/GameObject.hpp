@@ -3,12 +3,12 @@
 #include <DoubleBufferContainer.hpp>
 #include "Transform.hpp"
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     class RenderBehaviour;
 }
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     // Forward declaration
     class Behaviour;
@@ -58,7 +58,7 @@ namespace CORE_MODULE_NS
          * For example MeshRenderer.
          * @param renderBehaviour Render behaviour.
          */
-        void addRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour);
+        void addRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour* renderBehaviour);
 
         /**
          * @brief Method for removing rendering behaviour.
@@ -69,7 +69,7 @@ namespace CORE_MODULE_NS
          * method fill not handle this behaviour anymore.
          * @param renderBehaviour Render behaviour.
          */
-        void removeRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour);
+        void removeRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour* renderBehaviour);
 
         /**
          * @brief Method for setting internal game object
@@ -211,8 +211,8 @@ namespace CORE_MODULE_NS
          */
         GameObject();
 
-        ::UTILS_MODULE_NS::DoubleBufferContainer<Behaviour*> m_behaviours;
-        ::UTILS_MODULE_NS::DoubleBufferContainer<::RENDERING_BASE_MODULE_NS::RenderBehaviour*> m_renderBehaviours;
+        ::HG::Utils::DoubleBufferContainer<Behaviour*> m_behaviours;
+        ::HG::Utils::DoubleBufferContainer<::HG::Rendering::Base::RenderBehaviour*> m_renderBehaviours;
 
         Transform m_transform;
 

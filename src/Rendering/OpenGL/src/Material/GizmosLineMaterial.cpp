@@ -1,6 +1,6 @@
 #include "Materials/GizmosLineMaterial.hpp"
 
-const char* OGL_RENDERING_MODULE_NS::Materials::GizmosLineMaterial::rawShader = R"(
+const char* HG::Rendering::OpenGL::Materials::GizmosLineMaterial::rawShader = R"(
 #ifdef VertexShader
 layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec4 color;

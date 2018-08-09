@@ -3,7 +3,7 @@
 #include <Surface.hpp>
 #include <CurrentLogger.hpp>
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes cube map
@@ -54,12 +54,12 @@ namespace RENDERING_BASE_MODULE_NS
          * @param front Front side surface.
          * @param back Back side surface.
          */
-        CubeMapTexture(::UTILS_MODULE_NS::SurfacePtr right,
-                       ::UTILS_MODULE_NS::SurfacePtr left,
-                       ::UTILS_MODULE_NS::SurfacePtr top,
-                       ::UTILS_MODULE_NS::SurfacePtr bottom,
-                       ::UTILS_MODULE_NS::SurfacePtr front,
-                       ::UTILS_MODULE_NS::SurfacePtr back);
+        CubeMapTexture(::HG::Utils::SurfacePtr right,
+                       ::HG::Utils::SurfacePtr left,
+                       ::HG::Utils::SurfacePtr top,
+                       ::HG::Utils::SurfacePtr bottom,
+                       ::HG::Utils::SurfacePtr front,
+                       ::HG::Utils::SurfacePtr back);
 
         /**
          * @brief Destructor. Clears external data.
@@ -112,7 +112,7 @@ namespace RENDERING_BASE_MODULE_NS
          * @param side Side.
          * @return Smart pointer to surface.
          */
-        ::UTILS_MODULE_NS::SurfacePtr getSideSurface(Side side) const;
+        ::HG::Utils::SurfacePtr getSideSurface(Side side) const;
 
         /**
          * @brief Method for setting side surface.
@@ -121,19 +121,19 @@ namespace RENDERING_BASE_MODULE_NS
          * @param side Side.
          * @param surface Smart pointer to surface.
          */
-        void setSideSurface(Side side, ::UTILS_MODULE_NS::SurfacePtr surface);
+        void setSideSurface(Side side, ::HG::Utils::SurfacePtr surface);
 
     private:
 
         CubeMapTextureExternalData* m_externalData;
 
         // Surfaces
-        ::UTILS_MODULE_NS::SurfacePtr m_right;
-        ::UTILS_MODULE_NS::SurfacePtr m_left;
-        ::UTILS_MODULE_NS::SurfacePtr m_top;
-        ::UTILS_MODULE_NS::SurfacePtr m_bottom;
-        ::UTILS_MODULE_NS::SurfacePtr m_front;
-        ::UTILS_MODULE_NS::SurfacePtr m_back;
+        ::HG::Utils::SurfacePtr m_right;
+        ::HG::Utils::SurfacePtr m_left;
+        ::HG::Utils::SurfacePtr m_top;
+        ::HG::Utils::SurfacePtr m_bottom;
+        ::HG::Utils::SurfacePtr m_front;
+        ::HG::Utils::SurfacePtr m_back;
     };
 }
 

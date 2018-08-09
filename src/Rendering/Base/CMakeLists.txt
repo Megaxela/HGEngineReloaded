@@ -25,7 +25,7 @@ add_library(HGRenderingBase STATIC
     include/Material.hpp
     src/Texture.cpp
     include/Texture.hpp
-        src/ShaderData.cpp
+    src/ShaderData.cpp
     include/Shader.hpp
     src/Lights/PointLight.cpp
     include/Lights/PointLight.hpp
@@ -44,15 +44,11 @@ add_library(HGRenderingBase STATIC
 )
 
 target_include_directories(HGRenderingBase PUBLIC
-        include
+    include
 )
 
 target_link_libraries(HGRenderingBase
-        HGCore
-        HGUtils
-        imgui
-)
-
-target_compile_definitions(HGRenderingBase
-        PUBLIC -DRENDERING_BASE_MODULE_NS=HG::Rendering::Base
+    HGCore
+    HGUtils
+    imgui
 )

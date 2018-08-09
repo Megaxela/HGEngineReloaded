@@ -6,7 +6,7 @@
 #include "Input.hpp"
 #include "PhysicsController.hpp"
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     class Scene;
 
@@ -77,7 +77,7 @@ namespace CORE_MODULE_NS
          * application renderer.
          * @return Pointer to renderer.
          */
-        ::RENDERING_BASE_MODULE_NS::Renderer* renderer();
+        ::HG::Rendering::Base::Renderer* renderer();
 
         /**
          * @brief Method for getting pointer to application
@@ -109,7 +109,7 @@ namespace CORE_MODULE_NS
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<::RENDERING_BASE_MODULE_NS::SystemController, T>::value
+            std::is_base_of<::HG::Rendering::Base::SystemController, T>::value
         >::type setSystemController()
         {
             delete m_systemController;
@@ -124,7 +124,7 @@ namespace CORE_MODULE_NS
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<::PHYSICS_BASE_MODULE_NS::PhysicsController, T>::value
+            std::is_base_of<::HG::Physics::Base::PhysicsController, T>::value
         >::type setPhysicsController()
         {
             delete m_physicsController;
@@ -140,7 +140,7 @@ namespace CORE_MODULE_NS
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<::PHYSICS_BASE_MODULE_NS::PhysicsController, T>::value,
+            std::is_base_of<::HG::Physics::Base::PhysicsController, T>::value,
             T*
         >::type physicsController()
         {
@@ -152,7 +152,7 @@ namespace CORE_MODULE_NS
          * @return Pointer to system controller or
          * `nullptr` if there is no such.
          */
-        ::RENDERING_BASE_MODULE_NS::SystemController* systemController() const;
+        ::HG::Rendering::Base::SystemController* systemController() const;
 
     private:
 
@@ -163,13 +163,13 @@ namespace CORE_MODULE_NS
         void proceedScene();
 
         // Renderer object
-        ::RENDERING_BASE_MODULE_NS::Renderer m_renderer;
+        ::HG::Rendering::Base::Renderer m_renderer;
 
         // Application system controller
-        ::RENDERING_BASE_MODULE_NS::SystemController* m_systemController;
+        ::HG::Rendering::Base::SystemController* m_systemController;
 
         // Physics controller
-        ::PHYSICS_BASE_MODULE_NS::PhysicsController* m_physicsController;
+        ::HG::Physics::Base::PhysicsController* m_physicsController;
 
         // Input receiver/productor
         Input m_input;

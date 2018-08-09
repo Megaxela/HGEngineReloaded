@@ -15,8 +15,3 @@ target_link_libraries(HGPhysicsBase
 target_include_directories(HGPhysicsBase PUBLIC
     include
 )
-
-target_compile_definitions(HGPhysicsBase
-    PUBLIC
-    -DPHYSICS_BASE_MODULE_NS=HG::Physics::Base
-)

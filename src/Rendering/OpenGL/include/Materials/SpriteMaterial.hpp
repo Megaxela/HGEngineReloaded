@@ -2,12 +2,12 @@
 
 #include <Material.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Materials
+namespace HG::Rendering::OpenGL::Materials
 {
     /**
      * @brief Material, that performs sprite rendering.
      */
-    class SpriteMaterial : public RENDERING_BASE_MODULE_NS::Material
+    class SpriteMaterial : public HG::Rendering::Base::Material
     {
     public:
 

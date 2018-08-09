@@ -2,12 +2,12 @@
 
 #include <Material.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Materials
+namespace HG::Rendering::OpenGL::Materials
 {
     /**
      * @brief Material for gizmos mesh rendering.
      */
-    class GizmosMeshMaterial : public RENDERING_BASE_MODULE_NS::Material
+    class GizmosMeshMaterial : public HG::Rendering::Base::Material
     {
     public:
         static const char* rawShader;

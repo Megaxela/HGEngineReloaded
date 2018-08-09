@@ -2,7 +2,7 @@
 
 #include "RenderBehaviour.hpp"
 
-namespace RENDERING_BASE_MODULE_NS::Behaviours
+namespace HG::Rendering::Base::Behaviours
 {
     /**
      * @brief Class, that describes cubemap rendering

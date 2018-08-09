@@ -1,6 +1,6 @@
 #include "Behaviours/FPSCameraMovement.hpp"
 
-STD_MODULE_NS::Behaviours::FPSCameraMovement::FPSCameraMovement() :
+HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
     m_enabled(false),
     m_first(false),
     m_lastMousePosition(),
@@ -12,9 +12,9 @@ STD_MODULE_NS::Behaviours::FPSCameraMovement::FPSCameraMovement() :
 
 }
 
-void STD_MODULE_NS::Behaviours::FPSCameraMovement::onStart()
+void HG::Standard::Behaviours::FPSCameraMovement::onStart()
 {
-    m_camera = gameObject()->findBehaviour<::RENDERING_BASE_MODULE_NS::Camera>();
+    m_camera = gameObject()->findBehaviour<::HG::Rendering::Base::Camera>();
 
     if (!m_camera)
     {
@@ -22,7 +22,7 @@ void STD_MODULE_NS::Behaviours::FPSCameraMovement::onStart()
     }
 }
 
-void STD_MODULE_NS::Behaviours::FPSCameraMovement::onUpdate()
+void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
 {
     if (m_camera == nullptr)
     {
@@ -30,7 +30,7 @@ void STD_MODULE_NS::Behaviours::FPSCameraMovement::onUpdate()
     }
 
     if (input()->keyboard()->isPushed(
-        ::CORE_MODULE_NS::Input::Keyboard::Key::R
+        ::HG::Core::Input::Keyboard::Key::R
     ))
     {
         m_enabled = !m_enabled;
@@ -45,7 +45,7 @@ void STD_MODULE_NS::Behaviours::FPSCameraMovement::onUpdate()
     }
 
     if (input()->keyboard()->isPushed(
-        ::CORE_MODULE_NS::Input::Keyboard::Key::ESC
+        ::HG::Core::Input::Keyboard::Key::ESC
     ))
     {
         m_enabled = false;
@@ -110,45 +110,45 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
 
     float speed = static_cast<float>(m_propertyMovementSpeed * dt);
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::Q))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::Q))
     {
         inputDirection.y -= speed;
     }
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::E))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::E))
     {
         inputDirection.y += speed;
     }
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::W))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::W))
     {
         inputDirection.z -= speed;
     }
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::S))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::S))
     {
         inputDirection.z += speed;
     }
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::A))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::A))
     {
         inputDirection.x -= speed;
     }
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::D))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::D))
     {
         inputDirection.x += speed;
     }
 
-    if (input->isPressed(CORE_MODULE_NS::Input::Keyboard::Key::F))
+    if (input->isPressed(HG::Core::Input::Keyboard::Key::F))
     {
-        if (m_camera->projection() == RENDERING_BASE_MODULE_NS::Camera::Projection::Orthogonal)
+        if (m_camera->projection() == HG::Rendering::Base::Camera::Projection::Orthogonal)
         {
-            m_camera->setProjection(RENDERING_BASE_MODULE_NS::Camera::Projection::Perspective);
+            m_camera->setProjection(HG::Rendering::Base::Camera::Projection::Perspective);
         }
         else
         {
-            m_camera->setProjection(RENDERING_BASE_MODULE_NS::Camera::Projection::Orthogonal);
+            m_camera->setProjection(HG::Rendering::Base::Camera::Projection::Orthogonal);
         }
     }
 

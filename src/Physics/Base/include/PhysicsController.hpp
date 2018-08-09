@@ -3,12 +3,12 @@
 
 #include <chrono>
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     class Application;
 }
 
-namespace PHYSICS_BASE_MODULE_NS
+namespace HG::Physics::Base
 {
     /**
      * @brief Class, that describes abstract physics controller.
@@ -21,7 +21,7 @@ namespace PHYSICS_BASE_MODULE_NS
          * @brief Constructor.
          * @param application Pointer to parent application.
          */
-        explicit PhysicsController(::CORE_MODULE_NS::Application* application);
+        explicit PhysicsController(::HG::Core::Application* application);
 
         /**
          * @brief Destructor.
@@ -38,11 +38,11 @@ namespace PHYSICS_BASE_MODULE_NS
          * @brief Method for getting pointer to parent application.
          * @return Pointer to parent application.
          */
-        ::CORE_MODULE_NS::Application* application() const;
+        ::HG::Core::Application* application() const;
 
     private:
 
-        ::CORE_MODULE_NS::Application* m_parent;
+        ::HG::Core::Application* m_parent;
     };
 }
 

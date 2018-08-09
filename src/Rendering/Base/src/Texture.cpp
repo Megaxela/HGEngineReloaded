@@ -1,6 +1,6 @@
 #include "Texture.hpp"
 
-RENDERING_BASE_MODULE_NS::Texture::Texture() :
+HG::Rendering::Base::Texture::Texture() :
     m_externalData(nullptr),
     m_surface(nullptr),
     m_minFiltering(Filtering::Nearest),
@@ -11,7 +11,7 @@ RENDERING_BASE_MODULE_NS::Texture::Texture() :
 
 }
 
-RENDERING_BASE_MODULE_NS::Texture::Texture(::UTILS_MODULE_NS::SurfacePtr ptr) :
+HG::Rendering::Base::Texture::Texture(::HG::Utils::SurfacePtr ptr) :
     m_externalData(nullptr),
     m_surface(std::move(ptr)),
     m_minFiltering(Filtering::Nearest),
@@ -22,28 +22,28 @@ RENDERING_BASE_MODULE_NS::Texture::Texture(::UTILS_MODULE_NS::SurfacePtr ptr) :
 
 }
 
-RENDERING_BASE_MODULE_NS::Texture::~Texture()
+HG::Rendering::Base::Texture::~Texture()
 {
     clearExternalData();
 }
 
-void RENDERING_BASE_MODULE_NS::Texture::clearExternalData()
+void HG::Rendering::Base::Texture::clearExternalData()
 {
     delete m_externalData;
     m_externalData = nullptr;
 }
 
-glm::ivec2 RENDERING_BASE_MODULE_NS::Texture::size() const
+glm::ivec2 HG::Rendering::Base::Texture::size() const
 {
     return m_size;
 }
 
-::UTILS_MODULE_NS::SurfacePtr RENDERING_BASE_MODULE_NS::Texture::surface() const
+::HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface() const
 {
     return m_surface;
 }
 
-void RENDERING_BASE_MODULE_NS::Texture::setSurface(::UTILS_MODULE_NS::SurfacePtr ptr)
+void HG::Rendering::Base::Texture::setSurface(::HG::Utils::SurfacePtr ptr)
 {
     m_surface = std::move(ptr);
 
@@ -57,42 +57,42 @@ void RENDERING_BASE_MODULE_NS::Texture::setSurface(::UTILS_MODULE_NS::SurfacePtr
     }
 }
 
-void RENDERING_BASE_MODULE_NS::Texture::setMagnificationMethod(RENDERING_BASE_MODULE_NS::Texture::Filtering value)
+void HG::Rendering::Base::Texture::setMagnificationMethod(HG::Rendering::Base::Texture::Filtering value)
 {
     m_magFiltering = value;
 }
 
-RENDERING_BASE_MODULE_NS::Texture::Filtering RENDERING_BASE_MODULE_NS::Texture::magnificationMethod() const
+HG::Rendering::Base::Texture::Filtering HG::Rendering::Base::Texture::magnificationMethod() const
 {
     return m_magFiltering;
 }
 
-void RENDERING_BASE_MODULE_NS::Texture::setMinificationMethod(RENDERING_BASE_MODULE_NS::Texture::Filtering value)
+void HG::Rendering::Base::Texture::setMinificationMethod(HG::Rendering::Base::Texture::Filtering value)
 {
     m_minFiltering = value;
 }
 
-RENDERING_BASE_MODULE_NS::Texture::Filtering RENDERING_BASE_MODULE_NS::Texture::minificationMethod() const
+HG::Rendering::Base::Texture::Filtering HG::Rendering::Base::Texture::minificationMethod() const
 {
     return m_minFiltering;
 }
 
-void RENDERING_BASE_MODULE_NS::Texture::setSWrapping(RENDERING_BASE_MODULE_NS::Texture::Wrapping method)
+void HG::Rendering::Base::Texture::setSWrapping(HG::Rendering::Base::Texture::Wrapping method)
 {
     m_sWrapping = method;
 }
 
-RENDERING_BASE_MODULE_NS::Texture::Wrapping RENDERING_BASE_MODULE_NS::Texture::sWrapping() const
+HG::Rendering::Base::Texture::Wrapping HG::Rendering::Base::Texture::sWrapping() const
 {
     return m_sWrapping;
 }
 
-void RENDERING_BASE_MODULE_NS::Texture::setTWrapping(RENDERING_BASE_MODULE_NS::Texture::Wrapping method)
+void HG::Rendering::Base::Texture::setTWrapping(HG::Rendering::Base::Texture::Wrapping method)
 {
     m_tWrapping = method;
 }
 
-RENDERING_BASE_MODULE_NS::Texture::Wrapping RENDERING_BASE_MODULE_NS::Texture::tWrapping() const
+HG::Rendering::Base::Texture::Wrapping HG::Rendering::Base::Texture::tWrapping() const
 {
     return m_tWrapping;
 }

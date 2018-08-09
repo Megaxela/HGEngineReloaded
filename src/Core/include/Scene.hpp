@@ -3,12 +3,12 @@
 #include <chrono>
 #include <DoubleBufferContainer.hpp>
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     class Renderer;
 }
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     // Forward definition
     class Application;
@@ -22,7 +22,7 @@ namespace CORE_MODULE_NS
     {
     public:
 
-        using GameObjectsContainer = UTILS_MODULE_NS::DoubleBufferContainer<GameObject*>;
+        using GameObjectsContainer = HG::Utils::DoubleBufferContainer<GameObject*>;
 
         /**
          * @brief Constructor.
@@ -57,7 +57,7 @@ namespace CORE_MODULE_NS
          * @brief Method, that's called every frame,
          * after `update` method.
          */
-        void render(::RENDERING_BASE_MODULE_NS::Renderer* renderer);
+        void render(::HG::Rendering::Base::Renderer* renderer);
 
         /**
          * @brief Method, that's called on scene start.

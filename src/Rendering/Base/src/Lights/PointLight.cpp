@@ -1,6 +1,6 @@
 #include "Lights/PointLight.hpp"
 
-RENDERING_BASE_MODULE_NS::Lights::PointLight::PointLight() :
+HG::Rendering::Base::Lights::PointLight::PointLight() :
     AbstractLight(Type::Point),
     m_constant(2),
     m_linear(2),
@@ -9,32 +9,32 @@ RENDERING_BASE_MODULE_NS::Lights::PointLight::PointLight() :
 
 }
 
-void RENDERING_BASE_MODULE_NS::Lights::PointLight::setConstant(float value)
+void HG::Rendering::Base::Lights::PointLight::setConstant(float value)
 {
     m_constant = value;
 }
 
-float RENDERING_BASE_MODULE_NS::Lights::PointLight::constant() const
+float HG::Rendering::Base::Lights::PointLight::constant() const
 {
     return m_constant;
 }
 
-void RENDERING_BASE_MODULE_NS::Lights::PointLight::setLinear(float value)
+void HG::Rendering::Base::Lights::PointLight::setLinear(float value)
 {
     m_linear = value;
 }
 
-float RENDERING_BASE_MODULE_NS::Lights::PointLight::linear() const
+float HG::Rendering::Base::Lights::PointLight::linear() const
 {
     return m_linear;
 }
 
-void RENDERING_BASE_MODULE_NS::Lights::PointLight::setQuadratic(float value)
+void HG::Rendering::Base::Lights::PointLight::setQuadratic(float value)
 {
     m_quadratic = value;
 }
 
-float RENDERING_BASE_MODULE_NS::Lights::PointLight::quadratic() const
+float HG::Rendering::Base::Lights::PointLight::quadratic() const
 {
     return m_quadratic;
 }

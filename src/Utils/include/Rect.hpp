@@ -2,11 +2,11 @@
 
 #include <ostream>
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     class Rect
     {
-        friend std::ostream& operator<<(std::ostream& stream, const UTILS_MODULE_NS::Rect& r)
+        friend std::ostream& operator<<(std::ostream& stream, const HG::Utils::Rect& r)
         {
             stream << "Rect(x=" << r.x << ", y=" << r.y << " " << r.w << "x" << r.h << ')';
 

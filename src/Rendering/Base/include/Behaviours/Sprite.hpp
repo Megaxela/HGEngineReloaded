@@ -4,7 +4,7 @@
 #include <Texture.hpp>
 #include <Rect.hpp>
 
-namespace RENDERING_BASE_MODULE_NS::Behaviours
+namespace HG::Rendering::Base::Behaviours
 {
     /**
      * @brief Class, that describes sprite render behaviour.
@@ -47,17 +47,17 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
          * @brief Method for getting sprite clipping.
          * @param rect Rectangle.
          */
-        void setClipping(const ::UTILS_MODULE_NS::Rect& rect);
+        void setClipping(const ::HG::Utils::Rect& rect);
 
         /**
          * @brief Method for getting sprite clipping.
          * @return Rectangle.
          */
-        ::UTILS_MODULE_NS::Rect clipping() const;
+        ::HG::Utils::Rect clipping() const;
 
     private:
         Texture* m_texture;
-        ::UTILS_MODULE_NS::Rect m_clipping;
+        ::HG::Utils::Rect m_clipping;
     };
 }
 

@@ -5,7 +5,7 @@
 #include <sys/sysinfo.h>
 #endif
 
-uint64_t UTILS_MODULE_NS::PhysicalResource::getTotalRAM()
+uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 {
     FUNCTION_WINDOWS_STUB;
 #ifdef OS_LINUX
@@ -21,7 +21,7 @@ uint64_t UTILS_MODULE_NS::PhysicalResource::getTotalRAM()
 #endif
 }
 
-uint64_t UTILS_MODULE_NS::PhysicalResource::getFreeRAM()
+uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 {
     FUNCTION_WINDOWS_STUB;
 #ifdef OS_LINUX
@@ -55,7 +55,7 @@ namespace
     }
 }
 
-uint64_t UTILS_MODULE_NS::PhysicalResource::getProcessRAMUsed()
+uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 {
     FUNCTION_WINDOWS_STUB;
 #ifdef OS_LINUX

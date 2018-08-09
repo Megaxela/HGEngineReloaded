@@ -5,13 +5,13 @@
 #include <functional>
 #include <ResourceAccessor.hpp>
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     class Mesh;
     using MeshPtr = std::shared_ptr<Mesh>;
 }
 
-namespace STD_MODULE_NS::MeshLoaders
+namespace HG::Standard::MeshLoaders
 {
     /**
      * @brief Class, for loading raw OBJ
@@ -32,7 +32,7 @@ namespace STD_MODULE_NS::MeshLoaders
          * @param data Raw data.
          * @return Smart pointer to mesh.
          */
-        ::UTILS_MODULE_NS::MeshPtr load(::CORE_MODULE_NS::ResourceAccessor::DataPtr data);
+        ::HG::Utils::MeshPtr load(::HG::Core::ResourceAccessor::DataPtr data);
 
     private:
 
@@ -40,7 +40,7 @@ namespace STD_MODULE_NS::MeshLoaders
             std::string_view,
             std::function<
                 void(
-                    ::UTILS_MODULE_NS::MeshPtr&,       // mesh ptr
+                    ::HG::Utils::MeshPtr&,       // mesh ptr
                     std::string_view::const_iterator&, // iterator
                     std::string_view&                  // line
                 )

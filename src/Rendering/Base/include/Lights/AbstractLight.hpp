@@ -4,13 +4,13 @@
 #include <Behaviour.hpp>
 #include <Camera.hpp>
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes
      * abstract light.
      */
-    class AbstractLight : public CORE_MODULE_NS::Behaviour
+    class AbstractLight : public HG::Core::Behaviour
     {
     public:
 
@@ -44,37 +44,37 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Method for setting specular color.
          * @param color Specular color.
          */
-        void setSpecular(const UTILS_MODULE_NS::Color &color);
+        void setSpecular(const HG::Utils::Color &color);
 
         /**
          * @brief Method for getting light specular color.
          * @return Specular color.
          */
-        UTILS_MODULE_NS::Color specular() const;
+        HG::Utils::Color specular() const;
 
         /**
          * @brief Method for stting light ambient color.
          * @param color Ambient color.
          */
-        void setAmbient(const UTILS_MODULE_NS::Color &color);
+        void setAmbient(const HG::Utils::Color &color);
 
         /**
          * @brief Method for getting light ambient color.
          * @return Ambient color.
          */
-        UTILS_MODULE_NS::Color ambient() const;
+        HG::Utils::Color ambient() const;
 
         /**
          * @brief Method for setting light diffuse color.
          * @param color Diffuse color.
          */
-        void setDiffuse(const UTILS_MODULE_NS::Color &color);
+        void setDiffuse(const HG::Utils::Color &color);
 
         /**
          * @brief Method for getting light diffuse color.
          * @return Diffuse color.
          */
-        UTILS_MODULE_NS::Color diffuse() const;
+        HG::Utils::Color diffuse() const;
 
         /**
          * @brief Method for getting all lights on scene.
@@ -89,9 +89,9 @@ namespace RENDERING_BASE_MODULE_NS
         static std::vector<AbstractLight*> m_lights;
 
         Type m_type;
-        UTILS_MODULE_NS::Color m_specular;
-        UTILS_MODULE_NS::Color m_ambient;
-        UTILS_MODULE_NS::Color m_diffuse;
+        HG::Utils::Color m_specular;
+        HG::Utils::Color m_ambient;
+        HG::Utils::Color m_diffuse;
     };
 }
 

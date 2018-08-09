@@ -25,8 +25,3 @@ target_link_libraries(HGPhysicsPlayRho
 target_include_directories(HGPhysicsPlayRho PUBLIC
     include
 )
-
-target_compile_definitions(HGPhysicsPlayRho
-    PUBLIC
-    -DPLAYRHO_PHYSICS_MODULE_NS=HG::Physics::PlayRho
-)

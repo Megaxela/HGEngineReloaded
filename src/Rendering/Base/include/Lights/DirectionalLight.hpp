@@ -2,7 +2,7 @@
 
 #include "AbstractLight.hpp"
 
-namespace RENDERING_BASE_MODULE_NS::Lights
+namespace HG::Rendering::Base::Lights
 {
     /**
      * @brief Class, that describes directional light.

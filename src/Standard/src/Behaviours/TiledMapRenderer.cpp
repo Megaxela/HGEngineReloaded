@@ -8,7 +8,7 @@
 #include <Behaviours/TiledMapRenderer.hpp>
 
 
-STD_MODULE_NS::Behaviours::TiledMapRenderer::TiledMapRenderer() :
+HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
     m_map(nullptr),
     m_layers(),
     m_mapShader(),
@@ -19,7 +19,7 @@ STD_MODULE_NS::Behaviours::TiledMapRenderer::TiledMapRenderer() :
 
 }
 
-STD_MODULE_NS::Behaviours::TiledMapRenderer::TiledMapRenderer(STD_MODULE_NS::Behaviours::TiledMap *map) :
+HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behaviours::TiledMap *map) :
     m_map(map),
     m_layers(),
     m_mapShader(),
@@ -30,32 +30,32 @@ STD_MODULE_NS::Behaviours::TiledMapRenderer::TiledMapRenderer(STD_MODULE_NS::Beh
 
 }
 
-float STD_MODULE_NS::Behaviours::TiledMapRenderer::tiledLayersZOffset() const
+float HG::Standard::Behaviours::TiledMapRenderer::tiledLayersZOffset() const
 {
     return m_layerZOffset;
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::setTiledLayerZOffset(float offset)
+void HG::Standard::Behaviours::TiledMapRenderer::setTiledLayerZOffset(float offset)
 {
     m_layerZOffset = offset;
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::setMetersPerPixel(float value)
+void HG::Standard::Behaviours::TiledMapRenderer::setMetersPerPixel(float value)
 {
     m_metersPerPixel = value;
 }
 
-float STD_MODULE_NS::Behaviours::TiledMapRenderer::metersPerPixel() const
+float HG::Standard::Behaviours::TiledMapRenderer::metersPerPixel() const
 {
     return m_metersPerPixel;
 }
 
-STD_MODULE_NS::Behaviours::TiledMap *STD_MODULE_NS::Behaviours::TiledMapRenderer::map() const
+HG::Standard::Behaviours::TiledMap *HG::Standard::Behaviours::TiledMapRenderer::map() const
 {
     return m_map;
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepare()
+void HG::Standard::Behaviours::TiledMapRenderer::prepare()
 {
     // Clearing gameobjects
     for (auto&& gameObject : m_layers)
@@ -86,7 +86,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepare()
     }
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::onStart()
+void HG::Standard::Behaviours::TiledMapRenderer::onStart()
 {
     // Preparing shader
     m_mapShader.setShaderText(
@@ -146,8 +146,8 @@ void main()
     }
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareLayer(const STD_MODULE_NS::Behaviours::TiledMap::Layer *layer,
-                                                               ::CORE_MODULE_NS::GameObject *parent)
+void HG::Standard::Behaviours::TiledMapRenderer::prepareLayer(const HG::Standard::Behaviours::TiledMap::Layer *layer,
+                                                               ::HG::Core::GameObject *parent)
 {
     switch (layer->type)
     {
@@ -169,7 +169,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareLayer(const STD_MODULE_
     }
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTilesets()
+void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
 {
     const auto& tilesets = m_map->tilesets();
 
@@ -182,7 +182,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTilesets()
         auto tilesetData = scene()
             ->application()
             ->resourceManager()
-            ->load<UTILS_MODULE_NS::STBImageLoader>(mapPath.parent_path() / std::filesystem::path(tileset->path));
+            ->load<HG::Utils::STBImageLoader>(mapPath.parent_path() / std::filesystem::path(tileset->path));
 
         if (tilesetData == nullptr)
         {
@@ -192,7 +192,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTilesets()
         }
 
         // Making texture
-        auto texture = new RENDERING_BASE_MODULE_NS::Texture(tilesetData);
+        auto texture = new HG::Rendering::Base::Texture(tilesetData);
 
         // todo: Add validation, when it will appear at `setup` method.
         scene()
@@ -204,15 +204,15 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTilesets()
     }
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareGroupLayer(const STD_MODULE_NS::Behaviours::TiledMap::Group *groupLayer,
-                                                                    ::CORE_MODULE_NS::GameObject *parent)
+void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Standard::Behaviours::TiledMap::Group *groupLayer,
+                                                                    ::HG::Core::GameObject *parent)
 {
     // Creating game object
 
     auto pixelScale = 0.01f;
 
-    CORE_MODULE_NS::GameObject* newParentGameObject =
-        CORE_MODULE_NS::GameObjectBuilder()
+    HG::Core::GameObject* newParentGameObject =
+        HG::Core::GameObjectBuilder()
             .setName(groupLayer->name)
             .setParent(parent);
 
@@ -231,12 +231,12 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareGroupLayer(const STD_MO
     }
 }
 
-void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTileLayer(const STD_MODULE_NS::Behaviours::TiledMap::TileLayer *tileLayer,
-                                                                  ::CORE_MODULE_NS::GameObject *parent)
+void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Standard::Behaviours::TiledMap::TileLayer *tileLayer,
+                                                                  ::HG::Core::GameObject *parent)
 {
     // Creating game object
-    CORE_MODULE_NS::GameObject* layerGameObject =
-        CORE_MODULE_NS::GameObjectBuilder()
+    HG::Core::GameObject* layerGameObject =
+        HG::Core::GameObjectBuilder()
             .setName(tileLayer->name)
             .setParent(parent);
 
@@ -254,8 +254,8 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTileLayer(const STD_MOD
     layerGameObject->transform()->setLocalPosition(pos);
 
     std::map<
-        ::RENDERING_BASE_MODULE_NS::Texture*,
-        ::UTILS_MODULE_NS::MeshPtr
+        ::HG::Rendering::Base::Texture*,
+        ::HG::Utils::MeshPtr
     > rendererMeshInfo;
 
     glm::ivec2 tilePointer = {-1, 0}; // Initial position
@@ -291,13 +291,13 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTileLayer(const STD_MOD
 
         // Getting invert/rotate mask
         auto decodedTile =
-            STD_MODULE_NS::Behaviours::TiledMap::TileLayer::decodeTile(tile);
+            HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(tile);
 
         // Getting required tileset
         auto tilesetIter = std::find_if(
             m_map->tilesets().begin(),
             m_map->tilesets().end(),
-            [decodedTile](STD_MODULE_NS::Behaviours::TiledMap::Tileset* tileset) -> bool
+            [decodedTile](HG::Standard::Behaviours::TiledMap::Tileset* tileset) -> bool
             {
                 return decodedTile.actualTile >= tileset->firstGID &&
                        decodedTile.actualTile <  tileset->firstGID + tileset->tileCount;
@@ -386,7 +386,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTileLayer(const STD_MOD
         {
             meshIter = rendererMeshInfo.insert_or_assign(
                 textureIter->second,
-                std::make_shared<::UTILS_MODULE_NS::Mesh>()
+                std::make_shared<::HG::Utils::Mesh>()
             ).first;
         }
 
@@ -463,7 +463,7 @@ void STD_MODULE_NS::Behaviours::TiledMapRenderer::prepareTileLayer(const STD_MOD
         material->setShader(&m_mapShader);
         material->set("tileset", texture);
 
-        auto meshRenderer = new RENDERING_BASE_MODULE_NS::Behaviours::Mesh;
+        auto meshRenderer = new HG::Rendering::Base::Behaviours::Mesh;
 
         meshRenderer->setMesh(mesh);
         meshRenderer->setMaterial(material);

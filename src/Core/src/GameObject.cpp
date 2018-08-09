@@ -3,7 +3,7 @@
 #include "Scene.hpp"
 #include "RenderBehaviour.hpp"
 
-CORE_MODULE_NS::GameObject::GameObject() :
+HG::Core::GameObject::GameObject() :
     m_behaviours(),
     m_transform(this),
     m_parentScene(nullptr),
@@ -12,12 +12,12 @@ CORE_MODULE_NS::GameObject::GameObject() :
 
 }
 
-CORE_MODULE_NS::GameObject::~GameObject()
+HG::Core::GameObject::~GameObject()
 {
     clear();
 }
 
-void CORE_MODULE_NS::GameObject::update()
+void HG::Core::GameObject::update()
 {
     // Merging rendering behaviours
     m_renderBehaviours.merge();
@@ -60,7 +60,7 @@ void CORE_MODULE_NS::GameObject::update()
     }
 }
 
-void CORE_MODULE_NS::GameObject::removeBehaviour(CORE_MODULE_NS::Behaviour *behaviour)
+void HG::Core::GameObject::removeBehaviour(HG::Core::Behaviour *behaviour)
 {
 #ifndef NDEBUG
     if (behaviour->gameObject() != this)
@@ -75,29 +75,29 @@ void CORE_MODULE_NS::GameObject::removeBehaviour(CORE_MODULE_NS::Behaviour *beha
     m_behaviours.remove(behaviour);
 }
 
-CORE_MODULE_NS::Scene* CORE_MODULE_NS::GameObject::scene() const
+HG::Core::Scene* HG::Core::GameObject::scene() const
 {
     return m_parentScene;
 }
 
-void CORE_MODULE_NS::GameObject::setParentScene(CORE_MODULE_NS::Scene* parent)
+void HG::Core::GameObject::setParentScene(HG::Core::Scene* parent)
 {
     m_parentScene = parent;
 }
 
-void CORE_MODULE_NS::GameObject::addBehaviour(CORE_MODULE_NS::Behaviour* behaviour)
+void HG::Core::GameObject::addBehaviour(HG::Core::Behaviour* behaviour)
 {
     behaviour->setParentGameObject(this);
     m_behaviours.add(behaviour);
 }
 
-void CORE_MODULE_NS::GameObject::addRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour)
+void HG::Core::GameObject::addRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour* renderBehaviour)
 {
     renderBehaviour->setParentGameObject(this);
     m_renderBehaviours.add(renderBehaviour);
 }
 
-void CORE_MODULE_NS::GameObject::removeRenderingBehaviour(::RENDERING_BASE_MODULE_NS::RenderBehaviour *renderBehaviour)
+void HG::Core::GameObject::removeRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
 #ifndef NDEBUG
     if (renderBehaviour->gameObject() != this)
@@ -112,7 +112,7 @@ void CORE_MODULE_NS::GameObject::removeRenderingBehaviour(::RENDERING_BASE_MODUL
     m_renderBehaviours.remove(renderBehaviour);
 }
 
-void CORE_MODULE_NS::GameObject::clear()
+void HG::Core::GameObject::clear()
 {
     m_parentScene = nullptr;
 
@@ -138,27 +138,27 @@ void CORE_MODULE_NS::GameObject::clear()
     m_renderBehaviours.clear();
 }
 
-void CORE_MODULE_NS::GameObject::setName(std::string name)
+void HG::Core::GameObject::setName(std::string name)
 {
     m_name = std::move(name);
 }
 
-std::string CORE_MODULE_NS::GameObject::name() const
+std::string HG::Core::GameObject::name() const
 {
     return m_name;
 }
 
-CORE_MODULE_NS::Transform* CORE_MODULE_NS::GameObject::transform()
+HG::Core::Transform* HG::Core::GameObject::transform()
 {
     return &m_transform;
 }
 
-bool CORE_MODULE_NS::GameObject::isEnabled() const
+bool HG::Core::GameObject::isEnabled() const
 {
     return m_enabled;
 }
 
-void CORE_MODULE_NS::GameObject::setEnabled(bool value)
+void HG::Core::GameObject::setEnabled(bool value)
 {
     m_enabled = value;
 }

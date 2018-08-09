@@ -8,7 +8,7 @@
 #include <Materials/GizmosMeshMaterial.hpp>
 #include <Common/ShaderData.hpp>
 
-OGL_RENDERING_MODULE_NS::GizmosRenderer::GizmosRenderer(::CORE_MODULE_NS::Application* application) :
+HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(::HG::Core::Application* application) :
     m_application(application),
     m_lineMaterial(nullptr),
     m_meshMaterial(nullptr),
@@ -18,13 +18,13 @@ OGL_RENDERING_MODULE_NS::GizmosRenderer::GizmosRenderer(::CORE_MODULE_NS::Applic
 
 }
 
-OGL_RENDERING_MODULE_NS::GizmosRenderer::~GizmosRenderer()
+HG::Rendering::OpenGL::GizmosRenderer::~GizmosRenderer()
 {
     delete m_lineMaterial;
     delete m_meshMaterial;
 }
 
-void OGL_RENDERING_MODULE_NS::GizmosRenderer::init()
+void HG::Rendering::OpenGL::GizmosRenderer::init()
 {
     m_linesVAO = std::move(gl::vertex_array());
     m_linesVBO = std::move(gl::buffer());
@@ -40,41 +40,41 @@ void OGL_RENDERING_MODULE_NS::GizmosRenderer::init()
     m_linesVBO.bind(GL_ARRAY_BUFFER);
 
     // Binding vertex buffers
-    m_linesVAO.set_vertex_buffer(0, m_linesVBO, 0, sizeof(RENDERING_BASE_MODULE_NS::Gizmos::LineData) / 2);
-    m_linesVAO.set_vertex_buffer(1, m_linesVBO, 0, sizeof(RENDERING_BASE_MODULE_NS::Gizmos::LineData) / 2);
+    m_linesVAO.set_vertex_buffer(0, m_linesVBO, 0, sizeof(HG::Rendering::Base::Gizmos::LineData) / 2);
+    m_linesVAO.set_vertex_buffer(1, m_linesVBO, 0, sizeof(HG::Rendering::Base::Gizmos::LineData) / 2);
 
     // Enabling attributes
     m_linesVAO.set_attribute_enabled(0, true);
     m_linesVAO.set_attribute_enabled(1, true);
 
     // Setting up
-    m_linesVAO.set_attribute_format(0, 3, GL_FLOAT, false, offsetof(RENDERING_BASE_MODULE_NS::Gizmos::LineData, begin));
-    m_linesVAO.set_attribute_format(1, 4, GL_FLOAT, false, offsetof(RENDERING_BASE_MODULE_NS::Gizmos::LineData, beginColor));
+    m_linesVAO.set_attribute_format(0, 3, GL_FLOAT, false, offsetof(HG::Rendering::Base::Gizmos::LineData, begin));
+    m_linesVAO.set_attribute_format(1, 4, GL_FLOAT, false, offsetof(HG::Rendering::Base::Gizmos::LineData, beginColor));
 }
 
-void OGL_RENDERING_MODULE_NS::GizmosRenderer::line(const ::RENDERING_BASE_MODULE_NS::Gizmos::LineData &line)
+void HG::Rendering::OpenGL::GizmosRenderer::line(const ::HG::Rendering::Base::Gizmos::LineData &line)
 {
     m_lineData.push_back(line);
 }
 
-void OGL_RENDERING_MODULE_NS::GizmosRenderer::sphere(const ::RENDERING_BASE_MODULE_NS::Gizmos::SphereData &sphere)
+void HG::Rendering::OpenGL::GizmosRenderer::sphere(const ::HG::Rendering::Base::Gizmos::SphereData &sphere)
 {
 
 }
 
-void OGL_RENDERING_MODULE_NS::GizmosRenderer::hexahedron(const ::RENDERING_BASE_MODULE_NS::Gizmos::HexahedronData &hexahedron)
+void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const ::HG::Rendering::Base::Gizmos::HexahedronData &hexahedron)
 {
 
 }
 
-void OGL_RENDERING_MODULE_NS::GizmosRenderer::render()
+void HG::Rendering::OpenGL::GizmosRenderer::render()
 {
     renderLines();
 }
 
-void OGL_RENDERING_MODULE_NS::GizmosRenderer::renderLines()
+void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
 {
-    auto camera = RENDERING_BASE_MODULE_NS::Camera::active();
+    auto camera = HG::Rendering::Base::Camera::active();
 
     // If there is no camera - skip rendering
     if (!camera)
@@ -84,7 +84,7 @@ void OGL_RENDERING_MODULE_NS::GizmosRenderer::renderLines()
     }
 
     m_linesVBO.set_data(
-        sizeof(RENDERING_BASE_MODULE_NS::Gizmos::LineData) * m_lineData.size(),
+        sizeof(HG::Rendering::Base::Gizmos::LineData) * m_lineData.size(),
         m_lineData.data()
     );
 

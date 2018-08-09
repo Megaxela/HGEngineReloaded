@@ -1,7 +1,7 @@
 #include <GameObject.hpp>
 #include "RenderBehaviour.hpp"
 
-RENDERING_BASE_MODULE_NS::RenderBehaviour::RenderBehaviour(std::size_t type) :
+HG::Rendering::Base::RenderBehaviour::RenderBehaviour(std::size_t type) :
     m_externalData(nullptr),
     m_type(type),
     m_parent(nullptr)
@@ -9,27 +9,27 @@ RENDERING_BASE_MODULE_NS::RenderBehaviour::RenderBehaviour(std::size_t type) :
 
 }
 
-RENDERING_BASE_MODULE_NS::RenderBehaviour::~RenderBehaviour()
+HG::Rendering::Base::RenderBehaviour::~RenderBehaviour()
 {
     clearExternalData();
 }
 
-void RENDERING_BASE_MODULE_NS::RenderBehaviour::clearExternalData()
+void HG::Rendering::Base::RenderBehaviour::clearExternalData()
 {
     delete m_externalData;
 }
 
-std::size_t RENDERING_BASE_MODULE_NS::RenderBehaviour::behaviourType()
+std::size_t HG::Rendering::Base::RenderBehaviour::behaviourType()
 {
     return m_type;
 }
 
-::CORE_MODULE_NS::GameObject *RENDERING_BASE_MODULE_NS::RenderBehaviour::gameObject()
+::HG::Core::GameObject *HG::Rendering::Base::RenderBehaviour::gameObject()
 {
     return m_parent;
 }
 
-void RENDERING_BASE_MODULE_NS::RenderBehaviour::setParentGameObject(::CORE_MODULE_NS::GameObject *gameObject)
+void HG::Rendering::Base::RenderBehaviour::setParentGameObject(::HG::Core::GameObject *gameObject)
 {
     m_parent = gameObject;
 }

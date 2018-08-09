@@ -3,13 +3,13 @@
 #include <ResourceAccessor.hpp>
 #include <bits/shared_ptr.h>
 
-namespace STD_MODULE_NS
+namespace HG::Standard
 {
     /**
      * @brief Class, that describes standard filesystem
      * resource accessor.
      */
-    class FilesystemResourceAccessor : public ::CORE_MODULE_NS::ResourceAccessor
+    class FilesystemResourceAccessor : public ::HG::Core::ResourceAccessor
     {
     public:
 
@@ -17,7 +17,7 @@ namespace STD_MODULE_NS
          * @brief Class, that describes data object with
          * vector inside.
          */
-        class VectorData : public ::CORE_MODULE_NS::ResourceAccessor::Data
+        class VectorData : public ::HG::Core::ResourceAccessor::Data
         {
         public:
 

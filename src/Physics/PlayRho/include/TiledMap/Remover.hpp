@@ -4,9 +4,9 @@
 #include <PlayRho/PlayRho.hpp>
 #include <CurrentLogger.hpp>
 
-namespace PLAYRHO_PHYSICS_MODULE_NS::TiledMap
+namespace HG::Physics::PlayRho::TiledMap
 {
-    static void Remover(void* value, PHYSICS_BASE_MODULE_NS::PhysicsController* physicsController)
+    static void Remover(void* value, HG::Physics::Base::PhysicsController* physicsController)
     {
         if (value == nullptr || physicsController == nullptr)
         {
@@ -14,7 +14,7 @@ namespace PLAYRHO_PHYSICS_MODULE_NS::TiledMap
         }
 
         auto body = static_cast<playrho::d2::Body*>(value);
-        auto controller = dynamic_cast<PLAYRHO_PHYSICS_MODULE_NS::Controller*>(physicsController);
+        auto controller = dynamic_cast<HG::Physics::PlayRho::Controller*>(physicsController);
 
         if (controller == nullptr)
         {

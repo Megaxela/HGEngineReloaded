@@ -35,7 +35,9 @@ add_library(HGUtils STATIC
     include/Platform.hpp
     src/StringTools.cpp
     include/StringTools.hpp
-        src/Loaders/StringLoader.cpp include/Loaders/StringLoader.hpp)
+    src/Loaders/StringLoader.cpp
+    include/Loaders/StringLoader.hpp
+)
 
 target_include_directories(HGUtils PUBLIC
     include
@@ -54,6 +56,5 @@ target_link_libraries(HGUtils
 )
 
 target_compile_definitions(HGUtils
-        PUBLIC -DUTILS_MODULE_NS=HG::Utils
-        PUBLIC -DGLM_ENABLE_EXPERIMENTAL
+    PUBLIC -DGLM_ENABLE_EXPERIMENTAL
 )

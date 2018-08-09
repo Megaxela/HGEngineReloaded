@@ -6,7 +6,7 @@
 #include "Gizmos.hpp"
 #include "MaterialCollection.hpp"
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes
@@ -20,7 +20,7 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Default constructor.
          */
-        explicit Renderer(::CORE_MODULE_NS::Application* application);
+        explicit Renderer(::HG::Core::Application* application);
 
         /**
          * @brief Destructor.
@@ -57,19 +57,19 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Perform rendering finally.
          */
-        void render(const ::CORE_MODULE_NS::Scene::GameObjectsContainer& gameObjects);
+        void render(const ::HG::Core::Scene::GameObjectsContainer& gameObjects);
 
         /**
          * @brief Method for getting gizmos object.
          * @return Pointer to gizmos.
          */
-        ::RENDERING_BASE_MODULE_NS::Gizmos* gizmos();
+        ::HG::Rendering::Base::Gizmos* gizmos();
 
         /**
          * @brief Method for getting renderer material collection.
          * @return Pointer to material collection.
          */
-        ::RENDERING_BASE_MODULE_NS::MaterialCollection* materialCollection();
+        ::HG::Rendering::Base::MaterialCollection* materialCollection();
 
         /**
          * @brief Method for setting up objects
@@ -90,13 +90,13 @@ namespace RENDERING_BASE_MODULE_NS
 
     private:
 
-        ::CORE_MODULE_NS::Application* m_parentApplication;
+        ::HG::Core::Application* m_parentApplication;
 
-        ::RENDERING_BASE_MODULE_NS::RenderingPipeline* m_pipeline;
+        ::HG::Rendering::Base::RenderingPipeline* m_pipeline;
 
-        ::RENDERING_BASE_MODULE_NS::Gizmos m_gizmos;
+        ::HG::Rendering::Base::Gizmos m_gizmos;
 
-        ::RENDERING_BASE_MODULE_NS::MaterialCollection m_materialCollection;
+        ::HG::Rendering::Base::MaterialCollection m_materialCollection;
 
     };
 }

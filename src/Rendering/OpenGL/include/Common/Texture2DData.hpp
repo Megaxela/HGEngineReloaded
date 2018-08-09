@@ -3,12 +3,12 @@
 #include <gl/all.hpp>
 #include <Texture.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Common
+namespace HG::Rendering::OpenGL::Common
 {
     /**
      * @brief External data implementation for textures.
      */
-    class Texture2DData : public ::RENDERING_BASE_MODULE_NS::Texture::TextureExternalData
+    class Texture2DData : public ::HG::Rendering::Base::Texture::TextureExternalData
     {
     public:
 

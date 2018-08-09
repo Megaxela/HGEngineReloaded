@@ -5,7 +5,7 @@
 #include <Application.hpp>
 #include <gl/all.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Forward
+namespace HG::Rendering::OpenGL::Forward
 {
     /**
      * @brief Class, that describes abstract
@@ -36,8 +36,8 @@ namespace OGL_RENDERING_MODULE_NS::Forward
          * @param gameObject Behaviour owner.
          * @param renderBehaviour Rendering behaviour.
          */
-        virtual void render(CORE_MODULE_NS::GameObject* gameObject,
-                            RENDERING_BASE_MODULE_NS::RenderBehaviour* renderBehaviour) = 0;
+        virtual void render(HG::Core::GameObject* gameObject,
+                            HG::Rendering::Base::RenderBehaviour* renderBehaviour) = 0;
 
         /**
          * @brief Method, that will be used by forward renderer
@@ -51,13 +51,13 @@ namespace OGL_RENDERING_MODULE_NS::Forward
          * @brief Method for getting application.
          * @return Pointer to application.
          */
-        CORE_MODULE_NS::Application* application() const;
+        HG::Core::Application* application() const;
 
         /**
          * @brief Method for setting application.
          * @param application Pointer to application.
          */
-        void setApplication(CORE_MODULE_NS::Application* application);
+        void setApplication(HG::Core::Application* application);
 
     protected:
 
@@ -65,15 +65,15 @@ namespace OGL_RENDERING_MODULE_NS::Forward
          * @brief Method for applying shader uniforms in material.
          * @param material Material.
          */
-        void applyShaderUniforms(RENDERING_BASE_MODULE_NS::Material* material);
+        void applyShaderUniforms(HG::Rendering::Base::Material* material);
 
         void setShaderUniform(gl::program *program,
                               const std::string &name,
-                              const ::RENDERING_BASE_MODULE_NS::Material::Value &value);
+                              const ::HG::Rendering::Base::Material::Value &value);
 
     private:
 
-        CORE_MODULE_NS::Application* m_application;
+        HG::Core::Application* m_application;
 
         GLuint m_textureNumber;
     };

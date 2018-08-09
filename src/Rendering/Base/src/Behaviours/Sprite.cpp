@@ -1,7 +1,7 @@
 #include "Behaviours/Sprite.hpp"
 
 
-RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Sprite() :
+HG::Rendering::Base::Behaviours::Sprite::Sprite() :
     RenderBehaviour(Id),
     m_texture(nullptr),
     m_clipping()
@@ -9,7 +9,7 @@ RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Sprite() :
 
 }
 
-RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Sprite(RENDERING_BASE_MODULE_NS::Texture* texture) :
+HG::Rendering::Base::Behaviours::Sprite::Sprite(HG::Rendering::Base::Texture* texture) :
     RenderBehaviour(Id),
     m_texture(),
     m_clipping()
@@ -17,12 +17,12 @@ RENDERING_BASE_MODULE_NS::Behaviours::Sprite::Sprite(RENDERING_BASE_MODULE_NS::T
     setTexture(texture);
 }
 
-RENDERING_BASE_MODULE_NS::Behaviours::Sprite::~Sprite()
+HG::Rendering::Base::Behaviours::Sprite::~Sprite()
 {
 
 }
 
-void RENDERING_BASE_MODULE_NS::Behaviours::Sprite::setTexture(RENDERING_BASE_MODULE_NS::Texture* texture)
+void HG::Rendering::Base::Behaviours::Sprite::setTexture(HG::Rendering::Base::Texture* texture)
 {
     m_texture = texture;
 
@@ -41,17 +41,17 @@ void RENDERING_BASE_MODULE_NS::Behaviours::Sprite::setTexture(RENDERING_BASE_MOD
     }
 }
 
-RENDERING_BASE_MODULE_NS::Texture* RENDERING_BASE_MODULE_NS::Behaviours::Sprite::texture() const
+HG::Rendering::Base::Texture* HG::Rendering::Base::Behaviours::Sprite::texture() const
 {
     return m_texture;
 }
 
-void RENDERING_BASE_MODULE_NS::Behaviours::Sprite::setClipping(const ::UTILS_MODULE_NS::Rect &rect)
+void HG::Rendering::Base::Behaviours::Sprite::setClipping(const ::HG::Utils::Rect &rect)
 {
     m_clipping = rect;
 }
 
-::UTILS_MODULE_NS::Rect RENDERING_BASE_MODULE_NS::Behaviours::Sprite::clipping() const
+::HG::Utils::Rect HG::Rendering::Base::Behaviours::Sprite::clipping() const
 {
     return m_clipping;
 }

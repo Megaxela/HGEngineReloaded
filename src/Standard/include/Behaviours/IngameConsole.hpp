@@ -4,13 +4,13 @@
 #include <LogsListener.hpp>
 #include <ringbuffer.hpp>
 
-namespace STD_MODULE_NS::Behaviours
+namespace HG::Standard::Behaviours
 {
     /**
      * @brief Standard behaviour, that implements
      * ingame console.
      */
-    class IngameConsole : public CORE_MODULE_NS::Behaviour
+    class IngameConsole : public HG::Core::Behaviour
     {
     public:
 
@@ -90,11 +90,11 @@ namespace STD_MODULE_NS::Behaviours
 
         void proceedMessage(AbstractLogger::Message message);
 
-        void logText(const UTILS_MODULE_NS::Color& color, std::string text);
+        void logText(const HG::Utils::Color& color, std::string text);
 
         std::string formatMessage(AbstractLogger::Message message);
 
-        UTILS_MODULE_NS::Color getLogColor(AbstractLogger::ErrorClass errClass);
+        HG::Utils::Color getLogColor(AbstractLogger::ErrorClass errClass);
 
         void executeCommand(std::string command);
 
@@ -163,7 +163,7 @@ namespace STD_MODULE_NS::Behaviours
 
         ringbuffer<
             std::pair<
-                UTILS_MODULE_NS::Color,
+                HG::Utils::Color,
                 std::string
             >,
             1024

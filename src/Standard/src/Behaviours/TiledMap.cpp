@@ -8,7 +8,7 @@ namespace {
     const char* SUPPORTED_VERSION = "1.1.6";
 }
 
-STD_MODULE_NS::Behaviours::TiledMap::TiledMap() :
+HG::Standard::Behaviours::TiledMap::TiledMap() :
     m_properties(),
     m_tilesets(),
     m_animatedTiles(),
@@ -17,22 +17,22 @@ STD_MODULE_NS::Behaviours::TiledMap::TiledMap() :
 
 }
 
-STD_MODULE_NS::Behaviours::TiledMap::~TiledMap()
+HG::Standard::Behaviours::TiledMap::~TiledMap()
 {
     clear();
 }
 
-const std::vector<STD_MODULE_NS::Behaviours::TiledMap::Tileset *> &STD_MODULE_NS::Behaviours::TiledMap::tilesets() const
+const std::vector<HG::Standard::Behaviours::TiledMap::Tileset *> &HG::Standard::Behaviours::TiledMap::tilesets() const
 {
     return m_tilesets;
 }
 
-const STD_MODULE_NS::Behaviours::TiledMap::Group *STD_MODULE_NS::Behaviours::TiledMap::rootGroup() const
+const HG::Standard::Behaviours::TiledMap::Group *HG::Standard::Behaviours::TiledMap::rootGroup() const
 {
     return &m_root;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::loadMap(CORE_MODULE_NS::ResourceAccessor::DataPtr data)
+bool HG::Standard::Behaviours::TiledMap::loadMap(HG::Core::ResourceAccessor::DataPtr data)
 {
     // Parsing received data
     rapidxml::xml_document<> doc{};
@@ -139,7 +139,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::loadMap(CORE_MODULE_NS::ResourceAccess
     return proceedRootNode(mapNode, &m_root);
 }
 
-void STD_MODULE_NS::Behaviours::TiledMap::clear()
+void HG::Standard::Behaviours::TiledMap::clear()
 {
     clearGroup(&m_root);
 
@@ -153,17 +153,17 @@ void STD_MODULE_NS::Behaviours::TiledMap::clear()
     m_properties = MapProperties();
 }
 
-const STD_MODULE_NS::Behaviours::TiledMap::MapProperties &STD_MODULE_NS::Behaviours::TiledMap::properties() const
+const HG::Standard::Behaviours::TiledMap::MapProperties &HG::Standard::Behaviours::TiledMap::properties() const
 {
     return m_properties;
 }
 
-const STD_MODULE_NS::Behaviours::TiledMap::AnimatedTiles &STD_MODULE_NS::Behaviours::TiledMap::animatedTiles() const
+const HG::Standard::Behaviours::TiledMap::AnimatedTiles &HG::Standard::Behaviours::TiledMap::animatedTiles() const
 {
     return m_animatedTiles;
 }
 
-void STD_MODULE_NS::Behaviours::TiledMap::clearGroup(STD_MODULE_NS::Behaviours::TiledMap::Group* grp)
+void HG::Standard::Behaviours::TiledMap::clearGroup(HG::Standard::Behaviours::TiledMap::Group* grp)
 {
     for (auto&& layer : grp->layers)
     {
@@ -194,7 +194,7 @@ void STD_MODULE_NS::Behaviours::TiledMap::clearGroup(STD_MODULE_NS::Behaviours::
     grp->layers.clear();
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* root, Group* target, bool proceedLikeLayer)
+bool HG::Standard::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* root, Group* target, bool proceedLikeLayer)
 {
     if (proceedLikeLayer)
     {
@@ -261,7 +261,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* 
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node)
+bool HG::Standard::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node)
 {
     auto *image = node->first_node("image");
 
@@ -390,7 +390,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* nod
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *node)
+bool HG::Standard::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *node)
 {
     rapidxml::xml_attribute<> *attribute = nullptr;
 
@@ -428,7 +428,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<> *node, uint32_t tileId)
+bool HG::Standard::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<> *node, uint32_t tileId)
 {
     TileAnimation animation;
 
@@ -462,8 +462,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<> 
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_node<>* node,
-                                                                 STD_MODULE_NS::Behaviours::TiledMap::Group* target)
+bool HG::Standard::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_node<>* node,
+                                                                 HG::Standard::Behaviours::TiledMap::Group* target)
 {
     auto* objectGroup = new ObjectLayer();
 
@@ -479,7 +479,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_n
     // Color
     if ((attribute = node->first_attribute("color")))
     {
-        objectGroup->color = UTILS_MODULE_NS::Color::fromHex(
+        objectGroup->color = HG::Utils::Color::fromHex(
             attribute->value(),
             attribute->value_size()
         );
@@ -502,8 +502,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_n
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedObjectNode(rapidxml::xml_node<>* node,
-                                                            STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* target)
+bool HG::Standard::Behaviours::TiledMap::proceedObjectNode(rapidxml::xml_node<>* node,
+                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* target)
 {
     // Detecting type
 
@@ -539,8 +539,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedObjectNode(rapidxml::xml_node<>
     }
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>* node,
-                                                            STD_MODULE_NS::Behaviours::TiledMap::Properties& properties)
+bool HG::Standard::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>* node,
+                                                            HG::Standard::Behaviours::TiledMap::Properties& properties)
 {
     for (auto propertyNode = node->first_node("property");
          propertyNode;
@@ -585,7 +585,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>
         }
         else if (type == "color")
         {
-            properties.emplace_back(name, UTILS_MODULE_NS::Color::fromHex(value));
+            properties.emplace_back(name, HG::Utils::Color::fromHex(value));
         }
         else if (type == "file")
         {
@@ -604,8 +604,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>* node,
-                                                           STD_MODULE_NS::Behaviours::TiledMap::Layer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>* node,
+                                                           HG::Standard::Behaviours::TiledMap::Layer* layer)
 {
     rapidxml::xml_node<>* childNode = nullptr;
     rapidxml::xml_attribute<>* childAttribute = nullptr;
@@ -644,8 +644,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>*
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>* node,
-                                                            STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer::Object* object)
+bool HG::Standard::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>* node,
+                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer::Object* object)
 {
     rapidxml::xml_node<>* childNode = nullptr;
     rapidxml::xml_attribute<>* childAttribute = nullptr;
@@ -700,8 +700,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_node<>* node,
-                                                                 STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_node<>* node,
+                                                                 HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto* rectangle = new ObjectLayer::Rectangle();
 
@@ -734,8 +734,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_n
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedPointObject(rapidxml::xml_node<>* node,
-                                                             STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedPointObject(rapidxml::xml_node<>* node,
+                                                             HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto point = new ObjectLayer::Point();
 
@@ -750,8 +750,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedPointObject(rapidxml::xml_node<
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_node<>* node,
-                                                               STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_node<>* node,
+                                                               HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto ellipse = new ObjectLayer::Ellipse();
 
@@ -829,8 +829,8 @@ namespace std
     }
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node<>* node,
-                                                               STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node<>* node,
+                                                               HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto polygon = new ObjectLayer::Polygon();
 
@@ -913,8 +913,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_nod
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileObject(rapidxml::xml_node<>* node,
-                                                            STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedTileObject(rapidxml::xml_node<>* node,
+                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto tile = new ObjectLayer::Tile();
 
@@ -960,8 +960,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileObject(rapidxml::xml_node<>
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedTextObject(rapidxml::xml_node<>* node,
-                                                            STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer)
+bool HG::Standard::Behaviours::TiledMap::proceedTextObject(rapidxml::xml_node<>* node,
+                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto text = new ObjectLayer::Text();
 
@@ -1011,7 +1011,7 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedTextObject(rapidxml::xml_node<>
 
     if ((attribute = textNode->first_attribute("color")))
     {
-        text->color = UTILS_MODULE_NS::Color::fromHex(attribute->value(), attribute->value_size());
+        text->color = HG::Utils::Color::fromHex(attribute->value(), attribute->value_size());
     }
 
     if ((attribute = textNode->first_attribute("bold")))
@@ -1085,8 +1085,8 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedTextObject(rapidxml::xml_node<>
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* node,
-                                                          STD_MODULE_NS::Behaviours::TiledMap::Group* target)
+bool HG::Standard::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* node,
+                                                          HG::Standard::Behaviours::TiledMap::Group* target)
 {
     auto tileLayer = new TileLayer();
 
@@ -1176,20 +1176,20 @@ bool STD_MODULE_NS::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>*
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::performTileLayerDecoding(const char *data, std::size_t dataSize,
+bool HG::Standard::Behaviours::TiledMap::performTileLayerDecoding(const char *data, std::size_t dataSize,
                                                                    std::string_view encoding,
                                                                    std::string_view compression,
                                                                    std::vector<uint32_t> &result)
 {
     if (encoding == "base64")
     {
-        auto decoded = UTILS_MODULE_NS::Base64::Decode<char>(data, dataSize);
+        auto decoded = HG::Utils::Base64::Decode<char>(data, dataSize);
 
         if (compression == "zlib")
         {
             bool inflateResult = false;
 
-            decoded = UTILS_MODULE_NS::ZLib::Inflate<char>(decoded, &inflateResult);
+            decoded = HG::Utils::ZLib::Inflate<char>(decoded, &inflateResult);
 
             if (!inflateResult)
             {
@@ -1217,14 +1217,14 @@ bool STD_MODULE_NS::Behaviours::TiledMap::performTileLayerDecoding(const char *d
     return true;
 }
 
-bool STD_MODULE_NS::Behaviours::TiledMap::proceedCSVTileData(const char *data, std::size_t dataSize,
+bool HG::Standard::Behaviours::TiledMap::proceedCSVTileData(const char *data, std::size_t dataSize,
                                                              std::vector<uint32_t> &result)
 {
     Warning() << "CSV does not supported yet.";
     return false;
 }
 
-STD_MODULE_NS::Behaviours::TiledMap::TileLayer::DecodedTile STD_MODULE_NS::Behaviours::TiledMap::TileLayer::decodeTile(uint32_t tile)
+HG::Standard::Behaviours::TiledMap::TileLayer::DecodedTile HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(uint32_t tile)
 {
     constexpr uint32_t IS_HORIZONTALLY_FLIPPED = 0x80000000;
     constexpr uint32_t IS_VERTICALLY_FLIPPED   = 0x40000000;

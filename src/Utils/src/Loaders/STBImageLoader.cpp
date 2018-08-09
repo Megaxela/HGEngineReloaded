@@ -3,12 +3,12 @@
 #include <stb_image.h>
 #include <CurrentLogger.hpp>
 
-UTILS_MODULE_NS::STBImageLoader::STBImageLoader()
+HG::Utils::STBImageLoader::STBImageLoader()
 {
 
 }
 
-UTILS_MODULE_NS::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std::byte* data, std::size_t size)
+HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std::byte* data, std::size_t size)
 {
     // Trying to load image with stbb
     int width;

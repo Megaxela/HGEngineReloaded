@@ -5,14 +5,14 @@
 #include <Behaviours/IngameConsole.hpp>
 
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::onUpdate()
+void HG::Standard::Behaviours::DebugControllerOverlay::onUpdate()
 {
     displayMenu();
     displayGameObjectsWindow();
     displayInspectorWindow();
 }
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayMenu()
+void HG::Standard::Behaviours::DebugControllerOverlay::displayMenu()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -52,7 +52,7 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayMenu()
     }
 }
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayGameObjectsWindow()
+void HG::Standard::Behaviours::DebugControllerOverlay::displayGameObjectsWindow()
 {
     ImGui::Begin("GameObjects");
 
@@ -64,7 +64,7 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayGameObjectsWindow
     ImGui::End();
 }
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayInspectorWindow()
+void HG::Standard::Behaviours::DebugControllerOverlay::displayInspectorWindow()
 {
     static bool opened = true;
 
@@ -84,7 +84,7 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayInspectorWindow()
     }
 }
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedInspector()
+void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
 {
     // Display gameobject origin
     auto originPosition = m_activeGameObject->transform()->globalPosition();
@@ -159,9 +159,9 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedInspector()
     }
 }
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(::CORE_MODULE_NS::Transform *parent)
+void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(::HG::Core::Transform *parent)
 {
-    ::CORE_MODULE_NS::GameObject* newActiveGameObject = nullptr;
+    ::HG::Core::GameObject* newActiveGameObject = nullptr;
 
     for (auto&& gameObject : m_gameObjects)
     {
@@ -204,7 +204,7 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::proceedParentedGameObjec
     }
 }
 
-void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayPropertyWidget(const ::CORE_MODULE_NS::Behaviour::Property& property)
+void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(const ::HG::Core::Behaviour::Property& property)
 {
     if (property.typeInfo() == typeid(float))
     {
@@ -222,13 +222,13 @@ void STD_MODULE_NS::Behaviours::DebugControllerOverlay::displayPropertyWidget(co
 
         property.getSetter<glm::vec2>()(v);
     }
-    else if (property.typeInfo() == typeid(::UTILS_MODULE_NS::Color))
+    else if (property.typeInfo() == typeid(::HG::Utils::Color))
     {
-        auto color = property.getGetter<::UTILS_MODULE_NS::Color>()();
+        auto color = property.getGetter<::HG::Utils::Color>()();
 
         ImGui::ColorEdit3(property.name().c_str(), reinterpret_cast<float*>(&color));
 
-        property.getSetter<::UTILS_MODULE_NS::Color>()(color);
+        property.getSetter<::HG::Utils::Color>()(color);
     }
     else
     {

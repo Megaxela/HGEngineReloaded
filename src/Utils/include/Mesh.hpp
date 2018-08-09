@@ -4,7 +4,7 @@
 #include <memory>
 #include "Vertex.hpp"
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     /**
      * @brief Class, that describes

@@ -3,24 +3,24 @@
 #include "Forward/AbstractRenderer.hpp"
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-OGL_RENDERING_MODULE_NS::Forward::AbstractRenderer::AbstractRenderer() :
+HG::Rendering::OpenGL::Forward::AbstractRenderer::AbstractRenderer() :
     m_application(nullptr),
     m_textureNumber(0)
 {
 
 }
 
-CORE_MODULE_NS::Application *OGL_RENDERING_MODULE_NS::Forward::AbstractRenderer::application() const
+HG::Core::Application *HG::Rendering::OpenGL::Forward::AbstractRenderer::application() const
 {
     return m_application;
 }
 
-void OGL_RENDERING_MODULE_NS::Forward::AbstractRenderer::setApplication(CORE_MODULE_NS::Application *application)
+void HG::Rendering::OpenGL::Forward::AbstractRenderer::setApplication(HG::Core::Application *application)
 {
     m_application = application;
 }
 
-void OGL_RENDERING_MODULE_NS::Forward::AbstractRenderer::applyShaderUniforms(RENDERING_BASE_MODULE_NS::Material *material)
+void HG::Rendering::OpenGL::Forward::AbstractRenderer::applyShaderUniforms(HG::Rendering::Base::Material *material)
 {
     m_textureNumber = 0;
 
@@ -32,9 +32,9 @@ void OGL_RENDERING_MODULE_NS::Forward::AbstractRenderer::applyShaderUniforms(REN
     }
 }
 
-void OGL_RENDERING_MODULE_NS::Forward::AbstractRenderer::setShaderUniform(gl::program *program,
+void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::program *program,
                                                                            const std::string &name,
-                                                                           const ::RENDERING_BASE_MODULE_NS::Material::Value &value)
+                                                                           const ::HG::Rendering::Base::Material::Value &value)
 {
 
     auto location = program->uniform_location(name);

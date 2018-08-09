@@ -38,8 +38,8 @@ add_subdirectory(libraries)
 
 add_library(HGRenderingOGL STATIC
     include/GL/gl_ordered.hpp
-        src/Forward/RenderingPipeline.cpp
-        include/Forward/RenderingPipeline.hpp
+    src/Forward/RenderingPipeline.cpp
+    include/Forward/RenderingPipeline.hpp
     src/GLFWSystemController.cpp
     include/GLFWSystemController.hpp
     src/GizmosRenderer.cpp
@@ -52,7 +52,16 @@ add_library(HGRenderingOGL STATIC
     include/Materials/MeshFallbackMaterial.hpp
     src/Material/SpriteMaterial.cpp
     include/Materials/SpriteMaterial.hpp
-        src/Forward/AbstractRenderer.cpp include/Forward/AbstractRenderer.hpp src/Forward/MeshRenderer.cpp include/Forward/MeshRenderer.hpp include/Common/ShaderData.hpp include/Common/MeshData.hpp include/Common/Texture2DData.hpp src/Forward/SpriteRenderer.cpp include/Forward/SpriteRenderer.hpp)
+    src/Forward/AbstractRenderer.cpp
+    include/Forward/AbstractRenderer.hpp
+    src/Forward/MeshRenderer.cpp
+    include/Forward/MeshRenderer.hpp
+    include/Common/ShaderData.hpp
+    include/Common/MeshData.hpp
+    include/Common/Texture2DData.hpp
+    src/Forward/SpriteRenderer.cpp
+    include/Forward/SpriteRenderer.hpp
+)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 
@@ -70,6 +79,5 @@ target_include_directories(HGRenderingOGL PUBLIC
 
 target_compile_definitions(HGRenderingOGL
         PUBLIC
-        -DOGL_RENDERING_MODULE_NS=HG::Rendering::OpenGL
         -D${RENDERER_DEFINITION}
 )

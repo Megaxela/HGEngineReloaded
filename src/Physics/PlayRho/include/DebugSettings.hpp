@@ -2,7 +2,7 @@
 
 #include <PlayRho/PlayRho.hpp>
 
-namespace PLAYRHO_PHYSICS_MODULE_NS
+namespace HG::Physics::PlayRho
 {
     namespace{
         using namespace playrho;

@@ -3,28 +3,28 @@
 #include <imgui.h>
 #include "Behaviours/Rigidbody.hpp"
 
-PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::Rigidbody() :
+HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody() :
     m_configuration(),
     m_body(nullptr)
 {
 
 }
 
-PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::Rigidbody(playrho::d2::BodyConf bodyConfiguration) :
+HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::BodyConf bodyConfiguration) :
     m_configuration(std::move(bodyConfiguration)),
     m_body(nullptr)
 {
 
 }
 
-PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::Rigidbody(playrho::d2::Body *body) :
+HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::Body *body) :
     m_configuration(),
     m_body(body)
 {
 
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::applyCurrentGameObjectTransform()
+void HG::Physics::PlayRho::Behaviours::Rigidbody::applyCurrentGameObjectTransform()
 {
     if (!gameObject() || !m_body)
     {
@@ -41,7 +41,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::applyCurrentGameObjectTra
     m_body->SetTransform(vector, 0);
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onStart()
+void HG::Physics::PlayRho::Behaviours::Rigidbody::onStart()
 {
     if (!m_body)
     {
@@ -65,7 +65,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onStart()
     applyCurrentGameObjectTransform();
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onUpdate()
+void HG::Physics::PlayRho::Behaviours::Rigidbody::onUpdate()
 {
     if (!m_body)
     {
@@ -90,7 +90,7 @@ void PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::onUpdate()
     );
 }
 
-playrho::d2::Body *PLAYRHO_PHYSICS_MODULE_NS::Behaviours::Rigidbody::body() const
+playrho::d2::Body *HG::Physics::PlayRho::Behaviours::Rigidbody::body() const
 {
     return m_body;
 }

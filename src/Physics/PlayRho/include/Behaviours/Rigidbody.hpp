@@ -3,13 +3,13 @@
 #include <Behaviour.hpp>
 #include "PlayRho/PlayRho.hpp"
 
-namespace PLAYRHO_PHYSICS_MODULE_NS::Behaviours
+namespace HG::Physics::PlayRho::Behaviours
 {
     /**
      * @brief Class, that describes rigidbody, based on
      * PlayRho physics.
      */
-    class Rigidbody : public CORE_MODULE_NS::Behaviour
+    class Rigidbody : public HG::Core::Behaviour
     {
     public:
 

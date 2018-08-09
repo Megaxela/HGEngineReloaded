@@ -6,13 +6,13 @@
 #include <CurrentLogger.hpp>
 #include <Material.hpp>
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     class Mesh;
     using MeshPtr = std::shared_ptr<Mesh>;
 }
 
-namespace RENDERING_BASE_MODULE_NS::Behaviours
+namespace HG::Rendering::Base::Behaviours
 {
     /**
      * @brief Class, that describes mesh rendering.
@@ -40,13 +40,13 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
          * @return Smart pointer to mesh or nullptr if
          * no mesh set.
          */
-        UTILS_MODULE_NS::MeshPtr mesh() const;
+        HG::Utils::MeshPtr mesh() const;
 
         /**
          * @brief Method for setting mesh object.
          * @param mesh Smart pointer with mesh object.
          */
-        void setMesh(UTILS_MODULE_NS::MeshPtr mesh);
+        void setMesh(HG::Utils::MeshPtr mesh);
 
         /**
          * @brief Method for getting material for rendering.
@@ -62,7 +62,7 @@ namespace RENDERING_BASE_MODULE_NS::Behaviours
 
     private:
 
-        UTILS_MODULE_NS::MeshPtr m_mesh;
+        HG::Utils::MeshPtr m_mesh;
         Material* m_material;
     };
 }

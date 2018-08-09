@@ -7,7 +7,7 @@
 #include "imgui.h"
 
 
-STD_MODULE_NS::Behaviours::IngameConsole::IngameConsole() :
+HG::Standard::Behaviours::IngameConsole::IngameConsole() :
     m_logsListener(),
     m_commands(),
     m_linesBuffer()
@@ -23,13 +23,13 @@ STD_MODULE_NS::Behaviours::IngameConsole::IngameConsole() :
         {
             for (auto&& [name, command] : m_commands)
             {
-                logText(UTILS_MODULE_NS::Color::Gray, command.command);
+                logText(HG::Utils::Color::Gray, command.command);
 
-                auto splittedDescription = UTILS_MODULE_NS::StringTools::split(command.description, '\n');
+                auto splittedDescription = HG::Utils::StringTools::split(command.description, '\n');
 
                 for (auto&& line : splittedDescription)
                 {
-                    logText(UTILS_MODULE_NS::Color::White, "    " + line);
+                    logText(HG::Utils::Color::White, "    " + line);
                 }
             }
 
@@ -68,7 +68,7 @@ STD_MODULE_NS::Behaviours::IngameConsole::IngameConsole() :
     ));
 }
 
-STD_MODULE_NS::Behaviours::IngameConsole::~IngameConsole()
+HG::Standard::Behaviours::IngameConsole::~IngameConsole()
 {
     if (m_logsListener && CurrentLogger::i())
     {
@@ -76,12 +76,12 @@ STD_MODULE_NS::Behaviours::IngameConsole::~IngameConsole()
     }
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::addCommand(STD_MODULE_NS::Behaviours::IngameConsole::Command c)
+void HG::Standard::Behaviours::IngameConsole::addCommand(HG::Standard::Behaviours::IngameConsole::Command c)
 {
-    m_commands[UTILS_MODULE_NS::StringTools::toLower(c.command)] = std::move(c);
+    m_commands[HG::Utils::StringTools::toLower(c.command)] = std::move(c);
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::displayConsole()
+void HG::Standard::Behaviours::IngameConsole::displayConsole()
 {
     bool shown = true;
 
@@ -148,19 +148,19 @@ void STD_MODULE_NS::Behaviours::IngameConsole::displayConsole()
     }
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::onStart()
+void HG::Standard::Behaviours::IngameConsole::onStart()
 {
     setEnabled(false);
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::onUpdate()
+void HG::Standard::Behaviours::IngameConsole::onUpdate()
 {
     proceedLogs();
 
     displayConsole();
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::proceedLogs()
+void HG::Standard::Behaviours::IngameConsole::proceedLogs()
 {
     AbstractLogger::Message msg;
     while (m_logsListener &&
@@ -172,25 +172,25 @@ void STD_MODULE_NS::Behaviours::IngameConsole::proceedLogs()
     }
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::logText(const UTILS_MODULE_NS::Color& color, std::string text)
+void HG::Standard::Behaviours::IngameConsole::logText(const HG::Utils::Color& color, std::string text)
 {
     m_linesBuffer.emplace_back(color, text);
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::executeCommand(std::string command)
+void HG::Standard::Behaviours::IngameConsole::executeCommand(std::string command)
 {
-    logText(UTILS_MODULE_NS::Color::fromRGB(250, 250, 250), ">>> " + command);
+    logText(HG::Utils::Color::fromRGB(250, 250, 250), ">>> " + command);
 
     // Splitting command by spaces
     if (command.length() > 0)
     {
-        auto splittedCommand = UTILS_MODULE_NS::StringTools::smartSplit(command, ' ');
+        auto splittedCommand = HG::Utils::StringTools::smartSplit(command, ' ');
 
 //        addCommandToHistory(std::move(command));
 
         std::vector<std::string> arguments(splittedCommand.begin() + 1, splittedCommand.end());
 
-        auto commandName = UTILS_MODULE_NS::StringTools::toLower(splittedCommand[0]);
+        auto commandName = HG::Utils::StringTools::toLower(splittedCommand[0]);
 
         auto commandIter = std::find_if(
             m_commands.begin(),
@@ -210,7 +210,7 @@ void STD_MODULE_NS::Behaviours::IngameConsole::executeCommand(std::string comman
 
                 logText(errorColor, "Wrong usage of command \"" + splittedCommand[0] + "\"");
 
-                auto splittedDescription = UTILS_MODULE_NS::StringTools::split(commandIter->second.description, '\n');
+                auto splittedDescription = HG::Utils::StringTools::split(commandIter->second.description, '\n');
 
                 for (auto&& line : splittedDescription)
                 {
@@ -226,36 +226,36 @@ void STD_MODULE_NS::Behaviours::IngameConsole::executeCommand(std::string comman
     }
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::proceedMessage(AbstractLogger::Message message)
+void HG::Standard::Behaviours::IngameConsole::proceedMessage(AbstractLogger::Message message)
 {
     logText(getLogColor(message.errorClass), formatMessage(message));
 }
 
-std::string STD_MODULE_NS::Behaviours::IngameConsole::formatMessage(AbstractLogger::Message message)
+std::string HG::Standard::Behaviours::IngameConsole::formatMessage(AbstractLogger::Message message)
 {
     return message.message;
 }
 
-UTILS_MODULE_NS::Color STD_MODULE_NS::Behaviours::IngameConsole::getLogColor(AbstractLogger::ErrorClass errClass)
+HG::Utils::Color HG::Standard::Behaviours::IngameConsole::getLogColor(AbstractLogger::ErrorClass errClass)
 {
     switch (errClass)
     {
     case AbstractLogger::ErrorClass::Debug:
-        return UTILS_MODULE_NS::Color::fromRGB(180, 180, 180);
+        return HG::Utils::Color::fromRGB(180, 180, 180);
     case AbstractLogger::ErrorClass::Warning:
-        return UTILS_MODULE_NS::Color::fromRGB(180, 50, 50);
+        return HG::Utils::Color::fromRGB(180, 50, 50);
     case AbstractLogger::ErrorClass::Error:
-        return UTILS_MODULE_NS::Color::fromRGB(255, 50, 50);
+        return HG::Utils::Color::fromRGB(255, 50, 50);
     case AbstractLogger::ErrorClass::None:
     case AbstractLogger::ErrorClass::Info:
     case AbstractLogger::ErrorClass::Unknown:
-        return UTILS_MODULE_NS::Color::White;
+        return HG::Utils::Color::White;
     }
 
-    return UTILS_MODULE_NS::Color::White;
+    return HG::Utils::Color::White;
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::connectLoggingWatcher()
+void HG::Standard::Behaviours::IngameConsole::connectLoggingWatcher()
 {
     m_logsListener = std::make_shared<LoggingWatcher>(this);
     
@@ -269,14 +269,14 @@ void STD_MODULE_NS::Behaviours::IngameConsole::connectLoggingWatcher()
     }
 }
 
-STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher::LoggingWatcher(STD_MODULE_NS::Behaviours::IngameConsole* ingameConsole) :
+HG::Standard::Behaviours::IngameConsole::LoggingWatcher::LoggingWatcher(HG::Standard::Behaviours::IngameConsole* ingameConsole) :
     m_console(ingameConsole),
     m_messages()
 {
 
 }
 
-AbstractLogger::Message STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher::popMessage()
+AbstractLogger::Message HG::Standard::Behaviours::IngameConsole::LoggingWatcher::popMessage()
 {
     auto element = std::move(m_messages.front());
     
@@ -285,18 +285,18 @@ AbstractLogger::Message STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher
     return element;
 }
 
-bool STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher::hasMessages() const
+bool HG::Standard::Behaviours::IngameConsole::LoggingWatcher::hasMessages() const
 {
     return !m_messages.empty();
 }
 
-void STD_MODULE_NS::Behaviours::IngameConsole::LoggingWatcher::newMessage(const AbstractLogger::Message& m)
+void HG::Standard::Behaviours::IngameConsole::LoggingWatcher::newMessage(const AbstractLogger::Message& m)
 {
     m_messages.push_back(m);
 }
 
-int STD_MODULE_NS::Behaviours::IngameConsole::commandClEnableDebug(
-    STD_MODULE_NS::Behaviours::IngameConsole::Command::Arguments arguments)
+int HG::Standard::Behaviours::IngameConsole::commandClEnableDebug(
+    HG::Standard::Behaviours::IngameConsole::Command::Arguments arguments)
 {
     return !toggleBehaviour<DebugControllerOverlay>(arguments);
 }

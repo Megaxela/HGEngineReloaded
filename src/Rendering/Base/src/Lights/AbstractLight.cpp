@@ -1,8 +1,8 @@
 #include "Lights/AbstractLight.hpp"
 
-std::vector<RENDERING_BASE_MODULE_NS::AbstractLight*> RENDERING_BASE_MODULE_NS::AbstractLight::m_lights;
+std::vector<HG::Rendering::Base::AbstractLight*> HG::Rendering::Base::AbstractLight::m_lights;
 
-RENDERING_BASE_MODULE_NS::AbstractLight::AbstractLight(RENDERING_BASE_MODULE_NS::AbstractLight::Type type) :
+HG::Rendering::Base::AbstractLight::AbstractLight(HG::Rendering::Base::AbstractLight::Type type) :
     m_type(type),
     m_ambient(0.2f, 0.2f, 0.2f),
     m_diffuse(1.0f, 1.0f, 1.0f),
@@ -11,7 +11,7 @@ RENDERING_BASE_MODULE_NS::AbstractLight::AbstractLight(RENDERING_BASE_MODULE_NS:
 
 }
 
-RENDERING_BASE_MODULE_NS::AbstractLight::~AbstractLight()
+HG::Rendering::Base::AbstractLight::~AbstractLight()
 {
     // Removing from db
 
@@ -25,42 +25,42 @@ RENDERING_BASE_MODULE_NS::AbstractLight::~AbstractLight()
     );
 }
 
-RENDERING_BASE_MODULE_NS::AbstractLight::Type RENDERING_BASE_MODULE_NS::AbstractLight::type()
+HG::Rendering::Base::AbstractLight::Type HG::Rendering::Base::AbstractLight::type()
 {
     return m_type;
 }
 
-void RENDERING_BASE_MODULE_NS::AbstractLight::setSpecular(const UTILS_MODULE_NS::Color& color)
+void HG::Rendering::Base::AbstractLight::setSpecular(const HG::Utils::Color& color)
 {
     m_specular = color;
 }
 
-UTILS_MODULE_NS::Color RENDERING_BASE_MODULE_NS::AbstractLight::specular() const
+HG::Utils::Color HG::Rendering::Base::AbstractLight::specular() const
 {
     return m_specular;
 }
 
-void RENDERING_BASE_MODULE_NS::AbstractLight::setAmbient(const UTILS_MODULE_NS::Color& color)
+void HG::Rendering::Base::AbstractLight::setAmbient(const HG::Utils::Color& color)
 {
     m_ambient = color;
 }
 
-UTILS_MODULE_NS::Color RENDERING_BASE_MODULE_NS::AbstractLight::ambient() const
+HG::Utils::Color HG::Rendering::Base::AbstractLight::ambient() const
 {
     return m_ambient;
 }
 
-void RENDERING_BASE_MODULE_NS::AbstractLight::setDiffuse(const UTILS_MODULE_NS::Color& color)
+void HG::Rendering::Base::AbstractLight::setDiffuse(const HG::Utils::Color& color)
 {
     m_diffuse = color;
 }
 
-UTILS_MODULE_NS::Color RENDERING_BASE_MODULE_NS::AbstractLight::diffuse() const
+HG::Utils::Color HG::Rendering::Base::AbstractLight::diffuse() const
 {
     return m_diffuse;
 }
 
-void RENDERING_BASE_MODULE_NS::AbstractLight::onStart()
+void HG::Rendering::Base::AbstractLight::onStart()
 {
 #ifndef NDEBUG
 
@@ -78,7 +78,7 @@ void RENDERING_BASE_MODULE_NS::AbstractLight::onStart()
     AbstractLight::m_lights.push_back(this);
 }
 
-const std::vector<RENDERING_BASE_MODULE_NS::AbstractLight *> &RENDERING_BASE_MODULE_NS::AbstractLight::totalLights()
+const std::vector<HG::Rendering::Base::AbstractLight *> &HG::Rendering::Base::AbstractLight::totalLights()
 {
     return m_lights;
 }

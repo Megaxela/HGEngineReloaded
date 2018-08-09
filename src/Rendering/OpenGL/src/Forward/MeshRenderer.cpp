@@ -10,18 +10,18 @@
 #include <Mesh.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::MeshRenderer() :
+HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() :
     m_meshFallbackMaterial(nullptr)
 {
 
 }
 
-OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::~MeshRenderer()
+HG::Rendering::OpenGL::Forward::MeshRenderer::~MeshRenderer()
 {
     delete m_meshFallbackMaterial;
 }
 
-void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::init()
+void HG::Rendering::OpenGL::Forward::MeshRenderer::init()
 {
     Info() << "Creating fallback material.";
 
@@ -31,10 +31,10 @@ void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::init()
         ->getMaterial<Materials::MeshFallbackMaterial>();
 }
 
-void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::render(CORE_MODULE_NS::GameObject *gameObject,
-                                                            RENDERING_BASE_MODULE_NS::RenderBehaviour *renderBehaviour)
+void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *gameObject,
+                                                            HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
-    auto meshBehaviour = static_cast<RENDERING_BASE_MODULE_NS::Behaviours::Mesh*>(renderBehaviour);
+    auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
     
     auto data = meshBehaviour->externalData<Common::MeshData>();
 
@@ -89,17 +89,17 @@ void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::render(CORE_MODULE_NS::Game
     {
         program->set_uniform(
             location,
-            ::RENDERING_BASE_MODULE_NS::Camera::active()->viewMatrix()
+            ::HG::Rendering::Base::Camera::active()->viewMatrix()
         );
     }
 
     if ((location = program->uniform_location("projection")) != -1)
     {
-        program->set_uniform(location, ::RENDERING_BASE_MODULE_NS::Camera::active()->projectionMatrix());
+        program->set_uniform(location, ::HG::Rendering::Base::Camera::active()->projectionMatrix());
     }
 
     // Setting lighting uniforms
-    auto& lights = ::RENDERING_BASE_MODULE_NS::AbstractLight::totalLights();
+    auto& lights = ::HG::Rendering::Base::AbstractLight::totalLights();
 
     int pointLightIndex = 0;
     int directionalLightIndex = 0;
@@ -109,9 +109,9 @@ void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::render(CORE_MODULE_NS::Game
     {
         switch (light->type())
         {
-        case ::RENDERING_BASE_MODULE_NS::AbstractLight::Type::Point:
+        case ::HG::Rendering::Base::AbstractLight::Type::Point:
         {
-            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::PointLight*>(light);
+            auto castedLight = static_cast<::HG::Rendering::Base::Lights::PointLight*>(light);
 
             if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].position")) != -1)
             {
@@ -172,17 +172,17 @@ void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::render(CORE_MODULE_NS::Game
             ++pointLightIndex;
             break;
         }
-        case ::RENDERING_BASE_MODULE_NS::AbstractLight::Type::Directional:
+        case ::HG::Rendering::Base::AbstractLight::Type::Directional:
         {
-            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::DirectionalLight*>(light);
+            auto castedLight = static_cast<::HG::Rendering::Base::Lights::DirectionalLight*>(light);
 
             // todo: Finish directional light uniform info
             ++directionalLightIndex;
             break;
         }
-        case ::RENDERING_BASE_MODULE_NS::AbstractLight::Type::Spot:
+        case ::HG::Rendering::Base::AbstractLight::Type::Spot:
         {
-//            auto castedLight = static_cast<::RENDERING_BASE_MODULE_NS::Lights::*>(light);
+//            auto castedLight = static_cast<::HG::Rendering::Base::Lights::*>(light);
 
             // todo: Finish stop light uniform info
             ++spotLightIndex;
@@ -215,7 +215,7 @@ void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::render(CORE_MODULE_NS::Game
     {
         program->set_uniform(
             location,
-            ::RENDERING_BASE_MODULE_NS::Camera::active()
+            ::HG::Rendering::Base::Camera::active()
                 ->gameObject()
                 ->transform()
                 ->globalPosition()
@@ -235,7 +235,7 @@ void OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::render(CORE_MODULE_NS::Game
     data->VAO.unbind();
 }
 
-size_t OGL_RENDERING_MODULE_NS::Forward::MeshRenderer::getTarget()
+size_t HG::Rendering::OpenGL::Forward::MeshRenderer::getTarget()
 {
-    return RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Id;
+    return HG::Rendering::Base::Behaviours::Mesh::Id;
 }

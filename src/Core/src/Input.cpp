@@ -2,7 +2,7 @@
 #include "Input.hpp"
 #include <algorithm>
 
-CORE_MODULE_NS::Input::Keyboard::Keyboard() :
+HG::Core::Input::Keyboard::Keyboard() :
     m_pushed  (std::size_t(Key::Last) - 1, false),
     m_released(std::size_t(Key::Last) - 1, false),
     m_pressed (std::size_t(Key::Last) - 1, false),
@@ -12,7 +12,7 @@ CORE_MODULE_NS::Input::Keyboard::Keyboard() :
 
 }
 
-bool CORE_MODULE_NS::Input::Keyboard::isPressed(CORE_MODULE_NS::Input::Keyboard::Key key) const
+bool HG::Core::Input::Keyboard::isPressed(HG::Core::Input::Keyboard::Key key) const
 {
 #ifndef NDEBUG
     if (std::size_t(key) >= m_pressed.size())
@@ -25,7 +25,7 @@ bool CORE_MODULE_NS::Input::Keyboard::isPressed(CORE_MODULE_NS::Input::Keyboard:
     return m_pressed[std::size_t(key)];
 }
 
-bool CORE_MODULE_NS::Input::Keyboard::isPushed(CORE_MODULE_NS::Input::Keyboard::Key key) const
+bool HG::Core::Input::Keyboard::isPushed(HG::Core::Input::Keyboard::Key key) const
 {
 #ifndef NDEBUG
     if (std::size_t(key) >= m_pushed.size())
@@ -38,7 +38,7 @@ bool CORE_MODULE_NS::Input::Keyboard::isPushed(CORE_MODULE_NS::Input::Keyboard::
     return m_pushed[std::size_t(key)];
 }
 
-bool CORE_MODULE_NS::Input::Keyboard::isReleased(CORE_MODULE_NS::Input::Keyboard::Key key) const
+bool HG::Core::Input::Keyboard::isReleased(HG::Core::Input::Keyboard::Key key) const
 {
 #ifndef NDEBUG
     if (std::size_t(key) >= m_released.size())
@@ -51,7 +51,7 @@ bool CORE_MODULE_NS::Input::Keyboard::isReleased(CORE_MODULE_NS::Input::Keyboard
     return m_released[std::size_t(key)];
 }
 
-bool CORE_MODULE_NS::Input::Keyboard::isModifierPressed(CORE_MODULE_NS::Input::Keyboard::Modifiers modifier) const
+bool HG::Core::Input::Keyboard::isModifierPressed(HG::Core::Input::Keyboard::Modifiers modifier) const
 {
 #ifndef NDEBUG
     if (int(modifier) > 7)
@@ -64,12 +64,12 @@ bool CORE_MODULE_NS::Input::Keyboard::isModifierPressed(CORE_MODULE_NS::Input::K
     return static_cast<bool>(m_pressedModifiers & (1u << int(modifier)));
 }
 
-uint32_t CORE_MODULE_NS::Input::Keyboard::pressedCharacter() const
+uint32_t HG::Core::Input::Keyboard::pressedCharacter() const
 {
     return m_pressedCharacter;
 }
 
-void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard::Key key, bool pressed)
+void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Key key, bool pressed)
 {
 #ifndef NDEBUG
     if (std::size_t(key) >= m_pressed.size())
@@ -92,7 +92,7 @@ void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard
     }
 }
 
-void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard::Modifiers modifier, bool pressed)
+void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Modifiers modifier, bool pressed)
 {
 #ifndef NDEBUG
     if (int(modifier) > 7)
@@ -112,12 +112,12 @@ void CORE_MODULE_NS::Input::Keyboard::setPressed(CORE_MODULE_NS::Input::Keyboard
     }
 }
 
-void CORE_MODULE_NS::Input::Keyboard::setCharacterEntered(uint32_t codepoint)
+void HG::Core::Input::Keyboard::setCharacterEntered(uint32_t codepoint)
 {
     m_pressedCharacter = codepoint;
 }
 
-void CORE_MODULE_NS::Input::Keyboard::tick()
+void HG::Core::Input::Keyboard::tick()
 {
     for (auto&& el : m_pushed)
     {
@@ -132,19 +132,19 @@ void CORE_MODULE_NS::Input::Keyboard::tick()
     m_pressedCharacter = 0;
 }
 
-CORE_MODULE_NS::Input::Mouse::Mouse() :
+HG::Core::Input::Mouse::Mouse() :
     m_mousePos(0, 0),
     m_buttonStates()
 {
 
 }
 
-bool CORE_MODULE_NS::Input::Mouse::isPressed(CORE_MODULE_NS::Input::Mouse::Buttons button) const
+bool HG::Core::Input::Mouse::isPressed(HG::Core::Input::Mouse::Buttons button) const
 {
     return isPressed(uint8_t(button));
 }
 
-bool CORE_MODULE_NS::Input::Mouse::isPressed(uint8_t button) const
+bool HG::Core::Input::Mouse::isPressed(uint8_t button) const
 {
     auto iter = m_buttonStates.find(button);
 
@@ -156,12 +156,12 @@ bool CORE_MODULE_NS::Input::Mouse::isPressed(uint8_t button) const
     return iter->second.pressed;
 }
 
-bool CORE_MODULE_NS::Input::Mouse::isPushed(CORE_MODULE_NS::Input::Mouse::Buttons button) const
+bool HG::Core::Input::Mouse::isPushed(HG::Core::Input::Mouse::Buttons button) const
 {
     return isPushed(uint8_t(button));
 }
 
-bool CORE_MODULE_NS::Input::Mouse::isPushed(uint8_t button) const
+bool HG::Core::Input::Mouse::isPushed(uint8_t button) const
 {
     auto iter = m_buttonStates.find(button);
 
@@ -173,12 +173,12 @@ bool CORE_MODULE_NS::Input::Mouse::isPushed(uint8_t button) const
     return iter->second.justPushed;
 }
 
-bool CORE_MODULE_NS::Input::Mouse::isReleased(CORE_MODULE_NS::Input::Mouse::Buttons button) const
+bool HG::Core::Input::Mouse::isReleased(HG::Core::Input::Mouse::Buttons button) const
 {
     return isReleased(uint8_t(button));
 }
 
-bool CORE_MODULE_NS::Input::Mouse::isReleased(uint8_t button) const
+bool HG::Core::Input::Mouse::isReleased(uint8_t button) const
 {
     auto iter = m_buttonStates.find(button);
 
@@ -190,12 +190,12 @@ bool CORE_MODULE_NS::Input::Mouse::isReleased(uint8_t button) const
     return iter->second.justReleased;
 }
 
-glm::vec2 CORE_MODULE_NS::Input::Mouse::getMousePosition() const
+glm::vec2 HG::Core::Input::Mouse::getMousePosition() const
 {
     return m_mousePos;
 }
 
-void CORE_MODULE_NS::Input::Mouse::setCursorDisabled(bool locked) const
+void HG::Core::Input::Mouse::setCursorDisabled(bool locked) const
 {
     if (m_disabledAction == nullptr)
     {
@@ -206,7 +206,7 @@ void CORE_MODULE_NS::Input::Mouse::setCursorDisabled(bool locked) const
     m_disabledAction(locked);
 }
 
-void CORE_MODULE_NS::Input::Mouse::setCursorHidden(bool hidden) const
+void HG::Core::Input::Mouse::setCursorHidden(bool hidden) const
 {
     if (m_hiddenAction == nullptr)
     {
@@ -217,23 +217,23 @@ void CORE_MODULE_NS::Input::Mouse::setCursorHidden(bool hidden) const
     m_hiddenAction(hidden);
 }
 
-void CORE_MODULE_NS::Input::Mouse::setCursorDisabledAction(std::function<void(bool)> disabledAction)
+void HG::Core::Input::Mouse::setCursorDisabledAction(std::function<void(bool)> disabledAction)
 {
     m_disabledAction = std::move(disabledAction);
 }
 
-void CORE_MODULE_NS::Input::Mouse::setCursorHiddenAction(std::function<void(bool)> hiddenAction)
+void HG::Core::Input::Mouse::setCursorHiddenAction(std::function<void(bool)> hiddenAction)
 {
     m_hiddenAction = std::move(hiddenAction);
 }
 
-void CORE_MODULE_NS::Input::Mouse::setMousePosition(int x, int y)
+void HG::Core::Input::Mouse::setMousePosition(int x, int y)
 {
     m_mousePos.x = x;
     m_mousePos.y = y;
 }
 
-void CORE_MODULE_NS::Input::Mouse::setPressedButton(uint8_t button, bool pressed)
+void HG::Core::Input::Mouse::setPressedButton(uint8_t button, bool pressed)
 {
     auto iter = m_buttonStates.find(button);
 
@@ -254,7 +254,7 @@ void CORE_MODULE_NS::Input::Mouse::setPressedButton(uint8_t button, bool pressed
     iter->second.pressed = pressed;
 }
 
-void CORE_MODULE_NS::Input::Mouse::tick()
+void HG::Core::Input::Mouse::tick()
 {
     for (auto&& state : m_buttonStates)
     {
@@ -263,13 +263,13 @@ void CORE_MODULE_NS::Input::Mouse::tick()
     }
 }
 
-CORE_MODULE_NS::Input::Gamepads::Gamepads() :
+HG::Core::Input::Gamepads::Gamepads() :
     m_gamepads()
 {
 
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isConnected() const
+bool HG::Core::Input::Gamepads::isConnected() const
 {
     for (auto&& gamepad : m_gamepads)
     {
@@ -282,7 +282,7 @@ bool CORE_MODULE_NS::Input::Gamepads::isConnected() const
     return true;
 }
 
-uint8_t CORE_MODULE_NS::Input::Gamepads::numberOfGamepadsConnected() const
+uint8_t HG::Core::Input::Gamepads::numberOfGamepadsConnected() const
 {
     uint8_t numberOfGamepads = 0;
 
@@ -297,12 +297,12 @@ uint8_t CORE_MODULE_NS::Input::Gamepads::numberOfGamepadsConnected() const
     return numberOfGamepads;
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isButtonPressed(uint8_t gamepad, CORE_MODULE_NS::Input::Gamepads::XBoxButtons button) const
+bool HG::Core::Input::Gamepads::isButtonPressed(uint8_t gamepad, HG::Core::Input::Gamepads::XBoxButtons button) const
 {
     return isButtonPressed(gamepad, uint8_t(button));
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isButtonPressed(uint8_t gamepad, uint8_t button) const
+bool HG::Core::Input::Gamepads::isButtonPressed(uint8_t gamepad, uint8_t button) const
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -321,12 +321,12 @@ bool CORE_MODULE_NS::Input::Gamepads::isButtonPressed(uint8_t gamepad, uint8_t b
     return buttonIterator->second.pressed;
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isButtonPushed(uint8_t gamepad, CORE_MODULE_NS::Input::Gamepads::XBoxButtons button) const
+bool HG::Core::Input::Gamepads::isButtonPushed(uint8_t gamepad, HG::Core::Input::Gamepads::XBoxButtons button) const
 {
     return isButtonPushed(gamepad, uint8_t(button));
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isButtonPushed(uint8_t gamepad, uint8_t button) const
+bool HG::Core::Input::Gamepads::isButtonPushed(uint8_t gamepad, uint8_t button) const
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -345,12 +345,12 @@ bool CORE_MODULE_NS::Input::Gamepads::isButtonPushed(uint8_t gamepad, uint8_t bu
     return buttonIterator->second.justPushed;
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isButtonReleased(uint8_t gamepad, CORE_MODULE_NS::Input::Gamepads::XBoxButtons button) const
+bool HG::Core::Input::Gamepads::isButtonReleased(uint8_t gamepad, HG::Core::Input::Gamepads::XBoxButtons button) const
 {
     return isButtonReleased(gamepad, uint8_t(button));
 }
 
-bool CORE_MODULE_NS::Input::Gamepads::isButtonReleased(uint8_t gamepad, uint8_t button) const
+bool HG::Core::Input::Gamepads::isButtonReleased(uint8_t gamepad, uint8_t button) const
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -369,7 +369,7 @@ bool CORE_MODULE_NS::Input::Gamepads::isButtonReleased(uint8_t gamepad, uint8_t 
     return buttonIterator->second.justReleased;
 }
 
-uint8_t CORE_MODULE_NS::Input::Gamepads::numberOfButtons(uint8_t gamepad) const
+uint8_t HG::Core::Input::Gamepads::numberOfButtons(uint8_t gamepad) const
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -381,12 +381,12 @@ uint8_t CORE_MODULE_NS::Input::Gamepads::numberOfButtons(uint8_t gamepad) const
     return gamepadIterator->second.numberOfButtons;
 }
 
-float CORE_MODULE_NS::Input::Gamepads::axisValue(uint8_t gamepad, CORE_MODULE_NS::Input::Gamepads::XBoxAxises axis) const
+float HG::Core::Input::Gamepads::axisValue(uint8_t gamepad, HG::Core::Input::Gamepads::XBoxAxises axis) const
 {
     return axisValue(gamepad, uint8_t(axis));
 }
 
-float CORE_MODULE_NS::Input::Gamepads::axisValue(uint8_t gamepad, uint8_t axisIndex) const
+float HG::Core::Input::Gamepads::axisValue(uint8_t gamepad, uint8_t axisIndex) const
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -405,7 +405,7 @@ float CORE_MODULE_NS::Input::Gamepads::axisValue(uint8_t gamepad, uint8_t axisIn
     return buttonIterator->second;
 }
 
-void CORE_MODULE_NS::Input::Gamepads::setIsConnectedGamepad(uint8_t gamepad, bool connected)
+void HG::Core::Input::Gamepads::setIsConnectedGamepad(uint8_t gamepad, bool connected)
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -420,7 +420,7 @@ void CORE_MODULE_NS::Input::Gamepads::setIsConnectedGamepad(uint8_t gamepad, boo
     }
 }
 
-void CORE_MODULE_NS::Input::Gamepads::setGamepadAxisValue(uint8_t gamepad, uint8_t axis, float value)
+void HG::Core::Input::Gamepads::setGamepadAxisValue(uint8_t gamepad, uint8_t axis, float value)
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -433,7 +433,7 @@ void CORE_MODULE_NS::Input::Gamepads::setGamepadAxisValue(uint8_t gamepad, uint8
     gamepadIterator->second.axises[axis] = value;
 }
 
-void CORE_MODULE_NS::Input::Gamepads::setGamepadButtonValue(uint8_t gamepad, uint8_t button, bool pressed)
+void HG::Core::Input::Gamepads::setGamepadButtonValue(uint8_t gamepad, uint8_t button, bool pressed)
 {
     auto gamepadIterator = m_gamepads.find(gamepad);
 
@@ -454,7 +454,7 @@ void CORE_MODULE_NS::Input::Gamepads::setGamepadButtonValue(uint8_t gamepad, uin
     }
 }
 
-void CORE_MODULE_NS::Input::Gamepads::tick()
+void HG::Core::Input::Gamepads::tick()
 {
     for (auto& m_gamepad : m_gamepads)
     {
@@ -466,23 +466,23 @@ void CORE_MODULE_NS::Input::Gamepads::tick()
     }
 }
 
-CORE_MODULE_NS::Input::Window::Window() :
+HG::Core::Input::Window::Window() :
     m_closed(false)
 {
 
 }
 
-bool CORE_MODULE_NS::Input::Window::isClosed() const
+bool HG::Core::Input::Window::isClosed() const
 {
     return m_closed;
 }
 
-void CORE_MODULE_NS::Input::Window::setClosed(bool closed)
+void HG::Core::Input::Window::setClosed(bool closed)
 {
     m_closed = closed;
 }
 
-CORE_MODULE_NS::Input::Input() :
+HG::Core::Input::Input() :
     m_keyboard(),
     m_mouse(),
     m_gamepads(),
@@ -491,27 +491,27 @@ CORE_MODULE_NS::Input::Input() :
 
 }
 
-const CORE_MODULE_NS::Input::Keyboard *CORE_MODULE_NS::Input::keyboard() const
+const HG::Core::Input::Keyboard *HG::Core::Input::keyboard() const
 {
     return &m_keyboard;
 }
 
-const CORE_MODULE_NS::Input::Mouse *CORE_MODULE_NS::Input::mouse() const
+const HG::Core::Input::Mouse *HG::Core::Input::mouse() const
 {
     return &m_mouse;
 }
 
-const CORE_MODULE_NS::Input::Gamepads *CORE_MODULE_NS::Input::gamepads() const
+const HG::Core::Input::Gamepads *HG::Core::Input::gamepads() const
 {
     return &m_gamepads;
 }
 
-const CORE_MODULE_NS::Input::Window* CORE_MODULE_NS::Input::window() const
+const HG::Core::Input::Window* HG::Core::Input::window() const
 {
     return &m_window;
 }
 
-void CORE_MODULE_NS::Input::tickControllers()
+void HG::Core::Input::tickControllers()
 {
     m_keyboard.tick();
     m_mouse.tick();

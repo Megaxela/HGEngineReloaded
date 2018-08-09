@@ -13,7 +13,7 @@ TEST(Utils, Base64EncodeRaw)
 
     std::string result;
 
-    UTILS_MODULE_NS::Base64::Encode(ba.container().data(), ba.container().size(), result);
+    HG::Utils::Base64::Encode(ba.container().data(), ba.container().size(), result);
 
     ASSERT_EQ(answer, result);
 }
@@ -26,7 +26,7 @@ TEST(Utils, Base64EncodeRawReturn)
 
     ASSERT_EQ(
         answer,
-        UTILS_MODULE_NS::Base64::Encode(ba.container().data(), ba.container().size())
+        HG::Utils::Base64::Encode(ba.container().data(), ba.container().size())
     );
 }
 
@@ -38,7 +38,7 @@ TEST(Utils, Base64EncodeBytearray)
 
     std::string result;
 
-    UTILS_MODULE_NS::Base64::Encode(ba, result);
+    HG::Utils::Base64::Encode(ba, result);
 
     ASSERT_EQ(answer, result);
 }
@@ -49,7 +49,7 @@ TEST(Utils, Base64EncodeBytearrayReturn)
 
     auto answer = "ABEiM0RVZneImaq7zN3u/w=="sv;
 
-    ASSERT_EQ(answer, UTILS_MODULE_NS::Base64::Encode(ba));
+    ASSERT_EQ(answer, HG::Utils::Base64::Encode(ba));
 }
 
 TEST(Utils, Base64DecodeRaw)
@@ -60,7 +60,7 @@ TEST(Utils, Base64DecodeRaw)
 
     std::vector<std::byte> target;
 
-    UTILS_MODULE_NS::Base64::Decode(answer.data(), answer.size(), target);
+    HG::Utils::Base64::Decode(answer.data(), answer.size(), target);
 
     ASSERT_EQ(ba.container(), target);
 }
@@ -72,7 +72,7 @@ TEST(Utils, Base64DecodeRawReturn)
     auto answer = "ABEiM0RVZneImaq7zN3u/w=="sv;
 
 
-    ASSERT_EQ(ba.container(), UTILS_MODULE_NS::Base64::Decode<std::byte>(answer.data(), answer.size()));
+    ASSERT_EQ(ba.container(), HG::Utils::Base64::Decode<std::byte>(answer.data(), answer.size()));
 }
 
 TEST(Utils, Base64DecodeString)
@@ -83,7 +83,7 @@ TEST(Utils, Base64DecodeString)
 
     std::vector<std::byte> target;
 
-    UTILS_MODULE_NS::Base64::Decode(answer, target);
+    HG::Utils::Base64::Decode(answer, target);
 
     ASSERT_EQ(ba.container(), target);
 }
@@ -94,7 +94,7 @@ TEST(Utils, Base64DecodeStringReturn)
 
     auto answer = "ABEiM0RVZneImaq7zN3u/w=="s;
 
-    ASSERT_EQ(ba.container(), UTILS_MODULE_NS::Base64::Decode<std::byte>(answer));
+    ASSERT_EQ(ba.container(), HG::Utils::Base64::Decode<std::byte>(answer));
 }
 
 TEST(Utils, Base64DecodeStringView)
@@ -105,7 +105,7 @@ TEST(Utils, Base64DecodeStringView)
 
     std::vector<std::byte> target;
 
-    UTILS_MODULE_NS::Base64::Decode(answer, target);
+    HG::Utils::Base64::Decode(answer, target);
 
     ASSERT_EQ(ba.container(), target);
 }
@@ -116,7 +116,7 @@ TEST(Utils, Base64DecodeStringViewReturn)
 
     auto answer = "ABEiM0RVZneImaq7zN3u/w=="sv;
 
-    ASSERT_EQ(ba.container(), UTILS_MODULE_NS::Base64::Decode<std::byte>(answer));
+    ASSERT_EQ(ba.container(), HG::Utils::Base64::Decode<std::byte>(answer));
 }
 
 TEST(Utils, Base64HugeTest)
@@ -227,8 +227,8 @@ TEST(Utils, Base64HugeTest)
 
     for (auto&& [bytes, base64] : tests)
     {
-        ASSERT_EQ(UTILS_MODULE_NS::Base64::Encode(bytes), base64) << "Encoding of " << std::to_string(bytes) << " is not equal to " << base64;
+        ASSERT_EQ(HG::Utils::Base64::Encode(bytes), base64) << "Encoding of " << std::to_string(bytes) << " is not equal to " << base64;
 
-        ASSERT_EQ(UTILS_MODULE_NS::Base64::Decode<std::byte>(base64), bytes.container()) << "Decoding of " << base64 << " is not equal to " << std::to_string(bytes);
+        ASSERT_EQ(HG::Utils::Base64::Decode<std::byte>(base64), bytes.container()) << "Decoding of " << base64 << " is not equal to " << std::to_string(bytes);
     }
 }

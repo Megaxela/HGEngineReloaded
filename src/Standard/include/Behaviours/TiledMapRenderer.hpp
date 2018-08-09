@@ -4,7 +4,7 @@
 #include <Behaviour.hpp>
 #include "TiledMap.hpp"
 
-namespace STD_MODULE_NS::Behaviours
+namespace HG::Standard::Behaviours
 {
     /**
      * @brief Class, that describes behaviour, that prepares
@@ -15,7 +15,7 @@ namespace STD_MODULE_NS::Behaviours
      * @todo Add layer opacity support.
      * @todo Add image layer support.
      */
-    class TiledMapRenderer : public CORE_MODULE_NS::Behaviour
+    class TiledMapRenderer : public HG::Core::Behaviour
     {
     public:
 
@@ -84,7 +84,7 @@ namespace STD_MODULE_NS::Behaviours
          * @param layer Layer to proceed.
          * @param parent Parent for targets.
          */
-        void prepareLayer(const TiledMap::Layer* layer, CORE_MODULE_NS::GameObject* parent);
+        void prepareLayer(const TiledMap::Layer* layer, HG::Core::GameObject* parent);
 
         /**
          * @brief Method for getting and loading tiled map
@@ -93,22 +93,22 @@ namespace STD_MODULE_NS::Behaviours
         void prepareTilesets();
 
         // todo: Add commentary
-        void prepareTileLayer(const TiledMap::TileLayer* tileLayer, CORE_MODULE_NS::GameObject* parent);
+        void prepareTileLayer(const TiledMap::TileLayer* tileLayer, HG::Core::GameObject* parent);
 
         // todo: Add commentary
-        void prepareGroupLayer(const TiledMap::Group* groupLayer, CORE_MODULE_NS::GameObject* parent);
+        void prepareGroupLayer(const TiledMap::Group* groupLayer, HG::Core::GameObject* parent);
 
         // Actual map for rendering
         TiledMap* m_map;
 
         // Layers
-        std::vector<CORE_MODULE_NS::GameObject*> m_layers;
+        std::vector<HG::Core::GameObject*> m_layers;
 
         // Loaded tileset textures.
-        std::map<std::string, RENDERING_BASE_MODULE_NS::Texture*> m_tilesets;
+        std::map<std::string, HG::Rendering::Base::Texture*> m_tilesets;
         
         // Map rendering shader
-        RENDERING_BASE_MODULE_NS::Shader m_mapShader;
+        HG::Rendering::Base::Shader m_mapShader;
 
         float m_layerZOffsetCummulative;
 

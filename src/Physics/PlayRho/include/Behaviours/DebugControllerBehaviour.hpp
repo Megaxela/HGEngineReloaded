@@ -2,13 +2,13 @@
 
 #include <Behaviour.hpp>
 
-namespace PLAYRHO_PHYSICS_MODULE_NS::Behaviours
+namespace HG::Physics::PlayRho::Behaviours
 {
     /**
      * @brief Class, that displays debug info and controls
      * for physics controller.
      */
-    class DebugControllerBehaviour : public CORE_MODULE_NS::Behaviour
+    class DebugControllerBehaviour : public HG::Core::Behaviour
     {
     public:
 

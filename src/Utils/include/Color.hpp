@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <string>
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     /**
      * @brief Class, that describes

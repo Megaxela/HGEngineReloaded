@@ -1,7 +1,7 @@
 #include "Surface.hpp"
 #include "stb_image.h"
 
-UTILS_MODULE_NS::Surface::Surface(FreeFunction f) :
+HG::Utils::Surface::Surface(FreeFunction f) :
     Data(nullptr),
     Width(0),
     Height(0),
@@ -11,7 +11,7 @@ UTILS_MODULE_NS::Surface::Surface(FreeFunction f) :
 
 }
 
-UTILS_MODULE_NS::Surface::~Surface()
+HG::Utils::Surface::~Surface()
 {
     if (m_freeFunction && Data)
     {

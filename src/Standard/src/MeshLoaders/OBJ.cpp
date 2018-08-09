@@ -8,18 +8,18 @@ std::map<
     std::string_view,
     std::function<
         void(
-            ::UTILS_MODULE_NS::MeshPtr&,       // mesh ptr
+            ::HG::Utils::MeshPtr&,       // mesh ptr
             std::string_view::const_iterator&, // iterator
             std::string_view&                  // line
         )
     >
-> STD_MODULE_NS::MeshLoaders::OBJ::m_tokenProcessors = {
+> HG::Standard::MeshLoaders::OBJ::m_tokenProcessors = {
     {"v", // Vertex
-     [](::UTILS_MODULE_NS::MeshPtr& mesh,
+     [](::HG::Utils::MeshPtr& mesh,
         std::string_view::const_iterator& iterator,
         std::string_view& line)
      {
-         ::UTILS_MODULE_NS::Vertex vertex;
+         ::HG::Utils::Vertex vertex;
 
          // Searching for 3 coordinates. Skipping fourth for now
          auto space = std::find(
@@ -38,7 +38,7 @@ HG::Standard::MeshLoaders::OBJ::OBJ()
 
 }
 
-::UTILS_MODULE_NS::MeshPtr HG::Standard::MeshLoaders::OBJ::load(::CORE_MODULE_NS::ResourceAccessor::DataPtr data)
+::HG::Utils::MeshPtr HG::Standard::MeshLoaders::OBJ::load(::HG::Core::ResourceAccessor::DataPtr data)
 {
     auto castedData =
         std::string_view(
@@ -46,7 +46,7 @@ HG::Standard::MeshLoaders::OBJ::OBJ()
             data->size()
         );
 
-    auto mesh = std::make_shared<::UTILS_MODULE_NS::Mesh>();
+    auto mesh = std::make_shared<::HG::Utils::Mesh>();
 
     // Parsing line by line
     auto iterator = castedData.begin();

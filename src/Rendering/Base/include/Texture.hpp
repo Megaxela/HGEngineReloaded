@@ -6,7 +6,7 @@
 #include <Surface.hpp>
 #include <glm/vec2.hpp>
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes texture
@@ -58,7 +58,7 @@ namespace RENDERING_BASE_MODULE_NS
         /**
          * @brief Constructor from surface.
          */
-        explicit Texture(::UTILS_MODULE_NS::SurfacePtr ptr);
+        explicit Texture(::HG::Utils::SurfacePtr ptr);
 
         /**
          * @brief Destructor. Clears external data.
@@ -111,13 +111,13 @@ namespace RENDERING_BASE_MODULE_NS
          * texture.
          * @return Surface.
          */
-        ::UTILS_MODULE_NS::SurfacePtr surface() const;
+        ::HG::Utils::SurfacePtr surface() const;
 
         /**
          * @brief Method for setting surface to texture.
          * @param ptr Pointer to surface.
          */
-        void setSurface(::UTILS_MODULE_NS::SurfacePtr ptr);
+        void setSurface(::HG::Utils::SurfacePtr ptr);
 
         /**
          * @brief Method for getting texture size in pixels.
@@ -184,7 +184,7 @@ namespace RENDERING_BASE_MODULE_NS
     private:
         TextureExternalData* m_externalData;
 
-        ::UTILS_MODULE_NS::SurfacePtr m_surface;
+        ::HG::Utils::SurfacePtr m_surface;
 
         Filtering m_minFiltering;
         Filtering m_magFiltering;

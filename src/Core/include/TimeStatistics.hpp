@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     /**
      * @brief Class, that describes application

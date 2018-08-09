@@ -5,7 +5,7 @@
 #include <ResourceManager.hpp>
 #include <Loaders/StringLoader.hpp>
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     class Renderer;
 
@@ -23,8 +23,8 @@ namespace RENDERING_BASE_MODULE_NS
          * @brief Constructor.
          * @param Root application.
          */
-        explicit MaterialCollection(CORE_MODULE_NS::ResourceManager* resourceManager,
-                                    RENDERING_BASE_MODULE_NS::Renderer* pipeline);
+        explicit MaterialCollection(HG::Core::ResourceManager* resourceManager,
+                                    HG::Rendering::Base::Renderer* pipeline);
 
         /**
          * @brief Destructor.
@@ -94,7 +94,7 @@ namespace RENDERING_BASE_MODULE_NS
             else if constexpr (has_raw_text<MaterialType>::value ==
                                sizeof(typename has_raw_text<MaterialType>::hasPaths))
             {
-                auto shaderData = m_resourceManager->load<UTILS_MODULE_NS::StringLoader>(MaterialType::shaderPath);
+                auto shaderData = m_resourceManager->load<HG::Utils::StringLoader>(MaterialType::shaderPath);
 
                 newShader->setShaderText(shaderData);
             }
@@ -134,10 +134,10 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void setup(Shader* shader);
 
-        CORE_MODULE_NS::ResourceManager* m_resourceManager;
+        HG::Core::ResourceManager* m_resourceManager;
 
         std::map<std::size_t, Shader*> m_shaders;
-        RENDERING_BASE_MODULE_NS::Renderer* m_renderer;
+        HG::Rendering::Base::Renderer* m_renderer;
     };
 }
 

@@ -35,7 +35,7 @@
 #include <string_view>
 #include <bytearray_processor.hpp>
 
-namespace UTILS_MODULE_NS::Base64
+namespace HG::Utils::Base64
 {
     // Anon
     namespace

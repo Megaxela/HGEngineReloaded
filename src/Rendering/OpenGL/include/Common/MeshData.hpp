@@ -3,12 +3,12 @@
 #include <Behaviours/Mesh.hpp>
 #include <gl/all.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Common
+namespace HG::Rendering::OpenGL::Common
 {
     /**
       * @brief External data implementation for mesh rendering behaviour
       */
-    class MeshData : public ::RENDERING_BASE_MODULE_NS::Behaviours::Mesh::ExternalData
+    class MeshData : public ::HG::Rendering::Base::Behaviours::Mesh::ExternalData
     {
     public:
 

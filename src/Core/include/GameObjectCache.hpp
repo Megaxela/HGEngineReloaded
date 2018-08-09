@@ -2,7 +2,7 @@
 
 #include "GameObject.hpp"
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     /**
      * @brief Singleton class, that describes

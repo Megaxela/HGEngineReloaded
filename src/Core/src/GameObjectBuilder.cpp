@@ -3,7 +3,7 @@
 #include <utility>
 #include "GameObjectBuilder.hpp"
 
-CORE_MODULE_NS::GameObjectBuilder::operator GameObject*()
+HG::Core::GameObjectBuilder::operator GameObject*()
 {
     auto result = m_currentGameObject; 
     
@@ -12,20 +12,20 @@ CORE_MODULE_NS::GameObjectBuilder::operator GameObject*()
     return result;
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::addBehaviour(CORE_MODULE_NS::Behaviour* behaviour)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addBehaviour(HG::Core::Behaviour* behaviour)
 {
     m_currentGameObject->addBehaviour(behaviour);
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder::GameObjectBuilder() :
+HG::Core::GameObjectBuilder::GameObjectBuilder() :
     m_currentGameObject(nullptr)
 {
     pickCurrentGameObject();
 }
 
-void CORE_MODULE_NS::GameObjectBuilder::pickCurrentGameObject()
+void HG::Core::GameObjectBuilder::pickCurrentGameObject()
 {
     if (m_currentGameObject != nullptr)
     {
@@ -38,7 +38,7 @@ void CORE_MODULE_NS::GameObjectBuilder::pickCurrentGameObject()
     }
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setGameObject(CORE_MODULE_NS::GameObject* ptr)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGameObject(HG::Core::GameObject* ptr)
 {
     if (m_currentGameObject != nullptr)
     {
@@ -50,42 +50,42 @@ CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setGameObj
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setLocalPosition(const glm::vec3& position)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setLocalPosition(const glm::vec3& position)
 {
     m_currentGameObject->transform()->setLocalPosition(position);
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setGlobalPosition(const glm::vec3& position)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGlobalPosition(const glm::vec3& position)
 {
     m_currentGameObject->transform()->setGlobalPosition(position);
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setRotation(const glm::quat& rotation)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setRotation(const glm::quat& rotation)
 {
     m_currentGameObject->transform()->setLocalRotation(rotation);
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setScale(const glm::vec3& scale)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setScale(const glm::vec3& scale)
 {
     m_currentGameObject->transform()->setLocalScale(scale);
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setName(std::string name)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setName(std::string name)
 {
     m_currentGameObject->setName(std::move(name));
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setParent(CORE_MODULE_NS::GameObject* parent)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setParent(HG::Core::GameObject* parent)
 {
     if (parent == nullptr)
     {
@@ -99,14 +99,14 @@ CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setParent(
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::setParent(CORE_MODULE_NS::Transform* parent)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setParent(HG::Core::Transform* parent)
 {
     m_currentGameObject->transform()->setParent(parent);
 
     return (*this);
 }
 
-CORE_MODULE_NS::GameObjectBuilder& CORE_MODULE_NS::GameObjectBuilder::addRenderingBehaviour(RENDERING_BASE_MODULE_NS::RenderBehaviour* renderingBehaviour)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addRenderingBehaviour(HG::Rendering::Base::RenderBehaviour* renderingBehaviour)
 {
     m_currentGameObject->addRenderingBehaviour(renderingBehaviour);
 

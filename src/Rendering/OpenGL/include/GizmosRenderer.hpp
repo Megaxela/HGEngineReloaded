@@ -5,7 +5,7 @@
 #include <Application.hpp>
 #include <gl/all.hpp>
 
-namespace OGL_RENDERING_MODULE_NS
+namespace HG::Rendering::OpenGL
 {
     /**
      * @brief Class, for rendering gizmos system.
@@ -17,7 +17,7 @@ namespace OGL_RENDERING_MODULE_NS
         /**
          * @brief Constructor.
          */
-        explicit GizmosRenderer(::CORE_MODULE_NS::Application* application);
+        explicit GizmosRenderer(::HG::Core::Application* application);
 
         /**
          * @brief Destructor.
@@ -33,19 +33,19 @@ namespace OGL_RENDERING_MODULE_NS
          * @brief Method for preparing line for rendering.
          * @param line Line data.
          */
-        void line(const ::RENDERING_BASE_MODULE_NS::Gizmos::LineData& line);
+        void line(const ::HG::Rendering::Base::Gizmos::LineData& line);
 
         /**
          * @brief Method for preparing sphere for rendering.
          * @param sphere Sphere data.
          */
-        void sphere(const ::RENDERING_BASE_MODULE_NS::Gizmos::SphereData& sphere);
+        void sphere(const ::HG::Rendering::Base::Gizmos::SphereData& sphere);
 
         /**
          * @brief Method for preparing hexahedron for rendering.
          * @param hexahedron Hexahedron data.
          */
-        void hexahedron(const ::RENDERING_BASE_MODULE_NS::Gizmos::HexahedronData& hexahedron);
+        void hexahedron(const ::HG::Rendering::Base::Gizmos::HexahedronData& hexahedron);
 
         /**
          * @brief Method for rendering prepared data.
@@ -56,15 +56,15 @@ namespace OGL_RENDERING_MODULE_NS
 
         void renderLines();
 
-        ::CORE_MODULE_NS::Application* m_application;
+        ::HG::Core::Application* m_application;
 
-        ::RENDERING_BASE_MODULE_NS::Material* m_lineMaterial;
-        ::RENDERING_BASE_MODULE_NS::Material* m_meshMaterial;
+        ::HG::Rendering::Base::Material* m_lineMaterial;
+        ::HG::Rendering::Base::Material* m_meshMaterial;
 
         gl::vertex_array m_linesVAO;
         gl::buffer m_linesVBO;
 
-        std::vector<::RENDERING_BASE_MODULE_NS::Gizmos::LineData> m_lineData;
+        std::vector<::HG::Rendering::Base::Gizmos::LineData> m_lineData;
     };
 }
 

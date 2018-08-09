@@ -4,7 +4,7 @@
 #include <Color.hpp>
 #include <Gizmos.hpp>
 
-namespace PLAYRHO_PHYSICS_MODULE_NS
+namespace HG::Physics::PlayRho
 {
     /**
      * @brief Class, that incapsulates debug drawing to gizmos system.
@@ -14,37 +14,37 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
     public:
         using size_type = std::size_t;
 
-        explicit DebugDraw(RENDERING_BASE_MODULE_NS::Gizmos* gizmos);
+        explicit DebugDraw(HG::Rendering::Base::Gizmos* gizmos);
 
         /// Draw a closed polygon provided in CCW order.
         void drawPolygon(const playrho::Length2 *vertices,
                          size_type vertexCount,
-                         const UTILS_MODULE_NS::Color &color);
+                         const HG::Utils::Color &color);
 
         /// Draw a solid closed polygon provided in CCW order.
         void drawSolidPolygon(const playrho::Length2 *vertices,
                               size_type vertexCount,
-                              const UTILS_MODULE_NS::Color &color);
+                              const HG::Utils::Color &color);
 
         /// Draw a circle.
         void drawCircle(const playrho::Length2 &center,
                         playrho::Length radius,
-                        const UTILS_MODULE_NS::Color &color);
+                        const HG::Utils::Color &color);
 
         /// Draw a solid circle.
         void drawSolidCircle(const playrho::Length2 &center,
                              playrho::Length radius,
-                             const UTILS_MODULE_NS::Color &color);
+                             const HG::Utils::Color &color);
 
         /// Draw a line segment.
         void drawSegment(const playrho::Length2 &p1,
                          const playrho::Length2 &p2,
-                         const UTILS_MODULE_NS::Color &color);
+                         const HG::Utils::Color &color);
 
         /// Draw point
         void drawPoint(const playrho::Length2 &p,
                        playrho::Length size,
-                       const UTILS_MODULE_NS::Color &color);
+                       const HG::Utils::Color &color);
 
         /// Draws a string at the given screen coordinates.
         void drawString(int x, int y, const char *string, ...);
@@ -54,7 +54,7 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
 
     private:
 
-        RENDERING_BASE_MODULE_NS::Gizmos* m_gizmos;
+        HG::Rendering::Base::Gizmos* m_gizmos;
 
         float m_z;
     };

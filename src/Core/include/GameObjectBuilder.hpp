@@ -2,7 +2,7 @@
 
 #include "GameObject.hpp"
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     /**
      * @brief Singleton builder
@@ -58,7 +58,7 @@ namespace CORE_MODULE_NS
          * @param renderingBehaviour Pointer to rendering behaviour.
          * @return Reference to builder.
          */
-        GameObjectBuilder& addRenderingBehaviour(RENDERING_BASE_MODULE_NS::RenderBehaviour* renderingBehaviour);
+        GameObjectBuilder& addRenderingBehaviour(HG::Rendering::Base::RenderBehaviour* renderingBehaviour);
 
         /**
          * @brief Method to set game object local position.

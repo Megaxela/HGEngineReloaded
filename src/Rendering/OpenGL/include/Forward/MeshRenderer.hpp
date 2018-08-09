@@ -4,7 +4,7 @@
 #include "AbstractRenderer.hpp"
 #include <gl/all.hpp>
 
-namespace OGL_RENDERING_MODULE_NS::Forward
+namespace HG::Rendering::OpenGL::Forward
 {
     /**
      * @brief Class, that describes forward mesh
@@ -24,8 +24,8 @@ namespace OGL_RENDERING_MODULE_NS::Forward
          */
         virtual ~MeshRenderer();
 
-        void render(CORE_MODULE_NS::GameObject *gameObject,
-                    RENDERING_BASE_MODULE_NS::RenderBehaviour *renderBehaviour) override;
+        void render(HG::Core::GameObject *gameObject,
+                    HG::Rendering::Base::RenderBehaviour *renderBehaviour) override;
 
         size_t getTarget() override;
 
@@ -34,7 +34,7 @@ namespace OGL_RENDERING_MODULE_NS::Forward
     private:
 
         // Fallback mesh program
-        ::RENDERING_BASE_MODULE_NS::Material* m_meshFallbackMaterial;
+        ::HG::Rendering::Base::Material* m_meshFallbackMaterial;
     };
 }
 

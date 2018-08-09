@@ -3,7 +3,7 @@
 #include <CurrentLogger.hpp>
 #include "ResourceAccessor.hpp"
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     /**
      * @brief Class, that describes resource manager.

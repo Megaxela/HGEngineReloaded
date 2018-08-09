@@ -9,13 +9,13 @@
 #include <Color.hpp>
 #include <rapidxml.hpp>
 
-namespace STD_MODULE_NS::Behaviours
+namespace HG::Standard::Behaviours
 {
     /**
      * @brief Tiled map loader system.
      * Support version 1.1.5
      */
-    class TiledMap : public ::CORE_MODULE_NS::Behaviour
+    class TiledMap : public ::HG::Core::Behaviour
     {
     public:
 
@@ -429,7 +429,7 @@ namespace STD_MODULE_NS::Behaviours
          * @param data Pointer to data from TMX file.
          * @return Loading success
          */
-        bool loadMap(CORE_MODULE_NS::ResourceAccessor::DataPtr data);
+        bool loadMap(HG::Core::ResourceAccessor::DataPtr data);
 
         /**
          * @brief Method for clearing tiled map.

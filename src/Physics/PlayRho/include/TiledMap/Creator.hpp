@@ -5,16 +5,16 @@
 #include <Controller.hpp>
 #include <CurrentLogger.hpp>
 
-namespace PLAYRHO_PHYSICS_MODULE_NS::TiledMap
+namespace HG::Physics::PlayRho::TiledMap
 {
     class Creator
     {
     public:
         void* createRectangle(float x, float y,
                               float w, float h,
-                              PHYSICS_BASE_MODULE_NS::PhysicsController* physicsController)
+                              HG::Physics::Base::PhysicsController* physicsController)
         {
-            auto castedController = dynamic_cast<PLAYRHO_PHYSICS_MODULE_NS::Controller*>(physicsController);
+            auto castedController = dynamic_cast<HG::Physics::PlayRho::Controller*>(physicsController);
 
             if (castedController == nullptr)
             {
@@ -39,9 +39,9 @@ namespace PLAYRHO_PHYSICS_MODULE_NS::TiledMap
 
         void* createEllipse(float x, float y,
                             float w, float h,
-                            PHYSICS_BASE_MODULE_NS::PhysicsController* physicsController)
+                            HG::Physics::Base::PhysicsController* physicsController)
         {
-            auto castedController = dynamic_cast<PLAYRHO_PHYSICS_MODULE_NS::Controller*>(physicsController);
+            auto castedController = dynamic_cast<HG::Physics::PlayRho::Controller*>(physicsController);
 
             if (castedController == nullptr)
             {
@@ -110,9 +110,9 @@ namespace PLAYRHO_PHYSICS_MODULE_NS::TiledMap
 
         void* createPolygon(float x, float y,
                             const std::vector<glm::vec2>& points,
-                            PHYSICS_BASE_MODULE_NS::PhysicsController* physicsController)
+                            HG::Physics::Base::PhysicsController* physicsController)
         {
-            auto castedController = dynamic_cast<PLAYRHO_PHYSICS_MODULE_NS::Controller*>(physicsController);
+            auto castedController = dynamic_cast<HG::Physics::PlayRho::Controller*>(physicsController);
 
             if (castedController == nullptr)
             {

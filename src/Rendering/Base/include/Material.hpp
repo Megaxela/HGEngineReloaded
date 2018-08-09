@@ -9,7 +9,7 @@
 #include "Texture.hpp"
 #include "Shader.hpp"
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describes material.

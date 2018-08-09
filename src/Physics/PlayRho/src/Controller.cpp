@@ -17,18 +17,18 @@ namespace {
 
     struct VisitorData
     {
-        PLAYRHO_PHYSICS_MODULE_NS::DebugDraw* drawer;
+        HG::Physics::PlayRho::DebugDraw* drawer;
         playrho::d2::Transformation xf;
-        UTILS_MODULE_NS::Color color;
+        HG::Utils::Color color;
         bool skins;
     };
 
-    static void DrawCorner(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    static void DrawCorner(HG::Physics::PlayRho::DebugDraw& drawer,
                            playrho::Length2 p,
                            playrho::Length r,
                            playrho::Angle a0,
                            playrho::Angle a1,
-                           UTILS_MODULE_NS::Color color)
+                           HG::Utils::Color color)
     {
         const auto angleDiff = playrho::GetRevRotationalAngle(a0, a1);
         auto lastAngle = 0_deg;
@@ -46,9 +46,9 @@ namespace {
         }
     }
 
-    static void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    static void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
                      const playrho::d2::DistanceProxy& shape,
-                     UTILS_MODULE_NS::Color color,
+                     HG::Utils::Color color,
                      bool skins,
                      playrho::d2::Transformation xf)
     {
@@ -58,7 +58,7 @@ namespace {
         {
             vertices[i] = Transform(shape.GetVertex(i), xf);
         }
-        const auto fillColor = UTILS_MODULE_NS::Color{
+        const auto fillColor = HG::Utils::Color{
             0.5f * color.redF(),
             0.5f * color.greenF(),
             0.5f * color.blueF(),
@@ -72,7 +72,7 @@ namespace {
             return;
         }
 
-        const auto skinColor = UTILS_MODULE_NS::Color{
+        const auto skinColor = HG::Utils::Color{
             color.redF() * 0.6f,
             color.greenF() * 0.6f,
             color.blueF() * 0.6f
@@ -112,14 +112,14 @@ namespace {
         }
     }
 
-    void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
               const playrho::d2::DiskShapeConf& shape,
-              UTILS_MODULE_NS::Color color,
+              HG::Utils::Color color,
               playrho::d2::Transformation xf)
     {
         const auto center = Transform(shape.GetLocation(), xf);
         const auto radius = shape.GetRadius();
-        const auto fillColor = UTILS_MODULE_NS::Color{
+        const auto fillColor = HG::Utils::Color{
             0.5f * color.redF(),
             0.5f * color.greenF(),
             0.5f * color.blueF(),
@@ -133,9 +133,9 @@ namespace {
         drawer.drawSegment(center, center + radius * axis, color);
     }
 
-    void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
               const playrho::d2::EdgeShapeConf& shape,
-              UTILS_MODULE_NS::Color color,
+              HG::Utils::Color color,
               bool skins,
               playrho::d2::Transformation xf)
     {
@@ -148,7 +148,7 @@ namespace {
             const auto r = GetVertexRadius(shape);
             if (r > 0_m)
             {
-                const auto skinColor = UTILS_MODULE_NS::Color{
+                const auto skinColor = HG::Utils::Color{
                     color.redF() * 0.6f,
                     color.greenF() * 0.6f,
                     color.blueF() * 0.6f
@@ -166,15 +166,15 @@ namespace {
         }
     }
 
-    void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
               const playrho::d2::ChainShapeConf& shape,
-              UTILS_MODULE_NS::Color color,
+              HG::Utils::Color color,
               bool skins,
               playrho::d2::Transformation xf)
     {
         const auto count = shape.GetVertexCount();
         const auto r = GetVertexRadius(shape);
-        const auto skinColor = UTILS_MODULE_NS::Color{
+        const auto skinColor = HG::Utils::Color{
             color.redF() * 0.6f,
             color.greenF() * 0.6f,
             color.blueF() * 0.6f
@@ -200,18 +200,18 @@ namespace {
         }
     }
 
-    void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
               const playrho::d2::PolygonShapeConf& shape,
-              UTILS_MODULE_NS::Color color,
+              HG::Utils::Color color,
               bool skins,
               playrho::d2::Transformation xf)
     {
         Draw(drawer, GetChild(shape, 0), color, skins, xf);
     }
 
-    void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
               const playrho::d2::MultiShapeConf& shape,
-              UTILS_MODULE_NS::Color color,
+              HG::Utils::Color color,
               bool skins,
               playrho::d2::Transformation xf)
     {
@@ -222,9 +222,9 @@ namespace {
         }
     }
 
-    static void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    static void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
                      const playrho::d2::Fixture& fixture,
-                     const UTILS_MODULE_NS::Color& color,
+                     const HG::Utils::Color& color,
                      bool skins)
     {
         const auto xf = GetTransformation(fixture);
@@ -255,35 +255,35 @@ namespace {
         playrho::Visit(fixture.GetShape(), &visitor);
     }
 
-    static UTILS_MODULE_NS::Color GetColor(const playrho::d2::Body& body)
+    static HG::Utils::Color GetColor(const playrho::d2::Body& body)
     {
         if (!body.IsEnabled())
         {
-            return UTILS_MODULE_NS::Color{0.5f, 0.5f, 0.3f};
+            return HG::Utils::Color{0.5f, 0.5f, 0.3f};
         }
         if (body.GetType() == playrho::BodyType::Static)
         {
-            return UTILS_MODULE_NS::Color{0.5f, 0.9f, 0.5f};
+            return HG::Utils::Color{0.5f, 0.9f, 0.5f};
         }
         if (body.GetType() == playrho::BodyType::Kinematic)
         {
-            return UTILS_MODULE_NS::Color{0.5f, 0.5f, 0.9f};
+            return HG::Utils::Color{0.5f, 0.5f, 0.9f};
         }
         if (!body.IsAwake())
         {
-            return UTILS_MODULE_NS::Color{0.75f, 0.75f, 0.75f};
+            return HG::Utils::Color{0.75f, 0.75f, 0.75f};
         }
-        return UTILS_MODULE_NS::Color{0.9f, 0.7f, 0.7f};
+        return HG::Utils::Color{0.9f, 0.7f, 0.7f};
     }
 
-    static bool Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    static bool Draw(HG::Physics::PlayRho::DebugDraw& drawer,
                      const playrho::d2::Body& body,
                      bool skins,
                      const FixtureSet& selected)
     {
         auto found = false;
         const auto bodyColor = GetColor(body);
-        const auto selectedColor = UTILS_MODULE_NS::Color::brighten(bodyColor, 1.3f);
+        const auto selectedColor = HG::Utils::Color::brighten(bodyColor, 1.3f);
         for (auto&& fixture: body.GetFixtures())
         {
             const auto& f = playrho::GetRef(fixture);
@@ -299,13 +299,13 @@ namespace {
         return found;
     }
 
-    static void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    static void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
                      const playrho::d2::Joint& joint)
     {
         const auto p1 = joint.GetAnchorA();
         const auto p2 = joint.GetAnchorB();
 
-        const UTILS_MODULE_NS::Color color{0.5f, 0.8f, 0.8f};
+        const HG::Utils::Color color{0.5f, 0.8f, 0.8f};
 
         switch (GetType(joint))
         {
@@ -341,9 +341,9 @@ namespace {
         }
     }
 
-    static void Draw(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    static void Draw(HG::Physics::PlayRho::DebugDraw& drawer,
                      const playrho::d2::AABB& aabb,
-                     const UTILS_MODULE_NS::Color& color)
+                     const HG::Utils::Color& color)
     {
         playrho::Length2 vs[4];
         vs[0] = playrho::Length2{aabb.ranges[0].GetMin(), aabb.ranges[1].GetMin()};
@@ -353,9 +353,9 @@ namespace {
         drawer.drawPolygon(vs, 4, color);
     }
 
-    bool DrawWorld(PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer,
+    bool DrawWorld(HG::Physics::PlayRho::DebugDraw& drawer,
                    const playrho::d2::World& world,
-                   const PLAYRHO_PHYSICS_MODULE_NS::DebugSettings& settings,
+                   const HG::Physics::PlayRho::DebugSettings& settings,
                    const FixtureSet& selected)
     {
         auto found = false;
@@ -390,7 +390,7 @@ namespace {
 
         if (settings.drawAABBs)
         {
-            const auto color = UTILS_MODULE_NS::Color{0.9f, 0.3f, 0.9f};
+            const auto color = HG::Utils::Color{0.9f, 0.3f, 0.9f};
             const auto root = world.GetTree().GetRootIndex();
             if (root != playrho::d2::DynamicTree::GetInvalidSize())
             {
@@ -406,8 +406,8 @@ namespace {
         if (settings.drawCOMs)
         {
             const auto k_axisScale = 0.4_m;
-            const auto red = UTILS_MODULE_NS::Color{1.0f, 0.0f, 0.0f};
-            const auto green = UTILS_MODULE_NS::Color{0.0f, 1.0f, 0.0f};
+            const auto red = HG::Utils::Color{1.0f, 0.0f, 0.0f};
+            const auto green = HG::Utils::Color{0.0f, 1.0f, 0.0f};
             for (auto&& body: world.GetBodies())
             {
                 const auto b = playrho::GetPtr(body);
@@ -423,16 +423,16 @@ namespace {
         return found;
     }
 
-//    void DrawContactInfo(const PLAYRHO_PHYSICS_MODULE_NS::DebugSettings& settings,
-//                         PLAYRHO_PHYSICS_MODULE_NS::DebugDraw& drawer)
+//    void DrawContactInfo(const HG::Physics::PlayRho::DebugSettings& settings,
+//                         HG::Physics::PlayRho::DebugDraw& drawer)
 //    {
 //        const auto k_impulseScale = 0.1_s / 1_kg;
 //        const auto k_axisScale = 0.3_m;
-//        const auto addStateColor = UTILS_MODULE_NS::Color{0.3f, 0.9f, 0.3f}; // greenish
-//        const auto persistStateColor = UTILS_MODULE_NS::Color{0.3f, 0.3f, 0.9f}; // blueish
-//        const auto contactNormalColor = UTILS_MODULE_NS::Color{0.7f, 0.7f, 0.7f}; // light gray
-//        const auto normalImpulseColor = UTILS_MODULE_NS::Color{0.9f, 0.9f, 0.3f}; // yellowish
-//        const auto frictionImpulseColor = UTILS_MODULE_NS::Color{0.9f, 0.9f, 0.3f}; // yellowish
+//        const auto addStateColor = HG::Utils::Color{0.3f, 0.9f, 0.3f}; // greenish
+//        const auto persistStateColor = HG::Utils::Color{0.3f, 0.3f, 0.9f}; // blueish
+//        const auto contactNormalColor = HG::Utils::Color{0.7f, 0.7f, 0.7f}; // light gray
+//        const auto normalImpulseColor = HG::Utils::Color{0.9f, 0.9f, 0.3f}; // yellowish
+//        const auto frictionImpulseColor = HG::Utils::Color{0.9f, 0.9f, 0.3f}; // yellowish
 //
 //        const auto selectedFixtures = GetSelectedFixtures();
 //        const auto lighten = 1.3f;
@@ -488,7 +488,7 @@ namespace {
 //    }
 }
 
-PLAYRHO_PHYSICS_MODULE_NS::Controller::Controller(::CORE_MODULE_NS::Application *parent) :
+HG::Physics::PlayRho::Controller::Controller(::HG::Core::Application *parent) :
     PhysicsController(parent),
     m_drawer(parent->renderer()->gizmos()),
     m_stepConfiguration(),
@@ -497,12 +497,12 @@ PLAYRHO_PHYSICS_MODULE_NS::Controller::Controller(::CORE_MODULE_NS::Application 
 
 }
 
-playrho::d2::World *PLAYRHO_PHYSICS_MODULE_NS::Controller::world()
+playrho::d2::World *HG::Physics::PlayRho::Controller::world()
 {
     return &m_world;
 }
 
-void PLAYRHO_PHYSICS_MODULE_NS::Controller::tick(std::chrono::microseconds deltaTime)
+void HG::Physics::PlayRho::Controller::tick(std::chrono::microseconds deltaTime)
 {
     m_stepConfiguration.SetTime(
         deltaTime.count() / 1000000.0f
@@ -516,12 +516,12 @@ void PLAYRHO_PHYSICS_MODULE_NS::Controller::tick(std::chrono::microseconds delta
     }
 }
 
-playrho::StepConf* PLAYRHO_PHYSICS_MODULE_NS::Controller::stepConfiguration()
+playrho::StepConf* HG::Physics::PlayRho::Controller::stepConfiguration()
 {
     return &m_stepConfiguration;
 }
 
-PLAYRHO_PHYSICS_MODULE_NS::DebugSettings *PLAYRHO_PHYSICS_MODULE_NS::Controller::debugSettings()
+HG::Physics::PlayRho::DebugSettings *HG::Physics::PlayRho::Controller::debugSettings()
 {
     return &m_settings;
 }
@@ -571,22 +571,22 @@ namespace playrho {
 
 } // namespace playrho
 
-//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::BeginContact(d2::Contact &contact)
+//void HG::Physics::PlayRho::Controller::ContactListener::BeginContact(d2::Contact &contact)
 //{
 //
 //}
 //
-//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::EndContact(d2::Contact &contact)
+//void HG::Physics::PlayRho::Controller::ContactListener::EndContact(d2::Contact &contact)
 //{
 //
 //}
 //
-//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::PreSolve(d2::Contact &contact, const d2::Manifold &oldManifold)
+//void HG::Physics::PlayRho::Controller::ContactListener::PreSolve(d2::Contact &contact, const d2::Manifold &oldManifold)
 //{
 //
 //}
 //
-//void PLAYRHO_PHYSICS_MODULE_NS::Controller::ContactListener::PostSolve(d2::Contact &contact,
+//void HG::Physics::PlayRho::Controller::ContactListener::PostSolve(d2::Contact &contact,
 //                                                                       const d2::ContactImpulsesList &impulses,
 //                                                                       d2::ContactListener::iteration_type solved)
 //{

@@ -3,7 +3,7 @@
 #include <Common/MeshData.hpp>
 #include "AbstractRenderer.hpp"
 
-namespace OGL_RENDERING_MODULE_NS::Forward
+namespace HG::Rendering::OpenGL::Forward
 {
     /**
      * @brief Class, that describes forward
@@ -25,8 +25,8 @@ namespace OGL_RENDERING_MODULE_NS::Forward
 
         void init() override;
 
-        void render(CORE_MODULE_NS::GameObject *gameObject,
-                    RENDERING_BASE_MODULE_NS::RenderBehaviour *renderBehaviour) override;
+        void render(HG::Core::GameObject *gameObject,
+                    HG::Rendering::Base::RenderBehaviour *renderBehaviour) override;
 
         size_t getTarget() override;
 
@@ -34,7 +34,7 @@ namespace OGL_RENDERING_MODULE_NS::Forward
     private:
 
         // Shader for sprite rendering
-        ::RENDERING_BASE_MODULE_NS::Material* m_spriteMaterial;
+        ::HG::Rendering::Base::Material* m_spriteMaterial;
 
         // Sprite mesh
         Common::MeshData* m_spriteData;

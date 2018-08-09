@@ -40,7 +40,3 @@ target_link_libraries(HGStandard
     HGPhysicsBase
     ALogger
 )
-
-target_compile_definitions(HGStandard
-    PUBLIC -DSTD_MODULE_NS=HG::Standard
-)

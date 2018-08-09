@@ -2,27 +2,27 @@
 #include <Gizmos.hpp>
 #include <glm/gtx/compatibility.hpp>
 
-UTILS_MODULE_NS::Color RENDERING_BASE_MODULE_NS::Gizmos::defaultColor 
-    = UTILS_MODULE_NS::Color::fromRGB(0, 0, 180, 180);
+HG::Utils::Color HG::Rendering::Base::Gizmos::defaultColor
+    = HG::Utils::Color::fromRGB(0, 0, 180, 180);
 
-void RENDERING_BASE_MODULE_NS::Gizmos::clear()
+void HG::Rendering::Base::Gizmos::clear()
 {
     m_linesBuffer.clear();
     m_sphereBuffer.clear();
     m_hexahedronBuffer.clear();
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::line(const glm::vec3 &from, 
+void HG::Rendering::Base::Gizmos::line(const glm::vec3 &from,
                                             const glm::vec3 &to, 
-                                            UTILS_MODULE_NS::Color color)
+                                            HG::Utils::Color color)
 {
     line(from, color, to, color);
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::line(const glm::vec3 &from,
-                                            const UTILS_MODULE_NS::Color &fromColor,
+void HG::Rendering::Base::Gizmos::line(const glm::vec3 &from,
+                                            const HG::Utils::Color &fromColor,
                                             const glm::vec3 &to,
-                                            const UTILS_MODULE_NS::Color &toColor)
+                                            const HG::Utils::Color &toColor)
 {
     m_linesBuffer.emplace_back(
         from,
@@ -32,8 +32,8 @@ void RENDERING_BASE_MODULE_NS::Gizmos::line(const glm::vec3 &from,
     );
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::multiLine(const RENDERING_BASE_MODULE_NS::Gizmos::Line &lineData,
-                                                 UTILS_MODULE_NS::Color color)
+void HG::Rendering::Base::Gizmos::multiLine(const HG::Rendering::Base::Gizmos::Line &lineData,
+                                                 HG::Utils::Color color)
 {
     if (lineData.size() <= 1)
     {
@@ -50,13 +50,13 @@ void RENDERING_BASE_MODULE_NS::Gizmos::multiLine(const RENDERING_BASE_MODULE_NS:
     }
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::line(const RENDERING_BASE_MODULE_NS::Gizmos::LineSegment &lineSegment,
-                                            UTILS_MODULE_NS::Color color)
+void HG::Rendering::Base::Gizmos::line(const HG::Rendering::Base::Gizmos::LineSegment &lineSegment,
+                                            HG::Utils::Color color)
 {
     line(lineSegment.first, lineSegment.second, color);
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::circle(const glm::vec3 &position,
+void HG::Rendering::Base::Gizmos::circle(const glm::vec3 &position,
                                               float radius,
                                               const HG::Utils::Color &color)
 {
@@ -65,16 +65,16 @@ void RENDERING_BASE_MODULE_NS::Gizmos::circle(const glm::vec3 &position,
 
 void HG::Rendering::Base::Gizmos::circle(const glm::vec3 &position, glm::vec2 size, const HG::Utils::Color &color)
 {
-    CORE_MODULE_NS::Transform t;
+    HG::Core::Transform t;
     t.setGlobalPosition(position);
 
     circle(t, size, 32, color);
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::circle(const CORE_MODULE_NS::Transform &transform,
+void HG::Rendering::Base::Gizmos::circle(const HG::Core::Transform &transform,
                                               glm::vec2 size,
                                               uint32_t parts,
-                                              const UTILS_MODULE_NS::Color &color)
+                                              const HG::Utils::Color &color)
 {
     // todo: Apply transform rotation and scale
     // Factor
@@ -127,17 +127,17 @@ void RENDERING_BASE_MODULE_NS::Gizmos::circle(const CORE_MODULE_NS::Transform &t
     line(lastPoint, firstPoint, color);
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::sphere(const CORE_MODULE_NS::Transform &transform,
+void HG::Rendering::Base::Gizmos::sphere(const HG::Core::Transform &transform,
                                               float radius,
-                                              UTILS_MODULE_NS::Color color)
+                                              HG::Utils::Color color)
 {
     sphere(transform, radius, 15, color);
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::sphere(const CORE_MODULE_NS::Transform &transform,
+void HG::Rendering::Base::Gizmos::sphere(const HG::Core::Transform &transform,
                                               float radius,
                                               int dividings,
-                                              UTILS_MODULE_NS::Color color)
+                                              HG::Utils::Color color)
 {
     m_sphereBuffer.emplace_back(
         transform,
@@ -147,9 +147,9 @@ void RENDERING_BASE_MODULE_NS::Gizmos::sphere(const CORE_MODULE_NS::Transform &t
     );
 }
 
-void RENDERING_BASE_MODULE_NS::Gizmos::hexahedron(const CORE_MODULE_NS::Transform &transform,
+void HG::Rendering::Base::Gizmos::hexahedron(const HG::Core::Transform &transform,
                                                   float sideSize,
-                                                  UTILS_MODULE_NS::Color color)
+                                                  HG::Utils::Color color)
 {
     m_hexahedronBuffer.emplace_back(
         transform,

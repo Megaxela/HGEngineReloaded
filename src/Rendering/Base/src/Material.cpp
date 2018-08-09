@@ -3,21 +3,21 @@
 
 #include "Material.hpp"
 
-RENDERING_BASE_MODULE_NS::Material::Material() :
+HG::Rendering::Base::Material::Material() :
     m_variableContainer(),
     m_shader(nullptr)
 {
 
 }
 
-RENDERING_BASE_MODULE_NS::Material::Material(RENDERING_BASE_MODULE_NS::Shader *shader) :
+HG::Rendering::Base::Material::Material(HG::Rendering::Base::Shader *shader) :
     m_variableContainer(),
     m_shader(shader)
 {
 
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, int value)
+void HG::Rendering::Base::Material::set(const std::string& name, int value)
 {
     Value val{};
     val.type = Value::Type::Int;
@@ -26,7 +26,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, int value)
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, float value)
+void HG::Rendering::Base::Material::set(const std::string& name, float value)
 {
     Value val{};
     val.type = Value::Type::Float;
@@ -35,7 +35,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, float valu
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, bool value)
+void HG::Rendering::Base::Material::set(const std::string& name, bool value)
 {
     Value val{};
     val.type = Value::Type::Boolean;
@@ -44,7 +44,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, bool value
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::vec2 value)
+void HG::Rendering::Base::Material::set(const std::string& name, glm::vec2 value)
 {
     Value val{};
     val.type = Value::Type::Vector2;
@@ -53,7 +53,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::vec2 
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::vec3 value)
+void HG::Rendering::Base::Material::set(const std::string& name, glm::vec3 value)
 {
     Value val{};
     val.type = Value::Type::Vector3;
@@ -62,7 +62,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::vec3 
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::vec4 value)
+void HG::Rendering::Base::Material::set(const std::string& name, glm::vec4 value)
 {
     Value val{};
     val.type = Value::Type::Vector4;
@@ -71,7 +71,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::vec4 
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::mat2 value)
+void HG::Rendering::Base::Material::set(const std::string& name, glm::mat2 value)
 {
     Value val{};
     val.type = Value::Type::Matrix2x2;
@@ -80,7 +80,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::mat2 
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::mat3 value)
+void HG::Rendering::Base::Material::set(const std::string& name, glm::mat3 value)
 {
     Value val{};
     val.type = Value::Type::Matrix3x3;
@@ -89,7 +89,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::mat3 
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::mat4 value)
+void HG::Rendering::Base::Material::set(const std::string& name, glm::mat4 value)
 {
     Value val{};
     val.type = Value::Type::Matrix4x4;
@@ -98,7 +98,7 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, glm::mat4 
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, RENDERING_BASE_MODULE_NS::Texture* value)
+void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::Texture* value)
 {
     Value val{};
     val.type = Value::Type::Texture;
@@ -107,34 +107,34 @@ void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, RENDERING_
     set(name, val);
 }
 
-void RENDERING_BASE_MODULE_NS::Material::set(const std::string& name, RENDERING_BASE_MODULE_NS::Material::Value value)
+void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::Material::Value value)
 {
     m_variableContainer[name] = value;
 }
 
-void RENDERING_BASE_MODULE_NS::Material::erase(const std::string& name)
+void HG::Rendering::Base::Material::erase(const std::string& name)
 {
     m_variableContainer.erase(name);
 }
 
-RENDERING_BASE_MODULE_NS::Material::VariablesContainer::const_iterator
-RENDERING_BASE_MODULE_NS::Material::begin() const
+HG::Rendering::Base::Material::VariablesContainer::const_iterator
+HG::Rendering::Base::Material::begin() const
 {
     return m_variableContainer.begin();
 }
 
-RENDERING_BASE_MODULE_NS::Material::VariablesContainer::const_iterator
-RENDERING_BASE_MODULE_NS::Material::end() const
+HG::Rendering::Base::Material::VariablesContainer::const_iterator
+HG::Rendering::Base::Material::end() const
 {
     return m_variableContainer.end();
 }
 
-void RENDERING_BASE_MODULE_NS::Material::setShader(RENDERING_BASE_MODULE_NS::Shader *shader)
+void HG::Rendering::Base::Material::setShader(HG::Rendering::Base::Shader *shader)
 {
     m_shader = shader;
 }
 
-RENDERING_BASE_MODULE_NS::Shader *RENDERING_BASE_MODULE_NS::Material::shader() const
+HG::Rendering::Base::Shader *HG::Rendering::Base::Material::shader() const
 {
     return m_shader;
 }

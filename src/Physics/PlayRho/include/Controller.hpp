@@ -7,12 +7,12 @@
 #include "DebugDraw.hpp"
 #include "DebugSettings.hpp"
 
-namespace PLAYRHO_PHYSICS_MODULE_NS
+namespace HG::Physics::PlayRho
 {
     /**
      * @brief PlayRho physics controller object.
      */
-    class Controller : public ::PHYSICS_BASE_MODULE_NS::PhysicsController
+    class Controller : public ::HG::Physics::Base::PhysicsController
     {
     public:
 
@@ -20,7 +20,7 @@ namespace PLAYRHO_PHYSICS_MODULE_NS
          * @brief Constructor.
          * @param parent Pointer to parent application.
          */
-        explicit Controller(::CORE_MODULE_NS::Application* parent);
+        explicit Controller(::HG::Core::Application* parent);
 
         /**
          * @brief Method for getting playrho world.

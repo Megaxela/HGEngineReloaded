@@ -1,6 +1,6 @@
 #include "Materials/SpriteMaterial.hpp"
 
-const char* OGL_RENDERING_MODULE_NS::Materials::SpriteMaterial::rawShader = R"(
+const char* HG::Rendering::OpenGL::Materials::SpriteMaterial::rawShader = R"(
 #ifdef VertexShader
 layout (location = 0) in vec3 inPosition;
 layout (location = 2) in vec2 inTexCoords;

@@ -6,7 +6,7 @@
 #include <glm/vec2.hpp>
 #include <functional>
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     /**
      * @brief Class, that aggregates

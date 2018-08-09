@@ -6,7 +6,7 @@
 #include <zlib.h>
 #include <bytearray.hpp>
 
-namespace UTILS_MODULE_NS::ZLib
+namespace HG::Utils::ZLib
 {
     namespace
     {

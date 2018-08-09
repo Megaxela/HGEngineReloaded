@@ -8,7 +8,7 @@
 #include <any>
 
 #define HG_PROPERTY_INITIALIZER(TYPE, NAME)\
-    ::CORE_MODULE_NS::PropertyInitializer<TYPE> __ ## NAME ## Init = ::CORE_MODULE_NS::PropertyInitializer<TYPE>(\
+    ::HG::Core::PropertyInitializer<TYPE> __ ## NAME ## Init = ::HG::Core::PropertyInitializer<TYPE>(\
             this,\
             #NAME,\
             #TYPE,\
@@ -50,7 +50,7 @@ private:\
     HG_PROPERTY_INITIALIZER(TYPE, NAME)
 
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
 
     /**
@@ -295,7 +295,7 @@ namespace CORE_MODULE_NS
                             std::function<void(T)> setter,
                             std::function<T()> getter)
         {
-            b->addProperty(CORE_MODULE_NS::Behaviour::Property(
+            b->addProperty(HG::Core::Behaviour::Property(
                 std::move(valName),
                 std::move(typeName),
                 std::move(setter),

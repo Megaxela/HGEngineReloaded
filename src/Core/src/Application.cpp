@@ -2,7 +2,7 @@
 #include "Application.hpp"
 #include "Scene.hpp"
 
-CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
+HG::Core::Application::Application(int /* argc */, char** /* argv */) :
     m_renderer(this),
     m_systemController(nullptr),
     m_physicsController(nullptr),
@@ -13,13 +13,13 @@ CORE_MODULE_NS::Application::Application(int /* argc */, char** /* argv */) :
 
 }
 
-CORE_MODULE_NS::Application::~Application()
+HG::Core::Application::~Application()
 {
     delete m_systemController;
     delete m_physicsController;
 }
 
-void CORE_MODULE_NS::Application::setScene(CORE_MODULE_NS::Scene* scene)
+void HG::Core::Application::setScene(HG::Core::Scene* scene)
 {
     if (scene == nullptr)
     {
@@ -30,7 +30,7 @@ void CORE_MODULE_NS::Application::setScene(CORE_MODULE_NS::Scene* scene)
     m_cachedScene = scene;
 }
 
-CORE_MODULE_NS::Scene* CORE_MODULE_NS::Application::scene() const
+HG::Core::Scene* HG::Core::Application::scene() const
 {
     if (m_cachedScene != nullptr)
     {
@@ -40,17 +40,17 @@ CORE_MODULE_NS::Scene* CORE_MODULE_NS::Application::scene() const
     return m_currentScene;
 }
 
-void CORE_MODULE_NS::Application::stop()
+void HG::Core::Application::stop()
 {
     const_cast<Input::Window*>(m_input.window())->setClosed(true);
 }
 
-bool CORE_MODULE_NS::Application::init()
+bool HG::Core::Application::init()
 {
     return m_renderer.init();
 }
 
-bool CORE_MODULE_NS::Application::performCycle()
+bool HG::Core::Application::performCycle()
 {
     // Saving last deltatime
     auto dt = m_timeStatistics.lastFrameDeltaTime();
@@ -113,7 +113,7 @@ bool CORE_MODULE_NS::Application::performCycle()
     return true;
 }
 
-int CORE_MODULE_NS::Application::exec()
+int HG::Core::Application::exec()
 {
     // Preparing deltaTime calculation
 
@@ -131,7 +131,7 @@ int CORE_MODULE_NS::Application::exec()
     return 0;
 }
 
-void CORE_MODULE_NS::Application::proceedScene()
+void HG::Core::Application::proceedScene()
 {
     if (m_cachedScene != nullptr)
     {
@@ -145,27 +145,27 @@ void CORE_MODULE_NS::Application::proceedScene()
     }
 }
 
-RENDERING_BASE_MODULE_NS::Renderer* CORE_MODULE_NS::Application::renderer()
+HG::Rendering::Base::Renderer* HG::Core::Application::renderer()
 {
     return &m_renderer;
 }
 
-CORE_MODULE_NS::ResourceManager* CORE_MODULE_NS::Application::resourceManager()
+HG::Core::ResourceManager* HG::Core::Application::resourceManager()
 {
     return &m_resourceManager;
 }
 
-CORE_MODULE_NS::TimeStatistics* CORE_MODULE_NS::Application::timeStatistics()
+HG::Core::TimeStatistics* HG::Core::Application::timeStatistics()
 {
     return &m_timeStatistics;
 }
 
-const CORE_MODULE_NS::Input *CORE_MODULE_NS::Application::input() const
+const HG::Core::Input *HG::Core::Application::input() const
 {
     return &m_input;
 }
 
-::RENDERING_BASE_MODULE_NS::SystemController *CORE_MODULE_NS::Application::systemController() const
+::HG::Rendering::Base::SystemController *HG::Core::Application::systemController() const
 {
     return m_systemController;
 }

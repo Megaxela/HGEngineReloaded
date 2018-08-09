@@ -3,7 +3,7 @@
 #include <string>
 #include <cstddef>
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     /**
      * @brief Loader class for loading asset as string.

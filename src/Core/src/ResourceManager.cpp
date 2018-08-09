@@ -1,17 +1,17 @@
 #include "ResourceManager.hpp"
 
-CORE_MODULE_NS::ResourceManager::ResourceManager() :
+HG::Core::ResourceManager::ResourceManager() :
     m_accessor(nullptr)
 {
 
 }
 
-CORE_MODULE_NS::ResourceManager::~ResourceManager()
+HG::Core::ResourceManager::~ResourceManager()
 {
     delete m_accessor;
 }
 
-CORE_MODULE_NS::ResourceAccessor* CORE_MODULE_NS::ResourceManager::resourceAccessor() const
+HG::Core::ResourceAccessor* HG::Core::ResourceManager::resourceAccessor() const
 {
     return m_accessor;
 }

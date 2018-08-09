@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace UTILS_MODULE_NS::PhysicalResource
+namespace HG::Utils::PhysicalResource
 {
     /**
      * @brief Method for getting total system

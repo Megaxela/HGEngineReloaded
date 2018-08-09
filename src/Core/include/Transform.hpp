@@ -4,7 +4,7 @@
 #include <vector>
 #include <glm/gtc/quaternion.hpp>
 
-namespace CORE_MODULE_NS
+namespace HG::Core
 {
     class GameObject;
 

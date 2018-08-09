@@ -1,15 +1,15 @@
 #include "MaterialCollection.hpp"
 #include "Renderer.hpp"
 
-RENDERING_BASE_MODULE_NS::MaterialCollection::MaterialCollection(CORE_MODULE_NS::ResourceManager* resourceManager,
-                                                                 RENDERING_BASE_MODULE_NS::Renderer* pipeline) :
+HG::Rendering::Base::MaterialCollection::MaterialCollection(HG::Core::ResourceManager* resourceManager,
+                                                                 HG::Rendering::Base::Renderer* pipeline) :
     m_resourceManager(resourceManager),
     m_renderer(pipeline)
 {
 
 }
 
-RENDERING_BASE_MODULE_NS::MaterialCollection::~MaterialCollection()
+HG::Rendering::Base::MaterialCollection::~MaterialCollection()
 {
     // Free all shaders
     for (auto&& [hash, shader] : m_shaders)
@@ -18,7 +18,7 @@ RENDERING_BASE_MODULE_NS::MaterialCollection::~MaterialCollection()
     }
 }
 
-void RENDERING_BASE_MODULE_NS::MaterialCollection::setup(RENDERING_BASE_MODULE_NS::Shader* shader)
+void HG::Rendering::Base::MaterialCollection::setup(HG::Rendering::Base::Shader* shader)
 {
     m_renderer->setup(shader);
 }

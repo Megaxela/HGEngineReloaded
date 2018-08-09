@@ -3,7 +3,7 @@
 #include <Surface.hpp>
 #include <cstddef>
 
-namespace UTILS_MODULE_NS
+namespace HG::Utils
 {
     /**
      * @brief Image loader for resource manager.

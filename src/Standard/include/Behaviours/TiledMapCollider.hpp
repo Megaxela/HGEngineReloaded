@@ -3,7 +3,7 @@
 #include <Behaviour.hpp>
 #include "TiledMapRenderer.hpp"
 
-namespace STD_MODULE_NS::Behaviours
+namespace HG::Standard::Behaviours
 {
     /**
      * @brief Class, that describes behaviour, that
@@ -16,13 +16,13 @@ namespace STD_MODULE_NS::Behaviours
      * `Colliders` value or objects with `Collider` type.
      */
     template<typename Creator>
-    class TiledMapCollider : public CORE_MODULE_NS::Behaviour
+    class TiledMapCollider : public HG::Core::Behaviour
     {
     public:
 
-//        using ColliderCreator = std::function<void*(float x, float y, float w, float h, PHYSICS_BASE_MODULE_NS::PhysicsController* physicsController)>;
+//        using ColliderCreator = std::function<void*(float x, float y, float w, float h, HG::Physics::Base::PhysicsController* physicsController)>;
 
-        using ColliderRemover = std::function<void(void*, PHYSICS_BASE_MODULE_NS::PhysicsController* physicsController)>;
+        using ColliderRemover = std::function<void(void*, HG::Physics::Base::PhysicsController* physicsController)>;
 
         /**
          * @brief Initialization constructor.
@@ -69,7 +69,7 @@ namespace STD_MODULE_NS::Behaviours
                         body,
                         scene()
                             ->application()
-                            ->template physicsController<PHYSICS_BASE_MODULE_NS::PhysicsController>()
+                            ->template physicsController<HG::Physics::Base::PhysicsController>()
                     );
                 }
             }
@@ -87,7 +87,7 @@ namespace STD_MODULE_NS::Behaviours
 
     private:
 
-        void proceedGroupLayer(const STD_MODULE_NS::Behaviours::TiledMap::Group* group,
+        void proceedGroupLayer(const HG::Standard::Behaviours::TiledMap::Group* group,
                                glm::ivec2 offset)
         {
             for (auto&& layer : group->layers)
@@ -115,7 +115,7 @@ namespace STD_MODULE_NS::Behaviours
             }
         }
 
-        void proceedObjectLayer(const STD_MODULE_NS::Behaviours::TiledMap::ObjectLayer* layer,
+        void proceedObjectLayer(const HG::Standard::Behaviours::TiledMap::ObjectLayer* layer,
                                 glm::ivec2 offset)
         {
             auto metersPerPixel = m_renderer->metersPerPixel();
@@ -144,7 +144,7 @@ namespace STD_MODULE_NS::Behaviours
                             rectangle->size.x * metersPerPixel,
                             rectangle->size.y * metersPerPixel,
 
-                            scene()->application()->template physicsController<PHYSICS_BASE_MODULE_NS::PhysicsController>()
+                            scene()->application()->template physicsController<HG::Physics::Base::PhysicsController>()
                         )
                     );
                 }
@@ -159,7 +159,7 @@ namespace STD_MODULE_NS::Behaviours
                             ellipse->size.x * metersPerPixel,
                             ellipse->size.y * metersPerPixel,
 
-                            scene()->application()->template physicsController<PHYSICS_BASE_MODULE_NS::PhysicsController>()
+                            scene()->application()->template physicsController<HG::Physics::Base::PhysicsController>()
                         )
                     );
                 }
@@ -185,7 +185,7 @@ namespace STD_MODULE_NS::Behaviours
                              (worldLayerSize.y / 2) - (offset.y + polygon->position.y) * metersPerPixel,
                             globalPointsOffset,
 
-                            scene()->application()->template physicsController<PHYSICS_BASE_MODULE_NS::PhysicsController>()
+                            scene()->application()->template physicsController<HG::Physics::Base::PhysicsController>()
                         )
                     );
                 }

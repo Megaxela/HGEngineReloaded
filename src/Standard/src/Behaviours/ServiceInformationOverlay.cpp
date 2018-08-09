@@ -2,7 +2,7 @@
 #include <PhysicalResource.hpp>
 #include "Behaviours/ServiceInformationOverlay.hpp"
 
-void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
+void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
 {
     const float DISTANCE = 10.0f;
 
@@ -26,7 +26,7 @@ void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
     {
         auto timeStat = scene()->application()->timeStatistics();
 
-        auto totalRam = UTILS_MODULE_NS::PhysicalResource::getTotalRAM();
+        auto totalRam = HG::Utils::PhysicalResource::getTotalRAM();
 
         ImGui::Text(
             "FPS: %f\n"
@@ -59,9 +59,9 @@ void STD_MODULE_NS::Behaviours::ServiceInformationOverlay::onUpdate()
         ImGui::Text(
             "RAM: %.1fMB / %.1fMB\n"
             "Used RAM: %.1fMB\n",
-            (totalRam - UTILS_MODULE_NS::PhysicalResource::getFreeRAM()) / 1000.0f / 1000.0f,
+            (totalRam - HG::Utils::PhysicalResource::getFreeRAM()) / 1000.0f / 1000.0f,
             totalRam / 1000.0f / 1000.0f,
-            UTILS_MODULE_NS::PhysicalResource::getProcessRAMUsed() / 1000.0f / 1000.0f
+            HG::Utils::PhysicalResource::getProcessRAMUsed() / 1000.0f / 1000.0f
         );
 
         ImGui::End();

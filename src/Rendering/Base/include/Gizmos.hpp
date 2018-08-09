@@ -6,7 +6,7 @@
 #include <Color.hpp>
 
 
-namespace RENDERING_BASE_MODULE_NS
+namespace HG::Rendering::Base
 {
     /**
      * @brief Class, that describe object/interface for working with
@@ -16,7 +16,7 @@ namespace RENDERING_BASE_MODULE_NS
     {
     public:
 
-        static UTILS_MODULE_NS::Color defaultColor;
+        static HG::Utils::Color defaultColor;
 
         using LineSegment = std::pair<glm::vec3, glm::vec3>;
 
@@ -32,20 +32,20 @@ namespace RENDERING_BASE_MODULE_NS
                 color()
             {}
 
-            SphereData(const CORE_MODULE_NS::Transform& transformation,
+            SphereData(const HG::Core::Transform& transformation,
                        int dividings,
                        float radius,
-                       const UTILS_MODULE_NS::Color& color) :
+                       const HG::Utils::Color& color) :
                 transformation(transformation),
                 dividings(dividings),
                 radius(radius),
                 color(color)
             {}
 
-            CORE_MODULE_NS::Transform transformation;
+            HG::Core::Transform transformation;
             int dividings;
             float radius;
-            UTILS_MODULE_NS::Color color;
+            HG::Utils::Color color;
         };
 
         // todo: Add commentary
@@ -57,17 +57,17 @@ namespace RENDERING_BASE_MODULE_NS
                 color()
             {}
 
-            HexahedronData(const CORE_MODULE_NS::Transform& transformation,
+            HexahedronData(const HG::Core::Transform& transformation,
                            float sideSize,
-                           const UTILS_MODULE_NS::Color& color) :
+                           const HG::Utils::Color& color) :
                 transformation(transformation),
                 sideSize(sideSize),
                 color(color)
             {}
 
-            CORE_MODULE_NS::Transform transformation;
+            HG::Core::Transform transformation;
             float sideSize;
-            UTILS_MODULE_NS::Color color;
+            HG::Utils::Color color;
         };
 
         // todo: Add commentary
@@ -81,9 +81,9 @@ namespace RENDERING_BASE_MODULE_NS
             {}
 
             LineData(const glm::vec3& begin,
-                     const UTILS_MODULE_NS::Color& beginColor,
+                     const HG::Utils::Color& beginColor,
                      const glm::vec3& end,
-                     const UTILS_MODULE_NS::Color& endColor) :
+                     const HG::Utils::Color& endColor) :
                 begin(begin),
                 beginColor(beginColor),
                 end(end),
@@ -91,10 +91,10 @@ namespace RENDERING_BASE_MODULE_NS
             {}
 
             glm::vec3 begin;
-            UTILS_MODULE_NS::Color beginColor;
+            HG::Utils::Color beginColor;
 
             glm::vec3 end;
-            UTILS_MODULE_NS::Color endColor;
+            HG::Utils::Color endColor;
         };
 
         /**
@@ -105,7 +105,7 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void line(const glm::vec3& from,
                   const glm::vec3& to,
-                  UTILS_MODULE_NS::Color color=defaultColor);
+                  HG::Utils::Color color=defaultColor);
 
         /**
          * @brief Method for drawing line with
@@ -116,9 +116,9 @@ namespace RENDERING_BASE_MODULE_NS
          * @param toColor To point color.
          */
         void line(const glm::vec3& from,
-                  const UTILS_MODULE_NS::Color& fromColor,
+                  const HG::Utils::Color& fromColor,
                   const glm::vec3& to,
-                  const UTILS_MODULE_NS::Color& toColor);
+                  const HG::Utils::Color& toColor);
 
         /**
          * @brief Method for drawing circle on x/y without any rotation.
@@ -128,7 +128,7 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void circle(const glm::vec3& position,
                     float radius,
-                    const UTILS_MODULE_NS::Color& color=defaultColor);
+                    const HG::Utils::Color& color=defaultColor);
 
         /**
          * @brief Method for drawing crcle on x/y without any rotation.
@@ -138,7 +138,7 @@ namespace RENDERING_BASE_MODULE_NS
          */
         void circle(const glm::vec3& position,
                     glm::vec2 size,
-                    const UTILS_MODULE_NS::Color& color=defaultColor);
+                    const HG::Utils::Color& color=defaultColor);
 
         /**
          * @brief Method for drawing circle.
@@ -147,24 +147,24 @@ namespace RENDERING_BASE_MODULE_NS
          * @param parts Number of parts in circle.
          * @param color Circle color.
          */
-        void circle(const CORE_MODULE_NS::Transform& transform,
+        void circle(const HG::Core::Transform& transform,
                     glm::vec2 size,
                     uint32_t parts,
-                    const UTILS_MODULE_NS::Color& color);
+                    const HG::Utils::Color& color);
 
         /**
          * @brief Method for drawing line of multiple segments.
          * @param line Line data.
          */
         void multiLine(const Line& lineData,
-                       UTILS_MODULE_NS::Color color=defaultColor);
+                       HG::Utils::Color color=defaultColor);
 
         /**
          * @brief Method for drawing line.
          * @param lineSegment Line segment.
          */
         void line(const LineSegment& lineSegment,
-                  UTILS_MODULE_NS::Color color=defaultColor);
+                  HG::Utils::Color color=defaultColor);
 
         /**
          * @brief Method for drawing sphere.
@@ -172,9 +172,9 @@ namespace RENDERING_BASE_MODULE_NS
          * @param radius Sphere radius. (Transformation scale will affect sphere "size")
          * @param color Sphere color.
          */
-        void sphere(const CORE_MODULE_NS::Transform &transform,
+        void sphere(const HG::Core::Transform &transform,
                     float radius,
-                    UTILS_MODULE_NS::Color color=defaultColor);
+                    HG::Utils::Color color=defaultColor);
 
         /**
          * @brief Method for drawing sphere.
@@ -183,10 +183,10 @@ namespace RENDERING_BASE_MODULE_NS
          * @param dividings Sphere dividing quality.
          * @param color Sphere color.
          */
-        void sphere(const CORE_MODULE_NS::Transform &transform,
+        void sphere(const HG::Core::Transform &transform,
                     float radius,
                     int dividings,
-                    UTILS_MODULE_NS::Color color = defaultColor);
+                    HG::Utils::Color color = defaultColor);
 
         /**
          * @brief Method for drawing hexahedron.
@@ -194,9 +194,9 @@ namespace RENDERING_BASE_MODULE_NS
          * @param sideSize Size of hexahedron side.
          * @param color Hexahedron color.
          */
-        void hexahedron(const CORE_MODULE_NS::Transform &transform,
+        void hexahedron(const HG::Core::Transform &transform,
                         float sideSize,
-                        UTILS_MODULE_NS::Color color=defaultColor);
+                        HG::Utils::Color color=defaultColor);
 
         /**
          * @brief Template method for getting shapes, that was prepared

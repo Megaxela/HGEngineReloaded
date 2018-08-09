@@ -6,19 +6,19 @@
 
 #ifdef GRAPHICS_USE_GLFW
 
-namespace OGL_RENDERING_MODULE_NS
+namespace HG::Rendering::OpenGL
 {
     /**
      * @brief Class, that describes system controller, using GLFW library.
      */
-    class GLFWSystemController : public RENDERING_BASE_MODULE_NS::SystemController
+    class GLFWSystemController : public HG::Rendering::Base::SystemController
     {
     public:
 
         /**
          * @brief Constructor.
          */
-        explicit GLFWSystemController(::CORE_MODULE_NS::Application* application);
+        explicit GLFWSystemController(::HG::Core::Application* application);
 
         /**
          * @brief Method, that's closing window on destruction.

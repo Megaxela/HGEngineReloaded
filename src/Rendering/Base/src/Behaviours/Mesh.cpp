@@ -1,34 +1,34 @@
 #include <memory>
 #include "Behaviours/Mesh.hpp"
 
-RENDERING_BASE_MODULE_NS::Behaviours::Mesh::Mesh() :
+HG::Rendering::Base::Behaviours::Mesh::Mesh() :
     RenderBehaviour(Id),
     m_material(nullptr)
 {
 
 }
 
-RENDERING_BASE_MODULE_NS::Behaviours::Mesh::~Mesh()
+HG::Rendering::Base::Behaviours::Mesh::~Mesh()
 {
     clearExternalData();
 }
 
-UTILS_MODULE_NS::MeshPtr RENDERING_BASE_MODULE_NS::Behaviours::Mesh::mesh() const
+HG::Utils::MeshPtr HG::Rendering::Base::Behaviours::Mesh::mesh() const
 {
     return m_mesh;
 }
 
-void RENDERING_BASE_MODULE_NS::Behaviours::Mesh::setMesh(UTILS_MODULE_NS::MeshPtr mesh)
+void HG::Rendering::Base::Behaviours::Mesh::setMesh(HG::Utils::MeshPtr mesh)
 {
     m_mesh = std::move(mesh);
 }
 
-RENDERING_BASE_MODULE_NS::Material *RENDERING_BASE_MODULE_NS::Behaviours::Mesh::material() const
+HG::Rendering::Base::Material *HG::Rendering::Base::Behaviours::Mesh::material() const
 {
     return m_material;
 }
 
-void RENDERING_BASE_MODULE_NS::Behaviours::Mesh::setMaterial(RENDERING_BASE_MODULE_NS::Material *material)
+void HG::Rendering::Base::Behaviours::Mesh::setMaterial(HG::Rendering::Base::Material *material)
 {
     m_material = material;
 }
