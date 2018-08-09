@@ -22,6 +22,10 @@ namespace HG::Core
     {
     public:
 
+        // Disable copying (objects of this type has to be allocated in heap)
+        GameObject(const GameObject&) = delete;
+        GameObject& operator=(const GameObject&) = delete;
+
         /**
          * @brief Method for updating gameobject
          * behaviours. Also this method is executing

@@ -24,6 +24,6 @@ namespace HG::Utils::PhysicalResource
      * @return Used RAM in bytes.
      */
     uint64_t getProcessRAMUsed();
-};
+}
 
 

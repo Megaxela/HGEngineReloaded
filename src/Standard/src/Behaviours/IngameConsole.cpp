@@ -19,7 +19,7 @@ HG::Standard::Behaviours::IngameConsole::IngameConsole() :
     addCommand(Command(
         "help",
         "Displays this text.",
-        [this](Command::Arguments arguments) -> int
+        [this](Command::Arguments) -> int
         {
             for (auto&& [name, command] : m_commands)
             {
@@ -40,7 +40,7 @@ HG::Standard::Behaviours::IngameConsole::IngameConsole() :
     addCommand(Command(
         "clear",
         "Clears console buffer.",
-        [this](Command::Arguments arguments) -> int
+        [this](Command::Arguments) -> int
         {
             m_linesBuffer.clear();
 
@@ -51,7 +51,7 @@ HG::Standard::Behaviours::IngameConsole::IngameConsole() :
     addCommand(Command(
         "quit",
         "Closes application.",
-        [this](Command::Arguments arguments) -> int
+        [this](Command::Arguments) -> int
         {
             Info() << "Closing app from console.";
             scene()->application()->stop();

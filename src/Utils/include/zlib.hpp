@@ -100,7 +100,9 @@ namespace HG::Utils::ZLib
     {
         uint8_t outBuffer[CHUNK_SIZE];
 
-        z_stream stream = {nullptr};
+        z_stream stream;
+
+        memset(&stream, 0, sizeof(z_stream));
 
         int result;
 
@@ -135,9 +137,9 @@ namespace HG::Utils::ZLib
                     return false;
                 }
 
-                auto numberOfBytes = CHUNK_SIZE - stream.avail_out;
+                std::size_t numberOfBytes = CHUNK_SIZE - stream.avail_out;
 
-                for (auto i = 0; i < numberOfBytes; ++i)
+                for (std::size_t i = 0; i < numberOfBytes; ++i)
                 {
                     target.push_back((ByteOut) outBuffer[i]);
                 }
@@ -147,7 +149,7 @@ namespace HG::Utils::ZLib
 
         inflateEnd(&stream);
         return result == Z_STREAM_END;
-    };
+    }
 
     template<typename ByteOut, typename ByteIn>
     typename std::enable_if<

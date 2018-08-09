@@ -62,6 +62,17 @@ namespace HG::Rendering::Base
          */
         Material();
 
+        // todo: Implement move operators/constructors
+        /**
+         * @brief Copy constructor.
+         */
+        Material(const Material& rhs);
+
+        /**
+         * @brief Copy operator.
+         */
+        Material& operator=(const Material& rhs);
+
         /**
          * @brief Initialization constructor.
          * @param shader Pointer to shader.

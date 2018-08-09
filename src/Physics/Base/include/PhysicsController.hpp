@@ -23,6 +23,10 @@ namespace HG::Physics::Base
          */
         explicit PhysicsController(::HG::Core::Application* application);
 
+        // Disable copying
+        PhysicsController(const PhysicsController&) = delete;
+        PhysicsController& operator=(const PhysicsController&) = delete;
+
         /**
          * @brief Destructor.
          */

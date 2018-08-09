@@ -81,3 +81,7 @@ target_compile_definitions(HGRenderingOGL
         PUBLIC
         -D${RENDERER_DEFINITION}
 )
+
+target_compile_options(HGRenderingOGL
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+)

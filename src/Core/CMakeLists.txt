@@ -42,3 +42,7 @@ target_link_libraries(HGCore
         HGRenderingBase #
         HGPhysicsBase
 )
+
+target_compile_options(HGCore
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+)

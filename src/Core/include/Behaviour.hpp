@@ -14,7 +14,7 @@
             #TYPE,\
             std::bind(&std::remove_reference<decltype(*this)>::type::setProperty ## NAME, this, std::placeholders::_1),\
             std::bind(&std::remove_reference<decltype(*this)>::type::getProperty ## NAME, this)\
-        );
+        )
 
 #define HG_PROPERTY_DEFAULT(TYPE, NAME, DEFAULT_VARIABLE)\
 public:\

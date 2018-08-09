@@ -1220,6 +1220,11 @@ bool HG::Standard::Behaviours::TiledMap::performTileLayerDecoding(const char *da
 bool HG::Standard::Behaviours::TiledMap::proceedCSVTileData(const char *data, std::size_t dataSize,
                                                              std::vector<uint32_t> &result)
 {
+    (void) data;
+    (void) dataSize;
+    (void) result;
+
+    // todo: Add CSV support
     Warning() << "CSV does not supported yet.";
     return false;
 }

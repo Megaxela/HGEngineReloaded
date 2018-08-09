@@ -93,7 +93,7 @@ namespace HG::Rendering::Base
             delete m_externalData;
 
             m_externalData = new T();
-        };
+        }
 
     protected:
         friend class ::HG::Core::GameObject;

@@ -58,3 +58,7 @@ target_link_libraries(HGUtils
 target_compile_definitions(HGUtils
     PUBLIC -DGLM_ENABLE_EXPERIMENTAL
 )
+
+target_compile_options(HGUtils
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+)

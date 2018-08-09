@@ -52,3 +52,7 @@ target_link_libraries(HGRenderingBase
     HGUtils
     imgui
 )
+
+target_compile_options(HGRenderingBase
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+)

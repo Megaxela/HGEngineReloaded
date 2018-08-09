@@ -79,7 +79,7 @@ namespace HG::Rendering::Base
         >::type externalData() const
         {
             return static_cast<T*>(m_externalData);
-        };
+        }
 
         /**
          * @brief Method for setting external data.
@@ -100,7 +100,7 @@ namespace HG::Rendering::Base
             delete m_externalData;
 
             m_externalData = new T();
-        };
+        }
 
         /**
          * @brief Method for clearing external data.

@@ -45,12 +45,12 @@ HG::Rendering::Base::CubeMapTexture::getSideSurface(HG::Rendering::Base::CubeMap
 {
     switch (side)
     {
-    case Right:  return m_right;
-    case Left:   return m_left;
-    case Top:    return m_top;
-    case Bottom: return m_bottom;
-    case Front:  return m_front;
-    case Back:   return m_back;
+    case Right:  return m_right;  break;
+    case Left:   return m_left;   break;
+    case Top:    return m_top;    break;
+    case Bottom: return m_bottom; break;
+    case Front:  return m_front;  break;
+    case Back:   return m_back;   break;
     }
 
     return nullptr;
@@ -61,12 +61,12 @@ void HG::Rendering::Base::CubeMapTexture::setSideSurface(HG::Rendering::Base::Cu
 {
     switch (side)
     {
-    case Right:  m_right  = surface;
-    case Left:   m_left   = surface;
-    case Top:    m_top    = surface;
-    case Bottom: m_bottom = surface;
-    case Front:  m_front  = surface;
-    case Back:   m_back   = surface;
+    case Right:  m_right  = surface; break;
+    case Left:   m_left   = surface; break;
+    case Top:    m_top    = surface; break;
+    case Bottom: m_bottom = surface; break;
+    case Front:  m_front  = surface; break;
+    case Back:   m_back   = surface; break;
     }
 
     throw std::invalid_argument("Wrong side value.");

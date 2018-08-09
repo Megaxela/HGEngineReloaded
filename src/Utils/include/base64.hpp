@@ -167,7 +167,7 @@ namespace HG::Utils::Base64
     >::type Encode(const bytearray_processor<Byte, Allocator>& processor)
     {
         return Encode<Byte>(processor.container().data(), processor.container().size());
-    };
+    }
 
     /**
      * @brief Function for decoding base64 encoded string
@@ -235,7 +235,7 @@ namespace HG::Utils::Base64
                 target.push_back(static_cast<OutByte>(char_array_3[j]));
             }
         }
-    };
+    }
 
     /**
      * @brief Function for decoding base64 encoded string
@@ -257,7 +257,7 @@ namespace HG::Utils::Base64
         Decode<InByte, OutByte>(base64, in_size, target);
 
         return target;
-    };
+    }
 
     /**
      * @brief Function for decoding base64 encoded byte array

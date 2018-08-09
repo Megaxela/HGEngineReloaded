@@ -40,3 +40,7 @@ target_link_libraries(HGStandard
     HGPhysicsBase
     ALogger
 )
+
+target_compile_options(HGStandard
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+)

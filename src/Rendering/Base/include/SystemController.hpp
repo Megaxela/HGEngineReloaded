@@ -26,6 +26,10 @@ namespace HG::Rendering::Base
          */
         explicit SystemController(::HG::Core::Application* application);
 
+        // Disable copying
+        SystemController(const SystemController&) = delete;
+        SystemController& operator=(const SystemController&) = delete;
+
         /**
          * @brief Destructor.
          */

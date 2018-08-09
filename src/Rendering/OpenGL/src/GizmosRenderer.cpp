@@ -59,12 +59,14 @@ void HG::Rendering::OpenGL::GizmosRenderer::line(const ::HG::Rendering::Base::Gi
 
 void HG::Rendering::OpenGL::GizmosRenderer::sphere(const ::HG::Rendering::Base::Gizmos::SphereData &sphere)
 {
-
+    (void) sphere;
+    // todo: Add implementation
 }
 
 void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const ::HG::Rendering::Base::Gizmos::HexahedronData &hexahedron)
 {
-
+    (void) hexahedron;
+    // todo: Add implementation
 }
 
 void HG::Rendering::OpenGL::GizmosRenderer::render()

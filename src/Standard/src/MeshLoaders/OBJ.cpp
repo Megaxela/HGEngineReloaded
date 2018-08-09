@@ -14,23 +14,24 @@ std::map<
         )
     >
 > HG::Standard::MeshLoaders::OBJ::m_tokenProcessors = {
-    {"v", // Vertex
-     [](::HG::Utils::MeshPtr& mesh,
-        std::string_view::const_iterator& iterator,
-        std::string_view& line)
-     {
-         ::HG::Utils::Vertex vertex;
-
-         // Searching for 3 coordinates. Skipping fourth for now
-         auto space = std::find(
-             iterator,
-             line.end(),
-             ' '
-         );
-
-//         std::from_chars(iterator, line.end());
-     }
-    }
+//    {"v", // Vertex
+//     [](::HG::Utils::MeshPtr& mesh,
+//        std::string_view::const_iterator& iterator,
+//        std::string_view& line)
+//     {
+//         ::HG::Utils::Vertex vertex;
+//
+//         // todo: Add implementation, when `std::from_chars` will be corrected
+//         // Searching for 3 coordinates. Skipping fourth for now
+////         auto space = std::find(
+////             iterator,
+////             line.end(),
+////             ' '
+////         );
+//
+////         std::from_chars(iterator, line.end());
+//     }
+//    }
 };
 
 HG::Standard::MeshLoaders::OBJ::OBJ()

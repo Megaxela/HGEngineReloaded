@@ -4,9 +4,9 @@ std::vector<HG::Rendering::Base::AbstractLight*> HG::Rendering::Base::AbstractLi
 
 HG::Rendering::Base::AbstractLight::AbstractLight(HG::Rendering::Base::AbstractLight::Type type) :
     m_type(type),
+    m_specular(1.0f, 1.0f, 1.0f),
     m_ambient(0.2f, 0.2f, 0.2f),
-    m_diffuse(1.0f, 1.0f, 1.0f),
-    m_specular(1.0f, 1.0f, 1.0f)
+    m_diffuse(1.0f, 1.0f, 1.0f)
 {
 
 }

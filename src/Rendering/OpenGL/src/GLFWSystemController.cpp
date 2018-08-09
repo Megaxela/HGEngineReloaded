@@ -281,7 +281,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::cursorPosCallback(GLFWwindow*,
     );
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
+void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
     static std::map<int, ::HG::Core::Input::Keyboard::Key> keys = {
         {GLFW_KEY_0,                ::HG::Core::Input::Keyboard::Key::N0},

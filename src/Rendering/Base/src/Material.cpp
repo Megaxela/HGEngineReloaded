@@ -10,6 +10,21 @@ HG::Rendering::Base::Material::Material() :
 
 }
 
+HG::Rendering::Base::Material::Material(const HG::Rendering::Base::Material& rhs) :
+    m_variableContainer(rhs.m_variableContainer),
+    m_shader(rhs.m_shader)
+{
+
+}
+
+HG::Rendering::Base::Material& HG::Rendering::Base::Material::operator=(const HG::Rendering::Base::Material& rhs)
+{
+    m_variableContainer = rhs.m_variableContainer;
+    m_shader = rhs.m_shader;
+
+    return (*this);
+}
+
 HG::Rendering::Base::Material::Material(HG::Rendering::Base::Shader *shader) :
     m_variableContainer(),
     m_shader(shader)

@@ -174,7 +174,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
         }
         case ::HG::Rendering::Base::AbstractLight::Type::Directional:
         {
-            auto castedLight = static_cast<::HG::Rendering::Base::Lights::DirectionalLight*>(light);
+//            auto castedLight = static_cast<::HG::Rendering::Base::Lights::DirectionalLight*>(light);
 
             // todo: Finish directional light uniform info
             ++directionalLightIndex;

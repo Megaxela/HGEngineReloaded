@@ -29,6 +29,10 @@ namespace HG::Core
          */
         Scene();
 
+        // Disable copying
+        Scene(const Scene&) = delete;
+        Scene& operator=(const Scene&) = delete;
+
         /**
          * @brief Destructor.
          */

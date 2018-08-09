@@ -327,6 +327,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupCubeMapSide(const :
                                                                          gl::cubemap_texture& texture,
                                                                          GLuint side)
 {
+    // todo: Fix this `unused` variable.
+    (void) texture;
     GLuint fileFormat = GL_RGB;
 
     // Getting type

@@ -15,3 +15,7 @@ target_link_libraries(HGPhysicsBase
 target_include_directories(HGPhysicsBase PUBLIC
     include
 )
+
+target_compile_options(HGPhysicsBase
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+)

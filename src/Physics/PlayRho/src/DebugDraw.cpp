@@ -55,7 +55,7 @@ void HG::Physics::PlayRho::DebugDraw::drawCircle(const playrho::Length2 &center,
     HG::Rendering::Base::Gizmos::Line line;
     line.reserve(k_segments);
 
-    for (int32_t i = 0; i < k_segments + 1; ++i)
+    for (size_type i = 0; i < k_segments + 1; ++i)
     {
         playrho::Vec2 v = center + radius * playrho::Vec2(std::cos(theta), std::sin(theta));
 
@@ -80,7 +80,7 @@ void HG::Physics::PlayRho::DebugDraw::drawSolidCircle(const playrho::Length2 &ce
     HG::Rendering::Base::Gizmos::Line line;
     line.reserve(k_segments);
 
-    for (int32_t i = 0; i < k_segments + 1; ++i)
+    for (size_type i = 0; i < k_segments + 1; ++i)
     {
         playrho::Vec2 v = center + radius * playrho::Vec2(std::cos(theta), std::sin(theta));
 
@@ -107,15 +107,23 @@ void HG::Physics::PlayRho::DebugDraw::drawPoint(const playrho::Length2 &p,
                                                      playrho::Length size,
                                                      const HG::Utils::Color &color)
 {
+    (void) size;
     drawSegment(p, p + playrho::Length2(0.1, 0.1), color);
 }
 
 void HG::Physics::PlayRho::DebugDraw::drawString(int x, int y, const char *string, ...)
 {
+    // todo: Remove this method.
+    (void) x;
+    (void) y;
+    (void) string;
     // No implementation
 }
 
 void HG::Physics::PlayRho::DebugDraw::drawString(const playrho::Length2 &p, const char *string, ...)
 {
+    // todo: Remove this method.
+    (void) p;
+    (void) string;
     // No implementation
 }

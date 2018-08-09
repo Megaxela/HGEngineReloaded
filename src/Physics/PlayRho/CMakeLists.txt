@@ -14,7 +14,10 @@ add_library(HGPhysicsPlayRho STATIC
     include/TiledMap/Remover.hpp
     src/DebugDraw.cpp
     include/DebugDraw.hpp
-        include/DebugSettings.hpp src/Behaviours/DebugControllerBehaviour.cpp include/Behaviours/DebugControllerBehaviour.hpp)
+    include/DebugSettings.hpp
+    src/Behaviours/DebugControllerBehaviour.cpp
+    include/Behaviours/DebugControllerBehaviour.hpp
+)
 
 target_link_libraries(HGPhysicsPlayRho
     PlayRho
@@ -24,4 +27,8 @@ target_link_libraries(HGPhysicsPlayRho
 
 target_include_directories(HGPhysicsPlayRho PUBLIC
     include
+)
+
+target_compile_options(HGPhysicsPlayRho
+    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
 )
