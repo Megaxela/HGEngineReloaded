@@ -1,6 +1,10 @@
+
+#include <Behaviour.hpp>
+
 #include "Behaviour.hpp"
 
-HG::Core::Behaviour::Behaviour() :
+HG::Core::Behaviour::Behaviour(Type t) :
+    m_type(t),
     m_enabled(true),
     m_parent(nullptr),
     m_properties()
@@ -15,6 +19,11 @@ HG::Core::Behaviour::~Behaviour()
         m_parent->removeBehaviour(this);
         m_parent = nullptr;
     }
+}
+
+HG::Core::Behaviour::Type HG::Core::Behaviour::type() const
+{
+    return m_type;
 }
 
 bool HG::Core::Behaviour::isEnabled() const

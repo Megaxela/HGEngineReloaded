@@ -155,6 +155,11 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
 
         for (auto&& behaviour : m_behavioursCache)
         {
+            if (!behaviour->isEnabled())
+            {
+                continue;
+            }
+
             auto cameraSpace = gameObject->transform()->globalPosition() - cameraPos;
 
             // Not inverting, because Z is positive towards camera)
@@ -167,7 +172,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
 
     for (auto& [distance, behaviour] : m_sortedBehaviours)
     {
-        auto renderer = m_renderers.find(behaviour->behaviourType());
+        auto renderer = m_renderers.find(behaviour->renderBehaviourType());
 
         if (renderer == m_renderers.end())
         {
@@ -184,7 +189,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(HG::Rendering::Base::RenderBehaviour *behaviour)
 {
-    switch (behaviour->behaviourType())
+    switch (behaviour->renderBehaviourType())
     {
     case ::HG::Rendering::Base::Behaviours::Mesh::Id:
         setupMesh(static_cast<Base::Behaviours::Mesh *>(behaviour));

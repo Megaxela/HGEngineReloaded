@@ -470,6 +470,6 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
 
         scene()->application()->renderer()->setup(meshRenderer);
 
-        layerGameObject->addRenderingBehaviour(meshRenderer);
+        layerGameObject->addBehaviour(meshRenderer);
     }
 }

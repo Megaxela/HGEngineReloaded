@@ -2,9 +2,9 @@
 #include "RenderBehaviour.hpp"
 
 HG::Rendering::Base::RenderBehaviour::RenderBehaviour(std::size_t type) :
+    Behaviour(HG::Core::Behaviour::Type::Render),
     m_externalData(nullptr),
-    m_type(type),
-    m_parent(nullptr)
+    m_type(type)
 {
 
 }
@@ -19,17 +19,22 @@ void HG::Rendering::Base::RenderBehaviour::clearExternalData()
     delete m_externalData;
 }
 
-std::size_t HG::Rendering::Base::RenderBehaviour::behaviourType()
+std::size_t HG::Rendering::Base::RenderBehaviour::renderBehaviourType()
 {
     return m_type;
 }
 
-::HG::Core::GameObject *HG::Rendering::Base::RenderBehaviour::gameObject()
+void HG::Rendering::Base::RenderBehaviour::onStart()
 {
-    return m_parent;
+    Behaviour::onStart();
 }
 
-void HG::Rendering::Base::RenderBehaviour::setParentGameObject(::HG::Core::GameObject *gameObject)
+void HG::Rendering::Base::RenderBehaviour::onUpdate()
 {
-    m_parent = gameObject;
+    Behaviour::onUpdate();
+}
+
+void HG::Rendering::Base::RenderBehaviour::onFixedUpdate()
+{
+    Behaviour::onFixedUpdate();
 }

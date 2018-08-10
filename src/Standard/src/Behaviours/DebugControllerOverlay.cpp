@@ -121,6 +121,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
     m_activeGameObject->transform()->setLocalRotation(glm::radians(rot));
     m_activeGameObject->transform()->setLocalScale(scale);
 
+    m_activeGameObject->getRenderingBehaviours(m_behaviours);
     m_activeGameObject->getBehaviours(m_behaviours);
 
     for (auto&& behaviour : m_behaviours)

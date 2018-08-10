@@ -60,14 +60,6 @@ namespace HG::Core
         GameObjectBuilder& addBehaviour(Behaviour* behaviour);
 
         /**
-         * @brief Method for adding rendering behaviour
-         * to game object.
-         * @param renderingBehaviour Pointer to rendering behaviour.
-         * @return Reference to builder.
-         */
-        GameObjectBuilder& addRenderingBehaviour(HG::Rendering::Base::RenderBehaviour* renderingBehaviour);
-
-        /**
          * @brief Method to set game object local position.
          * @param position Vector3 position value.
          * @return Reference to builder instance.

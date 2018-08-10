@@ -2,7 +2,6 @@
 
 #include "SystemController.hpp"
 #include "Scene.hpp"
-#include "RenderBehaviour.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
 #include "CubeMapTexture.hpp"
@@ -10,6 +9,8 @@
 
 namespace HG::Rendering::Base
 {
+    class RenderBehaviour;
+
     /**
      * @brief Class, that describes
      * abstract rendering pipeline.

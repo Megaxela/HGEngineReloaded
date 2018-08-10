@@ -88,28 +88,28 @@ void HG::Core::GameObject::setParentScene(HG::Core::Scene* parent)
 void HG::Core::GameObject::addBehaviour(HG::Core::Behaviour* behaviour)
 {
     behaviour->setParentGameObject(this);
-    m_behaviours.add(behaviour);
-}
 
-void HG::Core::GameObject::addRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour* renderBehaviour)
-{
-    renderBehaviour->setParentGameObject(this);
-    m_renderBehaviours.add(renderBehaviour);
-}
-
-void HG::Core::GameObject::removeRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour *renderBehaviour)
-{
-#ifndef NDEBUG
-    if (renderBehaviour->gameObject() != this)
+    switch (behaviour->type())
     {
-        Error() << "Trying to remove behaviour from GameObject, that's not it's parent.";
-        return;
+    case Behaviour::Type::Logic:
+    {
+        m_behaviours.add(behaviour);
+        break;
     }
-#endif
+    case Behaviour::Type::Render:
+    {
+        auto casted = dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(behaviour);
 
-    // Remove this gameobject as parent
-    renderBehaviour->setParentGameObject(nullptr);
-    m_renderBehaviours.remove(renderBehaviour);
+        if (!casted)
+        {
+            Error() << "Can't add behaviour of type " << SystemTools::getTypeName(behaviour);
+            return;
+        }
+
+        m_renderBehaviours.add(casted);
+        break;
+    }
+    }
 }
 
 void HG::Core::GameObject::clear()

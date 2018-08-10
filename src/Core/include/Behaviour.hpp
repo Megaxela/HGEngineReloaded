@@ -113,15 +113,27 @@ namespace HG::Core
             const std::type_info& m_typeInfo;
         };
 
+        enum class Type
+        {
+            Logic,
+            Render
+        };
+
         /**
          * @brief Constructor.
          */
-        Behaviour();
+        explicit Behaviour(Type t=Type::Logic);
 
         /**
          * @brief Destructor.
          */
         virtual ~Behaviour();
+
+        /**
+         * @brief Method for getting behaviour type.
+         * @return Behaviour type.
+         */
+        Type type() const;
 
         /**
          * @brief Method for checking is behaviour enabled.
@@ -222,6 +234,10 @@ namespace HG::Core
             return propertyIter->second.template getGetter<Type>()();
         }
 
+        /**
+         * @brief Method for getting all properties.
+         * @return Vector with all properties.
+         */
         std::vector<Property> getProperties() const
         {
             std::vector<Property> container;
@@ -231,6 +247,10 @@ namespace HG::Core
             return container;
         }
 
+        /**
+         * @brief Method for getting all properties.
+         * @param container Vector, that will be filled with properties.
+         */
         void getProperties(std::vector<Property>& container) const
         {
             container.reserve(m_properties.size());
@@ -271,6 +291,8 @@ namespace HG::Core
         void setParentGameObject(GameObject* ptr);
 
     private:
+
+        Type m_type;
 
         bool m_enabled;
 

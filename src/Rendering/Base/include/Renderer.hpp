@@ -2,7 +2,6 @@
 
 #include <Scene.hpp>
 #include "RenderingPipeline.hpp"
-#include "RenderBehaviour.hpp"
 #include "Gizmos.hpp"
 #include "MaterialCollection.hpp"
 

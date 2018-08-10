@@ -112,10 +112,3 @@ HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setParent(HG::Core::Tr
 
     return (*this);
 }
-
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addRenderingBehaviour(HG::Rendering::Base::RenderBehaviour* renderingBehaviour)
-{
-    m_currentGameObject->addRenderingBehaviour(renderingBehaviour);
-
-    return (*this);
-}

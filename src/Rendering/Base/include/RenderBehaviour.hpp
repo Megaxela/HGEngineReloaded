@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdio>
-#include <GameObject.hpp>
 #include <CurrentLogger.hpp>
+#include <Behaviour.hpp>
 
 namespace HG::Rendering::Base
 {
@@ -10,7 +10,7 @@ namespace HG::Rendering::Base
      * @brief Class, that describes cross pipeline
      * behaviour for rendering.
      */
-    class RenderBehaviour
+    class RenderBehaviour : public HG::Core::Behaviour
     {
     public:
 
@@ -38,20 +38,13 @@ namespace HG::Rendering::Base
         /**
          * @brief Default virtual destructor.
          */
-        virtual ~RenderBehaviour();
+        ~RenderBehaviour() override;
 
         /**
          * @brief Method for getting behaviour type.
          * @return Real class `typeid(T).hash_code()` value.
          */
-        std::size_t behaviourType();
-
-        /**
-         * @brief Method for getting parent gameobject.
-         * @return Parent gameobject or nullptr if
-         * there is no parent.
-         */
-        ::HG::Core::GameObject* gameObject();
+        std::size_t renderBehaviourType();
 
         /**
          * @brief Method for clearing external data.
@@ -96,20 +89,18 @@ namespace HG::Rendering::Base
         }
 
     protected:
-        friend class ::HG::Core::GameObject;
+        // Restrict to override this HG::Core::Behaviour methods
 
-        /**
-         * @brief Method for gameobject to set parent gameobject.
-         * @param gameObject
-         */
-        void setParentGameObject(::HG::Core::GameObject* gameObject);
+        void onStart() final;
+
+        void onUpdate() final;
+
+        void onFixedUpdate() final;
 
     private:
         ExternalData* m_externalData;
 
         std::size_t m_type;
-
-        ::HG::Core::GameObject* m_parent;
     };
 }
 

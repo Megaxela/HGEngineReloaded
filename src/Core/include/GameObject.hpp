@@ -58,24 +58,6 @@ namespace HG::Core
         void removeBehaviour(Behaviour* behaviour);
 
         /**
-         * @brief Method for adding new render behaviour.
-         * For example MeshRenderer.
-         * @param renderBehaviour Render behaviour.
-         */
-        void addRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour* renderBehaviour);
-
-        /**
-         * @brief Method for removing rendering behaviour.
-         * If behaviour is deleting
-         * this method will be called from `Behaviour` destructor.
-         * If behaviour was not deleted it has to be
-         * deleted manually, because GameObject `clear`
-         * method fill not handle this behaviour anymore.
-         * @param renderBehaviour Render behaviour.
-         */
-        void removeRenderingBehaviour(::HG::Rendering::Base::RenderBehaviour* renderBehaviour);
-
-        /**
          * @brief Method for setting internal game object
          * name.
          * @param name Name.
@@ -130,7 +112,7 @@ namespace HG::Core
                     continue;
                 }
 
-                container.push_back(behaviour);
+                container.push_back((typename Container::value_type) behaviour);
             }
         }
 
@@ -215,8 +197,13 @@ namespace HG::Core
          */
         GameObject();
 
-        ::HG::Utils::DoubleBufferContainer<Behaviour*> m_behaviours;
-        ::HG::Utils::DoubleBufferContainer<::HG::Rendering::Base::RenderBehaviour*> m_renderBehaviours;
+        HG::Utils::DoubleBufferContainer<
+            HG::Core::Behaviour*
+        > m_behaviours;
+
+        HG::Utils::DoubleBufferContainer<
+            HG::Rendering::Base::RenderBehaviour*
+        > m_renderBehaviours;
 
         Transform m_transform;
 
