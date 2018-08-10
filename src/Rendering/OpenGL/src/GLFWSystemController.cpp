@@ -8,9 +8,8 @@
 #include <Camera.hpp>
 #include <gl/all.hpp>
 #include <imgui.h>
-#include <imgui_impl_glfw_gl3.h>
 
-HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(::HG::Core::Application* application) :
+HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
     SystemController(application),
     m_window(nullptr)
 {
@@ -19,9 +18,142 @@ HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(::HG::Core::Ap
 
 HG::Rendering::OpenGL::GLFWSystemController::~GLFWSystemController()
 {
+    imGuiDeinit();
+
     ImGui::DestroyContext();
     glfwTerminate();
     m_window = nullptr;
+}
+
+static const char* ImGuiGetClipboardText(void* user_data)
+{
+    return glfwGetClipboardString((GLFWwindow*) user_data);
+}
+
+static void ImGuiSetClipboardText(void* user_data, const char* text)
+{
+    glfwSetClipboardString((GLFWwindow*) user_data, text);
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::imGuiInit()
+{
+    // Setup back-end capabilities flags
+    ImGuiIO& io = ImGui::GetIO();
+    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;   // We can honor GetMouseCursor() values (optional)
+    io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;    // We can honor io.WantSetMousePos requests (optional, rarely used)
+
+    // Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
+    io.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;
+    io.KeyMap[ImGuiKey_LeftArrow] = GLFW_KEY_LEFT;
+    io.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
+    io.KeyMap[ImGuiKey_UpArrow] = GLFW_KEY_UP;
+    io.KeyMap[ImGuiKey_DownArrow] = GLFW_KEY_DOWN;
+    io.KeyMap[ImGuiKey_PageUp] = GLFW_KEY_PAGE_UP;
+    io.KeyMap[ImGuiKey_PageDown] = GLFW_KEY_PAGE_DOWN;
+    io.KeyMap[ImGuiKey_Home] = GLFW_KEY_HOME;
+    io.KeyMap[ImGuiKey_End] = GLFW_KEY_END;
+    io.KeyMap[ImGuiKey_Insert] = GLFW_KEY_INSERT;
+    io.KeyMap[ImGuiKey_Delete] = GLFW_KEY_DELETE;
+    io.KeyMap[ImGuiKey_Backspace] = GLFW_KEY_BACKSPACE;
+    io.KeyMap[ImGuiKey_Space] = GLFW_KEY_SPACE;
+    io.KeyMap[ImGuiKey_Enter] = GLFW_KEY_ENTER;
+    io.KeyMap[ImGuiKey_Escape] = GLFW_KEY_ESCAPE;
+    io.KeyMap[ImGuiKey_A] = GLFW_KEY_A;
+    io.KeyMap[ImGuiKey_C] = GLFW_KEY_C;
+    io.KeyMap[ImGuiKey_V] = GLFW_KEY_V;
+    io.KeyMap[ImGuiKey_X] = GLFW_KEY_X;
+    io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
+    io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
+
+    io.SetClipboardTextFn = ImGuiSetClipboardText;
+    io.GetClipboardTextFn = ImGuiGetClipboardText;
+    io.ClipboardUserData = m_window;
+    // todo: Fix this define
+#ifdef _WIN32
+    io.ImeWindowHandle = glfwGetWin32Window(g_Window);
+#endif
+
+    // Load cursors
+    // FIXME: GLFW doesn't expose suitable cursors for ResizeAll, ResizeNESW, ResizeNWSE. We revert to arrow cursor for those.
+    m_mouseCursors[ImGuiMouseCursor_Arrow]      = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_TextInput]  = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_ResizeAll]  = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_ResizeNS]   = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_ResizeEW]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::imGuiDeinit()
+{
+    // Destroying cursors
+    for (auto&& cursor : m_mouseCursors)
+    {
+        glfwDestroyCursor(cursor);
+        cursor = nullptr;
+    }
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::imGuiNewFrame()
+{
+    auto& io = ImGui::GetIO();
+
+    // Setup display size
+    // todo: Viewport == Framebuffer for now. Fix if it will change.
+    auto viewportRect = viewport();
+
+    io.DisplaySize = ImVec2(viewportRect.w, viewportRect.h);
+    io.DisplayFramebufferScale = ImVec2(1, 1);
+
+    // Setup time step
+    io.DeltaTime = float(application()->timeStatistics()->lastFrameDeltaTime().count()) / 1000000;
+
+    // Setup inputs
+    // (we already got mouse wheel, keyboard keys & characters from glfw callbacks polled in glfwPollEvents())
+    if (glfwGetWindowAttrib(m_window, GLFW_FOCUSED))
+    {
+        // Set OS mouse position if requested (only used when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
+        if (io.WantSetMousePos)
+        {
+            glfwSetCursorPos(m_window, io.MousePos.x, io.MousePos.y);
+        }
+        else
+        {
+            auto pos = application()->input()->mouse()->getMousePosition();
+            io.MousePos = ImVec2(pos.x, pos.y);
+        }
+    }
+
+    for (uint8_t i = 0; i < 3; ++i)
+    {
+        // If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
+        io.MouseDown[i] = application()->input()->mouse()->isPressed(i);
+    }
+
+    // Update OS/hardware mouse cursor if ImGui isn't drawing a software cursor
+    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) == 0 &&
+        glfwGetInputMode(m_window, GLFW_CURSOR) != GLFW_CURSOR_DISABLED)
+    {
+        auto cursor = ImGui::GetMouseCursor();
+
+        if (io.MouseDrawCursor || cursor == ImGuiMouseCursor_None)
+        {
+            application()->input()->mouse()->setCursorHidden(true);
+        }
+        else
+        {
+            glfwSetCursor(
+                m_window,
+                m_mouseCursors[cursor] ? m_mouseCursors[cursor] : m_mouseCursors[ImGuiMouseCursor_Arrow]
+            );
+
+            application()->input()->mouse()->setCursorHidden(false);
+        }
+    }
+
+    // todo: Add gamepad navigation
+
+    ImGui::NewFrame();
 }
 
 bool HG::Rendering::OpenGL::GLFWSystemController::init()
@@ -75,7 +207,8 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
         return false;
     }
 
-    ImGui_ImplGlfwGL3_Init(m_window, true);
+    Info() << "Initializing ImGui";
+    imGuiInit();
 
     controller = this;
 
@@ -85,8 +218,9 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     glfwSetMouseButtonCallback    (m_window, &GLFWSystemController::mouseButtonCallback);
     glfwSetJoystickCallback       (          &GLFWSystemController::joystickCallback);
     glfwSetFramebufferSizeCallback(m_window, &GLFWSystemController::framebufferSizeCallback);
+    glfwSetCharCallback           (m_window, &GLFWSystemController::charCallback);
 
-    const_cast<::HG::Core::Input::Mouse*>(
+    const_cast<HG::Core::Input::Mouse*>(
         controller->application()->input()->mouse()
     )->setCursorDisabledAction(
         [=](bool disable)
@@ -103,7 +237,7 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
         }
     );
 
-    const_cast<::HG::Core::Input::Mouse*>(
+    const_cast<HG::Core::Input::Mouse*>(
         controller->application()->input()->mouse()
     )->setCursorHiddenAction(
         [=](bool hidden)
@@ -118,9 +252,6 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
             }
         }
     );
-
-    // todo: Add char callback
-//    glfwSetCharCallback(m_window, []());
 
     glfwMakeContextCurrent(m_window);
 
@@ -143,7 +274,7 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
         gl::set_debug_output_enabled(true);
         gl::set_syncronous_debug_output_enabled(true);
 
-        glDebugMessageCallback(&::HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput, nullptr);
+        glDebugMessageCallback(&HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput, nullptr);
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
 #endif
@@ -165,7 +296,6 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
 
 void HG::Rendering::OpenGL::GLFWSystemController::swapBuffers()
 {
-    ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(m_window);
 }
 
@@ -174,7 +304,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::pollEvents()
     glfwPollEvents();
     handleGamepadsEvents();
     handleWindowEvents();
-    ImGui_ImplGlfwGL3_NewFrame();
+    imGuiNewFrame();
 }
 
 void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
@@ -183,7 +313,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
     {
         int present = glfwJoystickPresent(index);
 
-        const_cast<::HG::Core::Input::Gamepads*>(
+        const_cast<HG::Core::Input::Gamepads*>(
             controller->application()->input()->gamepads()
         )->setIsConnectedGamepad(
             static_cast<uint8_t>(index),
@@ -202,7 +332,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
 
         for (int i = 0; i < count; ++i)
         {
-            const_cast<::HG::Core::Input::Gamepads*>(
+            const_cast<HG::Core::Input::Gamepads*>(
                 controller->application()->input()->gamepads()
             )->setGamepadAxisValue(
                 static_cast<uint8_t>(index),
@@ -226,7 +356,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
             {
                 if (buttons[i] == GLFW_RELEASE)
                 {
-                    const_cast<::HG::Core::Input::Gamepads*>(
+                    const_cast<HG::Core::Input::Gamepads*>(
                         controller->application()->input()->gamepads()
                     )->setGamepadButtonValue(
                         static_cast<uint8_t>(index),
@@ -239,7 +369,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
             {
                 if (buttons[i] == GLFW_PRESS)
                 {
-                    const_cast<::HG::Core::Input::Gamepads*>(
+                    const_cast<HG::Core::Input::Gamepads*>(
                         controller->application()->input()->gamepads()
                     )->setGamepadButtonValue(
                         static_cast<uint8_t>(index),
@@ -258,7 +388,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::joystickCallback(int gamepad, 
     {
         InfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " connected.";
 
-        const_cast<::HG::Core::Input::Gamepads*>(
+        const_cast<HG::Core::Input::Gamepads*>(
             controller->application()->input()->gamepads()
         )->setIsConnectedGamepad(static_cast<uint8_t>(gamepad), true);
     }
@@ -266,7 +396,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::joystickCallback(int gamepad, 
     {
         InfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " disconnected.";
 
-        const_cast<::HG::Core::Input::Gamepads*>(
+        const_cast<HG::Core::Input::Gamepads*>(
             controller->application()->input()->gamepads()
         )->setIsConnectedGamepad(static_cast<uint8_t>(gamepad), false);
     }
@@ -274,7 +404,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::joystickCallback(int gamepad, 
 
 void HG::Rendering::OpenGL::GLFWSystemController::cursorPosCallback(GLFWwindow*, double x, double y)
 {
-    const_cast<::HG::Core::Input::Mouse*>(
+    const_cast<HG::Core::Input::Mouse*>(
         controller->application()->input()->mouse()
     )->setMousePosition(
         static_cast<int>(x),
@@ -284,132 +414,135 @@ void HG::Rendering::OpenGL::GLFWSystemController::cursorPosCallback(GLFWwindow*,
 
 void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
-    static std::map<int, ::HG::Core::Input::Keyboard::Key> keys = {
-        {GLFW_KEY_0,                ::HG::Core::Input::Keyboard::Key::N0},
-        {GLFW_KEY_1,                ::HG::Core::Input::Keyboard::Key::N1},
-        {GLFW_KEY_2,                ::HG::Core::Input::Keyboard::Key::N2},
-        {GLFW_KEY_3,                ::HG::Core::Input::Keyboard::Key::N3},
-        {GLFW_KEY_4,                ::HG::Core::Input::Keyboard::Key::N4},
-        {GLFW_KEY_5,                ::HG::Core::Input::Keyboard::Key::N5},
-        {GLFW_KEY_6,                ::HG::Core::Input::Keyboard::Key::N6},
-        {GLFW_KEY_7,                ::HG::Core::Input::Keyboard::Key::N7},
-        {GLFW_KEY_8,                ::HG::Core::Input::Keyboard::Key::N8},
-        {GLFW_KEY_9,                ::HG::Core::Input::Keyboard::Key::N9},
-        {GLFW_KEY_SPACE,            ::HG::Core::Input::Keyboard::Key::Space},
-        {GLFW_KEY_APOSTROPHE,       ::HG::Core::Input::Keyboard::Key::SingleQuotation},
-        {GLFW_KEY_COMMA,            ::HG::Core::Input::Keyboard::Key::Comma},
-        {GLFW_KEY_MINUS,            ::HG::Core::Input::Keyboard::Key::Minus},
-        {GLFW_KEY_PERIOD,           ::HG::Core::Input::Keyboard::Key::Dot},
-        {GLFW_KEY_SLASH,            ::HG::Core::Input::Keyboard::Key::Slash},
-        {GLFW_KEY_SEMICOLON,        ::HG::Core::Input::Keyboard::Key::Semicolon},
-        {GLFW_KEY_EQUAL,            ::HG::Core::Input::Keyboard::Key::Equal},
-        {GLFW_KEY_A,                ::HG::Core::Input::Keyboard::Key::A},
-        {GLFW_KEY_B,                ::HG::Core::Input::Keyboard::Key::B},
-        {GLFW_KEY_C,                ::HG::Core::Input::Keyboard::Key::C},
-        {GLFW_KEY_D,                ::HG::Core::Input::Keyboard::Key::D},
-        {GLFW_KEY_E,                ::HG::Core::Input::Keyboard::Key::E},
-        {GLFW_KEY_F,                ::HG::Core::Input::Keyboard::Key::F},
-        {GLFW_KEY_G,                ::HG::Core::Input::Keyboard::Key::G},
-        {GLFW_KEY_H,                ::HG::Core::Input::Keyboard::Key::H},
-        {GLFW_KEY_I,                ::HG::Core::Input::Keyboard::Key::I},
-        {GLFW_KEY_J,                ::HG::Core::Input::Keyboard::Key::J},
-        {GLFW_KEY_K,                ::HG::Core::Input::Keyboard::Key::K},
-        {GLFW_KEY_L,                ::HG::Core::Input::Keyboard::Key::L},
-        {GLFW_KEY_M,                ::HG::Core::Input::Keyboard::Key::M},
-        {GLFW_KEY_N,                ::HG::Core::Input::Keyboard::Key::N},
-        {GLFW_KEY_O,                ::HG::Core::Input::Keyboard::Key::O},
-        {GLFW_KEY_P,                ::HG::Core::Input::Keyboard::Key::P},
-        {GLFW_KEY_Q,                ::HG::Core::Input::Keyboard::Key::Q},
-        {GLFW_KEY_R,                ::HG::Core::Input::Keyboard::Key::R},
-        {GLFW_KEY_S,                ::HG::Core::Input::Keyboard::Key::S},
-        {GLFW_KEY_T,                ::HG::Core::Input::Keyboard::Key::T},
-        {GLFW_KEY_U,                ::HG::Core::Input::Keyboard::Key::U},
-        {GLFW_KEY_V,                ::HG::Core::Input::Keyboard::Key::V},
-        {GLFW_KEY_W,                ::HG::Core::Input::Keyboard::Key::W},
-        {GLFW_KEY_X,                ::HG::Core::Input::Keyboard::Key::X},
-        {GLFW_KEY_Y,                ::HG::Core::Input::Keyboard::Key::Y},
-        {GLFW_KEY_Z,                ::HG::Core::Input::Keyboard::Key::Z},
-        {GLFW_KEY_LEFT_BRACKET,     ::HG::Core::Input::Keyboard::Key::SquareBracketOpen},
-        {GLFW_KEY_BACKSLASH,        ::HG::Core::Input::Keyboard::Key::Backslash},
-        {GLFW_KEY_RIGHT_BRACKET,    ::HG::Core::Input::Keyboard::Key::SquareBracketClose},
-        {GLFW_KEY_GRAVE_ACCENT,     ::HG::Core::Input::Keyboard::Key::Tilda}, // todo: Add world keys here
-        {GLFW_KEY_ESCAPE,           ::HG::Core::Input::Keyboard::Key::ESC},
-        {GLFW_KEY_ENTER,            ::HG::Core::Input::Keyboard::Key::Return},
-        {GLFW_KEY_TAB,              ::HG::Core::Input::Keyboard::Key::Tab},
-        {GLFW_KEY_BACKSPACE,        ::HG::Core::Input::Keyboard::Key::Backspace},
-        {GLFW_KEY_INSERT,           ::HG::Core::Input::Keyboard::Key::Insert},
-        {GLFW_KEY_DELETE,           ::HG::Core::Input::Keyboard::Key::Delete},
-        {GLFW_KEY_RIGHT,            ::HG::Core::Input::Keyboard::Key::ArrowRight},
-        {GLFW_KEY_LEFT,             ::HG::Core::Input::Keyboard::Key::ArrowLeft},
-        {GLFW_KEY_DOWN,             ::HG::Core::Input::Keyboard::Key::ArrowDown},
-        {GLFW_KEY_UP,               ::HG::Core::Input::Keyboard::Key::ArrowUp},
-        {GLFW_KEY_PAGE_UP,          ::HG::Core::Input::Keyboard::Key::PageUp},
-        {GLFW_KEY_PAGE_DOWN,        ::HG::Core::Input::Keyboard::Key::PageDown},
-        {GLFW_KEY_HOME,             ::HG::Core::Input::Keyboard::Key::Home},
-        {GLFW_KEY_END,              ::HG::Core::Input::Keyboard::Key::End},
-        {GLFW_KEY_CAPS_LOCK,        ::HG::Core::Input::Keyboard::Key::CapsLock},
-        {GLFW_KEY_NUM_LOCK,         ::HG::Core::Input::Keyboard::Key::NumLock},
-        {GLFW_KEY_PRINT_SCREEN,     ::HG::Core::Input::Keyboard::Key::PrintScreen},
-        {GLFW_KEY_PAUSE,            ::HG::Core::Input::Keyboard::Key::Pause},
-        {GLFW_KEY_F1,               ::HG::Core::Input::Keyboard::Key::F1},
-        {GLFW_KEY_F2,               ::HG::Core::Input::Keyboard::Key::F2},
-        {GLFW_KEY_F3,               ::HG::Core::Input::Keyboard::Key::F3},
-        {GLFW_KEY_F4,               ::HG::Core::Input::Keyboard::Key::F4},
-        {GLFW_KEY_F5,               ::HG::Core::Input::Keyboard::Key::F5},
-        {GLFW_KEY_F6,               ::HG::Core::Input::Keyboard::Key::F6},
-        {GLFW_KEY_F7,               ::HG::Core::Input::Keyboard::Key::F7},
-        {GLFW_KEY_F8,               ::HG::Core::Input::Keyboard::Key::F8},
-        {GLFW_KEY_F9,               ::HG::Core::Input::Keyboard::Key::F9},
-        {GLFW_KEY_F10,              ::HG::Core::Input::Keyboard::Key::F10},
-        {GLFW_KEY_F11,              ::HG::Core::Input::Keyboard::Key::F11},
-        {GLFW_KEY_F12,              ::HG::Core::Input::Keyboard::Key::F12},
-        {GLFW_KEY_F13,              ::HG::Core::Input::Keyboard::Key::F13},
-        {GLFW_KEY_F14,              ::HG::Core::Input::Keyboard::Key::F14},
-        {GLFW_KEY_F15,              ::HG::Core::Input::Keyboard::Key::F15},
-        {GLFW_KEY_F16,              ::HG::Core::Input::Keyboard::Key::F16},
-        {GLFW_KEY_F17,              ::HG::Core::Input::Keyboard::Key::F17},
-        {GLFW_KEY_F18,              ::HG::Core::Input::Keyboard::Key::F18},
-        {GLFW_KEY_F19,              ::HG::Core::Input::Keyboard::Key::F19},
-        {GLFW_KEY_F20,              ::HG::Core::Input::Keyboard::Key::F20},
-        {GLFW_KEY_F21,              ::HG::Core::Input::Keyboard::Key::F21},
-        {GLFW_KEY_F22,              ::HG::Core::Input::Keyboard::Key::F22},
-        {GLFW_KEY_F23,              ::HG::Core::Input::Keyboard::Key::F23},
-        {GLFW_KEY_F24,              ::HG::Core::Input::Keyboard::Key::F24},
-        {GLFW_KEY_F25,              ::HG::Core::Input::Keyboard::Key::F25},
-        {GLFW_KEY_KP_0,             ::HG::Core::Input::Keyboard::Key::Num0},
-        {GLFW_KEY_KP_1,             ::HG::Core::Input::Keyboard::Key::Num1},
-        {GLFW_KEY_KP_2,             ::HG::Core::Input::Keyboard::Key::Num2},
-        {GLFW_KEY_KP_3,             ::HG::Core::Input::Keyboard::Key::Num3},
-        {GLFW_KEY_KP_4,             ::HG::Core::Input::Keyboard::Key::Num4},
-        {GLFW_KEY_KP_5,             ::HG::Core::Input::Keyboard::Key::Num5},
-        {GLFW_KEY_KP_6,             ::HG::Core::Input::Keyboard::Key::Num6},
-        {GLFW_KEY_KP_7,             ::HG::Core::Input::Keyboard::Key::Num7},
-        {GLFW_KEY_KP_8,             ::HG::Core::Input::Keyboard::Key::Num8},
-        {GLFW_KEY_KP_9,             ::HG::Core::Input::Keyboard::Key::Num9},
-        {GLFW_KEY_KP_DECIMAL,       ::HG::Core::Input::Keyboard::Key::NumDot},
-        {GLFW_KEY_KP_DIVIDE,        ::HG::Core::Input::Keyboard::Key::NumDivide},
-        {GLFW_KEY_KP_MULTIPLY,      ::HG::Core::Input::Keyboard::Key::NumMultiply},
-        {GLFW_KEY_KP_SUBTRACT,      ::HG::Core::Input::Keyboard::Key::NumSubstract},
-        {GLFW_KEY_KP_ADD,           ::HG::Core::Input::Keyboard::Key::NumAdd},
-        {GLFW_KEY_KP_ENTER,         ::HG::Core::Input::Keyboard::Key::NumReturn},
-        {GLFW_KEY_KP_EQUAL,         ::HG::Core::Input::Keyboard::Key::NumEqual},
-        {GLFW_KEY_LEFT_SHIFT,       ::HG::Core::Input::Keyboard::Key::LeftShift},
-        {GLFW_KEY_LEFT_CONTROL,     ::HG::Core::Input::Keyboard::Key::LeftCtrl},
-        {GLFW_KEY_LEFT_ALT,         ::HG::Core::Input::Keyboard::Key::LeftAlt},
-        {GLFW_KEY_LEFT_SUPER,       ::HG::Core::Input::Keyboard::Key::Super},
-        {GLFW_KEY_RIGHT_SHIFT,      ::HG::Core::Input::Keyboard::Key::RightShift},
-        {GLFW_KEY_RIGHT_CONTROL,    ::HG::Core::Input::Keyboard::Key::RightCtrl},
-        {GLFW_KEY_RIGHT_ALT,        ::HG::Core::Input::Keyboard::Key::RightAlt},
-        {GLFW_KEY_MENU,             ::HG::Core::Input::Keyboard::Key::Menu}
+    (void) scancode;
+    (void) mods;
+
+    static std::map<int, HG::Core::Input::Keyboard::Key> keys = {
+        {GLFW_KEY_0,                HG::Core::Input::Keyboard::Key::N0},
+        {GLFW_KEY_1,                HG::Core::Input::Keyboard::Key::N1},
+        {GLFW_KEY_2,                HG::Core::Input::Keyboard::Key::N2},
+        {GLFW_KEY_3,                HG::Core::Input::Keyboard::Key::N3},
+        {GLFW_KEY_4,                HG::Core::Input::Keyboard::Key::N4},
+        {GLFW_KEY_5,                HG::Core::Input::Keyboard::Key::N5},
+        {GLFW_KEY_6,                HG::Core::Input::Keyboard::Key::N6},
+        {GLFW_KEY_7,                HG::Core::Input::Keyboard::Key::N7},
+        {GLFW_KEY_8,                HG::Core::Input::Keyboard::Key::N8},
+        {GLFW_KEY_9,                HG::Core::Input::Keyboard::Key::N9},
+        {GLFW_KEY_SPACE,            HG::Core::Input::Keyboard::Key::Space},
+        {GLFW_KEY_APOSTROPHE,       HG::Core::Input::Keyboard::Key::SingleQuotation},
+        {GLFW_KEY_COMMA,            HG::Core::Input::Keyboard::Key::Comma},
+        {GLFW_KEY_MINUS,            HG::Core::Input::Keyboard::Key::Minus},
+        {GLFW_KEY_PERIOD,           HG::Core::Input::Keyboard::Key::Dot},
+        {GLFW_KEY_SLASH,            HG::Core::Input::Keyboard::Key::Slash},
+        {GLFW_KEY_SEMICOLON,        HG::Core::Input::Keyboard::Key::Semicolon},
+        {GLFW_KEY_EQUAL,            HG::Core::Input::Keyboard::Key::Equal},
+        {GLFW_KEY_A,                HG::Core::Input::Keyboard::Key::A},
+        {GLFW_KEY_B,                HG::Core::Input::Keyboard::Key::B},
+        {GLFW_KEY_C,                HG::Core::Input::Keyboard::Key::C},
+        {GLFW_KEY_D,                HG::Core::Input::Keyboard::Key::D},
+        {GLFW_KEY_E,                HG::Core::Input::Keyboard::Key::E},
+        {GLFW_KEY_F,                HG::Core::Input::Keyboard::Key::F},
+        {GLFW_KEY_G,                HG::Core::Input::Keyboard::Key::G},
+        {GLFW_KEY_H,                HG::Core::Input::Keyboard::Key::H},
+        {GLFW_KEY_I,                HG::Core::Input::Keyboard::Key::I},
+        {GLFW_KEY_J,                HG::Core::Input::Keyboard::Key::J},
+        {GLFW_KEY_K,                HG::Core::Input::Keyboard::Key::K},
+        {GLFW_KEY_L,                HG::Core::Input::Keyboard::Key::L},
+        {GLFW_KEY_M,                HG::Core::Input::Keyboard::Key::M},
+        {GLFW_KEY_N,                HG::Core::Input::Keyboard::Key::N},
+        {GLFW_KEY_O,                HG::Core::Input::Keyboard::Key::O},
+        {GLFW_KEY_P,                HG::Core::Input::Keyboard::Key::P},
+        {GLFW_KEY_Q,                HG::Core::Input::Keyboard::Key::Q},
+        {GLFW_KEY_R,                HG::Core::Input::Keyboard::Key::R},
+        {GLFW_KEY_S,                HG::Core::Input::Keyboard::Key::S},
+        {GLFW_KEY_T,                HG::Core::Input::Keyboard::Key::T},
+        {GLFW_KEY_U,                HG::Core::Input::Keyboard::Key::U},
+        {GLFW_KEY_V,                HG::Core::Input::Keyboard::Key::V},
+        {GLFW_KEY_W,                HG::Core::Input::Keyboard::Key::W},
+        {GLFW_KEY_X,                HG::Core::Input::Keyboard::Key::X},
+        {GLFW_KEY_Y,                HG::Core::Input::Keyboard::Key::Y},
+        {GLFW_KEY_Z,                HG::Core::Input::Keyboard::Key::Z},
+        {GLFW_KEY_LEFT_BRACKET,     HG::Core::Input::Keyboard::Key::SquareBracketOpen},
+        {GLFW_KEY_BACKSLASH,        HG::Core::Input::Keyboard::Key::Backslash},
+        {GLFW_KEY_RIGHT_BRACKET,    HG::Core::Input::Keyboard::Key::SquareBracketClose},
+        {GLFW_KEY_GRAVE_ACCENT,     HG::Core::Input::Keyboard::Key::Tilda}, // todo: Add world keys here
+        {GLFW_KEY_ESCAPE,           HG::Core::Input::Keyboard::Key::ESC},
+        {GLFW_KEY_ENTER,            HG::Core::Input::Keyboard::Key::Return},
+        {GLFW_KEY_TAB,              HG::Core::Input::Keyboard::Key::Tab},
+        {GLFW_KEY_BACKSPACE,        HG::Core::Input::Keyboard::Key::Backspace},
+        {GLFW_KEY_INSERT,           HG::Core::Input::Keyboard::Key::Insert},
+        {GLFW_KEY_DELETE,           HG::Core::Input::Keyboard::Key::Delete},
+        {GLFW_KEY_RIGHT,            HG::Core::Input::Keyboard::Key::ArrowRight},
+        {GLFW_KEY_LEFT,             HG::Core::Input::Keyboard::Key::ArrowLeft},
+        {GLFW_KEY_DOWN,             HG::Core::Input::Keyboard::Key::ArrowDown},
+        {GLFW_KEY_UP,               HG::Core::Input::Keyboard::Key::ArrowUp},
+        {GLFW_KEY_PAGE_UP,          HG::Core::Input::Keyboard::Key::PageUp},
+        {GLFW_KEY_PAGE_DOWN,        HG::Core::Input::Keyboard::Key::PageDown},
+        {GLFW_KEY_HOME,             HG::Core::Input::Keyboard::Key::Home},
+        {GLFW_KEY_END,              HG::Core::Input::Keyboard::Key::End},
+        {GLFW_KEY_CAPS_LOCK,        HG::Core::Input::Keyboard::Key::CapsLock},
+        {GLFW_KEY_NUM_LOCK,         HG::Core::Input::Keyboard::Key::NumLock},
+        {GLFW_KEY_PRINT_SCREEN,     HG::Core::Input::Keyboard::Key::PrintScreen},
+        {GLFW_KEY_PAUSE,            HG::Core::Input::Keyboard::Key::Pause},
+        {GLFW_KEY_F1,               HG::Core::Input::Keyboard::Key::F1},
+        {GLFW_KEY_F2,               HG::Core::Input::Keyboard::Key::F2},
+        {GLFW_KEY_F3,               HG::Core::Input::Keyboard::Key::F3},
+        {GLFW_KEY_F4,               HG::Core::Input::Keyboard::Key::F4},
+        {GLFW_KEY_F5,               HG::Core::Input::Keyboard::Key::F5},
+        {GLFW_KEY_F6,               HG::Core::Input::Keyboard::Key::F6},
+        {GLFW_KEY_F7,               HG::Core::Input::Keyboard::Key::F7},
+        {GLFW_KEY_F8,               HG::Core::Input::Keyboard::Key::F8},
+        {GLFW_KEY_F9,               HG::Core::Input::Keyboard::Key::F9},
+        {GLFW_KEY_F10,              HG::Core::Input::Keyboard::Key::F10},
+        {GLFW_KEY_F11,              HG::Core::Input::Keyboard::Key::F11},
+        {GLFW_KEY_F12,              HG::Core::Input::Keyboard::Key::F12},
+        {GLFW_KEY_F13,              HG::Core::Input::Keyboard::Key::F13},
+        {GLFW_KEY_F14,              HG::Core::Input::Keyboard::Key::F14},
+        {GLFW_KEY_F15,              HG::Core::Input::Keyboard::Key::F15},
+        {GLFW_KEY_F16,              HG::Core::Input::Keyboard::Key::F16},
+        {GLFW_KEY_F17,              HG::Core::Input::Keyboard::Key::F17},
+        {GLFW_KEY_F18,              HG::Core::Input::Keyboard::Key::F18},
+        {GLFW_KEY_F19,              HG::Core::Input::Keyboard::Key::F19},
+        {GLFW_KEY_F20,              HG::Core::Input::Keyboard::Key::F20},
+        {GLFW_KEY_F21,              HG::Core::Input::Keyboard::Key::F21},
+        {GLFW_KEY_F22,              HG::Core::Input::Keyboard::Key::F22},
+        {GLFW_KEY_F23,              HG::Core::Input::Keyboard::Key::F23},
+        {GLFW_KEY_F24,              HG::Core::Input::Keyboard::Key::F24},
+        {GLFW_KEY_F25,              HG::Core::Input::Keyboard::Key::F25},
+        {GLFW_KEY_KP_0,             HG::Core::Input::Keyboard::Key::Num0},
+        {GLFW_KEY_KP_1,             HG::Core::Input::Keyboard::Key::Num1},
+        {GLFW_KEY_KP_2,             HG::Core::Input::Keyboard::Key::Num2},
+        {GLFW_KEY_KP_3,             HG::Core::Input::Keyboard::Key::Num3},
+        {GLFW_KEY_KP_4,             HG::Core::Input::Keyboard::Key::Num4},
+        {GLFW_KEY_KP_5,             HG::Core::Input::Keyboard::Key::Num5},
+        {GLFW_KEY_KP_6,             HG::Core::Input::Keyboard::Key::Num6},
+        {GLFW_KEY_KP_7,             HG::Core::Input::Keyboard::Key::Num7},
+        {GLFW_KEY_KP_8,             HG::Core::Input::Keyboard::Key::Num8},
+        {GLFW_KEY_KP_9,             HG::Core::Input::Keyboard::Key::Num9},
+        {GLFW_KEY_KP_DECIMAL,       HG::Core::Input::Keyboard::Key::NumDot},
+        {GLFW_KEY_KP_DIVIDE,        HG::Core::Input::Keyboard::Key::NumDivide},
+        {GLFW_KEY_KP_MULTIPLY,      HG::Core::Input::Keyboard::Key::NumMultiply},
+        {GLFW_KEY_KP_SUBTRACT,      HG::Core::Input::Keyboard::Key::NumSubstract},
+        {GLFW_KEY_KP_ADD,           HG::Core::Input::Keyboard::Key::NumAdd},
+        {GLFW_KEY_KP_ENTER,         HG::Core::Input::Keyboard::Key::NumReturn},
+        {GLFW_KEY_KP_EQUAL,         HG::Core::Input::Keyboard::Key::NumEqual},
+        {GLFW_KEY_LEFT_SHIFT,       HG::Core::Input::Keyboard::Key::LeftShift},
+        {GLFW_KEY_LEFT_CONTROL,     HG::Core::Input::Keyboard::Key::LeftCtrl},
+        {GLFW_KEY_LEFT_ALT,         HG::Core::Input::Keyboard::Key::LeftAlt},
+        {GLFW_KEY_LEFT_SUPER,       HG::Core::Input::Keyboard::Key::Super},
+        {GLFW_KEY_RIGHT_SHIFT,      HG::Core::Input::Keyboard::Key::RightShift},
+        {GLFW_KEY_RIGHT_CONTROL,    HG::Core::Input::Keyboard::Key::RightCtrl},
+        {GLFW_KEY_RIGHT_ALT,        HG::Core::Input::Keyboard::Key::RightAlt},
+        {GLFW_KEY_MENU,             HG::Core::Input::Keyboard::Key::Menu}
     };
 
-    static std::map<int, ::HG::Core::Input::Keyboard::Modifiers> modifiers = {
-        {GLFW_KEY_LEFT_ALT,         ::HG::Core::Input::Keyboard::Modifiers::Alt},
-        {GLFW_KEY_RIGHT_ALT,        ::HG::Core::Input::Keyboard::Modifiers::Alt},
-        {GLFW_KEY_LEFT_SHIFT,       ::HG::Core::Input::Keyboard::Modifiers::Shift},
-        {GLFW_KEY_RIGHT_SHIFT,      ::HG::Core::Input::Keyboard::Modifiers::Shift},
-        {GLFW_KEY_LEFT_CONTROL,     ::HG::Core::Input::Keyboard::Modifiers::Ctrl},
-        {GLFW_KEY_RIGHT_CONTROL,    ::HG::Core::Input::Keyboard::Modifiers::Ctrl},
+    static std::map<int, HG::Core::Input::Keyboard::Modifiers> modifiers = {
+        {GLFW_KEY_LEFT_ALT,         HG::Core::Input::Keyboard::Modifiers::Alt},
+        {GLFW_KEY_RIGHT_ALT,        HG::Core::Input::Keyboard::Modifiers::Alt},
+        {GLFW_KEY_LEFT_SHIFT,       HG::Core::Input::Keyboard::Modifiers::Shift},
+        {GLFW_KEY_RIGHT_SHIFT,      HG::Core::Input::Keyboard::Modifiers::Shift},
+        {GLFW_KEY_LEFT_CONTROL,     HG::Core::Input::Keyboard::Modifiers::Ctrl},
+        {GLFW_KEY_RIGHT_CONTROL,    HG::Core::Input::Keyboard::Modifiers::Ctrl},
     };
 
     {
@@ -419,13 +552,13 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, 
         {
             if (action == GLFW_PRESS)
             {
-                const_cast<::HG::Core::Input::Keyboard*>(
+                const_cast<HG::Core::Input::Keyboard*>(
                     controller->application()->input()->keyboard()
                 )->setPressed(iter->second, true);
             }
             else if (action == GLFW_RELEASE)
             {
-                const_cast<::HG::Core::Input::Keyboard*>(
+                const_cast<HG::Core::Input::Keyboard*>(
                     controller->application()->input()->keyboard()
                 )->setPressed(iter->second, false);
             }
@@ -440,25 +573,50 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, 
         {
             if (action == GLFW_PRESS)
             {
-                const_cast<::HG::Core::Input::Keyboard*>(
+                const_cast<HG::Core::Input::Keyboard*>(
                     controller->application()->input()->keyboard()
                 )->setPressed(iter->second, true);
             }
             else if (action == GLFW_RELEASE)
             {
-                const_cast<::HG::Core::Input::Keyboard*>(
+                const_cast<HG::Core::Input::Keyboard*>(
                     controller->application()->input()->keyboard()
                 )->setPressed(iter->second, false);
             }
         }
     }
 
-    ImGui_ImplGlfw_KeyCallback(nullptr, key, scancode, action, mods);
+    // Processing input for ImGui
+    auto& io = ImGui::GetIO();
+
+    if (action == GLFW_PRESS)
+    {
+        io.KeysDown[key] = true;
+    }
+    else if (action == GLFW_RELEASE)
+    {
+        io.KeysDown[key] = false;
+    }
+
+    io.KeyCtrl  = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT]   || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+    io.KeyAlt   = io.KeysDown[GLFW_KEY_LEFT_ALT]     || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER]   || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::charCallback(GLFWwindow *, unsigned int c)
+{
+    auto& io = ImGui::GetIO();
+
+    if (c > 0 && c < 0x10000)
+    {
+        io.AddInputCharacter((unsigned short)c);
+    }
 }
 
 void HG::Rendering::OpenGL::GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
 {
-    const_cast<::HG::Core::Input::Mouse*>(
+    const_cast<HG::Core::Input::Mouse*>(
         controller->application()->input()->mouse()
     )->setPressedButton(
         static_cast<uint8_t>(button),
@@ -468,7 +626,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::mouseButtonCallback(GLFWwindow
 
 void HG::Rendering::OpenGL::GLFWSystemController::handleWindowEvents()
 {
-    const_cast<::HG::Core::Input::Window*>(
+    const_cast<HG::Core::Input::Window*>(
         controller->application()->input()->window()
     )->setClosed(static_cast<bool>(glfwWindowShouldClose(m_window)));
 }
@@ -477,9 +635,9 @@ void HG::Rendering::OpenGL::GLFWSystemController::framebufferSizeCallback(GLFWwi
 {
     gl::set_viewport({0, 0}, {width, height});
 
-    if (::HG::Rendering::Base::Camera::active())
+    if (HG::Rendering::Base::Camera::active())
     {
-        ::HG::Rendering::Base::Camera::active()->setViewport(0, 0, width, height);
+        HG::Rendering::Base::Camera::active()->setViewport(0, 0, width, height);
     }
 
 }
@@ -566,7 +724,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
 
 HG::Utils::Rect HG::Rendering::OpenGL::GLFWSystemController::viewport() const
 {
-    ::HG::Utils::Rect rect;
+    HG::Utils::Rect rect;
 
     glGetIntegerv(GL_VIEWPORT, reinterpret_cast<GLint*>(&rect));
 

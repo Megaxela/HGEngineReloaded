@@ -8,7 +8,7 @@
 #include <any>
 
 #define HG_PROPERTY_INITIALIZER(TYPE, NAME)\
-    ::HG::Core::PropertyInitializer<TYPE> __ ## NAME ## Init = ::HG::Core::PropertyInitializer<TYPE>(\
+    HG::Core::PropertyInitializer<TYPE> __ ## NAME ## Init = HG::Core::PropertyInitializer<TYPE>(\
             this,\
             #NAME,\
             #TYPE,\

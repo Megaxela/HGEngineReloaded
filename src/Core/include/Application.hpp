@@ -77,7 +77,7 @@ namespace HG::Core
          * application renderer.
          * @return Pointer to renderer.
          */
-        ::HG::Rendering::Base::Renderer* renderer();
+        HG::Rendering::Base::Renderer* renderer();
 
         /**
          * @brief Method for getting pointer to application
@@ -109,7 +109,7 @@ namespace HG::Core
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<::HG::Rendering::Base::SystemController, T>::value
+            std::is_base_of<HG::Rendering::Base::SystemController, T>::value
         >::type setSystemController()
         {
             delete m_systemController;
@@ -124,7 +124,7 @@ namespace HG::Core
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<::HG::Physics::Base::PhysicsController, T>::value
+            std::is_base_of<HG::Physics::Base::PhysicsController, T>::value
         >::type setPhysicsController()
         {
             delete m_physicsController;
@@ -140,7 +140,7 @@ namespace HG::Core
          */
         template<typename T>
         typename std::enable_if<
-            std::is_base_of<::HG::Physics::Base::PhysicsController, T>::value,
+            std::is_base_of<HG::Physics::Base::PhysicsController, T>::value,
             T*
         >::type physicsController()
         {
@@ -152,7 +152,7 @@ namespace HG::Core
          * @return Pointer to system controller or
          * `nullptr` if there is no such.
          */
-        ::HG::Rendering::Base::SystemController* systemController() const;
+        HG::Rendering::Base::SystemController* systemController() const;
 
     private:
 
@@ -163,13 +163,13 @@ namespace HG::Core
         void proceedScene();
 
         // Renderer object
-        ::HG::Rendering::Base::Renderer m_renderer;
+        HG::Rendering::Base::Renderer m_renderer;
 
         // Application system controller
-        ::HG::Rendering::Base::SystemController* m_systemController;
+        HG::Rendering::Base::SystemController* m_systemController;
 
         // Physics controller
-        ::HG::Physics::Base::PhysicsController* m_physicsController;
+        HG::Physics::Base::PhysicsController* m_physicsController;
 
         // Input receiver/productor
         Input m_input;

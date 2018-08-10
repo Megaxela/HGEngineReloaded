@@ -8,7 +8,7 @@
 #include <Materials/GizmosMeshMaterial.hpp>
 #include <Common/ShaderData.hpp>
 
-HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(::HG::Core::Application* application) :
+HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* application) :
     m_application(application),
     m_lineMaterial(nullptr),
     m_meshMaterial(nullptr),
@@ -52,18 +52,18 @@ void HG::Rendering::OpenGL::GizmosRenderer::init()
     m_linesVAO.set_attribute_format(1, 4, GL_FLOAT, false, offsetof(HG::Rendering::Base::Gizmos::LineData, beginColor));
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::line(const ::HG::Rendering::Base::Gizmos::LineData &line)
+void HG::Rendering::OpenGL::GizmosRenderer::line(const HG::Rendering::Base::Gizmos::LineData &line)
 {
     m_lineData.push_back(line);
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::sphere(const ::HG::Rendering::Base::Gizmos::SphereData &sphere)
+void HG::Rendering::OpenGL::GizmosRenderer::sphere(const HG::Rendering::Base::Gizmos::SphereData &sphere)
 {
     (void) sphere;
     // todo: Add implementation
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const ::HG::Rendering::Base::Gizmos::HexahedronData &hexahedron)
+void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const HG::Rendering::Base::Gizmos::HexahedronData &hexahedron)
 {
     (void) hexahedron;
     // todo: Add implementation

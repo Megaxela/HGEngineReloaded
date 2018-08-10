@@ -12,12 +12,12 @@ HG::Rendering::Base::CubeMapTexture::CubeMapTexture() :
 
 }
 
-HG::Rendering::Base::CubeMapTexture::CubeMapTexture(::HG::Utils::SurfacePtr right,
-                                                         ::HG::Utils::SurfacePtr left,
-                                                         ::HG::Utils::SurfacePtr top,
-                                                         ::HG::Utils::SurfacePtr bottom,
-                                                         ::HG::Utils::SurfacePtr front,
-                                                         ::HG::Utils::SurfacePtr back) :
+HG::Rendering::Base::CubeMapTexture::CubeMapTexture(HG::Utils::SurfacePtr right,
+                                                         HG::Utils::SurfacePtr left,
+                                                         HG::Utils::SurfacePtr top,
+                                                         HG::Utils::SurfacePtr bottom,
+                                                         HG::Utils::SurfacePtr front,
+                                                         HG::Utils::SurfacePtr back) :
     m_externalData(nullptr),
     m_right(std::move(right)),
     m_left(std::move(left)),
@@ -40,7 +40,7 @@ void HG::Rendering::Base::CubeMapTexture::clearExternalData()
     m_externalData = nullptr;
 }
 
-::HG::Utils::SurfacePtr
+HG::Utils::SurfacePtr
 HG::Rendering::Base::CubeMapTexture::getSideSurface(HG::Rendering::Base::CubeMapTexture::Side side) const
 {
     switch (side)
@@ -57,7 +57,7 @@ HG::Rendering::Base::CubeMapTexture::getSideSurface(HG::Rendering::Base::CubeMap
 }
 
 void HG::Rendering::Base::CubeMapTexture::setSideSurface(HG::Rendering::Base::CubeMapTexture::Side side,
-                                                              ::HG::Utils::SurfacePtr surface)
+                                                              HG::Utils::SurfacePtr surface)
 {
     switch (side)
     {

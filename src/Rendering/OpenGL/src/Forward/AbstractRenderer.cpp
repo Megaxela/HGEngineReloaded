@@ -34,7 +34,7 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::applyShaderUniforms(HG::R
 
 void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::program *program,
                                                                            const std::string &name,
-                                                                           const ::HG::Rendering::Base::Material::Value &value)
+                                                                           const HG::Rendering::Base::Material::Value &value)
 {
 
     auto location = program->uniform_location(name);

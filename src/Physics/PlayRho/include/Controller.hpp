@@ -12,7 +12,7 @@ namespace HG::Physics::PlayRho
     /**
      * @brief PlayRho physics controller object.
      */
-    class Controller : public ::HG::Physics::Base::PhysicsController
+    class Controller : public HG::Physics::Base::PhysicsController
     {
     public:
 
@@ -20,7 +20,7 @@ namespace HG::Physics::PlayRho
          * @brief Constructor.
          * @param parent Pointer to parent application.
          */
-        explicit Controller(::HG::Core::Application* parent);
+        explicit Controller(HG::Core::Application* parent);
 
         /**
          * @brief Method for getting playrho world.

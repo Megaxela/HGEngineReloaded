@@ -58,7 +58,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Constructor from surface.
          */
-        explicit Texture(::HG::Utils::SurfacePtr ptr);
+        explicit Texture(HG::Utils::SurfacePtr ptr);
 
         /**
          * @brief Destructor. Clears external data.
@@ -111,13 +111,13 @@ namespace HG::Rendering::Base
          * texture.
          * @return Surface.
          */
-        ::HG::Utils::SurfacePtr surface() const;
+        HG::Utils::SurfacePtr surface() const;
 
         /**
          * @brief Method for setting surface to texture.
          * @param ptr Pointer to surface.
          */
-        void setSurface(::HG::Utils::SurfacePtr ptr);
+        void setSurface(HG::Utils::SurfacePtr ptr);
 
         /**
          * @brief Method for getting texture size in pixels.
@@ -184,7 +184,7 @@ namespace HG::Rendering::Base
     private:
         TextureExternalData* m_externalData;
 
-        ::HG::Utils::SurfacePtr m_surface;
+        HG::Utils::SurfacePtr m_surface;
 
         Filtering m_minFiltering;
         Filtering m_magFiltering;

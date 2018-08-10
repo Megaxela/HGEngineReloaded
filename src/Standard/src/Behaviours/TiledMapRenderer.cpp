@@ -147,7 +147,7 @@ void main()
 }
 
 void HG::Standard::Behaviours::TiledMapRenderer::prepareLayer(const HG::Standard::Behaviours::TiledMap::Layer *layer,
-                                                               ::HG::Core::GameObject *parent)
+                                                               HG::Core::GameObject *parent)
 {
     switch (layer->type)
     {
@@ -205,7 +205,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
 }
 
 void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Standard::Behaviours::TiledMap::Group *groupLayer,
-                                                                    ::HG::Core::GameObject *parent)
+                                                                    HG::Core::GameObject *parent)
 {
     // Creating game object
 
@@ -232,7 +232,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Sta
 }
 
 void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Standard::Behaviours::TiledMap::TileLayer *tileLayer,
-                                                                  ::HG::Core::GameObject *parent)
+                                                                  HG::Core::GameObject *parent)
 {
     // Creating game object
     HG::Core::GameObject* layerGameObject =
@@ -254,8 +254,8 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
     layerGameObject->transform()->setLocalPosition(pos);
 
     std::map<
-        ::HG::Rendering::Base::Texture*,
-        ::HG::Utils::MeshPtr
+        HG::Rendering::Base::Texture*,
+        HG::Utils::MeshPtr
     > rendererMeshInfo;
 
     glm::ivec2 tilePointer = {-1, 0}; // Initial position
@@ -386,7 +386,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
         {
             meshIter = rendererMeshInfo.insert_or_assign(
                 textureIter->second,
-                std::make_shared<::HG::Utils::Mesh>()
+                std::make_shared<HG::Utils::Mesh>()
             ).first;
         }
 

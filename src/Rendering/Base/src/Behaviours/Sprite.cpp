@@ -46,12 +46,12 @@ HG::Rendering::Base::Texture* HG::Rendering::Base::Behaviours::Sprite::texture()
     return m_texture;
 }
 
-void HG::Rendering::Base::Behaviours::Sprite::setClipping(const ::HG::Utils::Rect &rect)
+void HG::Rendering::Base::Behaviours::Sprite::setClipping(const HG::Utils::Rect &rect)
 {
     m_clipping = rect;
 }
 
-::HG::Utils::Rect HG::Rendering::Base::Behaviours::Sprite::clipping() const
+HG::Utils::Rect HG::Rendering::Base::Behaviours::Sprite::clipping() const
 {
     return m_clipping;
 }

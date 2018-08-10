@@ -8,7 +8,7 @@ namespace HG::Rendering::OpenGL::Common
     /**
      * @brief External data implementation for shaders.
      */
-    class ShaderData : public ::HG::Rendering::Base::Shader::ShaderExternalData
+    class ShaderData : public HG::Rendering::Base::Shader::ShaderExternalData
     {
     public:
 

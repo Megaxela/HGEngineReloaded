@@ -9,7 +9,7 @@ namespace HG::Standard
      * @brief Class, that describes standard filesystem
      * resource accessor.
      */
-    class FilesystemResourceAccessor : public ::HG::Core::ResourceAccessor
+    class FilesystemResourceAccessor : public HG::Core::ResourceAccessor
     {
     public:
 
@@ -17,7 +17,7 @@ namespace HG::Standard
          * @brief Class, that describes data object with
          * vector inside.
          */
-        class VectorData : public ::HG::Core::ResourceAccessor::Data
+        class VectorData : public HG::Core::ResourceAccessor::Data
         {
         public:
 

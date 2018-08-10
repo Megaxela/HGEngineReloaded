@@ -61,7 +61,7 @@ namespace HG::Core
          * @brief Method, that's called every frame,
          * after `update` method.
          */
-        void render(::HG::Rendering::Base::Renderer* renderer);
+        void render(HG::Rendering::Base::Renderer* renderer);
 
         /**
          * @brief Method, that's called on scene start.

@@ -24,7 +24,7 @@ namespace HG::Rendering::Base
          * @brief Constructor.
          * @param application Pointer to parent application.
          */
-        explicit SystemController(::HG::Core::Application* application);
+        explicit SystemController(HG::Core::Application* application);
 
         // Disable copying
         SystemController(const SystemController&) = delete;
@@ -67,17 +67,17 @@ namespace HG::Rendering::Base
          * viewport at `start` stage.
          * @return Viewport.
          */
-        virtual ::HG::Utils::Rect viewport() const = 0;
+        virtual HG::Utils::Rect viewport() const = 0;
 
         /**
          * @brief Method for getting parent application.
          * @return Pointer to parent application.
          */
-        ::HG::Core::Application* application() const;
+        HG::Core::Application* application() const;
 
     private:
 
-        ::HG::Core::Application* m_application;
+        HG::Core::Application* m_application;
     };
 }
 

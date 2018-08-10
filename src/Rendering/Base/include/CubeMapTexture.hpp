@@ -54,12 +54,12 @@ namespace HG::Rendering::Base
          * @param front Front side surface.
          * @param back Back side surface.
          */
-        CubeMapTexture(::HG::Utils::SurfacePtr right,
-                       ::HG::Utils::SurfacePtr left,
-                       ::HG::Utils::SurfacePtr top,
-                       ::HG::Utils::SurfacePtr bottom,
-                       ::HG::Utils::SurfacePtr front,
-                       ::HG::Utils::SurfacePtr back);
+        CubeMapTexture(HG::Utils::SurfacePtr right,
+                       HG::Utils::SurfacePtr left,
+                       HG::Utils::SurfacePtr top,
+                       HG::Utils::SurfacePtr bottom,
+                       HG::Utils::SurfacePtr front,
+                       HG::Utils::SurfacePtr back);
 
         /**
          * @brief Destructor. Clears external data.
@@ -112,7 +112,7 @@ namespace HG::Rendering::Base
          * @param side Side.
          * @return Smart pointer to surface.
          */
-        ::HG::Utils::SurfacePtr getSideSurface(Side side) const;
+        HG::Utils::SurfacePtr getSideSurface(Side side) const;
 
         /**
          * @brief Method for setting side surface.
@@ -121,19 +121,19 @@ namespace HG::Rendering::Base
          * @param side Side.
          * @param surface Smart pointer to surface.
          */
-        void setSideSurface(Side side, ::HG::Utils::SurfacePtr surface);
+        void setSideSurface(Side side, HG::Utils::SurfacePtr surface);
 
     private:
 
         CubeMapTextureExternalData* m_externalData;
 
         // Surfaces
-        ::HG::Utils::SurfacePtr m_right;
-        ::HG::Utils::SurfacePtr m_left;
-        ::HG::Utils::SurfacePtr m_top;
-        ::HG::Utils::SurfacePtr m_bottom;
-        ::HG::Utils::SurfacePtr m_front;
-        ::HG::Utils::SurfacePtr m_back;
+        HG::Utils::SurfacePtr m_right;
+        HG::Utils::SurfacePtr m_left;
+        HG::Utils::SurfacePtr m_top;
+        HG::Utils::SurfacePtr m_bottom;
+        HG::Utils::SurfacePtr m_front;
+        HG::Utils::SurfacePtr m_back;
     };
 }
 

@@ -10,6 +10,7 @@
 
 #include <SystemController.hpp>
 #include <GL/gl_ordered.hpp>
+#include <imgui.h>
 
 namespace HG::Rendering::OpenGL
 {
@@ -23,7 +24,7 @@ namespace HG::Rendering::OpenGL
         /**
          * @brief Constructor.
          */
-        explicit GLFWSystemController(::HG::Core::Application* application);
+        explicit GLFWSystemController(HG::Core::Application* application);
 
         /**
          * @brief Method, that's closing window on destruction.
@@ -68,6 +69,21 @@ namespace HG::Rendering::OpenGL
                                   const void*);
 
         /**
+         * @brief Method for initializing ImGui system.
+         */
+        void imGuiInit();
+
+        /**
+         * @brief Method for deinitializing ImGui system.
+         */
+        void imGuiDeinit();
+
+        /**
+         * @brief Method for preparing ImGui to new frame.
+         */
+        void imGuiNewFrame();
+
+        /**
          * @brief Method for handling gamepad events.
          */
         void handleGamepadsEvents();
@@ -76,6 +92,12 @@ namespace HG::Rendering::OpenGL
          * @brief Method for handling window events.
          */
         void handleWindowEvents();
+
+        /**
+         * @brief GLFW callback for input.
+         * @param c Scancode.
+         */
+        static void charCallback(GLFWwindow*, unsigned int c);
 
         /**
          * @brief GLFW callback for pressing keys.
@@ -114,6 +136,8 @@ namespace HG::Rendering::OpenGL
         static void framebufferSizeCallback(GLFWwindow*, int width, int height);
 
         GLFWwindow* m_window;
+
+        GLFWcursor*  m_mouseCursors[ImGuiMouseCursor_COUNT];
     };
 }
 #endif

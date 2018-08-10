@@ -22,7 +22,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Constructor.
          */
-        explicit RenderingPipeline(::HG::Core::Application* application);
+        explicit RenderingPipeline(HG::Core::Application* application);
 
         /**
          * @brief Desturctor.
@@ -40,13 +40,13 @@ namespace HG::Rendering::Base
          * @brief Rendering method.
          * @param objects Objects.
          */
-        virtual void render(const ::HG::Core::Scene::GameObjectsContainer& objects) = 0;
+        virtual void render(const HG::Core::Scene::GameObjectsContainer& objects) = 0;
 
         /**
          * @brief Method for getting parent application.
          * @return Pointer to parent application.
          */
-        ::HG::Core::Application* application() const;
+        HG::Core::Application* application() const;
 
         /**
          * @brief Method for setting up render behaviour.
@@ -74,7 +74,7 @@ namespace HG::Rendering::Base
 
     private:
 
-        ::HG::Core::Application* m_parentApplication;
+        HG::Core::Application* m_parentApplication;
     };
 }
 

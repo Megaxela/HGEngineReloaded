@@ -8,18 +8,18 @@ std::map<
     std::string_view,
     std::function<
         void(
-            ::HG::Utils::MeshPtr&,       // mesh ptr
+            HG::Utils::MeshPtr&,       // mesh ptr
             std::string_view::const_iterator&, // iterator
             std::string_view&                  // line
         )
     >
 > HG::Standard::MeshLoaders::OBJ::m_tokenProcessors = {
 //    {"v", // Vertex
-//     [](::HG::Utils::MeshPtr& mesh,
+//     [](HG::Utils::MeshPtr& mesh,
 //        std::string_view::const_iterator& iterator,
 //        std::string_view& line)
 //     {
-//         ::HG::Utils::Vertex vertex;
+//         HG::Utils::Vertex vertex;
 //
 //         // todo: Add implementation, when `std::from_chars` will be corrected
 //         // Searching for 3 coordinates. Skipping fourth for now
@@ -39,7 +39,7 @@ HG::Standard::MeshLoaders::OBJ::OBJ()
 
 }
 
-::HG::Utils::MeshPtr HG::Standard::MeshLoaders::OBJ::load(::HG::Core::ResourceAccessor::DataPtr data)
+HG::Utils::MeshPtr HG::Standard::MeshLoaders::OBJ::load(HG::Core::ResourceAccessor::DataPtr data)
 {
     auto castedData =
         std::string_view(
@@ -47,7 +47,7 @@ HG::Standard::MeshLoaders::OBJ::OBJ()
             data->size()
         );
 
-    auto mesh = std::make_shared<::HG::Utils::Mesh>();
+    auto mesh = std::make_shared<HG::Utils::Mesh>();
 
     // Parsing line by line
     auto iterator = castedData.begin();

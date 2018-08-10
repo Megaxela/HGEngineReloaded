@@ -11,7 +11,7 @@ HG::Rendering::Base::Texture::Texture() :
 
 }
 
-HG::Rendering::Base::Texture::Texture(::HG::Utils::SurfacePtr ptr) :
+HG::Rendering::Base::Texture::Texture(HG::Utils::SurfacePtr ptr) :
     m_externalData(nullptr),
     m_surface(std::move(ptr)),
     m_minFiltering(Filtering::Nearest),
@@ -38,12 +38,12 @@ glm::ivec2 HG::Rendering::Base::Texture::size() const
     return m_size;
 }
 
-::HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface() const
+HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface() const
 {
     return m_surface;
 }
 
-void HG::Rendering::Base::Texture::setSurface(::HG::Utils::SurfacePtr ptr)
+void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfacePtr ptr)
 {
     m_surface = std::move(ptr);
 

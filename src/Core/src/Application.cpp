@@ -170,7 +170,7 @@ const HG::Core::Input *HG::Core::Application::input() const
     return &m_input;
 }
 
-::HG::Rendering::Base::SystemController *HG::Core::Application::systemController() const
+HG::Rendering::Base::SystemController *HG::Core::Application::systemController() const
 {
     return m_systemController;
 }

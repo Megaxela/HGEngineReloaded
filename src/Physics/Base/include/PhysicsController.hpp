@@ -21,7 +21,7 @@ namespace HG::Physics::Base
          * @brief Constructor.
          * @param application Pointer to parent application.
          */
-        explicit PhysicsController(::HG::Core::Application* application);
+        explicit PhysicsController(HG::Core::Application* application);
 
         // Disable copying
         PhysicsController(const PhysicsController&) = delete;
@@ -42,11 +42,11 @@ namespace HG::Physics::Base
          * @brief Method for getting pointer to parent application.
          * @return Pointer to parent application.
          */
-        ::HG::Core::Application* application() const;
+        HG::Core::Application* application() const;
 
     private:
 
-        ::HG::Core::Application* m_parent;
+        HG::Core::Application* m_parent;
     };
 }
 

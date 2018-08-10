@@ -9,7 +9,7 @@ namespace HG::Standard::Behaviours
      * @brief Behaviour for controlling debug gameobjects
      * control.
      */
-    class DebugControllerOverlay : public ::HG::Core::Behaviour
+    class DebugControllerOverlay : public HG::Core::Behaviour
     {
     public:
 
@@ -21,7 +21,7 @@ namespace HG::Standard::Behaviours
         {
             m_viewBehaviours.emplace_back(
                 name,
-                [](::HG::Core::GameObject* gameObject)
+                [](HG::Core::GameObject* gameObject)
                 {
                     return gameObject->findBehaviour<B>();
                 }
@@ -42,27 +42,27 @@ namespace HG::Standard::Behaviours
 
         void displayInspectorWindow();
 
-        void proceedParentedGameObjects(::HG::Core::Transform* parent);
+        void proceedParentedGameObjects(HG::Core::Transform* parent);
 
         void proceedInspector();
 
-        void displayPropertyWidget(const ::HG::Core::Behaviour::Property& property);
+        void displayPropertyWidget(const HG::Core::Behaviour::Property& property);
 
-        std::vector<::HG::Core::GameObject*> m_gameObjects;
-        std::vector<::HG::Core::Behaviour*> m_behaviours;
-        std::vector<::HG::Core::Behaviour::Property> m_properties;
+        std::vector<HG::Core::GameObject*> m_gameObjects;
+        std::vector<HG::Core::Behaviour*> m_behaviours;
+        std::vector<HG::Core::Behaviour::Property> m_properties;
 
-        ::HG::Core::GameObject* m_activeGameObject = nullptr;
+        HG::Core::GameObject* m_activeGameObject = nullptr;
 
         std::vector<
             std::pair<
                 std::string,
-                std::function<::HG::Core::Behaviour*(::HG::Core::GameObject*)>
+                std::function<HG::Core::Behaviour*(HG::Core::GameObject*)>
             >
         > m_viewBehaviours;
 
         HG_PROPERTY_DEFAULT(glm::vec2, OriginSize, glm::vec2(0.3f, 0.3f));
-        HG_PROPERTY_DEFAULT(::HG::Utils::Color, OriginColor, ::HG::Utils::Color::fromRGB(150, 180, 0));
+        HG_PROPERTY_DEFAULT(HG::Utils::Color, OriginColor, HG::Utils::Color::fromRGB(150, 180, 0));
     };
 }
 

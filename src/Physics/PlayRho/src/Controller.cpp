@@ -488,7 +488,7 @@ namespace {
 //    }
 }
 
-HG::Physics::PlayRho::Controller::Controller(::HG::Core::Application *parent) :
+HG::Physics::PlayRho::Controller::Controller(HG::Core::Application *parent) :
     PhysicsController(parent),
     m_drawer(parent->renderer()->gizmos()),
     m_stepConfiguration(),

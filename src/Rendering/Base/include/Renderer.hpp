@@ -19,7 +19,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Default constructor.
          */
-        explicit Renderer(::HG::Core::Application* application);
+        explicit Renderer(HG::Core::Application* application);
 
         /**
          * @brief Destructor.
@@ -56,19 +56,19 @@ namespace HG::Rendering::Base
         /**
          * @brief Perform rendering finally.
          */
-        void render(const ::HG::Core::Scene::GameObjectsContainer& gameObjects);
+        void render(const HG::Core::Scene::GameObjectsContainer& gameObjects);
 
         /**
          * @brief Method for getting gizmos object.
          * @return Pointer to gizmos.
          */
-        ::HG::Rendering::Base::Gizmos* gizmos();
+        HG::Rendering::Base::Gizmos* gizmos();
 
         /**
          * @brief Method for getting renderer material collection.
          * @return Pointer to material collection.
          */
-        ::HG::Rendering::Base::MaterialCollection* materialCollection();
+        HG::Rendering::Base::MaterialCollection* materialCollection();
 
         /**
          * @brief Method for setting up objects
@@ -89,13 +89,13 @@ namespace HG::Rendering::Base
 
     private:
 
-        ::HG::Core::Application* m_parentApplication;
+        HG::Core::Application* m_parentApplication;
 
-        ::HG::Rendering::Base::RenderingPipeline* m_pipeline;
+        HG::Rendering::Base::RenderingPipeline* m_pipeline;
 
-        ::HG::Rendering::Base::Gizmos m_gizmos;
+        HG::Rendering::Base::Gizmos m_gizmos;
 
-        ::HG::Rendering::Base::MaterialCollection m_materialCollection;
+        HG::Rendering::Base::MaterialCollection m_materialCollection;
 
     };
 }

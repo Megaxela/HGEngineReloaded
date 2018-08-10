@@ -34,7 +34,7 @@ namespace HG::Rendering::OpenGL::Forward
     private:
 
         // Fallback mesh program
-        ::HG::Rendering::Base::Material* m_meshFallbackMaterial;
+        HG::Rendering::Base::Material* m_meshFallbackMaterial;
     };
 }
 

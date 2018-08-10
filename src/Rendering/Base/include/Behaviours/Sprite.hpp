@@ -47,17 +47,17 @@ namespace HG::Rendering::Base::Behaviours
          * @brief Method for getting sprite clipping.
          * @param rect Rectangle.
          */
-        void setClipping(const ::HG::Utils::Rect& rect);
+        void setClipping(const HG::Utils::Rect& rect);
 
         /**
          * @brief Method for getting sprite clipping.
          * @return Rectangle.
          */
-        ::HG::Utils::Rect clipping() const;
+        HG::Utils::Rect clipping() const;
 
     private:
         Texture* m_texture;
-        ::HG::Utils::Rect m_clipping;
+        HG::Utils::Rect m_clipping;
     };
 }
 

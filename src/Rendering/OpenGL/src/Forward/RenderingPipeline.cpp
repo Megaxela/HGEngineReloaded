@@ -53,11 +53,12 @@
 "    vec3 specular;\n" \
 "};\n"
 
-HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(::HG::Core::Application* application) :
+HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
     m_behavioursCache(),
     m_sortedBehaviours(),
     m_gizmosRenderer(application),
+    m_imguiRenderer(application),
     m_renderers()
 {
 
@@ -90,10 +91,12 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::init()
 
     m_gizmosRenderer.init();
 
+    m_imguiRenderer.init();
+
     return true;
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const ::HG::Core::Scene::GameObjectsContainer& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Core::Scene::GameObjectsContainer& objects)
 {
 
     // Clearing main buffer
@@ -106,7 +109,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const ::HG::Core:
 
 
     // Getting camera
-    auto camera = ::HG::Rendering::Base::Camera::active();
+    auto camera = HG::Rendering::Base::Camera::active();
 
     if (camera != nullptr)
     {
@@ -121,11 +124,13 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const ::HG::Core:
     // Render ImGui
     ImGui::Render();
 
+    m_imguiRenderer.render();
+
     // Swapping graphics buffers
     application()->systemController()->swapBuffers();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const ::HG::Core::Scene::GameObjectsContainer& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const HG::Core::Scene::GameObjectsContainer& objects)
 {
     // todo: Add cubemap rendering
 
@@ -191,7 +196,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(HG::Rendering::Bas
 {
     switch (behaviour->renderBehaviourType())
     {
-    case ::HG::Rendering::Base::Behaviours::Mesh::Id:
+    case HG::Rendering::Base::Behaviours::Mesh::Id:
         setupMesh(static_cast<Base::Behaviours::Mesh *>(behaviour));
         break;
     default:
@@ -200,7 +205,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(HG::Rendering::Bas
     }
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupMesh(::HG::Rendering::Base::Behaviours::Mesh *behaviour)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupMesh(HG::Rendering::Base::Behaviours::Mesh *behaviour)
 {
     if (behaviour->mesh() == nullptr)
     {
@@ -225,7 +230,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupMesh(::HG::Renderin
 
     // Loading data into VBO
     data->VBO.set_data(
-        mesh->Vertices.size() * sizeof(::HG::Utils::Vertex),
+        mesh->Vertices.size() * sizeof(HG::Utils::Vertex),
         mesh->Vertices.data()
     );
 
@@ -239,9 +244,9 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupMesh(::HG::Renderin
     );
 
     // Binding vertex buffer
-    data->VAO.set_vertex_buffer(0, data->VBO, 0, sizeof(::HG::Utils::Vertex));
-    data->VAO.set_vertex_buffer(1, data->VBO, 0, sizeof(::HG::Utils::Vertex));
-    data->VAO.set_vertex_buffer(2, data->VBO, 0, sizeof(::HG::Utils::Vertex));
+    data->VAO.set_vertex_buffer(0, data->VBO, 0, sizeof(HG::Utils::Vertex));
+    data->VAO.set_vertex_buffer(1, data->VBO, 0, sizeof(HG::Utils::Vertex));
+    data->VAO.set_vertex_buffer(2, data->VBO, 0, sizeof(HG::Utils::Vertex));
 
     // Enabling attributes
     data->VAO.set_attribute_enabled(0, true);
@@ -251,24 +256,24 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupMesh(::HG::Renderin
     data->VAO.set_attribute_enabled(4, true);
 
     // Setting
-    data->VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, position)));
-    data->VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, normal)));
-    data->VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, uv)));
-    data->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, tangent)));
-    data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, bitangent)));
+    data->VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, position)));
+    data->VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, normal)));
+    data->VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, uv)));
+    data->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, tangent)));
+    data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::Base::CubeMapTexture* texture)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(HG::Rendering::Base::CubeMapTexture* texture)
 {
     // If one of surfaces are not available
     // post error
-    if (texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Right) == nullptr ||
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Left) == nullptr ||
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Top) == nullptr ||
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Bottom) == nullptr ||
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Front) == nullptr ||
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Back) == nullptr)
+    if (texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Right) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Left) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Top) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Bottom) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Front) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Back) == nullptr)
     {
         Error() << "Can't setup not fully set up cube map texture.";
         return;
@@ -290,32 +295,32 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::B
     //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
     //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
     setupCubeMapSide(
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Right),
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Right),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_POSITIVE_X
     );
     setupCubeMapSide(
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Left),
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Left),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_NEGATIVE_X
     );
     setupCubeMapSide(
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Top),
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Top),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_POSITIVE_Y
     );
     setupCubeMapSide(
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Bottom),
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Bottom),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
     );
     setupCubeMapSide(
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Front),
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Front),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_POSITIVE_Z
     );
     setupCubeMapSide(
-        texture->getSideSurface(::HG::Rendering::Base::CubeMapTexture::Side::Back),
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Back),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
     );
@@ -328,7 +333,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::B
     externalData->Texture.set_wrap_r(GL_CLAMP_TO_EDGE);
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupCubeMapSide(const ::HG::Utils::SurfacePtr& surface,
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
                                                                          gl::cubemap_texture& texture,
                                                                          GLuint side)
 {
@@ -391,7 +396,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setupCubeMapSide(const :
 //    );
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::Base::Texture* texture)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(HG::Rendering::Base::Texture* texture)
 {
     // Checking surface on texture
     if (texture->surface() == nullptr)
@@ -445,13 +450,15 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::B
         break;
     }
 
-    // Loading data into texture
+    // Setting up storage
     externalData->Texture.set_storage(
             1,       // Levels
             GL_RGBA8, // Internal format
             texture->surface()->Width,
             texture->surface()->Height
     );
+
+    // Loading data into texture
     externalData->Texture.set_sub_image(
         0, // Level
         0, // X offset
@@ -462,10 +469,11 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::B
         GL_UNSIGNED_BYTE, // Type
         texture->surface()->Data
     );
-    externalData->Texture.bind();
+
+    externalData->Texture.unbind();
 }
 
-GLuint HG::Rendering::OpenGL::Forward::RenderingPipeline::getFilter(::HG::Rendering::Base::Texture::Filtering filter)
+GLuint HG::Rendering::OpenGL::Forward::RenderingPipeline::getFilter(HG::Rendering::Base::Texture::Filtering filter)
 {
     switch (filter)
     {
@@ -476,7 +484,7 @@ GLuint HG::Rendering::OpenGL::Forward::RenderingPipeline::getFilter(::HG::Render
     return 0;
 }
 
-GLuint HG::Rendering::OpenGL::Forward::RenderingPipeline::getWrapping(::HG::Rendering::Base::Texture::Wrapping wrapping)
+GLuint HG::Rendering::OpenGL::Forward::RenderingPipeline::getWrapping(HG::Rendering::Base::Texture::Wrapping wrapping)
 {
     switch (wrapping)
     {
@@ -489,7 +497,7 @@ GLuint HG::Rendering::OpenGL::Forward::RenderingPipeline::getWrapping(::HG::Rend
     return 0;
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(::HG::Rendering::Base::Shader *shader)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::setup(HG::Rendering::Base::Shader *shader)
 {
     // Creating external data if not presented
     if (shader->externalData<Common::ShaderData>() == nullptr)

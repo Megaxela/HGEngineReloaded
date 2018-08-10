@@ -24,7 +24,7 @@ std::string HG::Standard::FilesystemResourceAccessor::VectorData::id() const
     return m_id;
 }
 
-::HG::Core::ResourceAccessor::DataPtr
+HG::Core::ResourceAccessor::DataPtr
 HG::Standard::FilesystemResourceAccessor::loadRaw(const std::string &id)
 {
     std::ifstream file(id, std::ios::binary);

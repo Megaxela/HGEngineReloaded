@@ -38,7 +38,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
     // Binding vertex buffer object
     m_spriteData->VBO.bind(GL_ARRAY_BUFFER);
 
-    ::HG::Utils::Mesh mesh;
+    HG::Utils::Mesh mesh;
 
     float scale = 0.01f;
 
@@ -58,7 +58,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
 
     // Loading data into VBO
     m_spriteData->VBO.set_data(
-        mesh.Vertices.size() * sizeof(::HG::Utils::Vertex),
+        mesh.Vertices.size() * sizeof(HG::Utils::Vertex),
         mesh.Vertices.data()
     );
 
@@ -72,9 +72,9 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
     );
 
     // Binding vertex buffer
-    m_spriteData->VAO.set_vertex_buffer(0, m_spriteData->VBO, 0, sizeof(::HG::Utils::Vertex));
-    m_spriteData->VAO.set_vertex_buffer(1, m_spriteData->VBO, 0, sizeof(::HG::Utils::Vertex));
-    m_spriteData->VAO.set_vertex_buffer(2, m_spriteData->VBO, 0, sizeof(::HG::Utils::Vertex));
+    m_spriteData->VAO.set_vertex_buffer(0, m_spriteData->VBO, 0, sizeof(HG::Utils::Vertex));
+    m_spriteData->VAO.set_vertex_buffer(1, m_spriteData->VBO, 0, sizeof(HG::Utils::Vertex));
+    m_spriteData->VAO.set_vertex_buffer(2, m_spriteData->VBO, 0, sizeof(HG::Utils::Vertex));
 
     // Enabling attributes
     m_spriteData->VAO.set_attribute_enabled(0, true);
@@ -84,11 +84,11 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
     m_spriteData->VAO.set_attribute_enabled(4, true);
 
     // Setting
-    m_spriteData->VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, position)));
-    m_spriteData->VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, normal)));
-    m_spriteData->VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, uv)));
-    m_spriteData->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, tangent)));
-    m_spriteData->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(::HG::Utils::Vertex, bitangent)));
+    m_spriteData->VAO.set_attribute_format(0, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, position)));
+    m_spriteData->VAO.set_attribute_format(1, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, normal)));
+    m_spriteData->VAO.set_attribute_format(2, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, uv)));
+    m_spriteData->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, tangent)));
+    m_spriteData->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 }
 
 void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Core::GameObject *gameObject,
@@ -122,7 +122,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Core::GameObject
     {
         program->Program.set_uniform(
             location,
-            ::HG::Rendering::Base::Camera::active()->viewMatrix()
+            HG::Rendering::Base::Camera::active()->viewMatrix()
         );
     }
 
@@ -130,7 +130,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Core::GameObject
     {
         program->Program.set_uniform(
             location,
-            ::HG::Rendering::Base::Camera::active()
+            HG::Rendering::Base::Camera::active()
                 ->projectionMatrix()
         );
     }
@@ -173,5 +173,5 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Core::GameObject
 
 size_t HG::Rendering::OpenGL::Forward::SpriteRenderer::getTarget()
 {
-    return ::HG::Rendering::Base::Behaviours::Sprite::Id;
+    return HG::Rendering::Base::Behaviours::Sprite::Id;
 }

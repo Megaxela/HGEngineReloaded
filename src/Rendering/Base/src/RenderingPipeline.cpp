@@ -2,7 +2,7 @@
 #include "RenderingPipeline.hpp"
 #include <Application.hpp>
 
-HG::Rendering::Base::RenderingPipeline::RenderingPipeline(::HG::Core::Application* application) :
+HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     m_parentApplication(application)
 {
 
@@ -37,7 +37,7 @@ bool HG::Rendering::Base::RenderingPipeline::init()
     return true;
 }
 
-::HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() const
+HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() const
 {
     return m_parentApplication;
 }

@@ -15,7 +15,7 @@ namespace HG::Standard::Behaviours
      * @brief Tiled map loader system.
      * Support version 1.1.5
      */
-    class TiledMap : public ::HG::Core::Behaviour
+    class TiledMap : public HG::Core::Behaviour
     {
     public:
 

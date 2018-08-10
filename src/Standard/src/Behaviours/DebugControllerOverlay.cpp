@@ -160,9 +160,9 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(::HG::Core::Transform *parent)
+void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(HG::Core::Transform *parent)
 {
-    ::HG::Core::GameObject* newActiveGameObject = nullptr;
+    HG::Core::GameObject* newActiveGameObject = nullptr;
 
     for (auto&& gameObject : m_gameObjects)
     {
@@ -205,7 +205,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObject
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(const ::HG::Core::Behaviour::Property& property)
+void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(const HG::Core::Behaviour::Property& property)
 {
     if (property.typeInfo() == typeid(float))
     {
@@ -223,13 +223,13 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(con
 
         property.getSetter<glm::vec2>()(v);
     }
-    else if (property.typeInfo() == typeid(::HG::Utils::Color))
+    else if (property.typeInfo() == typeid(HG::Utils::Color))
     {
-        auto color = property.getGetter<::HG::Utils::Color>()();
+        auto color = property.getGetter<HG::Utils::Color>()();
 
         ImGui::ColorEdit3(property.name().c_str(), reinterpret_cast<float*>(&color));
 
-        property.getSetter<::HG::Utils::Color>()(color);
+        property.getSetter<HG::Utils::Color>()(color);
     }
     else
     {

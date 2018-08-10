@@ -34,7 +34,7 @@ namespace HG::Rendering::OpenGL::Forward
     private:
 
         // Shader for sprite rendering
-        ::HG::Rendering::Base::Material* m_spriteMaterial;
+        HG::Rendering::Base::Material* m_spriteMaterial;
 
         // Sprite mesh
         Common::MeshData* m_spriteData;

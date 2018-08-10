@@ -8,7 +8,7 @@ HG::Rendering::Base::SystemController::SystemController(HG::Core::Application *a
 
 }
 
-::HG::Core::Application *HG::Rendering::Base::SystemController::application() const
+HG::Core::Application *HG::Rendering::Base::SystemController::application() const
 {
     return m_application;
 }

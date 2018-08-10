@@ -4,7 +4,7 @@
 #include <Renderer.hpp>
 
 
-HG::Rendering::Base::Renderer::Renderer(::HG::Core::Application* application) :
+HG::Rendering::Base::Renderer::Renderer(HG::Core::Application* application) :
     m_parentApplication(application),
     m_pipeline(nullptr),
     m_materialCollection(application->resourceManager(), this)
@@ -43,7 +43,7 @@ void HG::Rendering::Base::Renderer::render(const HG::Core::Scene::GameObjectsCon
     m_gizmos.clear();
 }
 
-::HG::Rendering::Base::Gizmos *::HG::Rendering::Base::Renderer::gizmos()
+HG::Rendering::Base::Gizmos *HG::Rendering::Base::Renderer::gizmos()
 {
     return &m_gizmos;
 }
@@ -53,7 +53,7 @@ HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::Renderer::pipeline(
     return m_pipeline;
 }
 
-::HG::Rendering::Base::MaterialCollection* HG::Rendering::Base::Renderer::materialCollection()
+HG::Rendering::Base::MaterialCollection* HG::Rendering::Base::Renderer::materialCollection()
 {
     return &m_materialCollection;
 }

@@ -89,17 +89,17 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
     {
         program->set_uniform(
             location,
-            ::HG::Rendering::Base::Camera::active()->viewMatrix()
+            HG::Rendering::Base::Camera::active()->viewMatrix()
         );
     }
 
     if ((location = program->uniform_location("projection")) != -1)
     {
-        program->set_uniform(location, ::HG::Rendering::Base::Camera::active()->projectionMatrix());
+        program->set_uniform(location, HG::Rendering::Base::Camera::active()->projectionMatrix());
     }
 
     // Setting lighting uniforms
-    auto& lights = ::HG::Rendering::Base::AbstractLight::totalLights();
+    auto& lights = HG::Rendering::Base::AbstractLight::totalLights();
 
     int pointLightIndex = 0;
     int directionalLightIndex = 0;
@@ -109,9 +109,9 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
     {
         switch (light->type())
         {
-        case ::HG::Rendering::Base::AbstractLight::Type::Point:
+        case HG::Rendering::Base::AbstractLight::Type::Point:
         {
-            auto castedLight = static_cast<::HG::Rendering::Base::Lights::PointLight*>(light);
+            auto castedLight = static_cast<HG::Rendering::Base::Lights::PointLight*>(light);
 
             if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].position")) != -1)
             {
@@ -172,17 +172,17 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
             ++pointLightIndex;
             break;
         }
-        case ::HG::Rendering::Base::AbstractLight::Type::Directional:
+        case HG::Rendering::Base::AbstractLight::Type::Directional:
         {
-//            auto castedLight = static_cast<::HG::Rendering::Base::Lights::DirectionalLight*>(light);
+//            auto castedLight = static_cast<HG::Rendering::Base::Lights::DirectionalLight*>(light);
 
             // todo: Finish directional light uniform info
             ++directionalLightIndex;
             break;
         }
-        case ::HG::Rendering::Base::AbstractLight::Type::Spot:
+        case HG::Rendering::Base::AbstractLight::Type::Spot:
         {
-//            auto castedLight = static_cast<::HG::Rendering::Base::Lights::*>(light);
+//            auto castedLight = static_cast<HG::Rendering::Base::Lights::*>(light);
 
             // todo: Finish stop light uniform info
             ++spotLightIndex;
@@ -215,7 +215,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
     {
         program->set_uniform(
             location,
-            ::HG::Rendering::Base::Camera::active()
+            HG::Rendering::Base::Camera::active()
                 ->gameObject()
                 ->transform()
                 ->globalPosition()

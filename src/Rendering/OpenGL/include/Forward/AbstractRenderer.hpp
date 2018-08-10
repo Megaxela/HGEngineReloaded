@@ -69,7 +69,7 @@ namespace HG::Rendering::OpenGL::Forward
 
         void setShaderUniform(gl::program *program,
                               const std::string &name,
-                              const ::HG::Rendering::Base::Material::Value &value);
+                              const HG::Rendering::Base::Material::Value &value);
 
     private:
 

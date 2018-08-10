@@ -14,7 +14,7 @@ HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
 
 void HG::Standard::Behaviours::FPSCameraMovement::onStart()
 {
-    m_camera = gameObject()->findBehaviour<::HG::Rendering::Base::Camera>();
+    m_camera = gameObject()->findBehaviour<HG::Rendering::Base::Camera>();
 
     if (!m_camera)
     {
@@ -30,7 +30,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
     }
 
     if (input()->keyboard()->isPushed(
-        ::HG::Core::Input::Keyboard::Key::R
+        HG::Core::Input::Keyboard::Key::R
     ))
     {
         m_enabled = !m_enabled;
@@ -45,7 +45,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
     }
 
     if (input()->keyboard()->isPushed(
-        ::HG::Core::Input::Keyboard::Key::ESC
+        HG::Core::Input::Keyboard::Key::ESC
     ))
     {
         m_enabled = false;

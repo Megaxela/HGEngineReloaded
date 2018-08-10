@@ -8,6 +8,7 @@
 #include <gl/vertex_array.hpp>
 #include <Behaviours/Sprite.hpp>
 #include <Common/MeshData.hpp>
+#include <ImGuiRenderer.hpp>
 #include "GizmosRenderer.hpp"
 #include "AbstractRenderer.hpp"
 
@@ -28,7 +29,7 @@ namespace HG::Rendering::OpenGL::Forward
     {
     public:
 
-        class CubeMapTextureData : public ::HG::Rendering::Base::CubeMapTexture::CubeMapTextureExternalData
+        class CubeMapTextureData : public HG::Rendering::Base::CubeMapTexture::CubeMapTextureExternalData
         {
         public:
 
@@ -38,7 +39,7 @@ namespace HG::Rendering::OpenGL::Forward
         /**
          * @brief Constructor.
          */
-        explicit RenderingPipeline(::HG::Core::Application* application);
+        explicit RenderingPipeline(HG::Core::Application* application);
 
         /**
          * @brief Destructor.
@@ -56,31 +57,31 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Actual render method.
          * @param objects Container with objects.
          */
-        void render(const ::HG::Core::Scene::GameObjectsContainer& objects) override;
+        void render(const HG::Core::Scene::GameObjectsContainer& objects) override;
 
         /**
          * @brief Method for setting up behaviours for forward rendering.
          * @param behaviour Rendering behaviour.
          */
-        void setup(::HG::Rendering::Base::RenderBehaviour *behaviour) override;
+        void setup(HG::Rendering::Base::RenderBehaviour *behaviour) override;
 
         /**
          * @brief Method for setting up textures for forward rendering.
          * @param texture Texture.
          */
-        void setup(::HG::Rendering::Base::Texture* texture) override;
+        void setup(HG::Rendering::Base::Texture* texture) override;
 
         /**
          * @brief Method for setting up shaders for forward rendering.
          * @param shader Shader.
          */
-        void setup(::HG::Rendering::Base::Shader* shader) override;
+        void setup(HG::Rendering::Base::Shader* shader) override;
 
         /**
          * @brief Method for setting up cube maps for forward rendering.
          * @param texture Cube map texture.
          */
-        void setup(::HG::Rendering::Base::CubeMapTexture* texture) override;
+        void setup(HG::Rendering::Base::CubeMapTexture* texture) override;
 
         /**
          * @brief Init method.
@@ -94,10 +95,10 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Method for processing game objects and it's behaviours.
          * @param objects Objects.
          */
-        void proceedGameObjects(const ::HG::Core::Scene::GameObjectsContainer& objects);
+        void proceedGameObjects(const HG::Core::Scene::GameObjectsContainer& objects);
 
         // Setup methods
-        void setupMesh(::HG::Rendering::Base::Behaviours::Mesh* behaviour);
+        void setupMesh(HG::Rendering::Base::Behaviours::Mesh* behaviour);
 
         /**
          * @brief Method for converting texture enum to
@@ -105,7 +106,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @param filter Texture enum.
          * @return GL enum.
          */
-        GLuint getFilter(::HG::Rendering::Base::Texture::Filtering filter);
+        GLuint getFilter(HG::Rendering::Base::Texture::Filtering filter);
 
         /**
          * @brief Method for converting texture enum to
@@ -113,7 +114,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @param wrapping Texture enum.
          * @return GL enum.
          */
-        GLuint getWrapping(::HG::Rendering::Base::Texture::Wrapping wrapping);
+        GLuint getWrapping(HG::Rendering::Base::Texture::Wrapping wrapping);
 
         /**
          * @brief Method for setting up one of cube side.
@@ -121,16 +122,19 @@ namespace HG::Rendering::OpenGL::Forward
          * @param texture GL texture.
          * @param side GL side.
          */
-        void setupCubeMapSide(const ::HG::Utils::SurfacePtr& surface,
+        void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
                               gl::cubemap_texture& texture,
                               GLuint side);
 
-        std::vector<::HG::Rendering::Base::RenderBehaviour*> m_behavioursCache;
+        std::vector<HG::Rendering::Base::RenderBehaviour*> m_behavioursCache;
 
-        std::multimap<float, ::HG::Rendering::Base::RenderBehaviour*> m_sortedBehaviours;
+        std::multimap<float, HG::Rendering::Base::RenderBehaviour*> m_sortedBehaviours;
 
         // Gizmos rendering object
         GizmosRenderer m_gizmosRenderer;
+
+        // ImGui rendering object
+        ImGuiRenderer m_imguiRenderer;
 
         std::map<
             std::size_t,

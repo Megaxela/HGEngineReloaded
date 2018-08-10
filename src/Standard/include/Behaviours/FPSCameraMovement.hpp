@@ -9,7 +9,7 @@ namespace HG::Standard::Behaviours
      * @brief Standard camera fps movement. Just moving
      * camera with mouse.
      */
-    class FPSCameraMovement : public ::HG::Core::Behaviour
+    class FPSCameraMovement : public HG::Core::Behaviour
     {
     public:
 

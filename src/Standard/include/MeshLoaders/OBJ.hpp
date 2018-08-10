@@ -32,7 +32,7 @@ namespace HG::Standard::MeshLoaders
          * @param data Raw data.
          * @return Smart pointer to mesh.
          */
-        ::HG::Utils::MeshPtr load(::HG::Core::ResourceAccessor::DataPtr data);
+        HG::Utils::MeshPtr load(HG::Core::ResourceAccessor::DataPtr data);
 
     private:
 
@@ -40,7 +40,7 @@ namespace HG::Standard::MeshLoaders
             std::string_view,
             std::function<
                 void(
-                    ::HG::Utils::MeshPtr&,       // mesh ptr
+                    HG::Utils::MeshPtr&,       // mesh ptr
                     std::string_view::const_iterator&, // iterator
                     std::string_view&                  // line
                 )
