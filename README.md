@@ -5,7 +5,7 @@ It's C++17 STL based game engine.
 Engine contains following libraries:
 * Rendering
     * Base
-        * `imgui` - project contains files of this library, because it was modified. 
+        * `imgui` - immediate mode GUI (for developing). Included from submodules. 
     * OpenGL
         * `gl` - project contains files of this library, because it was modified.
     * Physics
