@@ -1,14 +1,21 @@
 #include <CurrentLogger.hpp>
 #include <GameObjectCache.hpp>
 #include <utility>
+#include <GameObjectBuilder.hpp>
+
 #include "GameObjectBuilder.hpp"
 
 HG::Core::GameObjectBuilder::operator GameObject*()
 {
-    auto result = m_currentGameObject; 
-    
+    return deploy();
+}
+
+HG::Core::GameObject* HG::Core::GameObjectBuilder::deploy()
+{
+    auto result = m_currentGameObject;
+
     m_currentGameObject = nullptr;
-    
+
     return result;
 }
 

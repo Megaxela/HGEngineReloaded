@@ -37,6 +37,13 @@ namespace HG::Core
         operator GameObject*();
 
         /**
+         * @brief Explicit deployment. Maybe useful
+         * if required to save in auto variable.
+         * @return
+         */
+        GameObject* deploy();
+
+        /**
          * @brief Method for setting game object to setup.
          * @param ptr GameObject pointer.
          * @return Reference to builder instance.

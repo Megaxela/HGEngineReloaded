@@ -3,18 +3,18 @@ project(HGRenderingOGL)
 
 set(CMAKE_CXX_STANDARD 17)
 
-option(HGRenderingOGL_USE_GLFW "Using GLFW as OpenGL library." On)
+option(HGRenderingOGL_USE_GLFW "Using GLFW as OpenGL library." Off)
 option(HGRenderingOGL_USE_Qt   "Using Qt as OpenGL library." Off)
 
 if (${HGRenderingOGL_USE_GLFW} AND ${HGRenderingOGL_USE_Qt})
     message(FATAL_ERROR "You can use only 1 opengl providing library.")
 endif()
 
+set(OpenGL_GL_PREFERENCE LEGACY)
+
 if (${HGRenderingOGL_USE_GLFW})
     message(STATUS "Rendering library: GLFW")
     set(RENDERER_DEFINITION GRAPHICS_USE_GLFW)
-
-    set(OpenGL_GL_PREFERENCE LEGACY)
 
     if (WIN32)
         set(RENDERER_LIBRARY glfw3)
@@ -66,22 +66,28 @@ add_library(HGRenderingOGL STATIC
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 
 target_link_libraries(HGRenderingOGL
-         # DoubleBufferContainer
-        gl
-        HGRenderingBase
-        HGCore
-        ${RENDERER_LIBRARY}
+    gl
+    HGRenderingBase
+    HGCore
+    ${RENDERER_LIBRARY}
 )
 
 target_include_directories(HGRenderingOGL PUBLIC
-        include
+    include
 )
 
 target_compile_definitions(HGRenderingOGL
-        PUBLIC
-        -D${RENDERER_DEFINITION}
+    PUBLIC
+    -D${RENDERER_DEFINITION}
 )
 
 target_compile_options(HGRenderingOGL
-    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
+    PRIVATE
+        -ansi
+        -pedantic
+        -Wall
+        -Wextra
+        -Woverloaded-virtual
+        -Winit-self
+        -Wunreachable-code
 )

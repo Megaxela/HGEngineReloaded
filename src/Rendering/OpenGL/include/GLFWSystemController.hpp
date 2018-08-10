@@ -1,10 +1,15 @@
 #pragma once
 
 // Only if using GLFW library
-#include <SystemController.hpp>
-#include <GL/gl_ordered.hpp>
+
+#ifndef GRAPHICS_USE_GLFW
+    #warning "Trying to include GLFW system controller w/o GLFW renderer."
+#endif
 
 #ifdef GRAPHICS_USE_GLFW
+
+#include <SystemController.hpp>
+#include <GL/gl_ordered.hpp>
 
 namespace HG::Rendering::OpenGL
 {

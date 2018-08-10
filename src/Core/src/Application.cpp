@@ -88,9 +88,11 @@ bool HG::Core::Application::performCycle()
     proceedScene();
 
     {
-
         // Calling update on scene.
-        m_currentScene->update();
+        if (m_currentScene)
+        {
+            m_currentScene->update();
+        }
 
         // Finishing counting update time
         m_timeStatistics.tickTimerEnd(TimeStatistics::UpdateTime);
@@ -101,7 +103,10 @@ bool HG::Core::Application::performCycle()
         m_timeStatistics.tickTimerBegin(TimeStatistics::RenderTime);
 
         // Executing rendering pipeline.
-        m_currentScene->render(&m_renderer);
+        if (m_currentScene)
+        {
+            m_currentScene->render(&m_renderer);
+        }
 
         // Finishing counting rendering time
         m_timeStatistics.tickTimerEnd(TimeStatistics::RenderTime);

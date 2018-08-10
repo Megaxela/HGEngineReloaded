@@ -1,3 +1,7 @@
+
+
+#ifdef GRAPHICS_USE_GLFW
+#include "GLFWSystemController.hpp"
 #include <CurrentLogger.hpp>
 #include <Input.hpp>
 #include <Application.hpp>
@@ -5,9 +9,6 @@
 #include <gl/all.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw_gl3.h>
-#include "GLFWSystemController.hpp"
-
-#ifdef GRAPHICS_USE_GLFW
 
 HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(::HG::Core::Application* application) :
     SystemController(application),
