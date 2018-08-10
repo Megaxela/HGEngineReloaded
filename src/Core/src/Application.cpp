@@ -53,11 +53,9 @@ bool HG::Core::Application::init()
 bool HG::Core::Application::performCycle()
 {
     // Saving last deltatime
-    auto dt = m_timeStatistics.lastFrameDeltaTime();
+    auto dt = m_timeStatistics.tickTimerAtomic(TimeStatistics::FrameTime);
 
-    // Start counting frame time
-    m_timeStatistics.tickTimerBegin(TimeStatistics::FrameTime);
-
+    // Tick counting frame time
 
     if (m_physicsController)
     {
@@ -111,9 +109,6 @@ bool HG::Core::Application::performCycle()
         // Finishing counting rendering time
         m_timeStatistics.tickTimerEnd(TimeStatistics::RenderTime);
     }
-
-    // Finishing counting frame time
-    m_timeStatistics.tickTimerEnd(TimeStatistics::FrameTime);
 
     return true;
 }
