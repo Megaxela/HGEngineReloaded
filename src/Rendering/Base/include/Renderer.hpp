@@ -54,6 +54,11 @@ namespace HG::Rendering::Base
         bool init();
 
         /**
+         * @brief Method for deinitializing pipeline.
+         */
+        void deinit();
+
+        /**
          * @brief Perform rendering finally.
          */
         void render(const HG::Core::Scene::GameObjectsContainer& gameObjects);

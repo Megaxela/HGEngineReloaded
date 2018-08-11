@@ -42,6 +42,11 @@ namespace HG::Rendering::OpenGL
         void init();
 
         /**
+         * @brief Method for deinitiazliation ImGui renderer.
+         */
+        void deinit();
+
+        /**
          * @brief Method for rendering prepared data.
          */
         void render();

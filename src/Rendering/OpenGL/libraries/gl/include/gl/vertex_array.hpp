@@ -68,4 +68,16 @@ private:
 };
 }
 
+namespace std
+{
+  static void swap(gl::vertex_array& l, gl::vertex_array& r) noexcept
+  {
+    gl::vertex_array tmp(gl::invalid_id);
+
+    tmp = std::move(l);
+    l = std::move(r);
+    r = std::move(tmp);
+  }
+}
+
 #endif

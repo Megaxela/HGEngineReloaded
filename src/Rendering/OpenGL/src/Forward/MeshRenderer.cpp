@@ -18,17 +18,25 @@ HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() :
 
 HG::Rendering::OpenGL::Forward::MeshRenderer::~MeshRenderer()
 {
-    delete m_meshFallbackMaterial;
+    deinit();
 }
 
 void HG::Rendering::OpenGL::Forward::MeshRenderer::init()
 {
-    Info() << "Creating fallback material.";
+    Info() << "Initializing mesh renderer";
 
     m_meshFallbackMaterial = application()
         ->renderer()
         ->materialCollection()
         ->getMaterial<Materials::MeshFallbackMaterial>();
+}
+
+void HG::Rendering::OpenGL::Forward::MeshRenderer::deinit()
+{
+    Info() << "Deinitializing sprite renderer";
+
+    delete m_meshFallbackMaterial;
+    m_meshFallbackMaterial = nullptr;
 }
 
 void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *gameObject,

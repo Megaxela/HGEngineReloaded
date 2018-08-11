@@ -20,12 +20,36 @@ HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* app
 
 HG::Rendering::OpenGL::GizmosRenderer::~GizmosRenderer()
 {
+    deinit();
+}
+
+void HG::Rendering::OpenGL::GizmosRenderer::deinit()
+{
+    Info() << "Deinitializing gizmos renderer";
+
     delete m_lineMaterial;
     delete m_meshMaterial;
+
+    m_lineMaterial = nullptr;
+    m_meshMaterial = nullptr;
+
+    {
+        gl::vertex_array del(gl::invalid_id);
+
+        std::swap(m_linesVAO, del);
+    }
+
+    {
+        gl::buffer del(gl::invalid_id);
+
+        std::swap(m_linesVBO, del);
+    }
 }
 
 void HG::Rendering::OpenGL::GizmosRenderer::init()
 {
+    Info() << "Initializing gizmos renderer";
+
     m_linesVAO = std::move(gl::vertex_array());
     m_linesVBO = std::move(gl::buffer());
 

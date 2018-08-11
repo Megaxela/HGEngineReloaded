@@ -12,13 +12,6 @@ namespace HG::Standard::Behaviours
     {
     protected:
         void onUpdate() override;
-
-    private:
-
-        void updateFrameGraph();
-
-        const int m_framesCount = 240;
-        float m_frames[240];
     };
 }
 

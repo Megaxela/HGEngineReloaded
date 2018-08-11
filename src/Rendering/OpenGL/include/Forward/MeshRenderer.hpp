@@ -31,6 +31,8 @@ namespace HG::Rendering::OpenGL::Forward
 
         void init() override;
 
+        void deinit() override;
+
     private:
 
         // Fallback mesh program

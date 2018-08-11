@@ -122,6 +122,27 @@ std::chrono::microseconds HG::Core::TimeStatistics::tickTimerEnd(int timer)
     return iterator->second.tickEnd();
 }
 
+std::chrono::microseconds HG::Core::TimeStatistics::tickTimerAtomic(int timer)
+{
+    auto iterator = m_timers.find(timer);
+
+    if (iterator == m_timers.end())
+    {
+        throw std::invalid_argument("There is no timer with id " + std::to_string(timer));
+    }
+
+    std::chrono::microseconds time(0);
+
+    if (iterator->second.isTimerStarted())
+    {
+        time = iterator->second.tickEnd();
+    }
+
+    iterator->second.tickBegin();
+
+    return time;
+}
+
 void HG::Core::TimeStatistics::addTimer(int timer)
 {
     auto iterator = m_timers.find(timer);
@@ -226,4 +247,9 @@ void HG::Core::TimeStatistics::Timer::changeEstimateBuffer(std::size_t count)
     }
 
     m_bufferSize = count;
+}
+
+bool HG::Core::TimeStatistics::Timer::isTimerStarted() const
+{
+    return m_timerStarted;
 }

@@ -121,6 +121,17 @@ namespace HG::Core
 
         /**
          * @brief Supportive method for time calculating.
+         * It stops timer (if it was run), gets time value,
+         * and starts timer again.
+         * Can throw `std::invalid_argument` exception if there is no
+         * timer with specified id.
+         * @param timer Timer id.
+         * @return Counted time in microseconds.
+         */
+        std::chrono::microseconds tickTimerAtomic(int timer);
+
+        /**
+         * @brief Supportive method for time calculating.
          * Method ends counting of specific timer and adds
          * it to timing information for specified timer.
          * Can throw exception `std::runtime_error` if
@@ -234,6 +245,12 @@ namespace HG::Core
              * @todo Documentation behaviour is not implemented yet.
              */
             void changeEstimateBuffer(std::size_t count);
+
+            /**
+             * @brief Method for getting timer started state.
+             * @return Was timer started.
+             */
+            bool isTimerStarted() const;
 
         private:
 

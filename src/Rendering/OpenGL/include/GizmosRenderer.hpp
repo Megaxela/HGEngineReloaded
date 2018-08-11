@@ -30,6 +30,11 @@ namespace HG::Rendering::OpenGL
         void init();
 
         /**
+         * @brief Method for deinitialization gizmos renderer.
+         */
+        void deinit();
+
+        /**
          * @brief Method for preparing line for rendering.
          * @param line Line data.
          */

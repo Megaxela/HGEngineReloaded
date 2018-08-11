@@ -37,6 +37,13 @@ namespace HG::Rendering::Base
         virtual bool init();
 
         /**
+         * @brief Method for deinitialization pipeline.
+         * By default it just deinitialize system controller
+         * and creates window.
+         */
+        virtual void deinit();
+
+        /**
          * @brief Rendering method.
          * @param objects Objects.
          */

@@ -102,6 +102,11 @@ namespace HG::Rendering::Base
             setup(newShader);
         }
 
+        /**
+         * @brief Method for clearing shader cache.
+         */
+        void clearCache();
+
     private:
 
         // RAW shader text test

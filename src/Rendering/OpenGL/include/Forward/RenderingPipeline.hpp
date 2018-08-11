@@ -4,11 +4,11 @@
 #include <Scene.hpp>
 
 #include <Behaviours/Mesh.hpp>
-#include <gl/program.hpp>
-#include <gl/vertex_array.hpp>
 #include <Behaviours/Sprite.hpp>
 #include <Common/MeshData.hpp>
 #include <ImGuiRenderer.hpp>
+#include <gl/program.hpp>
+#include <gl/vertex_array.hpp>
 #include "GizmosRenderer.hpp"
 #include "AbstractRenderer.hpp"
 
@@ -88,6 +88,11 @@ namespace HG::Rendering::OpenGL::Forward
          * @return Init success.
          */
         bool init() override;
+
+        /**
+         * @brief Deinit method.
+         */
+        void deinit() override;
 
     private:
 

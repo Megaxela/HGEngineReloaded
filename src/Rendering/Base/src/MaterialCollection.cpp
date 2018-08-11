@@ -11,14 +11,21 @@ HG::Rendering::Base::MaterialCollection::MaterialCollection(HG::Core::ResourceMa
 
 HG::Rendering::Base::MaterialCollection::~MaterialCollection()
 {
-    // Free all shaders
-    for (auto&& [hash, shader] : m_shaders)
-    {
-        delete shader;
-    }
+    clearCache();
 }
 
 void HG::Rendering::Base::MaterialCollection::setup(HG::Rendering::Base::Shader* shader)
 {
     m_renderer->setup(shader);
+}
+
+void HG::Rendering::Base::MaterialCollection::clearCache()
+{
+    // Free all shaders
+    for (auto&& [hash, shader] : m_shaders)
+    {
+        delete shader;
+    }
+
+    m_shaders.clear();
 }

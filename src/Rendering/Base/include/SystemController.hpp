@@ -42,6 +42,12 @@ namespace HG::Rendering::Base
         virtual bool init() = 0;
 
         /**
+         * @brief Method for deinitializing graphics
+         * subsystem.
+         */
+        virtual void deinit() = 0;
+
+        /**
          * @brief Method for creating window.
          * @param width Window width.
          * @param height Window height.
@@ -50,6 +56,11 @@ namespace HG::Rendering::Base
         virtual bool createWindow(uint32_t width,
                                   uint32_t height,
                                   std::string title) = 0;
+
+        /**
+         * @brief Method for closing opened window.
+         */
+        virtual void closeWindow() = 0;
 
         /**
          * @brief Method for swapping buffers in window.
