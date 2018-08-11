@@ -50,6 +50,11 @@ bool HG::Core::Application::init()
     return m_renderer.init();
 }
 
+void HG::Core::Application::deinit()
+{
+    m_renderer.deinit();
+}
+
 bool HG::Core::Application::performCycle()
 {
     // Saving last deltatime

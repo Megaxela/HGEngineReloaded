@@ -169,12 +169,11 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObject
         if (gameObject->transform()->parent() == parent)
         {
             // Preparing flags
-            auto hasChildren = gameObject->transform()->numberOfChildren() > 0;
+            auto hasChildren = !gameObject->transform()->children().empty();
 
             auto nodeFlags =
-                (hasChildren ? 0 : ImGuiTreeNodeFlags_Leaf) |
+                (hasChildren ? 0U : ImGuiTreeNodeFlags_Leaf) |
                 ImGuiTreeNodeFlags_OpenOnArrow |
-//                ImGuiTreeNodeFlags_OpenOnDoubleClick |
                 (gameObject == m_activeGameObject ? ImGuiTreeNodeFlags_Selected : 0);
 
             bool opened = ImGui::TreeNodeEx(gameObject, nodeFlags, gameObject->name().c_str());

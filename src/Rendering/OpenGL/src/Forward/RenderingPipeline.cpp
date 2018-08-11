@@ -96,6 +96,22 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::init()
     return true;
 }
 
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
+{
+    HG::Rendering::Base::RenderingPipeline::deinit();
+
+    for (auto&& [id, renderer] : m_renderers)
+    {
+        renderer->deinit();
+    }
+
+    m_gizmosRenderer.deinit();
+
+    m_imguiRenderer.deinit();
+
+    application()->renderer()->materialCollection()->clearCache();
+}
+
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Core::Scene::GameObjectsContainer& objects)
 {
 

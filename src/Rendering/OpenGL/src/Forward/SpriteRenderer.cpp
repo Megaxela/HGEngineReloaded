@@ -16,13 +16,23 @@ HG::Rendering::OpenGL::Forward::SpriteRenderer::SpriteRenderer() :
 
 HG::Rendering::OpenGL::Forward::SpriteRenderer::~SpriteRenderer()
 {
+    deinit();
+}
+
+void HG::Rendering::OpenGL::Forward::SpriteRenderer::deinit()
+{
+    Info() << "Deinitializing sprite renderer";
+
     delete m_spriteMaterial;
     delete m_spriteData;
+
+    m_spriteMaterial = nullptr;
+    m_spriteData = nullptr;
 }
 
 void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
 {
-    Info() << "Creating sprite shader";
+    Info() << "Initializing sprite renderer";
 
     m_spriteMaterial = application()
         ->renderer()

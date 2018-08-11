@@ -37,6 +37,23 @@ bool HG::Rendering::Base::RenderingPipeline::init()
     return true;
 }
 
+void HG::Rendering::Base::RenderingPipeline::deinit()
+{
+    if (m_parentApplication == nullptr)
+    {
+        Error() << "No parent application set.";
+    }
+
+    if (m_parentApplication->systemController() == nullptr)
+    {
+        Error() << "No SystemController set in rendering pipeline.";
+    }
+
+    m_parentApplication->systemController()->deinit();
+
+    m_parentApplication->systemController()->closeWindow();
+}
+
 HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() const
 {
     return m_parentApplication;

@@ -145,19 +145,10 @@ namespace HG::Core
         glm::mat4 localToWorldMatrix() const;
 
         /**
-         * @brief Method for getting number of children of this
-         * transform.
-         * @return Number of children.
+         * @brief Method for getting transform children.
+         * @return Vector with children.
          */
-        std::size_t numberOfChildren() const;
-
-        /**
-         * @brief Method for getting child on index.
-         * @param index Child index.
-         * @return Pointer to child pointer or nullptr if there is
-         * no such child.
-         */
-        Transform* child(size_t index) const;
+        const std::vector<Transform*>& children() const;
 
         /**
          * @brief Method for getting gameObject of this transform.

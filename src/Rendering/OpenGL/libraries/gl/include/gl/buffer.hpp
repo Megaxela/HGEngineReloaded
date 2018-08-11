@@ -112,4 +112,16 @@ type* buffer::cuda_map()
 #endif
 }
 
+namespace std
+{
+    static void swap(gl::buffer& l, gl::buffer& r)
+    {
+      gl::buffer tmp(gl::invalid_id);
+
+      tmp = std::move(l);
+      l = std::move(r);
+      r = std::move(tmp);
+    }
+}
+
 #endif

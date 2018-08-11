@@ -30,6 +30,17 @@ bool HG::Rendering::Base::Renderer::init()
     return m_pipeline->init();
 }
 
+void HG::Rendering::Base::Renderer::deinit()
+{
+    if (m_pipeline == nullptr)
+    {
+        Error() << "No rendering pipeline set.";
+        return;
+    }
+
+    return m_pipeline->deinit();
+}
+
 void HG::Rendering::Base::Renderer::render(const HG::Core::Scene::GameObjectsContainer& gameObjects)
 {
     if (m_pipeline == nullptr)

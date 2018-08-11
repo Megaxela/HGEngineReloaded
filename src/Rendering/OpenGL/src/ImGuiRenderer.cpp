@@ -18,12 +18,39 @@ HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* appli
 
 HG::Rendering::OpenGL::ImGuiRenderer::~ImGuiRenderer()
 {
+    deinit();
+}
+
+void HG::Rendering::OpenGL::ImGuiRenderer::deinit()
+{
+    Info() << "Deinitializing ImGui renderer";
+
     delete m_material;
+    m_material = nullptr;
+
+    // todo: Fix this shitcode, when gl developer will fix move operator.
+    {
+        gl::buffer del(gl::invalid_id);
+
+        std::swap(m_vbo, del);
+    }
+
+    {
+        gl::buffer del(gl::invalid_id);
+
+        std::swap(m_ebo, del);
+    }
+
+    {
+        gl::texture_2d del(gl::invalid_id);
+
+        std::swap(m_fontTexture, del);
+    }
 }
 
 void HG::Rendering::OpenGL::ImGuiRenderer::init()
 {
-    Info() << "Initializing ImGui renderer.";
+    Info() << "Initializing ImGui renderer";
 
     m_material = m_application
         ->renderer()

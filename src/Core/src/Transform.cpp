@@ -218,14 +218,9 @@ glm::mat4 HG::Core::Transform::localToWorldMatrix() const
     return model;
 }
 
-std::size_t HG::Core::Transform::numberOfChildren() const
+const std::vector<HG::Core::Transform *> &HG::Core::Transform::children() const
 {
-    return m_children.size();
-}
-
-HG::Core::Transform* HG::Core::Transform::child(size_t index) const
-{
-    return m_children.at(index);
+    return m_children;
 }
 
 HG::Core::GameObject* HG::Core::Transform::gameObject() const

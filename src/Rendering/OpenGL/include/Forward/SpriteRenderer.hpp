@@ -30,6 +30,8 @@ namespace HG::Rendering::OpenGL::Forward
 
         size_t getTarget() override;
 
+        void deinit() override;
+
 
     private:
 

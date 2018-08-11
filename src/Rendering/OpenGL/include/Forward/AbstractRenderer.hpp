@@ -32,6 +32,11 @@ namespace HG::Rendering::OpenGL::Forward
         virtual void init() = 0;
 
         /**
+         * @brief Method for deinitializing renderer.
+         */
+        virtual void deinit() = 0;
+
+        /**
          * @brief Method for rendering some behaviour.
          * @param gameObject Behaviour owner.
          * @param renderBehaviour Rendering behaviour.

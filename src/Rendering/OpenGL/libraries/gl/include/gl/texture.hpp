@@ -667,4 +667,17 @@ GL_EXPORT inline bool seamless_cubemap_enabled    ()
 }
 }
 
+namespace std
+{
+    template<GLenum target>
+    void swap(gl::texture<target>& l, gl::texture<target>& r)
+    {
+      gl::texture<target> tmp(gl::invalid_id);
+
+      tmp = std::move(l);
+      l = std::move(r);
+      r = std::move(tmp);
+    }
+}
+
 #endif

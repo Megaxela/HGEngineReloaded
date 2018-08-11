@@ -59,6 +59,11 @@ namespace HG::Core
         bool init();
 
         /**
+         * @brief Deinitialization.
+         */
+        void deinit();
+
+        /**
          * @brief Method for performing one game cycle.
          * @return Cycle success.
          */
