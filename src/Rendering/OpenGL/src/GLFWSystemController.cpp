@@ -542,10 +542,11 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, 
         {GLFW_KEY_LEFT_SHIFT,       HG::Core::Input::Keyboard::Key::LeftShift},
         {GLFW_KEY_LEFT_CONTROL,     HG::Core::Input::Keyboard::Key::LeftCtrl},
         {GLFW_KEY_LEFT_ALT,         HG::Core::Input::Keyboard::Key::LeftAlt},
-        {GLFW_KEY_LEFT_SUPER,       HG::Core::Input::Keyboard::Key::Super},
+        {GLFW_KEY_LEFT_SUPER,       HG::Core::Input::Keyboard::Key::LeftSuper},
         {GLFW_KEY_RIGHT_SHIFT,      HG::Core::Input::Keyboard::Key::RightShift},
         {GLFW_KEY_RIGHT_CONTROL,    HG::Core::Input::Keyboard::Key::RightCtrl},
         {GLFW_KEY_RIGHT_ALT,        HG::Core::Input::Keyboard::Key::RightAlt},
+        {GLFW_KEY_RIGHT_SUPER,      HG::Core::Input::Keyboard::Key::RightSuper},
         {GLFW_KEY_MENU,             HG::Core::Input::Keyboard::Key::Menu}
     };
 

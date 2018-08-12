@@ -1,7 +1,10 @@
+#include <Behaviours/Rigidbody.hpp>
+#include <Application.hpp>
 #include <Controller.hpp>
+#include <GameObject.hpp>
+#include <Scene.hpp>
 #include <utility>
 #include <imgui.h>
-#include "Behaviours/Rigidbody.hpp"
 
 HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody() :
     m_configuration(),

@@ -1,8 +1,9 @@
-#include "Behaviours/DebugControllerBehaviour.hpp"
+#include <Behaviours/DebugControllerBehaviour.hpp>
+#include <Scene.hpp>
+#include <Application.hpp>
 #include <Controller.hpp>
 #include <imgui.h>
 #include <imgui_internal.h>
-#include <Behaviours/DebugControllerBehaviour.hpp>
 
 
 HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::DebugControllerBehaviour()
