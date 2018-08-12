@@ -210,13 +210,13 @@ TEST(Standard, TiledLoad1)
         ASSERT_EQ(property.second.type, HG::Standard::Behaviours::TiledMap::Property::Type::Integer);
         ASSERT_EQ(std::get<int>(property.second.value), 42);
 
-        ASSERT_EQ(polygon->points, std::vector<glm::ivec2>({
-            {0, 0},
-            {0, 32},
-            {32, 32},
-            {32, -16},
-            {16, -32},
-            {-16, -32}
+        ASSERT_EQ(polygon->points, std::vector<glm::vec2>({
+            {  0.0f,   0.0f},
+            {  0.0f,  32.0f},
+            { 32.0f,  32.0f},
+            { 32.0f, -16.0f},
+            { 16.0f, -32.0f},
+            {-16.0f, -32.0f}
         }));
     }
 

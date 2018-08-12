@@ -1,4 +1,3 @@
-
 add_executable(HGEngineTests
     ${HG_TEST_CASES}
     main.cpp
@@ -13,3 +12,5 @@ target_link_libraries(HGEngineTests
     ${GTEST_BOTH_LIBRARIES}
     ${HG_TEST_LIBS}
 )
+
+configure_file(${HG_TEST_ASSETS})

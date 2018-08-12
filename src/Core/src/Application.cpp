@@ -133,6 +133,8 @@ int HG::Core::Application::exec()
     delete m_cachedScene;
     m_cachedScene = nullptr;
 
+    deinit();
+
     return 0;
 }
 

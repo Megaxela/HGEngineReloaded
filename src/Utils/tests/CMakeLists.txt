@@ -16,5 +16,5 @@ set(HG_TEST_LIBS
 set(HG_TEST_ASSETS
         ${HG_TEST_ASSETS}
 
-        CACHE_STRING "" FORCE
+        CACHE STRING "" FORCE
 )

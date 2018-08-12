@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 option(HG_BUILD_CORE_TESTS "Build core tests" Off)
 
 if (${HG_BUILD_CORE_TESTS})
-    message(STATUS "No tests currently available for Core module")
+    add_subdirectory(tests)
 endif()
 
 add_library(HGCore STATIC
@@ -30,8 +30,7 @@ add_library(HGCore STATIC
     src/TimeStatistics.cpp
     include/TimeStatistics.hpp
     src/Input.cpp
-    include/Input.hpp
-)
+    include/Input.hpp)
 
 target_include_directories(HGCore PUBLIC
     include

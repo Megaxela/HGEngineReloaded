@@ -1,21 +1,18 @@
 set(HG_TEST_CASES
     ${HG_TEST_CASES}
-    ${CMAKE_CURRENT_LIST_DIR}/tiled.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/transform.cpp
 
     CACHE STRING "" FORCE
 )
 
 set(HG_TEST_LIBS
     ${HG_TEST_LIBS}
-    HGStandard
+    HGCore
 
     CACHE STRING "" FORCE
 )
 
 set(HG_TEST_ASSETS
     ${HG_TEST_ASSETS}
-
-    ${CMAKE_CURRENT_LIST_DIR}/tiled_maps/full_feature.tmx tiled_maps/full_feature.tmx COPYONLY
-
     CACHE STRING "" FORCE
 )

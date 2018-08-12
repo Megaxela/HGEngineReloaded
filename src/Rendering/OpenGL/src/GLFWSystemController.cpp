@@ -294,6 +294,16 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     return true;
 }
 
+void HG::Rendering::OpenGL::GLFWSystemController::deinit()
+{
+    imGuiDeinit();
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::closeWindow()
+{
+    glfwDestroyWindow(m_window);
+}
+
 void HG::Rendering::OpenGL::GLFWSystemController::swapBuffers()
 {
     glfwSwapBuffers(m_window);

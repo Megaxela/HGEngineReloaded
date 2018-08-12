@@ -58,6 +58,10 @@ namespace HG::Rendering::OpenGL
 
         Utils::Rect viewport() const override;
 
+        void deinit() override;
+
+        void closeWindow() override;
+
     private:
 
         static void glDebugOutput(GLenum source,
