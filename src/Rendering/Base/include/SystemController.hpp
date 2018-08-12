@@ -1,8 +1,8 @@
 #pragma once
 
+#include <Rect.hpp>
 #include <cstdint>
 #include <string>
-#include <Rect.hpp>
 
 namespace HG::Core
 {

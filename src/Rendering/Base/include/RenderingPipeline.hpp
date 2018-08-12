@@ -1,15 +1,19 @@
 #pragma once
 
-#include "SystemController.hpp"
 #include "Scene.hpp"
-#include "Texture.hpp"
-#include "Shader.hpp"
-#include "CubeMapTexture.hpp"
-#include "Gizmos.hpp"
+
+namespace HG::Core
+{
+    class Application;
+}
 
 namespace HG::Rendering::Base
 {
     class RenderBehaviour;
+
+    class Texture;
+    class Shader;
+    class CubeMapTexture;
 
     /**
      * @brief Class, that describes

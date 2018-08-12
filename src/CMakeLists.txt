@@ -4,6 +4,7 @@ project(HGEngineReloaded)
 #set(CMAKE_CXX_FLAGS -O3)
 
 option(HG_BUILD_ALL_TESTS "Build all tests" Off)
+option(HG_BUILD_WARNINGS  "Enable many build warnings" Off)
 
 if (${HG_BUILD_ALL_TESTS})
 

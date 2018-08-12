@@ -1,8 +1,13 @@
 #pragma once
 
-
 #include <Behaviour.hpp>
 #include "TiledMap.hpp"
+
+namespace HG::Rendering::Base
+{
+    class Texture;
+    class Shader;
+}
 
 namespace HG::Standard::Behaviours
 {
@@ -29,6 +34,11 @@ namespace HG::Standard::Behaviours
          * @param map Pointer to tiled map behaviour.
          */
         explicit TiledMapRenderer(TiledMap* map);
+
+        /**
+         * @brief Destructor.
+         */
+        ~TiledMapRenderer() override;
 
         /**
          * @brief Method for preparing map for rendering.
@@ -108,7 +118,7 @@ namespace HG::Standard::Behaviours
         std::map<std::string, HG::Rendering::Base::Texture*> m_tilesets;
         
         // Map rendering shader
-        HG::Rendering::Base::Shader m_mapShader;
+        HG::Rendering::Base::Shader* m_mapShader;
 
         float m_layerZOffsetCummulative;
 

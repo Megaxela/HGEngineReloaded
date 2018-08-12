@@ -6,11 +6,12 @@
 #include <glm/vec4.hpp>
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
-#include "Texture.hpp"
-#include "Shader.hpp"
 
 namespace HG::Rendering::Base
 {
+    class Shader;
+    class Texture;
+
     /**
      * @brief Class, that describes material.
      * That will be used by renderer.

@@ -1,7 +1,11 @@
 #pragma once
 
-#include <Common/MeshData.hpp>
-#include "AbstractRenderer.hpp"
+#include <Forward/AbstractRenderer.hpp>
+
+namespace HG::Rendering::OpenGL::Common
+{
+    class MeshData;
+}
 
 namespace HG::Rendering::OpenGL::Forward
 {

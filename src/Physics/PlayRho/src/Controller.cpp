@@ -1,13 +1,9 @@
-#include <chrono>
-#include "Controller.hpp"
-#include <PlayRho/PlayRho.hpp>
-#include <Color.hpp>
-#include <DebugDraw.hpp>
-#include <Application.hpp>
-#include <set>
 #include <Controller.hpp>
-
-#include "DebugSettings.hpp"
+#include <PlayRho/PlayRho.hpp>
+#include <Application.hpp>
+#include <Color.hpp>
+#include <chrono>
+#include <set>
 
 using FixtureSet = std::set<playrho::d2::Fixture*>;
 

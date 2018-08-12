@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <Behaviour.hpp>
 #include <Rect.hpp>
-#include "Behaviour.hpp"
+#include <glm/glm.hpp>
 
 namespace HG::Rendering::Base
 {

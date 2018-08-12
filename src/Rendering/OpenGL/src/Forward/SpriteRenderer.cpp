@@ -1,10 +1,14 @@
 #include <Materials/SpriteMaterial.hpp>
-#include <Mesh.hpp>
-#include <Common/ShaderData.hpp>
+#include <Forward/SpriteRenderer.hpp>
 #include <Common/Texture2DData.hpp>
+#include <Common/ShaderData.hpp>
 #include <Behaviours/Sprite.hpp>
+#include <Common/MeshData.hpp>
+#include <Application.hpp>
+#include <GameObject.hpp>
+#include <Surface.hpp>
+#include <Mesh.hpp>
 #include <Camera.hpp>
-#include "Forward/SpriteRenderer.hpp"
 #include <gl/auxiliary/glm_uniforms.hpp>
 
 HG::Rendering::OpenGL::Forward::SpriteRenderer::SpriteRenderer() :

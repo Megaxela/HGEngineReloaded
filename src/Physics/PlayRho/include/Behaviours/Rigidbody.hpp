@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Behaviour.hpp>
-#include "PlayRho/PlayRho.hpp"
+#include <PlayRho/PlayRho.hpp>
 
 namespace HG::Physics::PlayRho::Behaviours
 {

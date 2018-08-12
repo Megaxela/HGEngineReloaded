@@ -59,6 +59,15 @@ target_compile_definitions(HGUtils
     PUBLIC -DGLM_ENABLE_EXPERIMENTAL
 )
 
-target_compile_options(HGUtils
-    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
-)
+if (${HG_BUILD_WARNINGS})
+    target_compile_options(HGUtils
+        PRIVATE
+            -ansi
+            -pedantic
+            -Wall
+            -Wextra
+            -Woverloaded-virtual
+            -Winit-self
+            -Wunreachable-code
+    )
+endif()

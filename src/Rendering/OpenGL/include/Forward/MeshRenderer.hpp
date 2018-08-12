@@ -1,8 +1,12 @@
 #pragma once
 
-#include <Material.hpp>
-#include "AbstractRenderer.hpp"
+#include <Forward/AbstractRenderer.hpp>
 #include <gl/all.hpp>
+
+namespace HG::Rendering::Base
+{
+    class Material;
+}
 
 namespace HG::Rendering::OpenGL::Forward
 {

@@ -53,6 +53,15 @@ target_link_libraries(HGRenderingBase
     imgui
 )
 
-target_compile_options(HGRenderingBase
-    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
-)
+if (${HG_BUILD_WARNINGS})
+    target_compile_options(HGRenderingBase
+        PRIVATE
+            -ansi
+            -pedantic
+            -Wall
+            -Wextra
+            -Woverloaded-virtual
+            -Winit-self
+            -Wunreachable-code
+    )
+endif()

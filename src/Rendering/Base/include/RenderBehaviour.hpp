@@ -1,8 +1,7 @@
 #pragma once
 
-#include <cstdio>
-#include <CurrentLogger.hpp>
 #include <Behaviour.hpp>
+#include <cstdio>
 
 namespace HG::Rendering::Base
 {
@@ -75,14 +74,6 @@ namespace HG::Rendering::Base
             std::is_base_of<ExternalData, T>::value
         >::type setExternalData()
         {
-
-#ifndef NDEBUG
-            if (m_externalData)
-            {
-                Info() << "Recreating existing external data.";
-            }
-#endif
-
             delete m_externalData;
 
             m_externalData = new T();

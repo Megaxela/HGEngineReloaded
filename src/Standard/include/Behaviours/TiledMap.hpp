@@ -1,13 +1,22 @@
 #pragma once
 
-#include <vector>
-#include <variant>
-#include <cstdint>
 #include <glm/vec2.hpp>
-#include <ResourceAccessor.hpp>
 #include <Behaviour.hpp>
 #include <Color.hpp>
 #include <rapidxml.hpp>
+#include <vector>
+#include <memory>
+#include <variant>
+#include <cstdint>
+#include <chrono>
+#include <map>
+
+namespace HG::Core
+{
+    class Data;
+
+    using DataPtr = std::shared_ptr<Data>;
+}
 
 namespace HG::Standard::Behaviours
 {
@@ -429,7 +438,7 @@ namespace HG::Standard::Behaviours
          * @param data Pointer to data from TMX file.
          * @return Loading success
          */
-        bool loadMap(HG::Core::ResourceAccessor::DataPtr data);
+        bool loadMap(HG::Core::DataPtr data);
 
         /**
          * @brief Method for clearing tiled map.

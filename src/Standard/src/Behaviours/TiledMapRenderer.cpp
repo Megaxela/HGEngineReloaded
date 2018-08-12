@@ -1,17 +1,20 @@
-#include <GameObjectCache.hpp>
-#include <GameObjectBuilder.hpp>
-#include <Loaders/STBImageLoader.hpp>
-#include <Mesh.hpp>
-#include <Behaviours/Mesh.hpp>
-#include "Behaviours/TiledMapRenderer.hpp"
-#include <filesystem>
 #include <Behaviours/TiledMapRenderer.hpp>
+#include <GameObjectBuilder.hpp>
+#include <GameObjectCache.hpp>
+#include <Loaders/STBImageLoader.hpp>
+#include <Behaviours/Mesh.hpp>
+#include <Application.hpp>
+#include <Texture.hpp>
+#include <Shader.hpp>
+#include <Scene.hpp>
+#include <Mesh.hpp>
+#include <filesystem>
 
 
 HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
     m_map(nullptr),
     m_layers(),
-    m_mapShader(),
+    m_mapShader(nullptr),
     m_layerZOffsetCummulative(0),
     m_metersPerPixel(0.01f),
     m_layerZOffset(0.01f)
@@ -22,12 +25,17 @@ HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
 HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behaviours::TiledMap *map) :
     m_map(map),
     m_layers(),
-    m_mapShader(),
+    m_mapShader(nullptr),
     m_layerZOffsetCummulative(0),
     m_metersPerPixel(0.01f),
     m_layerZOffset(0.01f)
 {
 
+}
+
+HG::Standard::Behaviours::TiledMapRenderer::~TiledMapRenderer()
+{
+    delete m_mapShader;
 }
 
 float HG::Standard::Behaviours::TiledMapRenderer::tiledLayersZOffset() const
@@ -88,8 +96,10 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepare()
 
 void HG::Standard::Behaviours::TiledMapRenderer::onStart()
 {
+    m_mapShader = new HG::Rendering::Base::Shader;
+
     // Preparing shader
-    m_mapShader.setShaderText(
+    m_mapShader->setShaderText(
         R"(
 #ifdef VertexShader
 layout (location = 0) in vec3 inPosition;
@@ -138,7 +148,7 @@ void main()
     );
 
     // todo: Apply validation
-    scene()->application()->renderer()->setup(&m_mapShader);
+    scene()->application()->renderer()->setup(m_mapShader);
 
     if (m_map)
     {
@@ -460,7 +470,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
     {
         auto material = new HG::Rendering::Base::Material;
 
-        material->setShader(&m_mapShader);
+        material->setShader(m_mapShader);
         material->set("tileset", texture);
 
         auto meshRenderer = new HG::Rendering::Base::Behaviours::Mesh;

@@ -1,6 +1,6 @@
-#include <fstream>
+#include <FilesystemResourceAccessor.hpp>
 #include <CurrentLogger.hpp>
-#include "FilesystemResourceAccessor.hpp"
+#include <fstream>
 
 HG::Standard::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
     m_data(std::move(data)),
@@ -24,8 +24,7 @@ std::string HG::Standard::FilesystemResourceAccessor::VectorData::id() const
     return m_id;
 }
 
-HG::Core::ResourceAccessor::DataPtr
-HG::Standard::FilesystemResourceAccessor::loadRaw(const std::string &id)
+HG::Core::DataPtr HG::Standard::FilesystemResourceAccessor::loadRaw(const std::string &id)
 {
     std::ifstream file(id, std::ios::binary);
 

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Behaviour.hpp>
+#include <GameObject.hpp>
 #include <glm/vec2.hpp>
+#include <Color.hpp>
 
 namespace HG::Standard::Behaviours
 {

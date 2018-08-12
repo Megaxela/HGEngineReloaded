@@ -1,8 +1,11 @@
+#include <Behaviours/TiledMap.hpp>
+#include <ResourceAccessor.hpp>
+#include <CurrentLogger.hpp>
+#include <Data.hpp>
 #include <rapidxml.hpp>
-#include "Behaviours/TiledMap.hpp"
-#include <charconv>
 #include <base64.hpp>
 #include <zlib.hpp>
+#include <charconv>
 
 namespace {
     const char* SUPPORTED_VERSION = "1.1.6";
@@ -32,7 +35,7 @@ const HG::Standard::Behaviours::TiledMap::Group *HG::Standard::Behaviours::Tiled
     return &m_root;
 }
 
-bool HG::Standard::Behaviours::TiledMap::loadMap(HG::Core::ResourceAccessor::DataPtr data)
+bool HG::Standard::Behaviours::TiledMap::loadMap(HG::Core::DataPtr data)
 {
     // Parsing received data
     rapidxml::xml_document<> doc{};

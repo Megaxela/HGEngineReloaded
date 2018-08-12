@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Material.hpp"
-#include <utility>
-#include <ResourceManager.hpp>
 #include <Loaders/StringLoader.hpp>
+#include <ResourceManager.hpp>
+#include <Material.hpp>
+#include <Shader.hpp>
+#include <utility>
 
 namespace HG::Rendering::Base
 {

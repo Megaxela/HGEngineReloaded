@@ -1,9 +1,8 @@
-#include <CurrentLogger.hpp>
-#include <GameObjectCache.hpp>
-#include <utility>
 #include <GameObjectBuilder.hpp>
-
-#include "GameObjectBuilder.hpp"
+#include <GameObjectCache.hpp>
+#include <CurrentLogger.hpp>
+#include <GameObject.hpp>
+#include <utility>
 
 HG::Core::GameObjectBuilder::operator GameObject*()
 {

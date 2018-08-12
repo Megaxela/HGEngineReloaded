@@ -1,8 +1,12 @@
-#include <imgui.h>
-#include "Behaviours/DebugControllerOverlay.hpp"
-#include <Color.hpp>
-#include <imgui_internal.h>
+#include <Behaviours/DebugControllerOverlay.hpp>
 #include <Behaviours/IngameConsole.hpp>
+#include <Application.hpp>
+#include <Color.hpp>
+#include <Scene.hpp>
+#include <SystemTools.h>
+
+#include <imgui.h>
+#include <imgui_internal.h>
 
 
 void HG::Standard::Behaviours::DebugControllerOverlay::onUpdate()

@@ -1,10 +1,19 @@
 #pragma once
 
 #include <Renderer.hpp>
-#include "ResourceManager.hpp"
-#include "TimeStatistics.hpp"
-#include "Input.hpp"
-#include "PhysicsController.hpp"
+#include <ResourceManager.hpp>
+#include <TimeStatistics.hpp>
+#include <Input.hpp>
+
+namespace HG::Physics::Base
+{
+    class PhysicsController;
+}
+
+namespace HG::Rendering::Base
+{
+    class SystemController;
+}
 
 namespace HG::Core
 {
@@ -113,9 +122,7 @@ namespace HG::Core
          * derived from `HG::Rendering::Base::SystemController`.
          */
         template<typename T>
-        typename std::enable_if<
-            std::is_base_of<HG::Rendering::Base::SystemController, T>::value
-        >::type setSystemController()
+        void setSystemController()
         {
             delete m_systemController;
 
@@ -128,9 +135,7 @@ namespace HG::Core
          * derived form `HG::Physics::Base::PhysicsController`.
          */
         template<typename T>
-        typename std::enable_if<
-            std::is_base_of<HG::Physics::Base::PhysicsController, T>::value
-        >::type setPhysicsController()
+        void setPhysicsController()
         {
             delete m_physicsController;
 

@@ -1,12 +1,15 @@
-#include "Forward/MeshRenderer.hpp"
-#include <Behaviours/Mesh.hpp>
+#include <Forward/MeshRenderer.hpp>
 #include <Materials/MeshFallbackMaterial.hpp>
-#include <Camera.hpp>
+#include <Lights/DirectionalLight.hpp>
 #include <Lights/AbstractLight.hpp>
 #include <Lights/PointLight.hpp>
-#include <Lights/DirectionalLight.hpp>
-#include <Common/MeshData.hpp>
+#include <Behaviours/Mesh.hpp>
 #include <Common/ShaderData.hpp>
+#include <Common/MeshData.hpp>
+#include <Application.hpp>
+#include <GameObject.hpp>
+#include <Material.hpp>
+#include <Camera.hpp>
 #include <Mesh.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
 

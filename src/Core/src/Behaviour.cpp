@@ -1,7 +1,8 @@
 
 #include <Behaviour.hpp>
-
-#include "Behaviour.hpp"
+#include <GameObject.hpp>
+#include <Scene.hpp> // For getting application
+#include <Application.hpp> // For getting input
 
 HG::Core::Behaviour::Behaviour(Type t) :
     m_type(t),

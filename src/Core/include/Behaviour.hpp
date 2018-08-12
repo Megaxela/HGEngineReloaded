@@ -1,11 +1,8 @@
 #pragma once
 
-#include <GameObject.hpp>
-
 // Declarations for simple behaviour coding
-#include <Scene.hpp>
-#include <Application.hpp>
 #include <any>
+#include <functional>
 
 #define HG_PROPERTY_INITIALIZER(TYPE, NAME)\
     HG::Core::PropertyInitializer<TYPE> __ ## NAME ## Init = HG::Core::PropertyInitializer<TYPE>(\
@@ -52,6 +49,10 @@ private:\
 
 namespace HG::Core
 {
+    class GameObject;
+    class Input;
+    class Scene;
+
 
     /**
      * @brief Class, that describes abstract

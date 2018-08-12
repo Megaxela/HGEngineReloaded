@@ -1,19 +1,35 @@
 #pragma once
 
-#include <RenderingPipeline.hpp>
-#include <Scene.hpp>
+#include <RenderingPipeline.hpp> // Inheritance
 
-#include <Behaviours/Mesh.hpp>
-#include <Behaviours/Sprite.hpp>
-#include <Common/MeshData.hpp>
+#include <gl/all.hpp>
 #include <ImGuiRenderer.hpp>
-#include <gl/program.hpp>
-#include <gl/vertex_array.hpp>
-#include "GizmosRenderer.hpp"
-#include "AbstractRenderer.hpp"
+#include <GizmosRenderer.hpp>
+
+#include <Texture.hpp> // Required for enum
+#include <CubeMapTexture.hpp> // Required for inheritance
+
+namespace HG::Core
+{
+    class Application;
+}
+
+namespace HG::Rendering::Base
+{
+    class Shader;
+//    class Texture; // Already included
+    class RenderBehaviour;
+
+    namespace Behaviours
+    {
+        class Mesh;
+    }
+}
 
 namespace HG::Rendering::OpenGL::Forward
 {
+    class AbstractRenderer;
+
     /**
      * @brief Class, that describes OpenGL default
      * forward rendering pipeline.

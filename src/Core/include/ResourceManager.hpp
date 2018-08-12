@@ -1,10 +1,13 @@
 #pragma once
 
+#include <Data.hpp> // Required, because of template `load` method
 #include <CurrentLogger.hpp>
-#include "ResourceAccessor.hpp"
+#include <memory>
 
 namespace HG::Core
 {
+    class ResourceAccessor;
+
     /**
      * @brief Class, that describes resource manager.
      * @tparam Accessor Files accessor type. (Can't be changed on runtime)
@@ -101,27 +104,7 @@ namespace HG::Core
          * @return Pointer to raw data, or nullptr if
          * some error acquired.
          */
-        ResourceAccessor::DataPtr loadRawFromAccessor(const std::string& id)
-        {
-            Info() << "Loading resource \"" << id << "\"";
-
-            if (m_accessor == nullptr)
-            {
-                Error() << "Trying to load \"" << id << "\" resource, without ResourceAccessor.";
-                return nullptr;
-            }
-
-            auto data = m_accessor->loadRaw(id);
-
-            if (data == nullptr)
-            {
-                Error() << "Can't load \"" << id << "\" resource. See errors above.";
-
-                return nullptr;
-            }
-
-            return data;
-        }
+        HG::Core::DataPtr loadRawFromAccessor(const std::string& id);
 
         ResourceAccessor* m_accessor;
     };

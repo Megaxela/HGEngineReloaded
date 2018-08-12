@@ -13,4 +13,8 @@ target_link_libraries(HGEngineTests
     ${HG_TEST_LIBS}
 )
 
-configure_file(${HG_TEST_ASSETS})
+if (${HG_TEST_ASSETS})
+
+    configure_file(${HG_TEST_ASSETS})
+
+endif()

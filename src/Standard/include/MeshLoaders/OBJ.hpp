@@ -1,9 +1,14 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <map>
-#include <functional>
-#include <ResourceAccessor.hpp>
+
+namespace HG::Core
+{
+    class Data;
+    using DataPtr = std::shared_ptr<Data>;
+}
 
 namespace HG::Utils
 {
@@ -32,7 +37,7 @@ namespace HG::Standard::MeshLoaders
          * @param data Raw data.
          * @return Smart pointer to mesh.
          */
-        HG::Utils::MeshPtr load(HG::Core::ResourceAccessor::DataPtr data);
+        HG::Utils::MeshPtr load(HG::Core::DataPtr data);
 
     private:
 

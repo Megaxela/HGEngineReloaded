@@ -1,10 +1,15 @@
 #pragma once
 
+#include <glm/vec2.hpp>
 #include <type_traits>
 #include <memory>
-#include <CurrentLogger.hpp>
-#include <Surface.hpp>
-#include <glm/vec2.hpp>
+
+namespace HG::Utils
+{
+    class Surface;
+
+    using SurfacePtr = std::shared_ptr<Surface>;
+}
 
 namespace HG::Rendering::Base
 {
@@ -89,13 +94,6 @@ namespace HG::Rendering::Base
             std::is_base_of<TextureExternalData, T>::value
         >::type setExternalData()
         {
-#ifndef NDEBUG
-            if (m_externalData)
-            {
-                Info() << "Recreating existing external data for texture.";
-            }
-#endif
-
             delete m_externalData;
 
             m_externalData = new T();

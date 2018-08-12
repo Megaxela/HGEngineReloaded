@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Behaviour.hpp>
+#include <Application.hpp>
+#include <PhysicsController.hpp>
 #include "TiledMapRenderer.hpp"
 
 namespace HG::Standard::Behaviours
@@ -19,8 +21,6 @@ namespace HG::Standard::Behaviours
     class TiledMapCollider : public HG::Core::Behaviour
     {
     public:
-
-//        using ColliderCreator = std::function<void*(float x, float y, float w, float h, HG::Physics::Base::PhysicsController* physicsController)>;
 
         using ColliderRemover = std::function<void(void*, HG::Physics::Base::PhysicsController* physicsController)>;
 

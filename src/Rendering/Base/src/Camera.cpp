@@ -1,9 +1,12 @@
+#include <SystemController.hpp>
 #include <CurrentLogger.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include "Camera.hpp"
+#include <Application.hpp>
 #include <GameObject.hpp>
-#include <glmex.hpp>
+#include <Camera.hpp>
+#include <Scene.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
+#include <glmex.hpp>
 
 std::vector<HG::Rendering::Base::Camera*> HG::Rendering::Base::Camera::m_cameras;
 HG::Rendering::Base::Camera* HG::Rendering::Base::Camera::m_active = nullptr;

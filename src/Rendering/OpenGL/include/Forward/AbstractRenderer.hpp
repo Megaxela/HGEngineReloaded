@@ -1,9 +1,14 @@
 #pragma once
 
 #include <RenderBehaviour.hpp>
-#include <cstdlib>
-#include <Application.hpp>
+#include <Material.hpp> // Value
 #include <gl/all.hpp>
+#include <cstdlib>
+
+namespace HG::Core
+{
+    class Application;
+}
 
 namespace HG::Rendering::OpenGL::Forward
 {

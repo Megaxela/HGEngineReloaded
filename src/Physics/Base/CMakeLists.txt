@@ -16,6 +16,15 @@ target_include_directories(HGPhysicsBase PUBLIC
     include
 )
 
-target_compile_options(HGPhysicsBase
-    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
-)
+if (${HG_BUILD_WARNINGS})
+    target_compile_options(HGPhysicsBase
+        PRIVATE
+            -ansi
+            -pedantic
+            -Wall
+            -Wextra
+            -Woverloaded-virtual
+            -Winit-self
+            -Wunreachable-code
+    )
+endif()

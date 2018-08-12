@@ -1,4 +1,5 @@
-#include "Texture.hpp"
+#include <Texture.hpp>
+#include <Surface.hpp>
 
 HG::Rendering::Base::Texture::Texture() :
     m_externalData(nullptr),

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Surface.hpp>
 #include <CurrentLogger.hpp>
+#include <Surface.hpp>
 
 namespace HG::Rendering::Base
 {

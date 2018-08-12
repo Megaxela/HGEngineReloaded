@@ -1,6 +1,7 @@
-#include <Common/ShaderData.hpp>
-#include <Common/Texture2DData.hpp>
 #include <Forward/AbstractRenderer.hpp>
+#include <Common/Texture2DData.hpp>
+#include <Common/ShaderData.hpp>
+#include <Application.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
 
 HG::Rendering::OpenGL::Forward::AbstractRenderer::AbstractRenderer() :

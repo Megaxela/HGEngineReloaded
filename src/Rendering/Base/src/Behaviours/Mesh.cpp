@@ -1,5 +1,5 @@
 #include <memory>
-#include "Behaviours/Mesh.hpp"
+#include <Behaviours/Mesh.hpp>
 
 HG::Rendering::Base::Behaviours::Mesh::Mesh() :
     RenderBehaviour(Id),

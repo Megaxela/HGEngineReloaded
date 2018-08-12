@@ -1,4 +1,4 @@
-#include "PhysicsController.hpp"
+#include <PhysicsController.hpp>
 
 HG::Physics::Base::PhysicsController::PhysicsController(HG::Core::Application *application) :
     m_parent(application)

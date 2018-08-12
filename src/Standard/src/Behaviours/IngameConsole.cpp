@@ -1,10 +1,12 @@
-#include "Behaviours/IngameConsole.hpp"
-#include <algorithm>
-#include <StringTools.hpp>
 #include <Behaviours/IngameConsole.hpp>
 #include <Behaviours/DebugControllerOverlay.hpp>
+#include <Scene.hpp>
+#include <Application.hpp>
+#include <CurrentLogger.hpp>
+#include <StringTools.hpp>
+#include <algorithm>
 
-#include "imgui.h"
+#include <imgui.h>
 
 
 HG::Standard::Behaviours::IngameConsole::IngameConsole() :

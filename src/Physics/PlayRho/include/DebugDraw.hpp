@@ -1,8 +1,8 @@
 #pragma once
 
 #include <PlayRho/PlayRho.hpp>
-#include <Color.hpp>
 #include <Gizmos.hpp>
+#include <Color.hpp>
 
 namespace HG::Physics::PlayRho
 {

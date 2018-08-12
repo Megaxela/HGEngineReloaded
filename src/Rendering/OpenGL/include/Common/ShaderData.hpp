@@ -1,7 +1,7 @@
 #pragma once
 
-#include <gl/all.hpp>
 #include <Shader.hpp>
+#include <gl/all.hpp>
 
 namespace HG::Rendering::OpenGL::Common
 {

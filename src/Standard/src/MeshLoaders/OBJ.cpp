@@ -1,5 +1,6 @@
-#include "MeshLoaders/OBJ.hpp"
+#include <MeshLoaders/OBJ.hpp>
 #include <Mesh.hpp>
+#include <Data.hpp>
 #include <sstream>
 #include <algorithm>
 
@@ -39,7 +40,7 @@ HG::Standard::MeshLoaders::OBJ::OBJ()
 
 }
 
-HG::Utils::MeshPtr HG::Standard::MeshLoaders::OBJ::load(HG::Core::ResourceAccessor::DataPtr data)
+HG::Utils::MeshPtr HG::Standard::MeshLoaders::OBJ::load(HG::Core::DataPtr data)
 {
     auto castedData =
         std::string_view(

@@ -1,7 +1,9 @@
 #pragma once
 
-#include <ResourceAccessor.hpp>
-#include <bits/shared_ptr.h>
+#include <ResourceAccessor.hpp> // Inheritance
+#include <Data.hpp> // Inheritance
+#include <memory>
+#include <vector>
 
 namespace HG::Standard
 {
@@ -17,7 +19,7 @@ namespace HG::Standard
          * @brief Class, that describes data object with
          * vector inside.
          */
-        class VectorData : public HG::Core::ResourceAccessor::Data
+        class VectorData : public HG::Core::Data
         {
         public:
 
@@ -51,6 +53,6 @@ namespace HG::Standard
             std::string m_id;
         };
 
-        std::shared_ptr<Data> loadRaw(const std::string &id) override;
+        HG::Core::DataPtr loadRaw(const std::string &id) override;
     };
 }

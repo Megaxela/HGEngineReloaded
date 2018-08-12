@@ -30,7 +30,7 @@ add_library(HGCore STATIC
     src/TimeStatistics.cpp
     include/TimeStatistics.hpp
     src/Input.cpp
-    include/Input.hpp)
+    include/Input.hpp src/Data.cpp include/Data.hpp)
 
 target_include_directories(HGCore PUBLIC
     include
@@ -42,6 +42,15 @@ target_link_libraries(HGCore
         HGPhysicsBase
 )
 
-target_compile_options(HGCore
-    PRIVATE -ansi -pedantic -Wall -Wextra -Woverloaded-virtual -Winit-self -Wunreachable-code
-)
+if (${HG_BUILD_WARNINGS})
+    target_compile_options(HGCore
+        PRIVATE
+            -ansi
+            -pedantic
+            -Wall
+            -Wextra
+            -Woverloaded-virtual
+            -Winit-self
+            -Wunreachable-code
+    )
+endif()

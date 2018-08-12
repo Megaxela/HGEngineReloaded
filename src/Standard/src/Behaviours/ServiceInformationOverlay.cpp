@@ -1,6 +1,8 @@
-#include <imgui.h>
+#include <Behaviours/ServiceInformationOverlay.hpp>
 #include <PhysicalResource.hpp>
-#include "Behaviours/ServiceInformationOverlay.hpp"
+#include <Scene.hpp>
+#include <Application.hpp>
+#include <imgui.h>
 
 void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
 {

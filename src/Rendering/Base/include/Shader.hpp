@@ -1,6 +1,7 @@
 #pragma once
 
-#include <CurrentLogger.hpp>
+#include <utility>
+#include <string>
 
 namespace HG::Rendering::Base
 {
@@ -59,13 +60,6 @@ namespace HG::Rendering::Base
                 std::is_base_of<ShaderExternalData, T>::value
         >::type setExternalData()
         {
-#ifndef NDEBUG
-            if (m_externalData)
-            {
-                Info() << "Recreating existing external data for shader.";
-            }
-#endif
-
             delete m_externalData;
 
             m_externalData = new T();

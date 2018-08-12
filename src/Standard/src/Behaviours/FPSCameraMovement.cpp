@@ -1,4 +1,9 @@
-#include "Behaviours/FPSCameraMovement.hpp"
+#include <Behaviours/FPSCameraMovement.hpp>
+#include <CurrentLogger.hpp>
+#include <Application.hpp>
+#include <GameObject.hpp>
+#include <Scene.hpp>
+#include <Input.hpp>
 
 HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
     m_enabled(false),

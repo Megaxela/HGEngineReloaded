@@ -1,6 +1,8 @@
 #include <stdexcept>
-#include "Application.hpp"
-#include "Scene.hpp"
+#include <PhysicsController.hpp>
+#include <SystemController.hpp>
+#include <Application.hpp>
+#include <Scene.hpp>
 
 HG::Core::Application::Application(int /* argc */, char** /* argv */) :
     m_renderer(this),

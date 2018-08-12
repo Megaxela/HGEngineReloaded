@@ -1,5 +1,6 @@
+#include <RenderingPipeline.hpp>
+#include <SystemController.hpp>
 #include <CurrentLogger.hpp>
-#include "RenderingPipeline.hpp"
 #include <Application.hpp>
 
 HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :

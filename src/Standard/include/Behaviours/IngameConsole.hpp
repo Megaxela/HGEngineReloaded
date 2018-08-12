@@ -1,8 +1,11 @@
 #pragma once
 
+#include <GameObject.hpp> // Because of template method
 #include <Behaviour.hpp>
+#include <Color.hpp>
 #include <LogsListener.hpp>
 #include <ringbuffer.hpp>
+#include <map>
 
 namespace HG::Standard::Behaviours
 {

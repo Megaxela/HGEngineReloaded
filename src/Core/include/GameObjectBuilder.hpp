@@ -1,9 +1,14 @@
 #pragma once
 
-#include "GameObject.hpp"
+#include <glm/glm.hpp>
+#include <string>
 
 namespace HG::Core
 {
+    class GameObject;
+    class Behaviour;
+    class Transform;
+
     /**
      * @brief Singleton builder
      * for game objects.

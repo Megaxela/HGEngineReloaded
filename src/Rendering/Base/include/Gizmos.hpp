@@ -1,9 +1,9 @@
 #pragma once
 
-#include <glm/vec3.hpp>
-#include <utility>
 #include <Transform.hpp>
 #include <Color.hpp>
+#include <utility>
+#include <glm/vec3.hpp>
 
 
 namespace HG::Rendering::Base

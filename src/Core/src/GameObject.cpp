@@ -1,7 +1,8 @@
-#include "GameObject.hpp"
-#include "Behaviour.hpp"
-#include "Scene.hpp"
-#include "RenderBehaviour.hpp"
+#include <GameObject.hpp>
+#include <Behaviour.hpp>
+#include <Scene.hpp>
+#include <RenderBehaviour.hpp>
+#include <CurrentLogger.hpp>
 
 HG::Core::GameObject::GameObject() :
     m_behaviours(),

@@ -6,6 +6,13 @@
 
 namespace HG::Core
 {
+    class Data;
+
+    using DataPtr = std::shared_ptr<Data>;
+}
+
+namespace HG::Core
+{
     /**
      * @brief Interface for classes, that
      * has to provide access to resources.
@@ -13,33 +20,6 @@ namespace HG::Core
     class ResourceAccessor
     {
     public:
-
-        class Data
-        {
-        public:
-
-            /**
-             * @brief Method for getting received data
-             * size.
-             * @return Size in bytes.
-             */
-            virtual std::size_t size() const = 0;
-
-            /**
-             * @brief Method for getting data.
-             * @return Data.
-             */
-            virtual const std::byte* data() const = 0;
-
-            /**
-             * @brief Method for getting data id.
-             * @return ID.
-             */
-            virtual std::string id() const = 0;
-
-        };
-
-        using DataPtr = std::shared_ptr<Data>;
 
         /**
          * @brief Virtual destructor.

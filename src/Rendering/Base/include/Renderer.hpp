@@ -1,9 +1,9 @@
 #pragma once
 
+#include <MaterialCollection.hpp>
+#include <RenderingPipeline.hpp>
+#include <Gizmos.hpp>
 #include <Scene.hpp>
-#include "RenderingPipeline.hpp"
-#include "Gizmos.hpp"
-#include "MaterialCollection.hpp"
 
 namespace HG::Rendering::Base
 {
