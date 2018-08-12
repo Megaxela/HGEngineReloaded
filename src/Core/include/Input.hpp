@@ -121,7 +121,8 @@ namespace HG::Core
                 , Slash                 //< Keyboard slash (/) button
                 , RightShift            //< Keyboard right shift button
                 , LeftCtrl              //< Keyboard left ctrl button
-                , Super                 //< Keyboard super (Win) button
+                , RightSuper            //< Keyboard right super (Win) button
+                , LeftSuper             //< Keyboard left super (Win) button
                 , LeftAlt               //< Keyboard left alt button
                 , Space                 //< Keyboard space button
                 , RightAlt              //< Keyboard right alt button

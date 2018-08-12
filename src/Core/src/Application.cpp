@@ -79,9 +79,6 @@ bool HG::Core::Application::performCycle()
     // Start counting update time (events are in update section)
     m_timeStatistics.tickTimerBegin(TimeStatistics::UpdateTime);
 
-    // Ticking pushed/released values in input subsystem
-    m_input.tickControllers();
-
     // Polling events
     if (m_renderer.pipeline() != nullptr &&
         systemController() != nullptr)

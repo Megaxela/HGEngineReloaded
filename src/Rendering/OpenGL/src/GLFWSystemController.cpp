@@ -311,6 +311,9 @@ void HG::Rendering::OpenGL::GLFWSystemController::swapBuffers()
 
 void HG::Rendering::OpenGL::GLFWSystemController::pollEvents()
 {
+    // Ticking pushed/released values in input subsystem
+    const_cast<HG::Core::Input*>(controller->application()->input())->tickControllers();
+
     glfwPollEvents();
     handleGamepadsEvents();
     handleWindowEvents();
