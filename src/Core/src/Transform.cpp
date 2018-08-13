@@ -1,6 +1,8 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <algorithm>
 #include <CurrentLogger.hpp>
+#include <Transform.hpp>
+
 #include "Transform.hpp"
 
 HG::Core::Transform::Transform() :
@@ -216,6 +218,28 @@ glm::mat4 HG::Core::Transform::localToWorldMatrix() const
     model = glm::scale(model, globalScale());
     
     return model;
+}
+
+void HG::Core::Transform::setFromLocalToWorldMatrix(const glm::mat4& matrix)
+{
+    glm::vec3 position;
+    glm::quat rotation;
+    glm::vec3 scale;
+    glm::vec3 skew;
+    glm::vec4 perspective;
+
+    glm::decompose(
+        matrix,
+        scale,
+        rotation,
+        position,
+        skew,
+        perspective
+    );
+
+    setGlobalPosition(position);
+    setLocalRotation(rotation);
+    setGlobalScale(scale);
 }
 
 const std::vector<HG::Core::Transform *> &HG::Core::Transform::children() const

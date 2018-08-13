@@ -354,3 +354,8 @@ void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3
 
     gameObject()->transform()->setLocalRotation(rotation);
 }
+
+void HG::Rendering::Base::Camera::setActive() const
+{
+    m_active = this;
+}

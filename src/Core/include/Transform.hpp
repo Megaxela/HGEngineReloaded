@@ -145,6 +145,13 @@ namespace HG::Core
         glm::mat4 localToWorldMatrix() const;
 
         /**
+         * @brief Method for setting translation, rotation and scale
+         * from local to world matrix.
+         * @param matrix Matrix.
+         */
+        void setFromLocalToWorldMatrix(const glm::mat4& matrix);
+
+        /**
          * @brief Method for getting transform children.
          * @return Vector with children.
          */

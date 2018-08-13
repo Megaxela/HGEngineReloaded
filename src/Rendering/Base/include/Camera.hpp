@@ -159,6 +159,11 @@ namespace HG::Rendering::Base
         ~Camera() override;
 
         /**
+         * @brief Method for making this camera active.
+         */
+        void setActive() const;
+
+        /**
          * @brief Method for setting current projection.
          * Orthogonal or perspective.
          * @param projection Projection value.

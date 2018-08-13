@@ -45,7 +45,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
             m_lastMousePosition = input()->mouse()->getMousePosition();
         }
 
-        input()->mouse()->setCursorHidden  (m_enabled);
+//        input()->mouse()->setCursorHidden  (m_enabled);
         input()->mouse()->setCursorDisabled(m_enabled);
     }
 
@@ -113,7 +113,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
 
     glm::vec3 inputDirection(0.0f, 0.0f, 0.0f);
 
-    float speed = static_cast<float>(m_propertyMovementSpeed * dt);
+    auto speed = static_cast<float>(m_propertyMovementSpeed * dt);
 
     if (input->isPressed(HG::Core::Input::Keyboard::Key::Q))
     {
