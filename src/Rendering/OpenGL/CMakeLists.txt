@@ -61,7 +61,11 @@ add_library(HGRenderingOGL STATIC
     include/Common/Texture2DData.hpp
     src/Forward/SpriteRenderer.cpp
     include/Forward/SpriteRenderer.hpp
-        src/ImGuiRenderer.cpp include/ImGuiRenderer.hpp src/Material/ImGuiMaterial.cpp include/Materials/ImGuiMaterial.hpp)
+    src/ImGuiRenderer.cpp
+    include/ImGuiRenderer.hpp
+    src/Material/ImGuiMaterial.cpp
+    include/Materials/ImGuiMaterial.hpp
+)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 

@@ -161,7 +161,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Method for making this camera active.
          */
-        void setActive() const;
+        void setActive();
 
         /**
          * @brief Method for setting current projection.
