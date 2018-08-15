@@ -114,7 +114,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
         m_lineData.data()
     );
 
-    auto* program = &m_lineMaterial->shader()->externalData<Common::ShaderData>()->Program;
+    auto* program = &m_lineMaterial->shader()->specificData<Common::ShaderData>()->Program;
 
     program->set_uniform(
         program->uniform_location("projection"),

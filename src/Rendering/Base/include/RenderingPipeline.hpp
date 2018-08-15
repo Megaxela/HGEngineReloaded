@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Scene.hpp"
+#include <Scene.hpp> // For GameObjectsCOntainer
+#include <map>
 
 namespace HG::Core
 {
@@ -10,10 +11,8 @@ namespace HG::Core
 namespace HG::Rendering::Base
 {
     class RenderBehaviour;
-
-    class Texture;
-    class Shader;
-    class CubeMapTexture;
+    class AbstractRenderDataProcessor;
+    class RenderData;
 
     /**
      * @brief Class, that describes
@@ -61,31 +60,34 @@ namespace HG::Rendering::Base
 
         /**
          * @brief Method for setting up render behaviour.
-         * @param behaviour Pointer to render behaviour.
+         * @param data Pointer to render behaviour.
          */
-        virtual void setup(RenderBehaviour* behaviour) = 0;
+        virtual bool setup(RenderData* data);
 
         /**
-         * @brief Method for setting up textures for rendering.
-         * @param texture Pointer to texture.
+         * @brief Method for adding render data processor.
+         * That will setup any render data.
+         * @param processor Pointer to processor.
          */
-        virtual void setup(Texture* texture) = 0;
+        RenderingPipeline* addRenderDataProcessor(AbstractRenderDataProcessor* processor);
+
+    protected:
 
         /**
-         * @brief Method for setting up shaders for rendering.
-         * @param shader Pointer to shader.
+         * @brief Method, that's called, when render behaviour has to be
+         * set up.
+         * @param behaviour Pointer to behaviour.
          */
-        virtual void setup(Shader* shader) = 0;
-
-        /**
-         * @brief Method for setting up cube map textures for rendering.
-         * @param texture Pointer to cube map.
-         */
-        virtual void setup(CubeMapTexture* texture) = 0;
+        virtual bool setupRenderBehaviour(RenderBehaviour* behaviour);
 
     private:
 
         HG::Core::Application* m_parentApplication;
+
+        std::map<
+            std::size_t,
+            AbstractRenderDataProcessor*
+        > m_renderDataProcessor;
     };
 }
 

@@ -60,7 +60,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::init()
     m_vbo            = std::move(gl::buffer());
     m_ebo = std::move(gl::buffer());
 
-    auto* program = &m_material->shader()->externalData<Common::ShaderData>()->Program;
+    auto* program = &m_material->shader()->specificData<Common::ShaderData>()->Program;
 
     m_uniformLocationTex      = program->uniform_location("Texture");
     m_uniformLocationProjMtx  = program->uniform_location("ProjMtx");
@@ -115,7 +115,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
     const auto ortho_projection = glm::ortho(0.0f, io.DisplaySize.x, io.DisplaySize.y, 0.0f);
 
     // Getting shader program
-    auto* program = &m_material->shader()->externalData<Common::ShaderData>()->Program;
+    auto* program = &m_material->shader()->specificData<Common::ShaderData>()->Program;
 
     program->use();
     program->set_uniform(m_uniformLocationTex, 0);

@@ -7,7 +7,6 @@
 #include <GizmosRenderer.hpp>
 
 #include <Texture.hpp> // Required for enum
-#include <CubeMapTexture.hpp> // Required for inheritance
 
 namespace HG::Core
 {
@@ -29,6 +28,7 @@ namespace HG::Rendering::Base
 namespace HG::Rendering::OpenGL::Forward
 {
     class AbstractRenderer;
+    class AbstractRenderDataProcessor;
 
     /**
      * @brief Class, that describes OpenGL default
@@ -44,13 +44,6 @@ namespace HG::Rendering::OpenGL::Forward
     class RenderingPipeline : public HG::Rendering::Base::RenderingPipeline
     {
     public:
-
-        class CubeMapTextureData : public HG::Rendering::Base::CubeMapTexture::CubeMapTextureExternalData
-        {
-        public:
-
-            gl::cubemap_texture Texture;
-        };
 
         /**
          * @brief Constructor.
@@ -76,30 +69,6 @@ namespace HG::Rendering::OpenGL::Forward
         void render(const HG::Core::Scene::GameObjectsContainer& objects) override;
 
         /**
-         * @brief Method for setting up behaviours for forward rendering.
-         * @param behaviour Rendering behaviour.
-         */
-        void setup(HG::Rendering::Base::RenderBehaviour *behaviour) override;
-
-        /**
-         * @brief Method for setting up textures for forward rendering.
-         * @param texture Texture.
-         */
-        void setup(HG::Rendering::Base::Texture* texture) override;
-
-        /**
-         * @brief Method for setting up shaders for forward rendering.
-         * @param shader Shader.
-         */
-        void setup(HG::Rendering::Base::Shader* shader) override;
-
-        /**
-         * @brief Method for setting up cube maps for forward rendering.
-         * @param texture Cube map texture.
-         */
-        void setup(HG::Rendering::Base::CubeMapTexture* texture) override;
-
-        /**
          * @brief Init method.
          * @return Init success.
          */
@@ -117,35 +86,6 @@ namespace HG::Rendering::OpenGL::Forward
          * @param objects Objects.
          */
         void proceedGameObjects(const HG::Core::Scene::GameObjectsContainer& objects);
-
-        // Setup methods
-        void setupMesh(HG::Rendering::Base::Behaviours::Mesh* behaviour);
-
-        /**
-         * @brief Method for converting texture enum to
-         * gl enum filtering mode.
-         * @param filter Texture enum.
-         * @return GL enum.
-         */
-        GLuint getFilter(HG::Rendering::Base::Texture::Filtering filter);
-
-        /**
-         * @brief Method for converting texture enum to
-         * gl enum wrapping mode.
-         * @param wrapping Texture enum.
-         * @return GL enum.
-         */
-        GLuint getWrapping(HG::Rendering::Base::Texture::Wrapping wrapping);
-
-        /**
-         * @brief Method for setting up one of cube side.
-         * @param surface Surface for setting up.
-         * @param texture GL texture.
-         * @param side GL side.
-         */
-        void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
-                              gl::cubemap_texture& texture,
-                              GLuint side);
 
         std::vector<HG::Rendering::Base::RenderBehaviour*> m_behavioursCache;
 

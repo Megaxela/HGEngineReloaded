@@ -3,6 +3,7 @@
 #include <glm/vec2.hpp>
 #include <type_traits>
 #include <memory>
+#include "RenderData.hpp"
 
 namespace HG::Utils
 {
@@ -17,9 +18,11 @@ namespace HG::Rendering::Base
      * @brief Class, that describes texture
      * for rendering (in GPU / prepared for GPU).
      */
-    class Texture
+    class Texture : public RenderData
     {
     public:
+
+        static constexpr std::size_t DataId = 3;
 
         /**
          * @brief Texture filtering methods.
@@ -42,20 +45,6 @@ namespace HG::Rendering::Base
         };
 
         /**
-         * @brief Class, that describes abstract
-         * external data for texture.
-         */
-        class TextureExternalData
-        {
-        public:
-
-            /**
-             * @brief Default virtual constructor.
-             */
-            virtual ~TextureExternalData() = default;
-        };
-
-        /**
          * @brief Constructor.
          */
         Texture();
@@ -64,45 +53,6 @@ namespace HG::Rendering::Base
          * @brief Constructor from surface.
          */
         explicit Texture(HG::Utils::SurfacePtr ptr);
-
-        /**
-         * @brief Destructor. Clears external data.
-         */
-        ~Texture();
-
-        /**
-         * @brief Method for getting external data, casted
-         * to some type.
-         * @tparam T Type to cast.
-         * @return Pointer to external data.
-         */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<TextureExternalData, T>::value,
-            T*
-        >::type externalData() const
-        {
-            return static_cast<T*>(m_externalData);
-        }
-
-        /**
-         * @brief Method for setting external data.
-         * @tparam T Type of actual external data.
-         */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<TextureExternalData, T>::value
-        >::type setExternalData()
-        {
-            delete m_externalData;
-
-            m_externalData = new T();
-        }
-
-        /**
-         * @brief Method for clearing external data.
-         */
-        void clearExternalData();
 
         /**
          * @brief Method for getting binded surface to
@@ -180,8 +130,6 @@ namespace HG::Rendering::Base
         Wrapping tWrapping() const;
 
     private:
-        TextureExternalData* m_externalData;
-
         HG::Utils::SurfacePtr m_surface;
 
         Filtering m_minFiltering;

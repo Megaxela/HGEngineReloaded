@@ -41,6 +41,11 @@ add_library(HGRenderingBase STATIC
     include/Gizmos.hpp
     src/MaterialCollection.cpp
     include/MaterialCollection.hpp
+    include/RenderSpecificData.hpp
+    src/RenderData.cpp
+    include/RenderData.hpp
+    src/AbstractRenderDataProcessor.cpp
+    include/AbstractRenderDataProcessor.hpp
 )
 
 target_include_directories(HGRenderingBase PUBLIC

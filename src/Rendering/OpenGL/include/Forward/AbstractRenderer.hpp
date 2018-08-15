@@ -46,8 +46,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @param gameObject Behaviour owner.
          * @param renderBehaviour Rendering behaviour.
          */
-        virtual void render(HG::Core::GameObject* gameObject,
-                            HG::Rendering::Base::RenderBehaviour* renderBehaviour) = 0;
+        virtual void render(HG::Rendering::Base::RenderBehaviour* renderBehaviour) = 0;
 
         /**
          * @brief Method, that will be used by forward renderer

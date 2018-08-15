@@ -1,7 +1,9 @@
+#include <AbstractRenderDataProcessor.hpp>
 #include <RenderingPipeline.hpp>
 #include <SystemController.hpp>
 #include <CurrentLogger.hpp>
 #include <Application.hpp>
+#include <RenderBehaviour.hpp>
 
 HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     m_parentApplication(application)
@@ -58,4 +60,45 @@ void HG::Rendering::Base::RenderingPipeline::deinit()
 HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() const
 {
     return m_parentApplication;
+}
+
+bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderData* data)
+{
+    if (data->dataType() == HG::Rendering::Base::RenderBehaviour::DataId)
+    {
+        return setupRenderBehaviour(
+            dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data)
+        );
+    }
+
+    // Search for data processor.
+    auto processorIterator = m_renderDataProcessor.find(data->dataType());
+
+    if (processorIterator == m_renderDataProcessor.end())
+    {
+        Error() << "Can't setup render data with " << data->dataType() << " type. No processor.";
+        return false;
+    }
+
+    return processorIterator->second->setup(data);
+}
+
+bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
+{
+    auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
+
+    if (processorIterator == m_renderDataProcessor.end())
+    {
+        Error() << "Can't setup rendering behaviour's render data with " << behaviour->renderBehaviourType() << " type. No processor.";
+        return false;
+    }
+
+    return processorIterator->second->setup(behaviour);
+}
+
+HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::RenderingPipeline::addRenderDataProcessor(HG::Rendering::Base::AbstractRenderDataProcessor* processor)
+{
+    m_renderDataProcessor[processor->getTarget()] = processor;
+
+    return &(*this);
 }

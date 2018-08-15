@@ -65,7 +65,10 @@ add_library(HGRenderingOGL STATIC
     include/ImGuiRenderer.hpp
     src/Material/ImGuiMaterial.cpp
     include/Materials/ImGuiMaterial.hpp
-)
+    include/Common/CubeMapTextureData.hpp
+        src/Common/MeshDataProcessor.cpp
+        include/Common/MeshDataProcessor.hpp
+        src/Common/ShaderDataProcessor.cpp include/Common/ShaderDataProcessor.hpp src/Common/Texture2DDataProcessor.cpp include/Common/Texture2DDataProcessor.hpp src/Common/CubeMapTextureDataProcessor.cpp include/Common/CubeMapTextureDataProcessor.hpp)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 

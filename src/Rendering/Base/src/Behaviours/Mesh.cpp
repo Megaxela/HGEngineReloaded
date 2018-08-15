@@ -8,11 +8,6 @@ HG::Rendering::Base::Behaviours::Mesh::Mesh() :
 
 }
 
-HG::Rendering::Base::Behaviours::Mesh::~Mesh()
-{
-    clearExternalData();
-}
-
 HG::Utils::MeshPtr HG::Rendering::Base::Behaviours::Mesh::mesh() const
 {
     return m_mesh;

@@ -13,7 +13,7 @@ namespace HG::Rendering::Base::Behaviours
     public:
 
         // Mesh type id
-        static constexpr std::size_t Id = __COUNTER__;
+        static constexpr std::size_t Id = 2;
 
         /**
          * @brief Constructor.

@@ -2,7 +2,7 @@
 #include <Surface.hpp>
 
 HG::Rendering::Base::Texture::Texture() :
-    m_externalData(nullptr),
+    RenderData(DataId),
     m_surface(nullptr),
     m_minFiltering(Filtering::Nearest),
     m_magFiltering(Filtering::Nearest),
@@ -13,7 +13,7 @@ HG::Rendering::Base::Texture::Texture() :
 }
 
 HG::Rendering::Base::Texture::Texture(HG::Utils::SurfacePtr ptr) :
-    m_externalData(nullptr),
+    RenderData(DataId),
     m_surface(std::move(ptr)),
     m_minFiltering(Filtering::Nearest),
     m_magFiltering(Filtering::Nearest),
@@ -21,17 +21,6 @@ HG::Rendering::Base::Texture::Texture(HG::Utils::SurfacePtr ptr) :
     m_tWrapping(Wrapping::Repeat)
 {
 
-}
-
-HG::Rendering::Base::Texture::~Texture()
-{
-    clearExternalData();
-}
-
-void HG::Rendering::Base::Texture::clearExternalData()
-{
-    delete m_externalData;
-    m_externalData = nullptr;
 }
 
 glm::ivec2 HG::Rendering::Base::Texture::size() const

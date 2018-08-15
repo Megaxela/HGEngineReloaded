@@ -3,20 +3,10 @@
 
 HG::Rendering::Base::RenderBehaviour::RenderBehaviour(std::size_t type) :
     Behaviour(HG::Core::Behaviour::Type::Render),
-    m_externalData(nullptr),
+    RenderData(DataId),
     m_type(type)
 {
 
-}
-
-HG::Rendering::Base::RenderBehaviour::~RenderBehaviour()
-{
-    clearExternalData();
-}
-
-void HG::Rendering::Base::RenderBehaviour::clearExternalData()
-{
-    delete m_externalData;
 }
 
 std::size_t HG::Rendering::Base::RenderBehaviour::renderBehaviourType()

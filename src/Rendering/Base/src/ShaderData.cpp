@@ -1,22 +1,10 @@
 #include "Shader.hpp"
 
 HG::Rendering::Base::Shader::Shader() :
-    m_shaderText(),
-    m_externalData(nullptr)
+    RenderData(DataId),
+    m_shaderText()
 {
 
-}
-
-HG::Rendering::Base::Shader::~Shader()
-{
-    clearExternalData();
-}
-
-void HG::Rendering::Base::Shader::clearExternalData()
-{
-    delete m_externalData;
-
-    m_externalData = nullptr;
 }
 
 void HG::Rendering::Base::Shader::setShaderText(std::string text)

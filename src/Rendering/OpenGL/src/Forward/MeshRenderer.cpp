@@ -42,12 +42,11 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::deinit()
     m_meshFallbackMaterial = nullptr;
 }
 
-void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *gameObject,
-                                                            HG::Rendering::Base::RenderBehaviour *renderBehaviour)
+void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
     auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
     
-    auto data = meshBehaviour->externalData<Common::MeshData>();
+    auto data = meshBehaviour->specificData<Common::MeshData>();
 
     // todo: On errors, render "error" mesh instead.
     // Additional information in mesh is
@@ -69,15 +68,15 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
 
     if (meshBehaviour->material() == nullptr ||
         meshBehaviour->material()->shader() == nullptr ||
-        meshBehaviour->material()->shader()->externalData<Common::ShaderData>() == nullptr)
+        meshBehaviour->material()->shader()->specificData<Common::ShaderData>() == nullptr)
     {
-        program = &m_meshFallbackMaterial->shader()->externalData<Common::ShaderData>()->Program;
+        program = &m_meshFallbackMaterial->shader()->specificData<Common::ShaderData>()->Program;
 
         program->use();
     }
     else
     {
-        program = &meshBehaviour->material()->shader()->externalData<Common::ShaderData>()->Program;
+        program = &meshBehaviour->material()->shader()->specificData<Common::ShaderData>()->Program;
 
         program->use();
 
@@ -92,7 +91,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Core::GameObject *
     {
         program->set_uniform(
             location,
-            gameObject->transform()->localToWorldMatrix()
+            meshBehaviour->gameObject()->transform()->localToWorldMatrix()
         );
     }
 

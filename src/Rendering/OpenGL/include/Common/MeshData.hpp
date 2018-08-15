@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Behaviours/Mesh.hpp>
 #include <gl/all.hpp>
+#include <RenderSpecificData.hpp>
 
 namespace HG::Rendering::OpenGL::Common
 {
     /**
       * @brief External data implementation for mesh rendering behaviour
       */
-    class MeshData : public HG::Rendering::Base::Behaviours::Mesh::ExternalData
+    class MeshData : public HG::Rendering::Base::RenderSpecificData
     {
     public:
 

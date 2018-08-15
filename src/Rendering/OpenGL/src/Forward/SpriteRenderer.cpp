@@ -105,13 +105,12 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
     m_spriteData->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 }
 
-void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Core::GameObject *gameObject,
-                                                              HG::Rendering::Base::RenderBehaviour *renderBehaviour)
+void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
     auto spriteBehaviour = static_cast<HG::Rendering::Base::Behaviours::Sprite*>(renderBehaviour);
 
-    auto* program = m_spriteMaterial->shader()->externalData<Common::ShaderData>();
-    auto* spriteExternal = spriteBehaviour->texture()->externalData<Common::Texture2DData>();
+    auto* program = m_spriteMaterial->shader()->specificData<Common::ShaderData>();
+    auto* spriteExternal = spriteBehaviour->texture()->specificData<Common::Texture2DData>();
 
     if (!spriteExternal)
     {
@@ -128,7 +127,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Core::GameObject
     {
         program->Program.set_uniform(
             location,
-            gameObject->transform()->localToWorldMatrix()
+            spriteBehaviour->gameObject()->transform()->localToWorldMatrix()
         );
     }
 

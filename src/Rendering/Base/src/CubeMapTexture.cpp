@@ -1,7 +1,7 @@
 #include "CubeMapTexture.hpp"
 
 HG::Rendering::Base::CubeMapTexture::CubeMapTexture() :
-    m_externalData(nullptr),
+    RenderData(Id),
     m_right(nullptr),
     m_left(nullptr),
     m_top(nullptr),
@@ -13,12 +13,12 @@ HG::Rendering::Base::CubeMapTexture::CubeMapTexture() :
 }
 
 HG::Rendering::Base::CubeMapTexture::CubeMapTexture(HG::Utils::SurfacePtr right,
-                                                         HG::Utils::SurfacePtr left,
-                                                         HG::Utils::SurfacePtr top,
-                                                         HG::Utils::SurfacePtr bottom,
-                                                         HG::Utils::SurfacePtr front,
-                                                         HG::Utils::SurfacePtr back) :
-    m_externalData(nullptr),
+                                                    HG::Utils::SurfacePtr left,
+                                                    HG::Utils::SurfacePtr top,
+                                                    HG::Utils::SurfacePtr bottom,
+                                                    HG::Utils::SurfacePtr front,
+                                                    HG::Utils::SurfacePtr back) :
+    RenderData(Id),
     m_right(std::move(right)),
     m_left(std::move(left)),
     m_top(std::move(top)),
@@ -29,28 +29,16 @@ HG::Rendering::Base::CubeMapTexture::CubeMapTexture(HG::Utils::SurfacePtr right,
 
 }
 
-HG::Rendering::Base::CubeMapTexture::~CubeMapTexture()
-{
-    clearExternalData();
-}
-
-void HG::Rendering::Base::CubeMapTexture::clearExternalData()
-{
-    delete m_externalData;
-    m_externalData = nullptr;
-}
-
-HG::Utils::SurfacePtr
-HG::Rendering::Base::CubeMapTexture::getSideSurface(HG::Rendering::Base::CubeMapTexture::Side side) const
+HG::Utils::SurfacePtr HG::Rendering::Base::CubeMapTexture::getSideSurface(HG::Rendering::Base::CubeMapTexture::Side side) const
 {
     switch (side)
     {
-    case Right:  return m_right;  break;
-    case Left:   return m_left;   break;
-    case Top:    return m_top;    break;
-    case Bottom: return m_bottom; break;
-    case Front:  return m_front;  break;
-    case Back:   return m_back;   break;
+    case Right:  return m_right  ;
+    case Left:   return m_left   ;
+    case Top:    return m_top    ;
+    case Bottom: return m_bottom ;
+    case Front:  return m_front  ;
+    case Back:   return m_back   ;
     }
 
     return nullptr;

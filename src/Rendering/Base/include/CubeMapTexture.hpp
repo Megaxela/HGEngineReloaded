@@ -2,6 +2,7 @@
 
 #include <CurrentLogger.hpp>
 #include <Surface.hpp>
+#include <RenderData.hpp>
 
 namespace HG::Rendering::Base
 {
@@ -9,9 +10,11 @@ namespace HG::Rendering::Base
      * @brief Class, that describes cube map
      * texture for rendering (in GPU / prepared for GPU)
      */
-    class CubeMapTexture
+    class CubeMapTexture : public RenderData
     {
     public:
+
+        constexpr static std::size_t Id = 4;
 
         /**
          * @brief Cube side.
@@ -24,20 +27,6 @@ namespace HG::Rendering::Base
             Bottom,
             Front,
             Back
-        };
-
-        /**
-         * @brief Class, that describes abstract
-         * external data for textures.
-         */
-        class CubeMapTextureExternalData
-        {
-        public:
-
-            /**
-             * @brief Defualt virtual constructor.
-             */
-            virtual ~CubeMapTextureExternalData() = default;
         };
 
         /**
@@ -64,48 +53,6 @@ namespace HG::Rendering::Base
         /**
          * @brief Destructor. Clears external data.
          */
-        ~CubeMapTexture();
-
-        /**
-         * @brief Method for getting external data, casted
-         * to some type.
-         * @tparam T Type to cast.
-         * @return Pointer to external data.
-         */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<CubeMapTextureExternalData, T>::value,
-            T*
-        >::type externalData() const
-        {
-            return static_cast<T*>(m_externalData);
-        }
-
-        /**
-         * @brief Method for setting external data.
-         * @tparam T Type of actual external data.
-         */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<CubeMapTextureExternalData, T>::value
-        >::type setExternalData()
-        {
-#ifndef NDEBUG
-            if (m_externalData)
-            {
-                Info() << "Recreating existing external data for texture.";
-            }
-#endif
-
-            delete m_externalData;
-
-            m_externalData = new T();
-        }
-
-        /**
-         * @brief Method for clearing external data.
-         */
-        void clearExternalData();
 
         /**
          * @brief Method for getting side surface.
@@ -124,8 +71,6 @@ namespace HG::Rendering::Base
         void setSideSurface(Side side, HG::Utils::SurfacePtr surface);
 
     private:
-
-        CubeMapTextureExternalData* m_externalData;
 
         // Surfaces
         HG::Utils::SurfacePtr m_right;

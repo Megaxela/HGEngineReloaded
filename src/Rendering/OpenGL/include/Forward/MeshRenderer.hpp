@@ -28,13 +28,29 @@ namespace HG::Rendering::OpenGL::Forward
          */
         virtual ~MeshRenderer();
 
-        void render(HG::Core::GameObject *gameObject,
-                    HG::Rendering::Base::RenderBehaviour *renderBehaviour) override;
+        /**
+         * @brief Method for performs actual mesh rendering.
+         * @param renderBehaviour Render behaviour.
+         */
+        void render(HG::Rendering::Base::RenderBehaviour *renderBehaviour) override;
 
+        /**
+         * @brief Method for getting render behaviours type, that
+         * this renderer can proceed.
+         * (HG::Rendering::Base::Behaviours::Mesh)
+         */
         size_t getTarget() override;
 
+        /**
+         * @brief Method for initializing mesh renderer.
+         * Loads material.
+         */
         void init() override;
 
+        /**
+         * @brief Method for deinitializing mesh renderer.
+         * Destroys material.
+         */
         void deinit() override;
 
     private:

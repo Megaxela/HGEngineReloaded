@@ -2,6 +2,7 @@
 #include <Common/Texture2DData.hpp>
 #include <Common/ShaderData.hpp>
 #include <Application.hpp>
+#include <Texture.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
 
 HG::Rendering::OpenGL::Forward::AbstractRenderer::AbstractRenderer() :
@@ -25,7 +26,7 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::applyShaderUniforms(HG::R
 {
     m_textureNumber = 0;
 
-    auto program = &material->shader()->externalData<Common::ShaderData>()->Program;
+    auto program = &material->shader()->specificData<Common::ShaderData>()->Program;
 
     for (auto&& [uniformName, uniformValue] : *material)
     {
@@ -104,8 +105,8 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
             m_textureNumber
         );
 
-        value.texture->externalData<Common::Texture2DData>()->Texture.set_active(m_textureNumber);
-        value.texture->externalData<Common::Texture2DData>()->Texture.bind();
+        value.texture->specificData<Common::Texture2DData>()->Texture.set_active(m_textureNumber);
+        value.texture->specificData<Common::Texture2DData>()->Texture.bind();
 
         ++m_textureNumber;
 

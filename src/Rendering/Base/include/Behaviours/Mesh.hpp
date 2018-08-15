@@ -30,11 +30,6 @@ namespace HG::Rendering::Base::Behaviours
         Mesh();
 
         /**
-         * @brief Destructor.
-         */
-        ~Mesh() override;
-
-        /**
          * @brief Method for getting smart pointer
          * to mesh object.
          * @return Smart pointer to mesh or nullptr if
