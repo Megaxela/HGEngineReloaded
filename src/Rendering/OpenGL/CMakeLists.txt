@@ -17,7 +17,12 @@ if (${HGRenderingOGL_USE_GLFW})
     set(RENDERER_DEFINITION GRAPHICS_USE_GLFW)
 
     if (WIN32)
-        set(RENDERER_LIBRARY glfw3)
+
+        find_package(GLFW REQUIRED)
+
+        set(RENDERER_LIBRARY ${GLFW_LIBRARY})
+        set(RENDERER_INCLUDE ${GLFW_INCLUDE_DIR})
+        
     else()
         set(RENDERER_LIBRARY glfw)
     endif()
@@ -87,6 +92,7 @@ target_link_libraries(HGRenderingOGL
 
 target_include_directories(HGRenderingOGL PUBLIC
     include
+    ${RENDERER_INCLUDE}
 )
 
 target_compile_definitions(HGRenderingOGL

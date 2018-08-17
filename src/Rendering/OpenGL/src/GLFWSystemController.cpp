@@ -70,7 +70,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiInit()
     io.ClipboardUserData = m_window;
     // todo: Fix this define
 #ifdef _WIN32
-    io.ImeWindowHandle = glfwGetWin32Window(g_Window);
+//    io.ImeWindowHandle = glfwGetWin32Window(m_window);
 #endif
 
     // Load cursors

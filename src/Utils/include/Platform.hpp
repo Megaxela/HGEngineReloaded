@@ -15,6 +15,6 @@
     #define FUNCTION_WINDOWS_STUB
     #define FUNCTION_LINUX_STUB Error() << "Function has no realisation for linux.";
 #else
-    #define FUNCTION_WINDOWS_STUB Error() << "Function has no realisation for windows.";
+    #define FUNCTION_WINDOWS_STUB ErrorF() << "Function has no realisation for windows.";
     #define FUNCTION_LINUX_STUB
 #endif

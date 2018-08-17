@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.9)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/)
+
 option(HG_BUILD_EXAMPLES "Build project example" Off)
+option(HG_BUILD_TESTS    "Build tests"           Off)
 
 # Clearing testing cached variables
 set(HG_TEST_CASES  "" CACHE STRING "" FORCE)
@@ -13,6 +16,6 @@ if (${HG_BUILD_EXAMPLES})
     add_subdirectory(example)
 endif()
 
-if (DEFINED HG_TEST_CASES)
+if (${HG_BUILD_TESTS})
     add_subdirectory(testing)
 endif()

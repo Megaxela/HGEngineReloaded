@@ -42,6 +42,11 @@ if (${BUILD_CONAN_PACKAGE})
 
   add_conan_remote(bincrafter      https://api.bintray.com/conan/bincrafters/public-conan)
   add_conan_remote(conan-community https://api.bintray.com/conan/conan-community/conan   )
+else()
+  find_package(GLEW REQUIRED)
+
+  list(APPEND PROJECT_LIBRARIES    ${GLEW_LIBRARY})
+  list(APPEND PROJECT_INCLUDE_DIRS ${GLEW_INCLUDE_DIR})
 endif()
 
 # ADD NON-CONAN LIBRARIES HERE.
