@@ -110,14 +110,6 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     auto spriteBehaviour = static_cast<HG::Rendering::Base::Behaviours::Sprite*>(renderBehaviour);
 
     auto* program = m_spriteMaterial->shader()->specificData<Common::ShaderData>();
-    auto* spriteExternal = spriteBehaviour->texture()->specificData<Common::Texture2DData>();
-
-    if (!spriteExternal)
-    {
-        // todo: Add fallback sprite image
-        Error() << "Sprite texture was not defined.";
-        return;
-    }
 
     program->Program.use();
 
@@ -164,8 +156,22 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     {
         program->Program.set_uniform_1i(location, 0);
 
-        spriteExternal->Texture.set_active(0);
-        spriteExternal->Texture.bind();
+        auto textureData = spriteBehaviour->texture()->specificData<Common::Texture2DData>();
+
+        if (textureData == nullptr ||
+            !textureData->Texture.is_valid())
+        {
+            if (!application()->renderer()->setup(spriteBehaviour->texture()))
+            {
+                // FALLBACK HERE
+                return;
+            }
+
+            textureData = spriteBehaviour->texture()->specificData<Common::Texture2DData>();
+        }
+
+        textureData->Texture.set_active(0);
+        textureData->Texture.bind();
     }
 
     m_spriteData->VAO.bind();

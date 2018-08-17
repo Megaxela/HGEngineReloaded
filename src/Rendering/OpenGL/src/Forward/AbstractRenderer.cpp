@@ -105,8 +105,22 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
             m_textureNumber
         );
 
-        value.texture->specificData<Common::Texture2DData>()->Texture.set_active(m_textureNumber);
-        value.texture->specificData<Common::Texture2DData>()->Texture.bind();
+        auto textureData = value.texture->specificData<Common::Texture2DData>();
+
+        if (textureData == nullptr ||
+            !textureData->Texture.is_valid())
+        {
+            if (!application()->renderer()->setup(value.texture))
+            {
+                // FALLBACK HERE
+                return;
+            }
+
+            textureData = value.texture->specificData<Common::Texture2DData>();
+        }
+
+        textureData->Texture.set_active(m_textureNumber);
+        textureData->Texture.bind();
 
         ++m_textureNumber;
 

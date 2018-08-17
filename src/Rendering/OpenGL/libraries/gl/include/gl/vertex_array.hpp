@@ -17,7 +17,7 @@ class GL_EXPORT vertex_array
 public:
   // 10.3.1 Vertex array objects.
   vertex_array();
-  vertex_array(GLuint id);
+  explicit vertex_array(GLuint id);
   vertex_array(const vertex_array&  that) = delete;
   vertex_array(      vertex_array&& temp) noexcept;
   virtual ~vertex_array();
@@ -66,18 +66,6 @@ private:
   GLuint id_      = 0;
   bool   managed_ = true;
 };
-}
-
-namespace std
-{
-  static void swap(gl::vertex_array& l, gl::vertex_array& r) noexcept
-  {
-    gl::vertex_array tmp(gl::invalid_id);
-
-    tmp = std::move(l);
-    l = std::move(r);
-    r = std::move(tmp);
-  }
 }
 
 #endif

@@ -38,7 +38,7 @@ public:
   {
     glCreateTextures(target, 1, &id_);
   }
-  texture(GLuint id) : id_(id), managed_(false)
+  explicit texture(GLuint id) : id_(id), managed_(false)
   {
 
   }
@@ -65,6 +65,9 @@ public:
   {
     if (this != &temp)
     {
+      if (managed_ && id_ != invalid_id)
+        glDeleteTextures(1, &id_);
+
       id_       = std::move(temp.id_);
       managed_  = std::move(temp.managed_);
 #ifdef GL_CUDA_INTEROP_SUPPORT
@@ -665,19 +668,6 @@ GL_EXPORT inline bool seamless_cubemap_enabled    ()
 {
   return glIsEnabled(GL_TEXTURE_CUBE_MAP_SEAMLESS) != 0;
 }
-}
-
-namespace std
-{
-    template<GLenum target>
-    void swap(gl::texture<target>& l, gl::texture<target>& r)
-    {
-      gl::texture<target> tmp(gl::invalid_id);
-
-      tmp = std::move(l);
-      l = std::move(r);
-      r = std::move(tmp);
-    }
 }
 
 #endif

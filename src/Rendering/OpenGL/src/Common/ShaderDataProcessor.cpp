@@ -50,6 +50,11 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
         externalData = shader->setSpecificData<Common::ShaderData>();
     }
 
+    if (!externalData->Program.is_valid())
+    {
+        externalData->Program = std::move(gl::program());
+    }
+
     gl::shader vertexShader(GL_VERTEX_SHADER);
     gl::shader fragmentShader(GL_FRAGMENT_SHADER);
 

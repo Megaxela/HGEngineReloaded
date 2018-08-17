@@ -50,6 +50,11 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         externalData = texture->setSpecificData<Common::Texture2DData>();
     }
 
+    if (!externalData->Texture.is_valid())
+    {
+        externalData->Texture = std::move(gl::texture_2d());
+    }
+
     externalData->Texture.set_min_filter(
         getFilter(
             texture->minificationMethod()

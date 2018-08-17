@@ -81,15 +81,15 @@ namespace HG::Rendering::Base
          * @param obj Object.
          */
         template<typename T>
-        void setup(T obj)
+        bool setup(T obj)
         {
             if (m_pipeline == nullptr)
             {
                 Error() << "Can't setup rendering behaviour without set pipeline.";
-                return;
+                return false;
             }
 
-            m_pipeline->setup(obj);
+            return m_pipeline->setup(obj);
         }
 
     private:

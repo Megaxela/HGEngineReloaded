@@ -25,7 +25,7 @@ class GL_EXPORT buffer
 public:
   // 6.0 Buffer objects.
   buffer();
-  buffer(GLuint id);
+  explicit buffer(GLuint id);
   buffer(const buffer&  that);
   buffer(      buffer&& temp) noexcept;
   virtual ~buffer();
@@ -110,18 +110,6 @@ type* buffer::cuda_map()
   return buffer_ptr;
 }
 #endif
-}
-
-namespace std
-{
-    static void swap(gl::buffer& l, gl::buffer& r)
-    {
-      gl::buffer tmp(gl::invalid_id);
-
-      tmp = std::move(l);
-      l = std::move(r);
-      r = std::move(tmp);
-    }
 }
 
 #endif

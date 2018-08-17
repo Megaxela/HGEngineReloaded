@@ -20,6 +20,21 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
         data = meshBehaviour->setSpecificData<Common::MeshData>();
     }
 
+    if (!data->VAO.is_valid())
+    {
+        data->VAO = std::move(gl::vertex_array());
+    }
+
+    if (!data->VBO.is_valid())
+    {
+        data->VBO = std::move(gl::buffer());
+    }
+
+    if (!data->EBO.is_valid())
+    {
+        data->EBO = std::move(gl::buffer());
+    }
+
     // Binding vertex array
     data->VAO.bind();
 

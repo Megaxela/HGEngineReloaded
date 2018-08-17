@@ -22,7 +22,7 @@ public:
   {
     glCreateQueries(target, 1, &id_);
   }
-  query(GLuint id) : id_(id), managed_(false)
+  explicit query(GLuint id) : id_(id), managed_(false)
   {
     
   }
@@ -42,6 +42,9 @@ public:
   {
     if (this != &temp)
     {
+      if(managed_ && id_ != invalid_id)
+        glDeleteQueries(1, &id_);
+
       id_      = std::move(temp.id_);
       managed_ = std::move(temp.managed_);
 

@@ -57,18 +57,22 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
          !data->VBO.is_valid() ||
          !data->EBO.is_valid())
     {
-        Error()
-            << "Mesh rendering behaviour of \""
-            << meshBehaviour->gameObject()->name()
-            << "\" has not external data or has non valid buffers.";
-        return;
+        if (!application()->renderer()->setup(meshBehaviour))
+        {
+            Error()
+                << "Mesh rendering behaviour of \""
+                << meshBehaviour->gameObject()->name()
+                << "\" has not external data or has non valid buffers.";
+            return;
+        }
+
+        data = meshBehaviour->specificData<Common::MeshData>();
     }
 
     gl::program* program = nullptr;
 
     if (meshBehaviour->material() == nullptr ||
-        meshBehaviour->material()->shader() == nullptr ||
-        meshBehaviour->material()->shader()->specificData<Common::ShaderData>() == nullptr)
+        meshBehaviour->material()->shader() == nullptr)
     {
         program = &m_meshFallbackMaterial->shader()->specificData<Common::ShaderData>()->Program;
 
@@ -76,8 +80,22 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     }
     else
     {
-        program = &meshBehaviour->material()->shader()->specificData<Common::ShaderData>()->Program;
+        auto shaderData = meshBehaviour->material()->shader()->specificData<Common::ShaderData>();
 
+        if (shaderData == nullptr ||
+            !shaderData->Program.is_valid())
+        {
+            if (!application()->renderer()->setup(meshBehaviour->material()->shader()))
+            {
+                // If can't setup shader
+                shaderData = m_meshFallbackMaterial->shader()->specificData<Common::ShaderData>();
+            }
+            else
+            {
+                shaderData = meshBehaviour->material()->shader()->specificData<Common::ShaderData>();
+            }
+        }
+        program = &shaderData->Program;
         program->use();
 
         applyShaderUniforms(meshBehaviour->material());
