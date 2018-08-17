@@ -28,24 +28,9 @@ void HG::Rendering::OpenGL::ImGuiRenderer::deinit()
     delete m_material;
     m_material = nullptr;
 
-    // todo: Fix this shitcode, when gl developer will fix move operator.
-    {
-        gl::buffer del(gl::invalid_id);
-
-        std::swap(m_vbo, del);
-    }
-
-    {
-        gl::buffer del(gl::invalid_id);
-
-        std::swap(m_ebo, del);
-    }
-
-    {
-        gl::texture_2d del(gl::invalid_id);
-
-        std::swap(m_fontTexture, del);
-    }
+    m_vbo = std::move(gl::buffer(gl::invalid_id));
+    m_ebo = std::move(gl::buffer(gl::invalid_id));
+    m_fontTexture = std::move(gl::texture_2d(gl::invalid_id));
 }
 
 void HG::Rendering::OpenGL::ImGuiRenderer::init()

@@ -83,7 +83,6 @@ target_link_libraries(HGRenderingOGL
     HGRenderingBase
     HGCore
     ${RENDERER_LIBRARY}
-    GLEW
 )
 
 target_include_directories(HGRenderingOGL PUBLIC

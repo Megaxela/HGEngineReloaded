@@ -33,17 +33,8 @@ void HG::Rendering::OpenGL::GizmosRenderer::deinit()
     m_lineMaterial = nullptr;
     m_meshMaterial = nullptr;
 
-    {
-        gl::vertex_array del(gl::invalid_id);
-
-        std::swap(m_linesVAO, del);
-    }
-
-    {
-        gl::buffer del(gl::invalid_id);
-
-        std::swap(m_linesVBO, del);
-    }
+    m_linesVAO = std::move(gl::vertex_array(gl::invalid_id));
+    m_linesVBO = std::move(gl::buffer(gl::invalid_id));
 }
 
 void HG::Rendering::OpenGL::GizmosRenderer::init()
