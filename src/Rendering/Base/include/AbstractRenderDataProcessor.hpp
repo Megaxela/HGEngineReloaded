@@ -13,6 +13,8 @@ namespace HG::Rendering::Base
     {
     public:
 
+        virtual ~AbstractRenderDataProcessor() = default;
+
         /**
          * @brief Method, that will be used by pipeline
          * to identify what behaviour type will be proceed by

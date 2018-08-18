@@ -117,13 +117,16 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     {
         program->set_uniform(
             location,
-            HG::Rendering::Base::Camera::active()->viewMatrix()
+            application()->renderer()->activeCamera()->viewMatrix()
         );
     }
 
     if ((location = program->uniform_location("projection")) != -1)
     {
-        program->set_uniform(location, HG::Rendering::Base::Camera::active()->projectionMatrix());
+        program->set_uniform(
+            location,
+            application()->renderer()->activeCamera()->projectionMatrix()
+        );
     }
 
     // Setting lighting uniforms
@@ -243,7 +246,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     {
         program->set_uniform(
             location,
-            HG::Rendering::Base::Camera::active()
+            application()->renderer()->activeCamera()
                 ->gameObject()
                 ->transform()
                 ->globalPosition()

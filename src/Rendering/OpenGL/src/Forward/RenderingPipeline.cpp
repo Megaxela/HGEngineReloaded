@@ -19,7 +19,10 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::A
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
 {
-
+    for (auto&& renderer : m_renderers)
+    {
+        delete renderer.second;
+    }
 }
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline *HG::Rendering::OpenGL::Forward::RenderingPipeline::addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer *renderer)
@@ -78,7 +81,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Core::S
 
 
     // Getting camera
-    auto camera = HG::Rendering::Base::Camera::active();
+    auto camera = application()->renderer()->activeCamera();
 
     if (camera != nullptr)
     {
@@ -109,7 +112,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
     glm::vec3 cameraPos(0.0f, 0.0f, 0.0f);
     glm::quat cameraRot;
 
-    auto* camera = HG::Rendering::Base::Camera::active();
+    auto* camera = application()->renderer()->activeCamera();
 
     cameraPos = camera->gameObject()->transform()->globalPosition();
     cameraRot = camera->gameObject()->transform()->globalRotation();

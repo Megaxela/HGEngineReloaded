@@ -30,7 +30,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Desturctor.
          */
-        virtual ~RenderingPipeline() = default;
+        virtual ~RenderingPipeline();
 
         /**
          * @brief Method for initializing pipeline.

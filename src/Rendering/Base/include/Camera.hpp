@@ -129,26 +129,6 @@ namespace HG::Rendering::Base
         };
 
         /**
-         * @brief Method for getting currently
-         * active camera. Or `nullptr` if there
-         * is no such.
-         * @return Pointer to camera.
-         */
-        static Camera* active();
-
-        /**
-         * @brief Method for getting all cameras
-         * on scene.
-         * @return Const reference to container.
-         */
-        static const std::vector<Camera*>& allCameras();
-
-        /**
-         * @brief Number of all cameras on scene.
-         */
-        static std::size_t allCamerasCount();
-
-        /**
          * @brief Constructor.
          */
         Camera();
@@ -272,11 +252,6 @@ namespace HG::Rendering::Base
         void onStart() override;
 
     private:
-
-        static Camera* m_active;
-
-        static std::vector<Camera*> m_cameras;
-
         // Caching of projection matrix.
         mutable bool m_projectionMatrixChanged;
         mutable glm::mat4 m_projectionMatrix;
@@ -285,11 +260,13 @@ namespace HG::Rendering::Base
 
         HG::Utils::Rect m_viewport;
 
-        CullType m_near;
-        CullType m_far;
+        HG_PROPERTY_INITIALIZER_RAW(Near, CullType, setNear, getNear);
+        HG_PROPERTY_INITIALIZER_RAW(Far, CullType, setFar, getFar);
 
         OrthogonalSettings m_orthogonalSettings;
         PerspectiveSettings m_perspectiveSettings;
+
+
     };
 }
 

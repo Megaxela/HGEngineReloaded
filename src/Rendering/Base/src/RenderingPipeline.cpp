@@ -11,6 +11,14 @@ HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application*
 
 }
 
+HG::Rendering::Base::RenderingPipeline::~RenderingPipeline()
+{
+    for (auto&& processor : m_renderDataProcessor)
+    {
+        delete processor.second;
+    }
+}
+
 bool HG::Rendering::Base::RenderingPipeline::init()
 {
     if (m_parentApplication == nullptr)

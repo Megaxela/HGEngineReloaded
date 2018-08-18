@@ -4,14 +4,18 @@
 #include <any>
 #include <functional>
 
-#define HG_PROPERTY_INITIALIZER(TYPE, NAME)\
+#define HG_PROPERTY_INITIALIZER_RAW(NAME, TYPE, SETTER, GETTER)\
     HG::Core::PropertyInitializer<TYPE> __ ## NAME ## Init = HG::Core::PropertyInitializer<TYPE>(\
             this,\
             #NAME,\
             #TYPE,\
-            std::bind(&std::remove_reference<decltype(*this)>::type::setProperty ## NAME, this, std::placeholders::_1),\
-            std::bind(&std::remove_reference<decltype(*this)>::type::getProperty ## NAME, this)\
-        )
+            std::bind(&std::remove_reference<decltype(*this)>::type::SETTER , this, std::placeholders::_1),\
+            std::bind(&std::remove_reference<decltype(*this)>::type::GETTER , this)\
+    )
+
+#define HG_PROPERTY_INITIALIZER(TYPE, NAME)\
+    HG_PROPERTY_INITIALIZER_RAW(NAME, TYPE, setProperty ## NAME, getProperty ## NAME)
+
 
 #define HG_PROPERTY_DEFAULT(TYPE, NAME, DEFAULT_VARIABLE)\
 public:\

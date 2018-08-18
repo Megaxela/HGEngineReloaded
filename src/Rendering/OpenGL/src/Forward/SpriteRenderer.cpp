@@ -127,7 +127,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     {
         program->Program.set_uniform(
             location,
-            HG::Rendering::Base::Camera::active()->viewMatrix()
+            application()->renderer()->activeCamera()->viewMatrix()
         );
     }
 
@@ -135,8 +135,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     {
         program->Program.set_uniform(
             location,
-            HG::Rendering::Base::Camera::active()
-                ->projectionMatrix()
+            application()->renderer()->activeCamera()->projectionMatrix()
         );
     }
 

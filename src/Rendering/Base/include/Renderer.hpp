@@ -7,6 +7,8 @@
 
 namespace HG::Rendering::Base
 {
+    class Camera;
+
     /**
      * @brief Class, that describes
      * layer between rendering pipeline and
@@ -92,6 +94,20 @@ namespace HG::Rendering::Base
             return m_pipeline->setup(obj);
         }
 
+        /**
+         * @brief Method for getting active camera.
+         * @return May return nullptr if there is no active camera.
+         */
+        HG::Rendering::Base::Camera* activeCamera() const;
+
+        /**
+         * @brief Method for setting active camera.
+         * Camera has to be attached to gameObject.
+         * Otherwise it will not be set.
+         * @param camera Pointer to camera.
+         */
+        void setActiveCamera(HG::Rendering::Base::Camera* camera);
+
     private:
 
         HG::Core::Application* m_parentApplication;
@@ -101,6 +117,8 @@ namespace HG::Rendering::Base
         HG::Rendering::Base::Gizmos m_gizmos;
 
         HG::Rendering::Base::MaterialCollection m_materialCollection;
+
+        HG::Rendering::Base::Camera* m_activeCamera;
 
     };
 }

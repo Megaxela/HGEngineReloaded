@@ -91,7 +91,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::render()
 
 void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
 {
-    auto camera = HG::Rendering::Base::Camera::active();
+    auto camera = m_application->renderer()->activeCamera();
 
     // If there is no camera - skip rendering
     if (!camera)

@@ -8,9 +8,6 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glmex.hpp>
 
-std::vector<HG::Rendering::Base::Camera*> HG::Rendering::Base::Camera::m_cameras;
-HG::Rendering::Base::Camera* HG::Rendering::Base::Camera::m_active = nullptr;
-
 HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() :
     m_zoom(1.0f),
     m_size(1),
@@ -105,21 +102,6 @@ HG::Rendering::Base::Camera::PerspectiveSettings& HG::Rendering::Base::Camera::P
     return (*this);
 }
 
-HG::Rendering::Base::Camera* HG::Rendering::Base::Camera::active()
-{
-    return m_active;
-}
-
-const std::vector<HG::Rendering::Base::Camera*>& HG::Rendering::Base::Camera::allCameras()
-{
-    return m_cameras;
-}
-
-std::size_t HG::Rendering::Base::Camera::allCamerasCount()
-{
-    return m_cameras.size();
-}
-
 HG::Rendering::Base::Camera::Camera() :
     m_projectionMatrixChanged(true),
     m_projectionMatrix(1.0f),
@@ -132,29 +114,17 @@ HG::Rendering::Base::Camera::Camera() :
 {
     m_orthogonalSettings.m_parentCam = this;
     m_perspectiveSettings.m_parentCam = this;
-
-    // First added camera has to be first
-    if (m_active == nullptr)
-    {
-        m_active = this;
-    }
 }
 
 HG::Rendering::Base::Camera::~Camera()
 {
-    Camera::m_cameras.erase(
-        std::find(
-            Camera::m_cameras.begin(),
-            Camera::m_cameras.end(),
-            this
-        ),
-        Camera::m_cameras.end()
-    );
-
     // If active camera removed, clean value
-    if (m_active == this)
+    if (scene() &&
+        scene()->application() &&
+        scene()->application()->renderer() &&
+        scene()->application()->renderer()->activeCamera() == this)
     {
-        m_active = nullptr;
+        scene()->application()->renderer()->setActiveCamera(nullptr);
     }
 }
 
@@ -286,18 +256,11 @@ HG::Rendering::Base::Camera::CullType HG::Rendering::Base::Camera::getFar() cons
 void HG::Rendering::Base::Camera::onStart()
 {
 #ifndef NDEBUG
-
-    if (std::find(
-        Camera::m_cameras.begin(),
-        Camera::m_cameras.end(),
-        this
-    ) != Camera::m_cameras.end())
+    if (gameObject() == nullptr)
     {
-        Error() << "Trying to add camera to global camera system, several times.";
+        throw std::runtime_error("Starting camera, w/o GameObject.");
     }
-
 #endif
-    Camera::m_cameras.push_back(this);
 
     // Getting current viewport
 #ifndef NDEBUG
@@ -313,6 +276,12 @@ void HG::Rendering::Base::Camera::onStart()
         return;
     }
 
+    if (scene()->application()->renderer() == nullptr)
+    {
+        Error() << "No renderer set for application.";
+        return;
+    }
+
     if (scene()->application()->systemController() == nullptr)
     {
         Error() << "No system controller set in application. Can't determine initial viewport.";
@@ -322,6 +291,12 @@ void HG::Rendering::Base::Camera::onStart()
 
     auto viewport = scene()->application()->systemController()->viewport();
     m_viewport = viewport;
+
+    // If there is no active camera, set this.
+    if (!scene()->application()->renderer()->activeCamera())
+    {
+        setActive();
+    }
 }
 
 void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point)
@@ -357,5 +332,5 @@ void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3
 
 void HG::Rendering::Base::Camera::setActive()
 {
-    m_active = this;
+    scene()->application()->renderer()->setActiveCamera(this);
 }
