@@ -188,7 +188,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
             {
                 program->set_uniform(
                     location,
-                    castedLight->diffuse().toRGBVector()
+                    castedLight->diffuse().toRGBVector() * 300.0f
                 );
             }
 

@@ -75,7 +75,6 @@ HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings(
 
 void HG::Rendering::Base::Camera::PerspectiveSettings::setFieldOfView(float fov)
 {
-    assert(fov >= 1 && fov <= 179);
     m_fov = fov;
     if (m_parentCam != nullptr)
     {

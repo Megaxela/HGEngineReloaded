@@ -7,6 +7,7 @@
 
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <Camera.hpp>
 
 
 void HG::Standard::Behaviours::DebugControllerOverlay::onUpdate()
@@ -91,14 +92,14 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayInspectorWindow()
 void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
 {
     // Display gameobject origin
-    auto originPosition = m_activeGameObject->transform()->globalPosition();
-    originPosition.z = 0.5f;
-
-    scene()->application()->renderer()->gizmos()->circle(
-        originPosition,
-        {m_propertyOriginSize.x, m_propertyOriginSize.y},
-        m_propertyOriginColor
-    );
+//    auto originPosition = m_activeGameObject->transform()->globalPosition();
+//    originPosition.z = 0.5f;
+//
+//    scene()->application()->renderer()->gizmos()->circle(
+//        originPosition,
+//        {m_propertyOriginSize.x, m_propertyOriginSize.y},
+//        m_propertyOriginColor
+//    );
 
     m_behaviours.clear();
 
@@ -233,6 +234,16 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(con
         ImGui::ColorEdit3(property.name().c_str(), reinterpret_cast<float*>(&color));
 
         property.getSetter<HG::Utils::Color>()(color);
+    }
+    else if (property.typeInfo() == typeid(HG::Rendering::Base::Camera::Projection))
+    {
+        int proj = static_cast<int>(property.getGetter<HG::Rendering::Base::Camera::Projection>()());
+
+        const char* items[] = {"Perspective", "Orthogonal"};
+
+        ImGui::Combo(property.name().c_str(), &proj, items, 2);
+
+        property.getSetter<HG::Rendering::Base::Camera::Projection>()(static_cast<HG::Rendering::Base::Camera::Projection>(proj));
     }
     else
     {

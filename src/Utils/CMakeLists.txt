@@ -37,6 +37,10 @@ add_library(HGUtils STATIC
     include/StringTools.hpp
     src/Loaders/StringLoader.cpp
     include/Loaders/StringLoader.hpp
+    src/Loaders/AssimpLoader.cpp
+    include/Loaders/AssimpLoader.hpp
+    src/Model.cpp
+    include/Model.hpp
 )
 
 target_include_directories(HGUtils PUBLIC
@@ -52,6 +56,7 @@ target_link_libraries(HGUtils
     bytearray
     stdc++fs
     STLRoundBuffer
+    assimp
     ${ZLIB_LIBRARIES}
 )
 

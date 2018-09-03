@@ -13,11 +13,22 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
         return false;
     }
 
+    auto searchResult = m_meshes.find(meshBehaviour->mesh());
+    if (searchResult != m_meshes.end())
+    {
+        delete meshBehaviour->specificData<Common::MeshData>();
+        meshBehaviour->assignSpecificData(searchResult->second);
+
+        return true;
+    }
+
     Common::MeshData* data = nullptr;
 
     if ((data = meshBehaviour->specificData<Common::MeshData>()) == nullptr)
     {
         data = meshBehaviour->setSpecificData<Common::MeshData>();
+
+        m_meshes[meshBehaviour->mesh()] = data;
     }
 
     if (!data->VAO.is_valid())

@@ -72,7 +72,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Core::S
 {
 
     // Clearing main buffer
-    gl::set_clear_color({0.0f, 0.0f, 0.0f, 1.0f});
+    gl::set_clear_color({0.1f, 0.1f, 0.1f, 1.0f});
 
     gl::clear(
         GL_COLOR_BUFFER_BIT |

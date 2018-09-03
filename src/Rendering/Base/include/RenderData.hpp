@@ -57,6 +57,20 @@ namespace HG::Rendering::Base
         }
 
         /**
+         * @brief Method for assigning specific data.
+         * @tparam T Specific data type.
+         * @return Created specific data.
+         */
+        template<typename T>
+        typename std::enable_if<
+            std::is_base_of<RenderSpecificData, T>::value,
+            void
+        >::type assignSpecificData(T* data)
+        {
+            m_data = data;
+        }
+
+        /**
          * @brief Method for clearing external data.
          */
         void clearSpecificData();

@@ -46,7 +46,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::init()
 
     // Preparing line shader
     m_lineMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosLineMaterial>();
-    m_meshMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
+//    m_meshMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
 
     // Preparing VAO
     m_linesVAO.bind();

@@ -54,6 +54,10 @@ namespace HG::Rendering::Base::Lights
 
     private:
 
+        HG_PROPERTY_INITIALIZER_RAW(Constant,  float, setConstant,  constant);
+        HG_PROPERTY_INITIALIZER_RAW(Linear,    float, setLinear,    linear);
+        HG_PROPERTY_INITIALIZER_RAW(Quadratic, float, setQuadratic, quadratic);
+
         float m_constant;
         float m_linear;
         float m_quadratic;

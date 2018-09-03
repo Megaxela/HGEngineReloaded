@@ -2,6 +2,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <CurrentLogger.hpp>
+#include <Surface.hpp>
 
 HG::Utils::STBImageLoader::STBImageLoader()
 {

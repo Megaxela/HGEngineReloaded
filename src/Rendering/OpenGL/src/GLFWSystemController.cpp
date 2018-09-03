@@ -8,6 +8,7 @@
 #include <Camera.hpp>
 #include <gl/all.hpp>
 #include <imgui.h>
+#include <Application.hpp>
 
 HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
     SystemController(application),
@@ -649,9 +650,9 @@ void HG::Rendering::OpenGL::GLFWSystemController::framebufferSizeCallback(GLFWwi
 {
     gl::set_viewport({0, 0}, {width, height});
 
-    if (HG::Rendering::Base::Camera::active())
+    if (controller->application()->renderer()->activeCamera())
     {
-        HG::Rendering::Base::Camera::active()->setViewport(0, 0, width, height);
+        controller->application()->renderer()->activeCamera()->setViewport(0, 0, width, height);
     }
 
 }
