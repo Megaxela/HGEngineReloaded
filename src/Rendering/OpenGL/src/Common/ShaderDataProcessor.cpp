@@ -68,6 +68,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     if (!vertexShader.compile())
     {
         Error() << "Can't compile vertex shader. Error: " << vertexShader.info_log();
+        exit(-1);
         return false;
     }
 
@@ -81,6 +82,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     if (!fragmentShader.compile())
     {
         Error() << "Can't compile fragment shader. " << fragmentShader.info_log();
+        exit(-1);
         return false;
     }
 

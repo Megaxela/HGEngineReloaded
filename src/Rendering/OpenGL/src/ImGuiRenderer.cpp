@@ -92,6 +92,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
     gl::set_polygon_mode(GL_FILL);
     gl::set_blend_equation(GL_FUNC_ADD, GL_FUNC_ADD);
     gl::set_blend_function(GL_SRC_ALPHA, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    gl::texture_2d::set_active(0);
 
     // Setup viewport, orthographic projection matrix
     gl::set_viewport({0, 0}, {fb_width, fb_height});

@@ -38,7 +38,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     // Checking surface on texture
     if (texture->surface() == nullptr)
     {
-        Error() << "Can't setup texture without surface on it.";
+//        Error() << "Can't setup texture without surface on it.";
         return false;
     }
 

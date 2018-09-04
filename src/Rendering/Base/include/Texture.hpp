@@ -3,7 +3,8 @@
 #include <glm/vec2.hpp>
 #include <type_traits>
 #include <memory>
-#include "RenderData.hpp"
+#include <RenderData.hpp>
+#include <FutureHandler.hpp>
 
 namespace HG::Utils
 {
@@ -52,20 +53,22 @@ namespace HG::Rendering::Base
         /**
          * @brief Constructor from surface.
          */
-        explicit Texture(HG::Utils::SurfacePtr ptr);
+        explicit Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr,
+                         Filtering minification =Nearest,
+                         Filtering magnification=Nearest);
 
         /**
          * @brief Method for getting binded surface to
          * texture.
          * @return Surface.
          */
-        HG::Utils::SurfacePtr surface() const;
+        HG::Utils::SurfacePtr surface();
 
         /**
          * @brief Method for setting surface to texture.
          * @param ptr Pointer to surface.
          */
-        void setSurface(HG::Utils::SurfacePtr ptr);
+        void setSurface(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr);
 
         /**
          * @brief Method for getting texture size in pixels.
@@ -130,7 +133,7 @@ namespace HG::Rendering::Base
         Wrapping tWrapping() const;
 
     private:
-        HG::Utils::SurfacePtr m_surface;
+        HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr m_surface;
 
         Filtering m_minFiltering;
         Filtering m_magFiltering;

@@ -164,25 +164,25 @@ void main()
 #endif
 )";
 
-void PBRMaterial::setAlbedo(const HG::Utils::Color& color)
-{
-    set("albedo", color.toRGBVector());
-}
-
-void PBRMaterial::setMetallic(float value)
-{
-    set("metallic", value);
-}
-
-void PBRMaterial::setRoughness(float roughness)
-{
-    set("roughness", roughness);
-}
-
-void PBRMaterial::setAmbientOclusion(float ao)
-{
-    set("ao", ao);
-}
+//void PBRMaterial::setAlbedo(const HG::Utils::Color& color)
+//{
+//    set("albedo", color.toRGBVector());
+//}
+//
+//void PBRMaterial::setMetallic(float value)
+//{
+//    set("metallic", value);
+//}
+//
+//void PBRMaterial::setRoughness(float roughness)
+//{
+//    set("roughness", roughness);
+//}
+//
+//void PBRMaterial::setAmbientOclusion(float ao)
+//{
+//    set("ao", ao);
+//}
 
 void PBRMaterial::setAlbedoMap(HG::Rendering::Base::Texture* texture)
 {
@@ -207,4 +207,9 @@ void PBRMaterial::setRoughnessMap(HG::Rendering::Base::Texture* texture)
 void PBRMaterial::setAmbientOcclusionMap(HG::Rendering::Base::Texture* texture)
 {
     set("aoMap", texture);
+}
+
+void PBRMaterial::setHeightMap(HG::Rendering::Base::Texture* texture)
+{
+    set("heightMap", texture);
 }

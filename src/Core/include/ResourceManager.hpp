@@ -3,6 +3,10 @@
 #include <Data.hpp> // Required, because of template `load` method
 #include <CurrentLogger.hpp>
 #include <memory>
+#include <thread>
+#include <future>
+#include <functional>
+#include <FutureHandler.hpp>
 
 namespace HG::Core
 {
@@ -10,7 +14,6 @@ namespace HG::Core
 
     /**
      * @brief Class, that describes resource manager.
-     * @tparam Accessor Files accessor type. (Can't be changed on runtime)
      */
     class ResourceManager
     {
@@ -81,18 +84,40 @@ namespace HG::Core
          * @return Loaded resource or nullptr if error aquired.
          */
         template<typename Loader>
-        typename Loader::ResultType load(const std::string& id)
+        typename HG::Utils::FutureHandler<
+            typename Loader::ResultType
+        >::Ptr load(const std::string& id)
         {
-            auto data = loadRawFromAccessor(id);
+            auto promise = std::promise<typename Loader::ResultType>();
 
-            if (data == nullptr)
-            {
-                return nullptr;
-            }
+            auto future = promise.get_future();
 
-            Loader loader;
+            std::thread performer(
+                std::bind(
+                    [this, id](std::promise<typename Loader::ResultType> &promise)
+                    {
+                        auto data = loadRawFromAccessor(id);
 
-            return loader.load(data->data(), data->size());
+                        if (data == nullptr)
+                        {
+                            return promise.set_value(nullptr);
+                        }
+
+                        Loader loader;
+
+                        promise.set_value(loader.load(data->data(), data->size()));
+                    },
+                    std::move(promise)
+                )
+            );
+
+            performer.detach();
+
+            return std::make_shared<
+                typename HG::Utils::FutureHandler<
+                    typename Loader::ResultType
+                >
+           >(std::move(future));
         }
 
     private:

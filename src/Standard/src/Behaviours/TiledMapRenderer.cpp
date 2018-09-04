@@ -189,20 +189,23 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
         std::filesystem::path mapPath = m_map->properties().mapPath;
 
         // Trying to load texture
-        auto tilesetData = scene()
-            ->application()
-            ->resourceManager()
-            ->load<HG::Utils::STBImageLoader>(mapPath.parent_path() / std::filesystem::path(tileset->path));
 
-        if (tilesetData == nullptr)
-        {
-            // todo: Add usage of replace texture
-            Error() << "Can't load tileset \"" << tileset->name << "\" texture at \"" << tileset->path << "\".";
-            m_tilesets[tileset->path] = nullptr;
-        }
+//        if (tilesetData == nullptr)
+//        {
+//            // todo: Add usage of replace texture
+//            Error() << "Can't load tileset \"" << tileset->name << "\" texture at \"" << tileset->path << "\".";
+//            m_tilesets[tileset->path] = nullptr;
+//        }
 
         // Making texture
-        auto texture = new HG::Rendering::Base::Texture(tilesetData);
+        auto texture = new HG::Rendering::Base::Texture(
+            scene()
+                ->application()
+                ->resourceManager()
+                ->load<HG::Utils::STBImageLoader>(
+                    mapPath.parent_path() / std::filesystem::path(tileset->path)
+                )
+        );
 
         // todo: Add validation, when it will appear at `setup` method.
         scene()

@@ -14,7 +14,7 @@ public:
 
     static const char* rawShader;
 
-    void setAlbedo(const HG::Utils::Color& color);
+//    void setAlbedo(const HG::Utils::Color& color);
 
     void setAlbedoMap(HG::Rendering::Base::Texture* texture);
 
@@ -26,10 +26,12 @@ public:
 
     void setAmbientOcclusionMap(HG::Rendering::Base::Texture* texture);
 
-    void setMetallic(float value);
+    void setHeightMap(HG::Rendering::Base::Texture* texture);
 
-    void setRoughness(float roughness);
-
-    void setAmbientOclusion(float ao);
+//    void setMetallic(float value);
+//
+//    void setRoughness(float roughness);
+//
+//    void setAmbientOclusion(float ao);
 };
 

@@ -21,7 +21,8 @@ void TestScene::start()
 {
     // Loading model info
     auto model = application()->resourceManager()
-        ->load<HG::Utils::AssimpLoader>("Assets/Models/icosphere_hq.obj");
+        ->load<HG::Utils::AssimpLoader>("Assets/Models/icosphere.obj")
+        ->guaranteeGet();
 
     // Loading texture
 
@@ -32,32 +33,30 @@ void TestScene::start()
 
     auto albedo = new HG::Rendering::Base::Texture(
         application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/CopperRock/albedo.png")
-    );
-
-    auto ao = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/CopperRock/ao.png")
-    );
-
-    auto height = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/CopperRock/height.png")
+            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/albedo.png"),
+        HG::Rendering::Base::Texture::Filtering::Linear,
+        HG::Rendering::Base::Texture::Filtering::Linear
     );
 
     auto metallic = new HG::Rendering::Base::Texture(
         application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/CopperRock/metallic.png")
+            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/metallic.png"),
+        HG::Rendering::Base::Texture::Filtering::Linear,
+        HG::Rendering::Base::Texture::Filtering::Linear
     );
 
     auto normal = new HG::Rendering::Base::Texture(
         application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/CopperRock/normal.png")
+            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/normal.png"),
+        HG::Rendering::Base::Texture::Filtering::Linear,
+        HG::Rendering::Base::Texture::Filtering::Linear
     );
 
     auto roughness = new HG::Rendering::Base::Texture(
         application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/CopperRock/roughness.png")
+            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/roughness.png"),
+        HG::Rendering::Base::Texture::Filtering::Linear,
+        HG::Rendering::Base::Texture::Filtering::Linear
     );
 
     auto material = application()
@@ -66,7 +65,6 @@ void TestScene::start()
         ->getMaterial<PBRMaterial>();
 
     material->setAlbedoMap          (albedo);
-    material->setAmbientOcclusionMap(ao);
     material->setMetallicMap        (metallic);
     material->setNormalMap          (normal);
     material->setRoughnessMap       (roughness);
@@ -85,53 +83,6 @@ void TestScene::start()
             .setScale({1.0f, 1.0f, 1.0f})
     );
 
-//    auto parent = HG::Core::GameObjectBuilder()
-//        .setName("Objects")
-//        .deploy();
-//
-//    addGameObject(parent);
-//
-//    for (int ix = 0; ix < 7; ++ix)
-//    {
-//        for (int iy = 0; iy < 7; ++iy)
-//        {
-//            auto material = application()
-//                ->renderer()
-//                ->materialCollection()
-//                ->getMaterial<PBRMaterial>();
-//
-//            material->setAlbedoMap          (albedo);
-//            material->setAmbientOcclusionMap(ao);
-//            material->setMetallicMap        (metallic);
-//            material->setNormalMap          (normal);
-//            material->setRoughnessMap       (roughness);
-//
-////            material->setAlbedo(HG::Utils::Color(0.5f, 0.0f, 0.0f));
-////            material->setMetallic(float(iy) / 7.0f);
-////            material->setRoughness(glm::clamp(float(ix) / 7.0f, 0.05f, 1.0f));
-////            material->set("ao", 1.0f);
-//
-////            Info() << "(" << ix << ", " << iy << "): m: " << (1.0 / 6.0 * iy) << ", r: " << (1.0 / 6.0 * ix);
-//
-////            material->setDiffuse(texture);
-//
-//            // Creating mesh renderer
-//            auto meshRenderer = new HG::Rendering::Base::Behaviours::Mesh;
-//            meshRenderer->setMesh(model->children()[0]->meshes()[0]);
-//            meshRenderer->setMaterial(material);
-//
-//            addGameObject(
-//                HG::Core::GameObjectBuilder()
-//                    .setName("Object " + std::to_string(ix) + " " + std::to_string(iy))
-//                    .addBehaviour(meshRenderer)
-//                    .addBehaviour(new LocalRotationBehaviour)
-//                    .setGlobalPosition(glm::vec3(-3.0f + ix, -3.0f + iy, 0))
-//                    .setScale({0.3f, 0.3f, 0.3f})
-//                    .setParent(parent)
-//            );
-//        }
-//    }
-
     addGameObject(
         HG::Core::GameObjectBuilder()
             .setName("Camera")
@@ -139,7 +90,7 @@ void TestScene::start()
             .addBehaviour(new HG::Standard::Behaviours::ServiceInformationOverlay)
             .addBehaviour(new HG::Standard::Behaviours::DebugControllerOverlay)
             .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)
-            .setGlobalPosition(glm::vec3(0, 0, 0))
+            .setGlobalPosition(glm::vec3(0, 0, 3))
     );
 
     auto lightParent = HG::Core::GameObjectBuilder()

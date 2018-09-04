@@ -40,6 +40,7 @@ target_link_libraries(HGCore
         HGUtils # DoubleBufferContainer
         HGRenderingBase #
         HGPhysicsBase
+        pthread
 )
 
 if (${HG_BUILD_WARNINGS})

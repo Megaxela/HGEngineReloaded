@@ -12,11 +12,13 @@ HG::Rendering::Base::Texture::Texture() :
 
 }
 
-HG::Rendering::Base::Texture::Texture(HG::Utils::SurfacePtr ptr) :
+HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr,
+                                      Filtering minification,
+                                      Filtering magnification) :
     RenderData(DataId),
     m_surface(std::move(ptr)),
-    m_minFiltering(Filtering::Nearest),
-    m_magFiltering(Filtering::Nearest),
+    m_minFiltering(minification),
+    m_magFiltering(magnification),
     m_sWrapping(Wrapping::Repeat),
     m_tWrapping(Wrapping::Repeat)
 {
@@ -28,23 +30,23 @@ glm::ivec2 HG::Rendering::Base::Texture::size() const
     return m_size;
 }
 
-HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface() const
+HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface()
 {
-    return m_surface;
+     return *m_surface;
 }
 
-void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfacePtr ptr)
+void HG::Rendering::Base::Texture::setSurface(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr)
 {
     m_surface = std::move(ptr);
 
-    if (m_surface)
-    {
-        m_size = glm::vec2(m_surface->Width, m_surface->Height);
-    }
-    else
-    {
-        m_size = glm::ivec2();
-    }
+//    if (m_surface.get())
+//    {
+//        m_size = glm::vec2(m_surface->Width, m_surface->Height);
+//    }
+//    else
+//    {
+//        m_size = glm::ivec2();
+//    }
 }
 
 void HG::Rendering::Base::Texture::setMagnificationMethod(HG::Rendering::Base::Texture::Filtering value)

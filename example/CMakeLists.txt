@@ -32,6 +32,11 @@ configure_file(Assets/PBR/CopperRock/metallic.png Assets/PBR/CopperRock/metallic
 configure_file(Assets/PBR/CopperRock/normal.png Assets/PBR/CopperRock/normal.png COPYONLY)
 configure_file(Assets/PBR/CopperRock/roughness.png Assets/PBR/CopperRock/roughness.png COPYONLY)
 
+configure_file(Assets/PBR/GreasyPan/albedo.png    Assets/PBR/GreasyPan/albedo.png    COPYONLY)
+configure_file(Assets/PBR/GreasyPan/metallic.png  Assets/PBR/GreasyPan/metallic.png  COPYONLY)
+configure_file(Assets/PBR/GreasyPan/normal.png    Assets/PBR/GreasyPan/normal.png    COPYONLY)
+configure_file(Assets/PBR/GreasyPan/roughness.png Assets/PBR/GreasyPan/roughness.png COPYONLY)
+
 configure_file(Assets/HDR/Tokyo_BigSight_3k.hdr Assets/HDR/Tokyo_BigSight_3k.hdr COPYONLY)
 configure_file(Assets/Models/cube.obj Assets/Models/cube.obj COPYONLY)
 configure_file(Assets/Models/cube.mtl Assets/Models/cube.mtl COPYONLY)
