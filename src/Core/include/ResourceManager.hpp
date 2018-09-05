@@ -6,6 +6,7 @@
 #include <thread>
 #include <future>
 #include <functional>
+#include <queue>
 #include <FutureHandler.hpp>
 
 namespace HG::Core
@@ -65,6 +66,13 @@ namespace HG::Core
             m_accessor = new Accessor;
         }
 
+        std::size_t jobsSize()
+        {
+            std::unique_lock<std::mutex> mutexLock(m_loaderJobsMutex);
+
+            return m_loaderJobs.size();
+        }
+
         /**
          * @brief Method for loading some resource
          * with using of specified formatter.
@@ -88,30 +96,35 @@ namespace HG::Core
             typename Loader::ResultType
         >::Ptr load(const std::string& id)
         {
-            auto promise = std::promise<typename Loader::ResultType>();
+            // todo: Fix promise to lambda capture lately
+            auto promise = std::make_shared<std::promise<typename Loader::ResultType>>();
 
-            auto future = promise.get_future();
+            auto future = promise->get_future();
 
-            std::thread performer(
+            auto job =
                 std::bind(
-                    [this, id](std::promise<typename Loader::ResultType> &promise)
+                    [this, id](std::shared_ptr<std::promise<typename Loader::ResultType>> &promise)
                     {
                         auto data = loadRawFromAccessor(id);
 
                         if (data == nullptr)
                         {
-                            return promise.set_value(nullptr);
+                            promise->set_value(nullptr);
                         }
 
                         Loader loader;
 
-                        promise.set_value(loader.load(data->data(), data->size()));
+                        promise->set_value(loader.load(data->data(), data->size()));
                     },
                     std::move(promise)
-                )
-            );
+                );
 
-            performer.detach();
+            {
+                std::unique_lock<std::mutex> jobsLock(m_loaderJobsMutex);
+                m_loaderJobs.emplace(job);
+            }
+
+            m_loaderNotifier.notify_all();
 
             return std::make_shared<
                 typename HG::Utils::FutureHandler<
@@ -131,7 +144,19 @@ namespace HG::Core
          */
         HG::Core::DataPtr loadRawFromAccessor(const std::string& id);
 
+        /**
+         * @brief Method, that's executing in
+         * separate thread and
+         */
+        void loaderThread();
+
         ResourceAccessor* m_accessor;
+
+        std::thread m_loaderThread;
+        std::atomic_bool m_running;
+        std::condition_variable m_loaderNotifier;
+        std::queue<std::function<void()>> m_loaderJobs;
+        std::mutex m_loaderJobsMutex;
     };
 }
 

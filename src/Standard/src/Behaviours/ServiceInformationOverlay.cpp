@@ -55,6 +55,11 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
             HG::Utils::PhysicalResource::getProcessRAMUsed() / 1000.0f / 1000.0f
         );
 
+        ImGui::Text(
+            "Resource queue: %ld",
+            scene()->application()->resourceManager()->jobsSize()
+        );
+
         ImGui::End();
     }
 

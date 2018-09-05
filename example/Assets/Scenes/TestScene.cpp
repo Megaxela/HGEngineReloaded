@@ -26,10 +26,10 @@ void TestScene::start()
 
     // Loading texture
 
-//    auto hdrTexture = new HG::Rendering::Base::Texture(
-//        application()->resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/HDR/Tokyo_BigSight_3k.hdr")
-//    );
+    auto hdrTexture = new HG::Rendering::Base::Texture(
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/HDR/Tokyo_BigSight_3k.hdr")
+    );
 
     auto albedo = new HG::Rendering::Base::Texture(
         application()->resourceManager()

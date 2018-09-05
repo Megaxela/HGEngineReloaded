@@ -4,7 +4,6 @@
 #include <map>
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
-#include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
 
 namespace HG::Rendering::Base

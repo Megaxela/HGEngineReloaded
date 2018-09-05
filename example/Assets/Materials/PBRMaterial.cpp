@@ -111,17 +111,16 @@ vec3 getNormalFromMap()
 
 void main()
 {
-    vec3 albedo     = pow(texture(albedoMap,    fs_in.TexCoords).rgb, vec3(2.2));
+    vec3  albedo    = pow(texture(albedoMap,    fs_in.TexCoords).rgb, vec3(2.2));
     float metallic  =     texture(metallicMap,  fs_in.TexCoords).r;
     float roughness =     texture(roughnessMap, fs_in.TexCoords).r;
     float ao        =     texture(aoMap,        fs_in.TexCoords).r;
-
 
     vec3 N = getNormalFromMap();
     vec3 V = normalize(viewPos - fs_in.FragPos);
 
     vec3 F0 = vec3(0.04);
-    F0 = mix(F0, albedo, metallic);
+         F0 = mix(F0, albedo, metallic);
 
     vec3 Lo = vec3(0.0);
     for (int i = 0; i < numberOfPointLights; ++i)
@@ -132,21 +131,20 @@ void main()
 
         float distance    = length(pointLights[i].position - fs_in.FragPos);
         float attenuation = 1.0 / (distance * distance);
-        vec3 radiance     = pointLights[i].diffuse * attenuation;
+        vec3  radiance    = pointLights[i].diffuse * attenuation;
 
         // Cook-torrance brdf
         float NDF = DistributionGGX(N, H, roughness);
         float G   = GeometrySmith(N, V, L, roughness);
-        vec3 F    = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
-        //F = F0;
+        vec3  F   = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
 
-        vec3 nomenator    = NDF * G * F;
+        vec3  nomenator   = NDF * G * F;
         float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
-        vec3 specular     = nomenator / max(denominator, 0.001);
+        vec3  specular    = nomenator / max(denominator, 0.001);
 
-        vec3 kS = F;
-        vec3 kD = vec3(1.0) - kS;
-        kD *= 1.0 - metallic;
+        vec3 kS  = F;
+        vec3 kD  = vec3(1.0) - kS;
+             kD *= 1.0 - metallic;
 
         float NdotL = max(dot(N, L), 0.0);
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;
@@ -163,26 +161,6 @@ void main()
 
 #endif
 )";
-
-//void PBRMaterial::setAlbedo(const HG::Utils::Color& color)
-//{
-//    set("albedo", color.toRGBVector());
-//}
-//
-//void PBRMaterial::setMetallic(float value)
-//{
-//    set("metallic", value);
-//}
-//
-//void PBRMaterial::setRoughness(float roughness)
-//{
-//    set("roughness", roughness);
-//}
-//
-//void PBRMaterial::setAmbientOclusion(float ao)
-//{
-//    set("ao", ao);
-//}
 
 void PBRMaterial::setAlbedoMap(HG::Rendering::Base::Texture* texture)
 {

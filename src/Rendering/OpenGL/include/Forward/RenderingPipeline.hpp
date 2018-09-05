@@ -28,7 +28,6 @@ namespace HG::Rendering::Base
 namespace HG::Rendering::OpenGL::Forward
 {
     class AbstractRenderer;
-    class AbstractRenderDataProcessor;
 
     /**
      * @brief Class, that describes OpenGL default

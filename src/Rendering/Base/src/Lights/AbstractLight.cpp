@@ -5,9 +5,7 @@ std::vector<HG::Rendering::Base::AbstractLight*> HG::Rendering::Base::AbstractLi
 
 HG::Rendering::Base::AbstractLight::AbstractLight(HG::Rendering::Base::AbstractLight::Type type) :
     m_type(type),
-    m_specular(1.0f, 1.0f, 1.0f),
-    m_ambient(0.2f, 0.2f, 0.2f),
-    m_diffuse(1.0f, 1.0f, 1.0f)
+    m_color(1.0f, 1.0f, 1.0f)
 {
 
 }
@@ -31,34 +29,14 @@ HG::Rendering::Base::AbstractLight::Type HG::Rendering::Base::AbstractLight::typ
     return m_type;
 }
 
-void HG::Rendering::Base::AbstractLight::setSpecular(const HG::Utils::Color& color)
+void HG::Rendering::Base::AbstractLight::setColor(const HG::Utils::Color& color)
 {
-    m_specular = color;
+    m_color = color;
 }
 
-HG::Utils::Color HG::Rendering::Base::AbstractLight::specular() const
+HG::Utils::Color HG::Rendering::Base::AbstractLight::color() const
 {
-    return m_specular;
-}
-
-void HG::Rendering::Base::AbstractLight::setAmbient(const HG::Utils::Color& color)
-{
-    m_ambient = color;
-}
-
-HG::Utils::Color HG::Rendering::Base::AbstractLight::ambient() const
-{
-    return m_ambient;
-}
-
-void HG::Rendering::Base::AbstractLight::setDiffuse(const HG::Utils::Color& color)
-{
-    m_diffuse = color;
-}
-
-HG::Utils::Color HG::Rendering::Base::AbstractLight::diffuse() const
-{
-    return m_diffuse;
+    return m_color;
 }
 
 void HG::Rendering::Base::AbstractLight::onStart()

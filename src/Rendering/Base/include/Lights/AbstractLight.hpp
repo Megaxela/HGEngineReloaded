@@ -41,40 +41,16 @@ namespace HG::Rendering::Base
         Type type();
 
         /**
-         * @brief Method for setting specular color.
-         * @param color Specular color.
-         */
-        void setSpecular(const HG::Utils::Color &color);
-
-        /**
-         * @brief Method for getting light specular color.
-         * @return Specular color.
-         */
-        HG::Utils::Color specular() const;
-
-        /**
-         * @brief Method for stting light ambient color.
-         * @param color Ambient color.
-         */
-        void setAmbient(const HG::Utils::Color &color);
-
-        /**
-         * @brief Method for getting light ambient color.
-         * @return Ambient color.
-         */
-        HG::Utils::Color ambient() const;
-
-        /**
          * @brief Method for setting light diffuse color.
          * @param color Diffuse color.
          */
-        void setDiffuse(const HG::Utils::Color &color);
+        void setColor(const HG::Utils::Color& color);
 
         /**
          * @brief Method for getting light diffuse color.
          * @return Diffuse color.
          */
-        HG::Utils::Color diffuse() const;
+        HG::Utils::Color color() const;
 
         /**
          * @brief Method for getting all lights on scene.
@@ -89,9 +65,9 @@ namespace HG::Rendering::Base
         static std::vector<AbstractLight*> m_lights;
 
         Type m_type;
-        HG::Utils::Color m_specular;
-        HG::Utils::Color m_ambient;
-        HG::Utils::Color m_diffuse;
+        HG::Utils::Color m_color;
+
+        HG_PROPERTY_INITIALIZER_RAW(Diffuse,  HG::Utils::Color, setColor,  color);
     };
 }
 

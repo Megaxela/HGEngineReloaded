@@ -1,5 +1,4 @@
 #include <CurrentLogger.hpp>
-#include "Renderer.hpp"
 #include <Application.hpp>
 #include <Renderer.hpp>
 #include <Camera.hpp>

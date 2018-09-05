@@ -41,7 +41,8 @@ add_library(HGUtils STATIC
     include/Loaders/AssimpLoader.hpp
     src/Model.cpp
     include/Model.hpp
-        include/FutureHandler.hpp)
+    include/FutureHandler.hpp
+)
 
 target_include_directories(HGUtils PUBLIC
     include

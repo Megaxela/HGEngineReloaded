@@ -58,6 +58,7 @@ namespace HG::Rendering::Base::Behaviours
     private:
         Texture* m_texture;
         HG::Utils::Rect m_clipping;
+        bool m_manualClipping;
     };
 }
 

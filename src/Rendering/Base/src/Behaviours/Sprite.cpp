@@ -29,6 +29,8 @@ void HG::Rendering::Base::Behaviours::Sprite::setTexture(HG::Rendering::Base::Te
     m_clipping.x = 0;
     m_clipping.y = 0;
 
+    // todo: Due to new async resource loading system
+    // it's irrelevant to setup clipping in setter.
     if (m_texture)
     {
         m_clipping.w = m_texture->size().x;

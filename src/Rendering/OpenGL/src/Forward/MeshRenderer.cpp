@@ -138,6 +138,12 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     for (auto&& light : lights)
     {
+        if (light->gameObject() == nullptr ||
+            !light->gameObject()->isEnabled())
+        {
+            continue;
+        }
+
         switch (light->type())
         {
         case HG::Rendering::Base::AbstractLight::Type::Point:
@@ -176,27 +182,11 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 );
             }
 
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].ambient")) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->ambient().toRGBVector()
-                );
-            }
-
             if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].diffuse")) != -1)
             {
                 program->set_uniform(
                     location,
-                    castedLight->diffuse().toRGBVector() * 300.0f
-                );
-            }
-
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].specular")) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->specular().toRGBVector()
+                    castedLight->color().toRGBVector() * 300.0f
                 );
             }
 
