@@ -12,7 +12,7 @@ HG::Rendering::Base::Texture::Texture() :
 
 }
 
-HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr,
+HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr,
                                       Filtering minification,
                                       Filtering magnification) :
     RenderData(DataId),
@@ -32,10 +32,10 @@ glm::ivec2 HG::Rendering::Base::Texture::size() const
 
 HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface()
 {
-     return *m_surface;
+     return m_surface;
 }
 
-void HG::Rendering::Base::Texture::setSurface(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr)
+void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)
 {
     m_surface = std::move(ptr);
 

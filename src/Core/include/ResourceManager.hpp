@@ -94,12 +94,12 @@ namespace HG::Core
         template<typename Loader>
         typename HG::Utils::FutureHandler<
             typename Loader::ResultType
-        >::Ptr load(const std::string& id)
+        > load(const std::string& id)
         {
             // todo: Fix promise to lambda capture lately
             auto promise = std::make_shared<std::promise<typename Loader::ResultType>>();
 
-            auto future = promise->get_future();
+            auto future = std::shared_future(promise->get_future());
 
             auto job =
                 std::bind(
@@ -126,11 +126,9 @@ namespace HG::Core
 
             m_loaderNotifier.notify_all();
 
-            return std::make_shared<
-                typename HG::Utils::FutureHandler<
-                    typename Loader::ResultType
-                >
-           >(std::move(future));
+            return typename HG::Utils::FutureHandler<
+                typename Loader::ResultType
+            >(std::move(future));
         }
 
     private:

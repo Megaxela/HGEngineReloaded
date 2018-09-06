@@ -15,27 +15,26 @@ namespace HG::Utils
     {
     public:
 
-        using Ptr = std::shared_ptr< FutureHandler<ResultType> >;
-
         /**
          * @brief Initializer constructor.
          * @param future Future.
          */
-        FutureHandler(std::future<ResultType> future) :
-            m_future(std::move(future)),
-            m_actualResult(),
-            m_received(false)
+        FutureHandler(std::shared_future<ResultType> future) :
+            m_predefinedValue(),
+            m_future(std::move(future))
         {}
 
-        FutureHandler(FutureHandler&& rhs) noexcept :
-            m_future(),
-            m_actualResult(),
-            m_received()
+        FutureHandler(FutureHandler<ResultType>&& rhs) noexcept :
+            m_predefinedValue(std::move(rhs.m_predefinedValue)),
+            m_future(std::move(rhs.m_future))
+        {}
+
+        FutureHandler<ResultType>& operator=(FutureHandler<ResultType>&& rhs) noexcept
         {
-            // todo: lock rhs handler mutex here
             m_future = std::move(rhs.m_future);
-            m_actualResult = std::move(rhs.m_actualResult);
-            m_received = rhs.m_received;
+            m_predefinedValue = std::move(rhs.m_predefinedValue);
+
+            return (*this);
         }
 
         /**
@@ -45,9 +44,8 @@ namespace HG::Utils
          * @param result Result.
          */
         FutureHandler(ResultType result) :
-            m_future(),
-            m_actualResult(std::move(result)),
-            m_received(true)
+            m_predefinedValue(std::move(result)),
+            m_future()
         {}
 
         /**
@@ -56,29 +54,24 @@ namespace HG::Utils
          */
         ResultType get()
         {
-            if (m_received)
+            if (m_future.valid())
             {
-                return m_actualResult;
-            }
+                if (m_future.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+                {
+                    return m_future.get();
+                }
 
-            if (m_future.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+                return ResultType();
+            }
+            else
             {
-                m_received = true;
-
-                m_actualResult = std::move(m_future.get());
-
-                return m_actualResult;
+                return m_predefinedValue;
             }
-
-            return ResultType();
         }
 
         ResultType guaranteeGet()
         {
-            m_actualResult = std::move(m_future.get());
-            m_received = true;
-
-            return m_actualResult;
+            return m_future.get();
         }
 
         /**
@@ -89,13 +82,15 @@ namespace HG::Utils
             return get();
         }
 
+        ResultType operator->()
+        {
+            return get();
+        }
+
     private:
 
-        std::future<ResultType> m_future;
-
-        ResultType m_actualResult;
-
-        bool m_received;
+        ResultType m_predefinedValue;
+        std::shared_future<ResultType> m_future;
 
     };
 }

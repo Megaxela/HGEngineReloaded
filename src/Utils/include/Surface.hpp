@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <FutureHandler.hpp>
 
 namespace HG::Utils
 {
@@ -41,6 +42,7 @@ namespace HG::Utils
         FreeFunction m_freeFunction;
     };
 
-    using SurfacePtr = std::shared_ptr<Surface>;
+    using SurfacePtr       = std::shared_ptr<Surface>;
+    using SurfaceFuturePtr = FutureHandler< SurfacePtr >;
 }
 

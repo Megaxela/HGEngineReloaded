@@ -9,8 +9,8 @@
 namespace HG::Utils
 {
     class Surface;
-
     using SurfacePtr = std::shared_ptr<Surface>;
+    using SurfaceFuturePtr = FutureHandler<SurfacePtr>;
 }
 
 namespace HG::Rendering::Base
@@ -53,7 +53,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Constructor from surface.
          */
-        explicit Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr,
+        explicit Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr,
                          Filtering minification =Nearest,
                          Filtering magnification=Nearest);
 
@@ -68,7 +68,7 @@ namespace HG::Rendering::Base
          * @brief Method for setting surface to texture.
          * @param ptr Pointer to surface.
          */
-        void setSurface(HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr ptr);
+        void setSurface(HG::Utils::SurfaceFuturePtr ptr);
 
         /**
          * @brief Method for getting texture size in pixels.
@@ -133,7 +133,7 @@ namespace HG::Rendering::Base
         Wrapping tWrapping() const;
 
     private:
-        HG::Utils::FutureHandler<HG::Utils::SurfacePtr>::Ptr m_surface;
+        HG::Utils::SurfaceFuturePtr  m_surface;
 
         Filtering m_minFiltering;
         Filtering m_magFiltering;

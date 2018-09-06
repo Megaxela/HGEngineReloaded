@@ -22,10 +22,9 @@ void TestScene::start()
     // Loading model info
     auto model = application()->resourceManager()
         ->load<HG::Utils::AssimpLoader>("Assets/Models/icosphere.obj")
-        ->guaranteeGet();
+        .guaranteeGet();
 
     // Loading texture
-
     auto hdrTexture = new HG::Rendering::Base::Texture(
         application()->resourceManager()
             ->load<HG::Utils::STBImageLoader>("Assets/HDR/Tokyo_BigSight_3k.hdr")
