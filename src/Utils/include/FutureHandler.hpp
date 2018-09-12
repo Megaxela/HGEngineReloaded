@@ -37,6 +37,19 @@ namespace HG::Utils
             return (*this);
         }
 
+        FutureHandler(const FutureHandler<ResultType>& rhs) :
+            m_predefinedValue(rhs.m_predefinedValue),
+            m_future(rhs.m_future)
+        {}
+
+        FutureHandler<ResultType>& operator=(const FutureHandler<ResultType>& rhs)
+        {
+            m_future = rhs.m_future;
+            m_predefinedValue = rhs.m_predefinedValue;
+
+            return (*this);
+        }
+
         /**
          * @brief Fallback constructor. If this
          * constructor was used - handler will only

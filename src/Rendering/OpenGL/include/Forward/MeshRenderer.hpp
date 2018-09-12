@@ -55,8 +55,33 @@ namespace HG::Rendering::OpenGL::Forward
 
     private:
 
+        struct LightPointUniformNames
+        {
+            LightPointUniformNames(std::string position,
+                                   std::string constant,
+                                   std::string linear,
+                                   std::string quadratic,
+                                   std::string diffuse) :
+                position(std::move(position)),
+                constant(std::move(constant)),
+                linear(std::move(linear)),
+                quadratic(std::move(quadratic)),
+                diffuse(std::move(diffuse))
+            {
+
+            }
+
+            std::string position;
+            std::string constant;
+            std::string linear;
+            std::string quadratic;
+            std::string diffuse;
+        };
+
         // Fallback mesh program
         HG::Rendering::Base::Material* m_meshFallbackMaterial;
+
+        std::vector<LightPointUniformNames> m_pointLightNames;
     };
 }
 

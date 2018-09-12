@@ -16,7 +16,19 @@
 HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() :
     m_meshFallbackMaterial(nullptr)
 {
+    constexpr int count = 128;
+    m_pointLightNames.reserve(count);
 
+    for (int i = 0; i < count; ++i)
+    {
+        m_pointLightNames.emplace_back(
+            "pointLights[" + std::to_string(i) + "].position",
+            "pointLights[" + std::to_string(i) + "].constant",
+            "pointLights[" + std::to_string(i) + "].linear",
+            "pointLights[" + std::to_string(i) + "].quadratic",
+            "pointLights[" + std::to_string(i) + "].diffuse"
+        );
+    }
 }
 
 HG::Rendering::OpenGL::Forward::MeshRenderer::~MeshRenderer()
@@ -105,7 +117,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     GLint location;
 
-    if ((location = program->uniform_location("model")) != -1)
+    static std::string modelName = "model";
+    if ((location = program->uniform_location(modelName)) != -1)
     {
         program->set_uniform(
             location,
@@ -113,7 +126,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         );
     }
 
-    if ((location = program->uniform_location("view")) != -1)
+    static std::string viewName = "view";
+    if ((location = program->uniform_location(viewName)) != -1)
     {
         program->set_uniform(
             location,
@@ -121,7 +135,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         );
     }
 
-    if ((location = program->uniform_location("projection")) != -1)
+    static std::string projectionName = "projection";
+    if ((location = program->uniform_location(projectionName)) != -1)
     {
         program->set_uniform(
             location,
@@ -139,7 +154,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     for (auto&& light : lights)
     {
         if (light->gameObject() == nullptr ||
-            !light->gameObject()->isEnabled())
+            !light->gameObject()->isEnabled() ||
+            !light->isEnabled())
         {
             continue;
         }
@@ -150,7 +166,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         {
             auto castedLight = static_cast<HG::Rendering::Base::Lights::PointLight*>(light);
 
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].position")) != -1)
+            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].position)) != -1)
             {
                 program->set_uniform(
                     location,
@@ -158,7 +174,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 );
             }
 
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].constant")) != -1)
+            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].constant)) != -1)
             {
                 program->set_uniform(
                     location,
@@ -166,7 +182,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 );
             }
 
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].linear")) != -1)
+            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].linear)) != -1)
             {
                 program->set_uniform(
                     location,
@@ -174,7 +190,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 );
             }
 
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].quadratic")) != -1)
+            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].quadratic)) != -1)
             {
                 program->set_uniform(
                     location,
@@ -182,7 +198,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 );
             }
 
-            if ((location = program->uniform_location("pointLights[" + std::to_string(pointLightIndex) + "].diffuse")) != -1)
+            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].diffuse)) != -1)
             {
                 program->set_uniform(
                     location,
@@ -214,25 +230,29 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     // todo: Add lighting caching
     // Setting number of point lights
-    if ((location = program->uniform_location("numberOfPointLights")) != -1)
+    static std::string numberOfPointLightsName = "numberOfPointLights";
+    if ((location = program->uniform_location(numberOfPointLightsName)) != -1)
     {
         program->set_uniform(location, pointLightIndex);
     }
 
     // Setting number of directional lights
-    if ((location = program->uniform_location("numberOfDirectionalLights")) != -1)
+    static std::string numberOfDirectionalLightsName = "numberOfDirectionalLights";
+    if ((location = program->uniform_location(numberOfDirectionalLightsName)) != -1)
     {
         program->set_uniform(location, directionalLightIndex);
     }
 
     // Setting number of spot lights
-    if ((location = program->uniform_location("numberOfSpotLights")) != -1)
+    static std::string numberOfSpotLightsName = "numberOfSpotLights";
+    if ((location = program->uniform_location(numberOfSpotLightsName)) != -1)
     {
         program->set_uniform(location, spotLightIndex);
     }
 
     // Setting camera position to shader
-    if ((location = program->uniform_location("viewPos")) != -1)
+    static std::string viewPosName = "viewPos";
+    if ((location = program->uniform_location(viewPosName)) != -1)
     {
         program->set_uniform(
             location,

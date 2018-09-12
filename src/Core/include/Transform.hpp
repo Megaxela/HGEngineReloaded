@@ -91,6 +91,18 @@ namespace HG::Core
         void setLocalRotation(const glm::quat &rotation);
 
         /**
+         * @brief Method for getting global object rotation.
+         * @return Local object Quaternion rotation.
+         */
+        glm::quat globalRotation() const;
+
+        /**
+         * @brief Method for setting global object rotation.
+         * @param rotation Global object rotation.
+         */
+        void setGlobalRotation(const glm::quat& rotation);
+
+        /**
          * @brief Method for getting local object position.
          * @return Local object Vector3 position.
          */
@@ -113,12 +125,6 @@ namespace HG::Core
          * @param globalPosition Global object Vector3 position.
          */
         void setGlobalPosition(const glm::vec3 &globalPosition);
-
-        /**
-         * @brief Method for getting global object rotation.
-         * @return Local object Quaternion rotation.
-         */
-        glm::quat globalRotation() const;
 
         /**
          * @brief Method for setting parent transform object.

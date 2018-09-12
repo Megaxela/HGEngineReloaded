@@ -1,9 +1,8 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <algorithm>
 #include <CurrentLogger.hpp>
+#include <glm/gtx/transform.hpp>
 #include <Transform.hpp>
-
-#include "Transform.hpp"
 
 HG::Core::Transform::Transform() :
     Transform(nullptr)
@@ -144,7 +143,7 @@ void HG::Core::Transform::setGlobalPosition(const glm::vec3& globalPosition)
     {
         m_localPosition =
             (globalPosition - m_parent->globalPosition()) *
-             glm::inverse(m_parent->globalRotation());
+             m_parent->globalRotation();
     }
 
 }
@@ -157,6 +156,18 @@ glm::quat HG::Core::Transform::globalRotation() const
     }
 
     return m_parent->globalRotation() * m_localRotation;
+}
+
+void HG::Core::Transform::setGlobalRotation(const glm::quat& rotation)
+{
+    if (m_parent == nullptr)
+    {
+        m_localRotation = rotation;
+    }
+    else
+    {
+        m_localRotation = rotation * glm::inverse(m_parent->globalRotation());
+    }
 }
 
 void HG::Core::Transform::setParent(HG::Core::Transform* transform)
@@ -213,9 +224,25 @@ HG::Core::Transform* HG::Core::Transform::parent() const
 
 glm::mat4 HG::Core::Transform::localToWorldMatrix() const
 {
+    auto scale = globalScale();
+
+    // todo: Fckn monkeycoding. Fixes decomposition if scale is close to (0, 0, 0)
+    if (glm::abs(scale.x) < std::numeric_limits<float>::epsilon())
+    {
+        scale.x = 0.001;
+    }
+    if (glm::abs(scale.y) < std::numeric_limits<float>::epsilon())
+    {
+        scale.y = 0.001;
+    }
+    if (glm::abs(scale.z) < std::numeric_limits<float>::epsilon())
+    {
+        scale.z = 0.001;
+    }
+
     auto model = glm::translate(glm::mat4(1.0f), globalPosition());
     model = model * glm::mat4_cast(globalRotation());
-    model = glm::scale(model, globalScale());
+    model = model * glm::scale(scale);
     
     return model;
 }
@@ -237,8 +264,8 @@ void HG::Core::Transform::setFromLocalToWorldMatrix(const glm::mat4& matrix)
         perspective
     );
 
+    setGlobalRotation(rotation);
     setGlobalPosition(position);
-    setLocalRotation(rotation);
     setGlobalScale(scale);
 }
 
