@@ -7,4 +7,4 @@ IF (${HG_BUILD_PHYSICS_TESTS})
 endif()
 
 add_subdirectory(Base)
-add_subdirectory(PlayRho)
+#add_subdirectory(PlayRho)

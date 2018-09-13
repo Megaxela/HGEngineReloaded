@@ -1,4 +1,7 @@
+// C++ STL
 #include <memory>
+
+// HG::Rendering::Base
 #include <Behaviours/Mesh.hpp>
 
 HG::Rendering::Base::Behaviours::Mesh::Mesh() :

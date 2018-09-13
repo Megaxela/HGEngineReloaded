@@ -1,6 +1,9 @@
 #pragma once
 
+// C++ STL
 #include <chrono>
+
+// HG::Utils
 #include <DoubleBufferContainer.hpp>
 
 namespace HG::Rendering::Base

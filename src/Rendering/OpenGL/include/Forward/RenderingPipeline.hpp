@@ -1,12 +1,7 @@
 #pragma once
 
-#include <RenderingPipeline.hpp> // Inheritance
-
-#include <gl/all.hpp>
-#include <ImGuiRenderer.hpp>
-#include <GizmosRenderer.hpp>
-
-#include <Texture.hpp> // Required for enum
+// HG::Rendering::Base
+#include <RenderingPipeline.hpp> // Required for inheritance
 
 namespace HG::Core
 {
@@ -15,14 +10,13 @@ namespace HG::Core
 
 namespace HG::Rendering::Base
 {
-    class Shader;
-//    class Texture; // Already included
     class RenderBehaviour;
+}
 
-    namespace Behaviours
-    {
-        class Mesh;
-    }
+namespace HG::Rendering::OpenGL
+{
+    class GizmosRenderer;
+    class ImGuiRenderer;
 }
 
 namespace HG::Rendering::OpenGL::Forward
@@ -65,7 +59,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Actual render method.
          * @param objects Container with objects.
          */
-        void render(const HG::Core::Scene::GameObjectsContainer& objects) override;
+        void render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects) override;
 
         /**
          * @brief Init method.
@@ -84,18 +78,19 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Method for processing game objects and it's behaviours.
          * @param objects Objects.
          */
-        void proceedGameObjects(const HG::Core::Scene::GameObjectsContainer& objects);
+        void proceedGameObjects(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects);
 
+        // Caching
         std::vector<HG::Rendering::Base::RenderBehaviour*> m_behavioursCache;
-
         std::multimap<float, HG::Rendering::Base::RenderBehaviour*> m_sortedBehaviours;
 
         // Gizmos rendering object
-        GizmosRenderer m_gizmosRenderer;
+        GizmosRenderer* m_gizmosRenderer;
 
         // ImGui rendering object
-        ImGuiRenderer m_imguiRenderer;
+        ImGuiRenderer* m_imguiRenderer;
 
+        // Map with renderbehaviour renderers.
         std::map<
             std::size_t,
             AbstractRenderer*

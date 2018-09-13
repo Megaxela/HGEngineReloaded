@@ -1,6 +1,11 @@
-#include <CurrentLogger.hpp>
-#include "Input.hpp"
+// C++ STL
 #include <algorithm>
+
+// HG::Core
+#include <Input.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Core::Input::Keyboard::Keyboard() :
     m_pushed  (std::size_t(Key::Last) - 1, false),

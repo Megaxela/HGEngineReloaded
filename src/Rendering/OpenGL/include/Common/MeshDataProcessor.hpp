@@ -1,8 +1,11 @@
 #pragma once
 
-#include "AbstractRenderDataProcessor.hpp"
+// C++ STL
 #include <map>
 #include <memory>
+
+// HG::Rendering::Base
+#include <AbstractRenderDataProcessor.hpp> // Required for inheritance
 
 namespace HG::Utils
 {

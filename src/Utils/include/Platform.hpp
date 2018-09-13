@@ -9,6 +9,7 @@
     #define OS_WINDOWS
 #endif
 
+// ALogger
 #include <CurrentLogger.hpp>
 
 #ifdef OS_LINUX

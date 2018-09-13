@@ -1,14 +1,28 @@
-#include <Behaviours/TiledMapRenderer.hpp>
+// C++ STL
+#include <filesystem>
+
+// HG::Core
 #include <GameObjectBuilder.hpp>
 #include <GameObjectCache.hpp>
-#include <Loaders/STBImageLoader.hpp>
-#include <Behaviours/Mesh.hpp>
+#include <ResourceManager.hpp>
 #include <Application.hpp>
+#include <GameObject.hpp>
+#include <Transform.hpp>
+#include <Scene.hpp>
+
+// HG::Rendering::Base
+#include <Behaviours/Mesh.hpp>
+#include <Renderer.hpp>
+#include <Material.hpp>
 #include <Texture.hpp>
 #include <Shader.hpp>
-#include <Scene.hpp>
 #include <Mesh.hpp>
-#include <filesystem>
+
+// HG::Standard
+#include <Behaviours/TiledMapRenderer.hpp>
+
+// HG::Utils
+#include <Loaders/STBImageLoader.hpp>
 
 
 HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
@@ -224,10 +238,11 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Sta
 
     auto pixelScale = 0.01f;
 
-    HG::Core::GameObject* newParentGameObject =
+    auto newParentGameObject =
         HG::Core::GameObjectBuilder()
             .setName(groupLayer->name)
-            .setParent(parent);
+            .setParent(parent)
+            .deploy();
 
     scene()->addGameObject(newParentGameObject);
 

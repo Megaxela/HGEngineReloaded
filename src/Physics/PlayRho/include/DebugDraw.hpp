@@ -1,8 +1,15 @@
 #pragma once
 
-#include <PlayRho/PlayRho.hpp>
-#include <Gizmos.hpp>
+// HG::Utils
 #include <Color.hpp>
+
+// PlayRho
+#include <PlayRho/PlayRho.hpp>
+
+namespace HG::Rendering::Base
+{
+    class Gizmos;
+}
 
 namespace HG::Physics::PlayRho
 {

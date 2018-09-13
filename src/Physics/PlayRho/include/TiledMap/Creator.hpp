@@ -1,8 +1,15 @@
 #pragma once
 
+// HG::Utils
 #include <Rect.hpp>
+
+// HG::Physics::Base
 #include <PhysicsController.hpp>
+
+// HG::Physics::PlayRho
 #include <Controller.hpp>
+
+// ALogger
 #include <CurrentLogger.hpp>
 
 namespace HG::Physics::PlayRho::TiledMap

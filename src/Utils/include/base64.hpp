@@ -29,10 +29,13 @@
 
 */
 
+// C++ STL
 #include <type_traits>
 #include <string>
 #include <vector>
 #include <string_view>
+
+// ByteArray
 #include <bytearray_processor.hpp>
 
 namespace HG::Utils::Base64

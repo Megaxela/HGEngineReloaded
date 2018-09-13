@@ -1,4 +1,7 @@
+// HG::Rendering::Base
 #include <Texture.hpp>
+
+// HG::Utils
 #include <Surface.hpp>
 
 HG::Rendering::Base::Texture::Texture() :

@@ -1,8 +1,11 @@
 #pragma once
 
+// C++ STL
+#include <vector>
+
+// GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <vector>
 
 namespace HG::Core
 {
@@ -137,12 +140,6 @@ namespace HG::Core
          * @return Pointer to parent transform object.
          */
         Transform* parent() const;
-
-        /**
-         * @brief Method for constructing string from transform object.
-         * @return String
-         */
-//        std::string toString() const;
 
         /**
          * @brief Method for taking model local to world matrix.

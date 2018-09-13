@@ -1,7 +1,12 @@
+// HG::Physics::PlayRho
 #include <Behaviours/DebugControllerBehaviour.hpp>
+#include <Controller.hpp>
+
+// HG::Core
 #include <Scene.hpp>
 #include <Application.hpp>
-#include <Controller.hpp>
+
+// ImGUI
 #include <imgui.h>
 #include <imgui_internal.h>
 

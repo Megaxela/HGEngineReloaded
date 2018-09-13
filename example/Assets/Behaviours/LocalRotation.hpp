@@ -1,9 +1,12 @@
 #pragma once
 
+// HG::Core
 #include <Scene.hpp>
 #include <Application.hpp>
 #include <Behaviour.hpp>
 #include <GameObject.hpp>
+#include <Transform.hpp>
+#include <TimeStatistics.hpp>
 
 class LocalRotationBehaviour : public HG::Core::Behaviour
 {

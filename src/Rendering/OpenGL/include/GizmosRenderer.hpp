@@ -1,9 +1,18 @@
 #pragma once
 
-#include <Gizmos.hpp>
-#include <Shader.hpp>
+// HG::Core
 #include <Application.hpp>
+
+// HG::Rendering::Base
+#include <Gizmos.hpp>
+
+// gl
 #include <gl/all.hpp>
+
+namespace HG::Rendering::Base
+{
+    class Material;
+}
 
 namespace HG::Rendering::OpenGL
 {

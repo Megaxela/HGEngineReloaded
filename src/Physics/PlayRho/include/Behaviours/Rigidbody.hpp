@@ -1,6 +1,9 @@
 #pragma once
 
-#include <Behaviour.hpp>
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// PlayRho
 #include <PlayRho/PlayRho.hpp>
 
 namespace HG::Physics::PlayRho::Behaviours

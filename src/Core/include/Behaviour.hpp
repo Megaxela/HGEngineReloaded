@@ -1,6 +1,7 @@
 #pragma once
 
 // Declarations for simple behaviour coding
+// C++ STL
 #include <any>
 #include <functional>
 
@@ -246,28 +247,13 @@ namespace HG::Core
          * @brief Method for getting all properties.
          * @return Vector with all properties.
          */
-        std::vector<Property> getProperties() const
-        {
-            std::vector<Property> container;
-
-            getProperties(container);
-
-            return container;
-        }
+        std::vector<Property> getProperties() const;
 
         /**
          * @brief Method for getting all properties.
          * @param container Vector, that will be filled with properties.
          */
-        void getProperties(std::vector<Property>& container) const
-        {
-            container.reserve(m_properties.size());
-
-            for (auto&& [name, prop] : m_properties)
-            {
-                container.push_back(prop);
-            }
-        }
+        void getProperties(std::vector<Property>& container) const;
 
     protected:
 

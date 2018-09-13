@@ -46,7 +46,7 @@ add_library(HGRenderingBase STATIC
     include/RenderData.hpp
     src/AbstractRenderDataProcessor.cpp
     include/AbstractRenderDataProcessor.hpp
-)
+        src/MaterialValue.cpp include/MaterialValue.hpp)
 
 target_include_directories(HGRenderingBase PUBLIC
     include

@@ -1,6 +1,14 @@
+// HG::Rendering::OpenGL
 #include <Common/CubeMapTextureDataProcessor.hpp>
 #include <Common/CubeMapTextureData.hpp>
+
+// HG::Rendering::Base
 #include <CubeMapTexture.hpp>
+
+// HG::Utils
+#include <Surface.hpp>
+
+// gl
 #include <gl/all.hpp>
 
 namespace
@@ -75,12 +83,12 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
 
     // If one of surfaces are not available
     // post error
-    if (texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Right) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Left) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Top) == nullptr ||
+    if (texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Right ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Left  ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Top   ) == nullptr ||
         texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Bottom) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Front) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Back) == nullptr)
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Front ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Back  ) == nullptr)
     {
         Error() << "Can't setup not fully set up cube map texture.";
         return false;
@@ -89,9 +97,10 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     Common::CubeMapTextureData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = texture->specificData<Common::CubeMapTextureData>()) == nullptr)
+    if ((externalData = static_cast<CubeMapTextureData*>(texture->specificData())) == nullptr)
     {
-        externalData = texture->setSpecificData<Common::CubeMapTextureData>();
+        externalData = new Common::CubeMapTextureData();
+        texture->setSpecificData(externalData);
     }
 
     // Setting up textures

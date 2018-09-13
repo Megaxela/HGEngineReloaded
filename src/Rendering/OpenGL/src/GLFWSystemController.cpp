@@ -1,14 +1,26 @@
 
 
 #ifdef GRAPHICS_USE_GLFW
-#include "GLFWSystemController.hpp"
-#include <CurrentLogger.hpp>
+// HG::Core
 #include <Input.hpp>
 #include <Application.hpp>
+#include <TimeStatistics.hpp>
+
+// HG::Rendering::Base
 #include <Camera.hpp>
+#include <Renderer.hpp>
+
+// HG::Rendering::OpenGL
+#include <GLFWSystemController.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
+
+// GLM
 #include <gl/all.hpp>
+
+// ImGui
 #include <imgui.h>
-#include <Application.hpp>
 
 HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
     SystemController(application),

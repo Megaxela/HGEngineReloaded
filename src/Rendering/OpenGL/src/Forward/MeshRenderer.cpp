@@ -1,16 +1,28 @@
-#include <Forward/MeshRenderer.hpp>
-#include <Materials/MeshFallbackMaterial.hpp>
-#include <Lights/DirectionalLight.hpp>
-#include <Lights/AbstractLight.hpp>
-#include <Lights/PointLight.hpp>
-#include <Behaviours/Mesh.hpp>
-#include <Common/ShaderData.hpp>
-#include <Common/MeshData.hpp>
+// HG::Core
 #include <Application.hpp>
 #include <GameObject.hpp>
+#include <Transform.hpp>
+
+// HG::Rendering::OpenGL
+#include <Materials/MeshFallbackMaterial.hpp>
+#include <Forward/MeshRenderer.hpp>
+#include <Common/ShaderData.hpp>
+#include <Common/MeshData.hpp>
+
+// HG::Rendering::Base
+#include <Lights/DirectionalLight.hpp>
+#include <Lights/AbstractLight.hpp>
+#include <MaterialCollection.hpp>
+#include <Lights/PointLight.hpp>
+#include <Behaviours/Mesh.hpp>
+#include <Renderer.hpp>
 #include <Material.hpp>
 #include <Camera.hpp>
+
+// HG::Utils
 #include <Mesh.hpp>
+
+// GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
 
 HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() :
@@ -58,7 +70,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 {
     auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
     
-    auto data = meshBehaviour->specificData<Common::MeshData>();
+    auto data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
 
     // todo: On errors, render "error" mesh instead.
     // Additional information in mesh is
@@ -78,7 +90,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
             return;
         }
 
-        data = meshBehaviour->specificData<Common::MeshData>();
+        data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
     }
 
     gl::program* program = nullptr;
@@ -86,13 +98,13 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     if (meshBehaviour->material() == nullptr ||
         meshBehaviour->material()->shader() == nullptr)
     {
-        program = &m_meshFallbackMaterial->shader()->specificData<Common::ShaderData>()->Program;
+        program = &static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData())->Program;
 
         program->use();
     }
     else
     {
-        auto shaderData = meshBehaviour->material()->shader()->specificData<Common::ShaderData>();
+        auto shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
 
         if (shaderData == nullptr ||
             !shaderData->Program.is_valid())
@@ -100,11 +112,11 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
             if (!application()->renderer()->setup(meshBehaviour->material()->shader()))
             {
                 // If can't setup shader
-                shaderData = m_meshFallbackMaterial->shader()->specificData<Common::ShaderData>();
+                shaderData = static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData());
             }
             else
             {
-                shaderData = meshBehaviour->material()->shader()->specificData<Common::ShaderData>();
+                shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
             }
         }
         program = &shaderData->Program;

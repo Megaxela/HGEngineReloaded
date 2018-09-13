@@ -1,10 +1,16 @@
 #pragma once
 
-#include <glm/vec2.hpp>
-#include <type_traits>
-#include <memory>
+// HG::Rendering::Base
 #include <RenderData.hpp>
+
+// HG::Utils
 #include <FutureHandler.hpp>
+
+// C++ STL
+#include <memory>
+
+// GLM
+#include <glm/vec2.hpp>
 
 namespace HG::Utils
 {

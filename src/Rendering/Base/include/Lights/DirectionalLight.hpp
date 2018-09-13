@@ -1,6 +1,7 @@
 #pragma once
 
-#include "AbstractLight.hpp"
+// HG::Rendering::Base
+#include <Lights/AbstractLight.hpp> // Required for inheritance
 
 namespace HG::Rendering::Base::Lights
 {

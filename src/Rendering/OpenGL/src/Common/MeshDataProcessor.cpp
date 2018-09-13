@@ -1,6 +1,11 @@
+// HG::Rendering::OpenGL
 #include <Common/MeshDataProcessor.hpp>
 #include <Common/MeshData.hpp>
+
+// HG::Rendering::Base
 #include <Behaviours/Mesh.hpp>
+
+// HG::Utils
 #include <Mesh.hpp>
 
 bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData)
@@ -16,17 +21,18 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
     auto searchResult = m_meshes.find(meshBehaviour->mesh());
     if (searchResult != m_meshes.end())
     {
-        delete meshBehaviour->specificData<Common::MeshData>();
-        meshBehaviour->assignSpecificData(searchResult->second);
+        delete meshBehaviour->specificData();
+        meshBehaviour->setSpecificData(searchResult->second);
 
         return true;
     }
 
     Common::MeshData* data = nullptr;
 
-    if ((data = meshBehaviour->specificData<Common::MeshData>()) == nullptr)
+    if ((data = static_cast<MeshData*>(meshBehaviour->specificData())) == nullptr)
     {
-        data = meshBehaviour->setSpecificData<Common::MeshData>();
+        data = new Common::MeshData();
+        meshBehaviour->setSpecificData(data);
 
         m_meshes[meshBehaviour->mesh()] = data;
     }

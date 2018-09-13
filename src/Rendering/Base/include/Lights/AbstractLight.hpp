@@ -1,8 +1,10 @@
 #pragma once
 
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// HG::Utils
 #include <Color.hpp>
-#include <Behaviour.hpp>
-#include <Camera.hpp>
 
 namespace HG::Rendering::Base
 {

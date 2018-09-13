@@ -1,13 +1,21 @@
 #pragma once
 
-#include <MaterialCollection.hpp>
-#include <RenderingPipeline.hpp>
-#include <Gizmos.hpp>
-#include <Scene.hpp>
+// HG::Utils
+#include <DoubleBufferContainer.hpp>
+
+namespace HG::Core
+{
+    class Application;
+    class GameObject;
+}
 
 namespace HG::Rendering::Base
 {
     class Camera;
+    class RenderingPipeline;
+    class MaterialCollection;
+    class Gizmos;
+    class RenderData;
 
     /**
      * @brief Class, that describes
@@ -33,16 +41,7 @@ namespace HG::Rendering::Base
          * object.
          * @tparam PipelineType Type of pipeline object.
          */
-        template<typename PipelineType>
-        typename std::enable_if<
-            std::is_base_of<RenderingPipeline, PipelineType>::value,
-            PipelineType*
-        >::type
-        setPipeline()
-        {
-            m_pipeline = new PipelineType(m_parentApplication);
-            return static_cast<PipelineType*>(m_pipeline);
-        }
+        void setPipeline(RenderingPipeline* pipeline);
 
         /**
          * @brief Method for getting pipeline object.
@@ -63,7 +62,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Perform rendering finally.
          */
-        void render(const HG::Core::Scene::GameObjectsContainer& gameObjects);
+        void render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& gameObjects);
 
         /**
          * @brief Method for getting gizmos object.
@@ -76,23 +75,6 @@ namespace HG::Rendering::Base
          * @return Pointer to material collection.
          */
         HG::Rendering::Base::MaterialCollection* materialCollection();
-
-        /**
-         * @brief Method for setting up objects
-         * with specified rendering pipeline.
-         * @param obj Object.
-         */
-        template<typename T>
-        bool setup(T obj)
-        {
-            if (m_pipeline == nullptr)
-            {
-                Error() << "Can't setup rendering behaviour without set pipeline.";
-                return false;
-            }
-
-            return m_pipeline->setup(obj);
-        }
 
         /**
          * @brief Method for getting active camera.
@@ -108,15 +90,24 @@ namespace HG::Rendering::Base
          */
         void setActiveCamera(HG::Rendering::Base::Camera* camera);
 
+        /**
+         * @brief Method for passing setup to
+         * rendering pipeline. Also checks
+         * availability of rendering pipeline.
+         * @param data Pointer to render data.
+         * @return Success.
+         */
+        bool setup(RenderData* data);
+
     private:
 
         HG::Core::Application* m_parentApplication;
 
         HG::Rendering::Base::RenderingPipeline* m_pipeline;
 
-        HG::Rendering::Base::Gizmos m_gizmos;
+        HG::Rendering::Base::Gizmos* m_gizmos;
 
-        HG::Rendering::Base::MaterialCollection m_materialCollection;
+        HG::Rendering::Base::MaterialCollection* m_materialCollection;
 
         HG::Rendering::Base::Camera* m_activeCamera;
 

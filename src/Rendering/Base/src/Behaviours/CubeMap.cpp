@@ -1,1 +1,2 @@
-#include "Behaviours/CubeMap.hpp"
+// HG::Rendering::Base
+#include <Behaviours/CubeMap.hpp>

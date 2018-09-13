@@ -1,5 +1,6 @@
 #pragma once
 
+// HG::Rendering::Base
 #include <Material.hpp>
 
 namespace HG::Rendering::OpenGL::Materials

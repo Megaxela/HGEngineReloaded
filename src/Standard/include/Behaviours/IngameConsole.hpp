@@ -1,11 +1,20 @@
 #pragma once
 
+// C++ STL
+#include <map>
+
+// HG::Core
 #include <GameObject.hpp> // Because of template method
 #include <Behaviour.hpp>
+
+// HG::Utils
 #include <Color.hpp>
+
+// ALogger
 #include <LogsListener.hpp>
+
+// RingBuffer
 #include <ringbuffer.hpp>
-#include <map>
 
 namespace HG::Standard::Behaviours
 {

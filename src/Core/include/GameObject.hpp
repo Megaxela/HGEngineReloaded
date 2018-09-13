@@ -1,7 +1,7 @@
 #pragma once
 
+// HG::Utils
 #include <DoubleBufferContainer.hpp>
-#include <Transform.hpp>
 
 namespace HG::Rendering::Base
 {
@@ -13,6 +13,7 @@ namespace HG::Core
     // Forward declaration
     class Behaviour;
     class Scene;
+    class Transform;
 
     /**
      * @brief Class, that describes
@@ -197,6 +198,8 @@ namespace HG::Core
          */
         GameObject();
 
+        Transform* m_transform;
+
         HG::Utils::DoubleBufferContainer<
             HG::Core::Behaviour*
         > m_behaviours;
@@ -204,8 +207,6 @@ namespace HG::Core
         HG::Utils::DoubleBufferContainer<
             HG::Rendering::Base::RenderBehaviour*
         > m_renderBehaviours;
-
-        Transform m_transform;
 
         std::string m_name;
 

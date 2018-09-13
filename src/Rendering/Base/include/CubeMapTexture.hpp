@@ -1,8 +1,19 @@
 #pragma once
 
+// C++ STL
+#include <memory> // For IWYU
+
+// HG::Rendering::Base
+#include <RenderData.hpp> // Required for inheritance
+
+// ALogger
 #include <CurrentLogger.hpp>
-#include <Surface.hpp>
-#include <RenderData.hpp>
+
+namespace HG::Utils
+{
+    class Surface;
+    using SurfacePtr = std::shared_ptr<Surface>;
+}
 
 namespace HG::Rendering::Base
 {

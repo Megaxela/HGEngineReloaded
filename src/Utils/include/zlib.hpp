@@ -1,9 +1,14 @@
 #pragma once
 
+// C++ STL
 #include <cstdlib>
 #include <type_traits>
 #include <vector>
+
+// HG::Utils
 #include <zlib.h>
+
+// ByteArray
 #include <bytearray.hpp>
 
 namespace HG::Utils::ZLib

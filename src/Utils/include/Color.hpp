@@ -1,8 +1,11 @@
 #pragma once
 
+// C++ STL
 #include <cstdint>
-#include <glm/glm.hpp>
 #include <string>
+
+// GLM
+#include <glm/glm.hpp>
 
 namespace HG::Utils
 {

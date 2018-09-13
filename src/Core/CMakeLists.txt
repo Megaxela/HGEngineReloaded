@@ -30,7 +30,9 @@ add_library(HGCore STATIC
     src/TimeStatistics.cpp
     include/TimeStatistics.hpp
     src/Input.cpp
-    include/Input.hpp src/Data.cpp include/Data.hpp)
+    include/Input.hpp
+    include/Data.hpp
+)
 
 target_include_directories(HGCore PUBLIC
     include

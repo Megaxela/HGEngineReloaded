@@ -1,5 +1,6 @@
 #pragma once
 
+// HG::Rendering::Base
 #include <AbstractRenderDataProcessor.hpp>
 
 namespace HG::Rendering::OpenGL::Common

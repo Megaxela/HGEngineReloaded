@@ -1,9 +1,16 @@
+// C++ STL
+#include <utility>
+
+// HG::Physics::PlayRho
 #include <Behaviours/Rigidbody.hpp>
-#include <Application.hpp>
 #include <Controller.hpp>
+
+// HG::Core
+#include <Application.hpp>
 #include <GameObject.hpp>
 #include <Scene.hpp>
-#include <utility>
+
+// ImGUI
 #include <imgui.h>
 
 HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody() :

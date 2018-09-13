@@ -1,9 +1,14 @@
+// HG::Core
+#include <Application.hpp>
+
+// HG::Rendering::Base
 #include <AbstractRenderDataProcessor.hpp>
 #include <RenderingPipeline.hpp>
 #include <SystemController.hpp>
-#include <CurrentLogger.hpp>
-#include <Application.hpp>
 #include <RenderBehaviour.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     m_parentApplication(application)

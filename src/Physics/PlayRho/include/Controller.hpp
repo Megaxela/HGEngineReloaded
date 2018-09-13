@@ -1,11 +1,18 @@
 #pragma once
 
-#include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PhysicsController.hpp>
+// C++ STL
+#include <chrono>
+
+// HG::Physics::Core
+#include <PhysicsController.hpp> // Required for inheritance
+
+// HG::Physics::PlayRho
 #include <DebugSettings.hpp>
 #include <DebugDraw.hpp>
-#include <chrono>
+
+// PlayRho
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace HG::Physics::PlayRho
 {

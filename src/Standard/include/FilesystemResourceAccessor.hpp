@@ -1,9 +1,12 @@
 #pragma once
 
-#include <ResourceAccessor.hpp> // Inheritance
-#include <Data.hpp> // Inheritance
+// C++ STL
 #include <memory>
 #include <vector>
+
+// HG::Core
+#include <ResourceAccessor.hpp> // Required for inheritance
+#include <Data.hpp> // Required for inheritance
 
 namespace HG::Standard
 {

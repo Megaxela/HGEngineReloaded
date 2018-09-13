@@ -1,12 +1,23 @@
-#include <SystemController.hpp>
-#include <CurrentLogger.hpp>
+// HG::Core
 #include <Application.hpp>
 #include <GameObject.hpp>
-#include <Camera.hpp>
 #include <Scene.hpp>
+#include <Transform.hpp>
+
+// HG::Rendering::Base
+#include <Renderer.hpp>
+#include <Camera.hpp>
+#include <SystemController.hpp>
+
+// HG::Utils
+#include <glmex.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
+
+// GLM
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
-#include <glmex.hpp>
 
 HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() :
     m_zoom(1.0f),

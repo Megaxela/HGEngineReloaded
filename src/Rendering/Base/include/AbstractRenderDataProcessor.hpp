@@ -1,5 +1,6 @@
 #pragma once
 
+// C++ STL
 #include <cstdlib>
 
 namespace HG::Rendering::Base
@@ -23,6 +24,12 @@ namespace HG::Rendering::Base
          */
         virtual std::size_t getTarget() = 0;
 
+        /**
+         * @brief Method, that will be used by pipeline
+         * to setup render data.
+         * @param data Pointer to render data.
+         * @return Setup success.
+         */
         virtual bool setup(HG::Rendering::Base::RenderData* data) = 0;
     };
 }

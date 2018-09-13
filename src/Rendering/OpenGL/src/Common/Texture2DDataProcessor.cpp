@@ -45,9 +45,10 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     Common::Texture2DData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = texture->specificData<Common::Texture2DData>()) == nullptr)
+    if ((externalData = static_cast<Texture2DData*>(texture->specificData())) == nullptr)
     {
-        externalData = texture->setSpecificData<Common::Texture2DData>();
+        externalData = new Common::Texture2DData();
+        texture->setSpecificData(externalData);
     }
 
     if (!externalData->Texture.is_valid())

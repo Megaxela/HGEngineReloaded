@@ -1,8 +1,15 @@
 #pragma once
 
-#include <Transform.hpp>
-#include <Color.hpp>
+// C++ STL
 #include <utility>
+
+// HG::Core
+#include <Transform.hpp>
+
+// HG::Utils
+#include <Color.hpp>
+
+// GLM
 #include <glm/vec3.hpp>
 
 

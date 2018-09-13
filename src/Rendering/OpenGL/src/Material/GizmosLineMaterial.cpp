@@ -1,4 +1,5 @@
-#include "Materials/GizmosLineMaterial.hpp"
+// HG::Rendering::OpenGL
+#include <Materials/GizmosLineMaterial.hpp>
 
 const char* HG::Rendering::OpenGL::Materials::GizmosLineMaterial::rawShader = R"(
 #ifdef VertexShader

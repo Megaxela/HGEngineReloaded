@@ -45,9 +45,10 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     Common::ShaderData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = shader->specificData<Common::ShaderData>()) == nullptr)
+    if ((externalData = static_cast<ShaderData*>(shader->specificData())) == nullptr)
     {
-        externalData = shader->setSpecificData<Common::ShaderData>();
+        externalData = new Common::ShaderData();
+        shader->setSpecificData(externalData);
     }
 
     if (!externalData->Program.is_valid())

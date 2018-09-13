@@ -1,4 +1,5 @@
-#include "Materials/SpriteMaterial.hpp"
+// HG::Rendering::OpenGL
+#include <Materials/SpriteMaterial.hpp>
 
 const char* HG::Rendering::OpenGL::Materials::SpriteMaterial::rawShader = R"(
 #ifdef VertexShader

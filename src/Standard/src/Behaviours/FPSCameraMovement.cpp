@@ -1,9 +1,22 @@
-#include <Behaviours/FPSCameraMovement.hpp>
-#include <CurrentLogger.hpp>
+// HG::Core
+#include <TimeStatistics.hpp>
 #include <Application.hpp>
 #include <GameObject.hpp>
 #include <Scene.hpp>
 #include <Input.hpp>
+#include <Transform.hpp>
+
+// HG::Rendering::Base
+#include <Camera.hpp>
+
+// HG::Standard
+#include <Behaviours/FPSCameraMovement.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
+
+// GLM
+#include <glm/glm.hpp>
 
 HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
     m_enabled(false),

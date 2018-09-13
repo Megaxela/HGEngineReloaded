@@ -1,8 +1,18 @@
+// HG::Core
+#include <Application.hpp>
+
+// HG::Rendering::OpenGL
 #include <Forward/AbstractRenderer.hpp>
 #include <Common/Texture2DData.hpp>
 #include <Common/ShaderData.hpp>
-#include <Application.hpp>
+
+// HG::Rendering::Base
+#include <Renderer.hpp>
+#include <Material.hpp>
 #include <Texture.hpp>
+#include <Shader.hpp>
+
+// GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
 
 HG::Rendering::OpenGL::Forward::AbstractRenderer::AbstractRenderer() :
@@ -26,7 +36,7 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::applyShaderUniforms(HG::R
 {
     m_textureNumber = 0;
 
-    auto program = &material->shader()->specificData<Common::ShaderData>()->Program;
+    auto program = &static_cast<Common::ShaderData*>(material->shader()->specificData())->Program;
 
     for (auto&& [uniformName, uniformValue] : *material)
     {
@@ -36,68 +46,68 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::applyShaderUniforms(HG::R
 
 void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::program *program,
                                                                            const std::string &name,
-                                                                           const HG::Rendering::Base::Material::Value &value)
+                                                                           const HG::Rendering::Base::MaterialValue &value)
 {
 
     auto location = program->uniform_location(name);
 
     switch (value.type)
     {
-    case Base::Material::Value::Type::Int:
+    case Base::MaterialValue::Type::Int:
         program->set_uniform(
             location,
             value.integer
         );
         break;
-    case Base::Material::Value::Type::Float:
+    case Base::MaterialValue::Type::Float:
         program->set_uniform(
             location,
             value.floating
         );
         break;
-    case Base::Material::Value::Type::Boolean:
+    case Base::MaterialValue::Type::Boolean:
         program->set_uniform(
             location,
             value.boolean
         );
         break;
-    case Base::Material::Value::Type::Vector2:
+    case Base::MaterialValue::Type::Vector2:
         program->set_uniform(
             location,
             value.vector2
         );
         break;
-    case Base::Material::Value::Type::Vector3:
+    case Base::MaterialValue::Type::Vector3:
         program->set_uniform(
             location,
             value.vector3
         );
         break;
-    case Base::Material::Value::Type::Vector4:
+    case Base::MaterialValue::Type::Vector4:
         program->set_uniform(
             location,
             value.vector4
         );
         break;
-    case Base::Material::Value::Type::Matrix2x2:
+    case Base::MaterialValue::Type::Matrix2x2:
         program->set_uniform(
             location,
             value.mat2x2
         );
         break;
-    case Base::Material::Value::Type::Matrix3x3:
+    case Base::MaterialValue::Type::Matrix3x3:
         program->set_uniform(
             location,
             value.mat3x3
         );
         break;
-    case Base::Material::Value::Type::Matrix4x4:
+    case Base::MaterialValue::Type::Matrix4x4:
         program->set_uniform(
             location,
             value.mat4x4
         );
         break;
-    case Base::Material::Value::Type::Texture:
+    case Base::MaterialValue::Type::Texture:
         // todo: If any errors on texture, render fallback texture.
         // Setting texture unit
         program->set_uniform_1i(
@@ -105,7 +115,7 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
             m_textureNumber
         );
 
-        auto textureData = value.texture->specificData<Common::Texture2DData>();
+        auto textureData = static_cast<Common::Texture2DData*>(value.texture->specificData());
 
         if (textureData == nullptr ||
             !textureData->Texture.is_valid())
@@ -116,7 +126,7 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
                 return;
             }
 
-            textureData = value.texture->specificData<Common::Texture2DData>();
+            textureData = static_cast<Common::Texture2DData*>(value.texture->specificData());
         }
 
         textureData->Texture.set_active(m_textureNumber);

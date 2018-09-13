@@ -1,5 +1,5 @@
-#include <Application.hpp>
-#include "SystemController.hpp"
+// HG::Rendering::Base
+#include <SystemController.hpp>
 
 
 HG::Rendering::Base::SystemController::SystemController(HG::Core::Application *application) :

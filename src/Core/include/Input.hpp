@@ -1,10 +1,13 @@
 #pragma once
 
+// C++ STL
 #include <vector>
 #include <cstdint>
 #include <map>
-#include <glm/vec2.hpp>
 #include <functional>
+
+// GLM
+#include <glm/vec2.hpp>
 
 namespace HG::Core
 {

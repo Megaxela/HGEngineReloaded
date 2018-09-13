@@ -1,9 +1,12 @@
 #pragma once
 
-#include "GameObject.hpp"
+// C++ STL
+#include <vector>
 
 namespace HG::Core
 {
+    class GameObject;
+
     /**
      * @brief Singleton class, that describes
      * cache for gameobject.

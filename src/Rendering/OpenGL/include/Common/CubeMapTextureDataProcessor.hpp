@@ -1,6 +1,7 @@
 #pragma once
 
-#include <AbstractRenderDataProcessor.hpp>
+// HG::Rendering::Base
+#include <AbstractRenderDataProcessor.hpp> // Required for inheritance
 
 namespace HG::Rendering::OpenGL::Common
 {

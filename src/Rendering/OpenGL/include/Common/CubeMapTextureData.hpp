@@ -1,6 +1,9 @@
 #pragma once
 
-#include <RenderSpecificData.hpp>
+// HG::Rendering::Base
+#include <RenderSpecificData.hpp> // Required for inheritance
+
+// GLM
 #include <gl/all.hpp>
 
 namespace HG::Rendering::OpenGL::Common

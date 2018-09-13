@@ -1,8 +1,11 @@
 #pragma once
 
+// C++ STL
 #include <vector>
 #include <memory>
-#include "Vertex.hpp"
+
+// HG::Utils
+#include <Vertex.hpp>
 
 namespace HG::Utils
 {

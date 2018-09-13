@@ -1,6 +1,11 @@
-#include <FilesystemResourceAccessor.hpp>
-#include <CurrentLogger.hpp>
+// C++ STL
 #include <fstream>
+
+// HG::Standard
+#include <FilesystemResourceAccessor.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Standard::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
     m_data(std::move(data)),

@@ -1,5 +1,8 @@
-#include "StringTools.hpp"
+// C++ STL
 #include <algorithm>
+
+// HG::Utils
+#include <StringTools.hpp>
 
 std::vector<std::string> HG::Utils::StringTools::split(const std::string &s, char delim)
 {

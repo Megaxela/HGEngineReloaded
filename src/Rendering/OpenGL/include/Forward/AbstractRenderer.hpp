@@ -1,13 +1,23 @@
 #pragma once
 
-#include <RenderBehaviour.hpp>
-#include <Material.hpp> // Value
-#include <gl/all.hpp>
+// C++ STL
 #include <cstdlib>
+
+// HG::Rendering::Base
+#include <MaterialValue.hpp>
+
+// gl
+#include <gl/all.hpp>
 
 namespace HG::Core
 {
     class Application;
+}
+
+namespace HG::Rendering::Base
+{
+    class RenderBehaviour;
+    class Material;
 }
 
 namespace HG::Rendering::OpenGL::Forward
@@ -78,7 +88,7 @@ namespace HG::Rendering::OpenGL::Forward
 
         void setShaderUniform(gl::program *program,
                               const std::string &name,
-                              const HG::Rendering::Base::Material::Value &value);
+                              const HG::Rendering::Base::MaterialValue &value);
 
     private:
 

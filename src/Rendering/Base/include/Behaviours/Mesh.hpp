@@ -1,15 +1,23 @@
 #pragma once
 
-#include <RenderBehaviour.hpp>
-#include <type_traits>
+// C++ STL
 #include <memory>
+
+// HG::Rendering::Base
+#include <RenderBehaviour.hpp> // Required for inheritance
+
+// ALogger
 #include <CurrentLogger.hpp>
-#include <Material.hpp>
 
 namespace HG::Utils
 {
     class Mesh;
     using MeshPtr = std::shared_ptr<Mesh>;
+}
+
+namespace HG::Rendering::Base
+{
+    class Material;
 }
 
 namespace HG::Rendering::Base::Behaviours

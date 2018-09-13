@@ -1,4 +1,5 @@
-#include "Shader.hpp"
+// HG::Rendering::Base
+#include <Shader.hpp>
 
 HG::Rendering::Base::Shader::Shader() :
     RenderData(DataId),

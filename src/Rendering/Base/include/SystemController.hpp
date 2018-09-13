@@ -1,8 +1,11 @@
 #pragma once
 
-#include <Rect.hpp>
+// C++ STL
 #include <cstdint>
 #include <string>
+
+// HG::Utils
+#include <Rect.hpp>
 
 namespace HG::Core
 {

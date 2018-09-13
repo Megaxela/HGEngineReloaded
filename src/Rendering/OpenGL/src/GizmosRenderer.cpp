@@ -1,12 +1,21 @@
-
-#include <GizmosRenderer.hpp>
-#include <Camera.hpp>
-#include <Material.hpp>
-#include <Forward/RenderingPipeline.hpp>
-#include <gl/auxiliary/glm_uniforms.hpp>
+// HG::Rendering::OpenGL
 #include <Materials/GizmosLineMaterial.hpp>
 #include <Materials/GizmosMeshMaterial.hpp>
+#include <Forward/RenderingPipeline.hpp>
 #include <Common/ShaderData.hpp>
+#include <GizmosRenderer.hpp>
+
+// HG::Rendering::Base
+#include <MaterialCollection.hpp>
+#include <Renderer.hpp>
+#include <Material.hpp>
+#include <Camera.hpp>
+
+// gl
+#include <gl/auxiliary/glm_uniforms.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* application) :
     m_application(application),
@@ -105,7 +114,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
         m_lineData.data()
     );
 
-    auto* program = &m_lineMaterial->shader()->specificData<Common::ShaderData>()->Program;
+    auto* program = &static_cast<Common::ShaderData*>(m_lineMaterial->shader()->specificData())->Program;
 
     program->set_uniform(
         program->uniform_location("projection"),

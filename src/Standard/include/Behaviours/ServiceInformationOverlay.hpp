@@ -1,6 +1,7 @@
 #pragma once
 
-#include <Behaviour.hpp>
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
 
 namespace HG::Standard::Behaviours
 {

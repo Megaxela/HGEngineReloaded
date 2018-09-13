@@ -1,7 +1,15 @@
 #pragma once
 
-#include <Behaviour.hpp>
-#include <Camera.hpp>
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// GLM
+#include <glm/glm.hpp>
+
+namespace HG::Rendering::Base
+{
+    class Camera;
+}
 
 namespace HG::Standard::Behaviours
 {

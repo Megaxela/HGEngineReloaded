@@ -1,6 +1,9 @@
 #pragma once
 
-#include <Forward/AbstractRenderer.hpp>
+// HG::Rendering::OpenGL
+#include <Forward/AbstractRenderer.hpp> // Required for inheritance
+
+// gl
 #include <gl/all.hpp>
 
 namespace HG::Rendering::Base

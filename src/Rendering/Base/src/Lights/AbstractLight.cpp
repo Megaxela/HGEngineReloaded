@@ -1,4 +1,7 @@
+// HG::Rendering::Base
 #include <Lights/AbstractLight.hpp>
+
+// ALogger
 #include <CurrentLogger.hpp>
 
 std::vector<HG::Rendering::Base::AbstractLight*> HG::Rendering::Base::AbstractLight::m_lights;

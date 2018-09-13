@@ -1,7 +1,12 @@
 #pragma once
 
-#include <Behaviour.hpp>
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// HG::Utils
 #include <Rect.hpp>
+
+// GLM
 #include <glm/glm.hpp>
 
 namespace HG::Rendering::Base

@@ -1,11 +1,15 @@
+
+// HG::Utils
 #include <Loaders/AssimpLoader.hpp>
 #include <Model.hpp>
 #include <Mesh.hpp>
 
+// Assimp
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+// ALogger
 #include <CurrentLogger.hpp>
 
 HG::Utils::AssimpLoader::AssimpLoader()

@@ -1,7 +1,13 @@
+// HG::Core
+#include <GameObject.hpp>
 #include <GameObjectCache.hpp>
+#include <Scene.hpp>
+
+// HG::Rendering::Base
+#include <Renderer.hpp>
+
+// ALogger
 #include <CurrentLogger.hpp>
-#include "Scene.hpp"
-#include "Renderer.hpp"
 
 HG::Core::Scene::Scene() :
     m_mainApplication(nullptr),

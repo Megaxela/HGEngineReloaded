@@ -1,7 +1,10 @@
 #pragma once
 
-#include <Behaviour.hpp>
-#include "TiledMap.hpp"
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// HG::Standard
+#include <Behaviours/TiledMap.hpp>
 
 namespace HG::Rendering::Base
 {

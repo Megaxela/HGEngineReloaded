@@ -1,13 +1,24 @@
+// HG::Core
+#include <Application.hpp>
+#include <Transform.hpp>
+#include <Scene.hpp>
+
+// HG::Rendering::Base
+#include <Camera.hpp>
+
+// HG::Standard
 #include <Behaviours/DebugControllerOverlay.hpp>
 #include <Behaviours/IngameConsole.hpp>
-#include <Application.hpp>
+
+// HG::Utils
 #include <Color.hpp>
-#include <Scene.hpp>
+
+// ALogger
 #include <SystemTools.h>
 
+// ImGui
 #include <imgui.h>
 #include <imgui_internal.h>
-#include <Camera.hpp>
 
 
 void HG::Standard::Behaviours::DebugControllerOverlay::onUpdate()
@@ -181,7 +192,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObject
                 ImGuiTreeNodeFlags_OpenOnArrow |
                 (gameObject == m_activeGameObject ? ImGuiTreeNodeFlags_Selected : 0);
 
-            bool opened = ImGui::TreeNodeEx(gameObject, nodeFlags, gameObject->name().c_str());
+            bool opened = ImGui::TreeNodeEx(gameObject, nodeFlags, "%s", gameObject->name().c_str());
 
             if (ImGui::IsItemClicked())
             {

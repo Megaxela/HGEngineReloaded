@@ -1,7 +1,10 @@
 #pragma once
 
-#include <gl/all.hpp>
+// HG::Rendering::Base
 #include <RenderSpecificData.hpp>
+
+// gl
+#include <gl/all.hpp>
 
 namespace HG::Rendering::OpenGL::Common
 {

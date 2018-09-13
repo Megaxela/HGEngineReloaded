@@ -1,3 +1,4 @@
+// HG::Core
 #include <ResourceManager.hpp>
 #include <ResourceAccessor.hpp>
 
@@ -81,4 +82,21 @@ void HG::Core::ResourceManager::loaderThread()
 
         job();
     }
+}
+
+void HG::Core::ResourceManager::setResourceAccessor(HG::Core::ResourceAccessor* accessor)
+{
+    if (m_accessor != nullptr)
+    {
+        Warning() << "Redefining ResourceAccessor accessor is bad practice.";
+    }
+
+    m_accessor = accessor;
+}
+
+std::size_t HG::Core::ResourceManager::jobsSize()
+{
+    std::unique_lock<std::mutex> mutexLock(m_loaderJobsMutex);
+
+    return m_loaderJobs.size();
 }

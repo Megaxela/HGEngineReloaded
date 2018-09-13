@@ -1,7 +1,16 @@
-#include <Behaviours/ServiceInformationOverlay.hpp>
-#include <PhysicalResource.hpp>
-#include <Scene.hpp>
+// HG::Core
+#include <ResourceManager.hpp>
+#include <TimeStatistics.hpp>
 #include <Application.hpp>
+#include <Scene.hpp>
+
+// HG::Standard
+#include <Behaviours/ServiceInformationOverlay.hpp>
+
+// HG::Utils
+#include <PhysicalResource.hpp>
+
+// ImGui
 #include <imgui.h>
 
 void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()

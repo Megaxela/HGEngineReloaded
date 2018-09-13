@@ -1,12 +1,18 @@
+// HG::Core
 #include <GameObject.hpp>
 #include <Behaviour.hpp>
 #include <Scene.hpp>
+#include <Transform.hpp>
+
+// HG::Rendering::Base
 #include <RenderBehaviour.hpp>
+
+// ALogger library
 #include <CurrentLogger.hpp>
 
 HG::Core::GameObject::GameObject() :
     m_behaviours(),
-    m_transform(this),
+    m_transform(new HG::Core::Transform(this)),
     m_parentScene(nullptr),
     m_enabled(true)
 {
@@ -16,6 +22,7 @@ HG::Core::GameObject::GameObject() :
 HG::Core::GameObject::~GameObject()
 {
     clear();
+    delete m_transform;
 }
 
 void HG::Core::GameObject::update()
@@ -151,7 +158,7 @@ std::string HG::Core::GameObject::name() const
 
 HG::Core::Transform* HG::Core::GameObject::transform()
 {
-    return &m_transform;
+    return m_transform;
 }
 
 bool HG::Core::GameObject::isEnabled() const

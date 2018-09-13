@@ -1,4 +1,5 @@
-#include "CubeMapTexture.hpp"
+// HG::Rendering::Base
+#include <CubeMapTexture.hpp>
 
 HG::Rendering::Base::CubeMapTexture::CubeMapTexture() :
     RenderData(Id),

@@ -1,4 +1,5 @@
-#include "Color.hpp"
+// HG::Utils
+#include <Color.hpp>
 
 namespace
 {

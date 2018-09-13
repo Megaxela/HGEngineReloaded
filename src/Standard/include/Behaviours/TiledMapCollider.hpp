@@ -1,9 +1,14 @@
 #pragma once
 
-#include <Behaviour.hpp>
+// HG::Core
 #include <Application.hpp>
+#include <Behaviour.hpp>
+
+// HG::Physics::Base
 #include <PhysicsController.hpp>
-#include "TiledMapRenderer.hpp"
+
+// HG::Standard
+#include <Behaviours/TiledMapRenderer.hpp>
 
 namespace HG::Standard::Behaviours
 {

@@ -1,15 +1,24 @@
 #pragma once
 
-#include <glm/vec2.hpp>
-#include <Behaviour.hpp>
-#include <Color.hpp>
-#include <rapidxml.hpp>
+// C++ STL
 #include <vector>
 #include <memory>
 #include <variant>
 #include <cstdint>
 #include <chrono>
 #include <map>
+
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// HG::Utils
+#include <Color.hpp>
+
+// GLM
+#include <glm/vec2.hpp>
+
+// RapidXML
+#include <rapidxml.hpp>
 
 namespace HG::Core
 {

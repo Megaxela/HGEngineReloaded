@@ -1,8 +1,11 @@
 #pragma once
 
+// C++ STL
 #include <utility>
 #include <string>
-#include <RenderData.hpp>
+
+// HG::Rendering::Base
+#include <RenderData.hpp> // Required for inheritance
 
 namespace HG::Rendering::Base
 {

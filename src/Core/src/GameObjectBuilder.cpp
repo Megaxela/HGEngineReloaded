@@ -1,8 +1,14 @@
+// C++ STL
+#include <utility>
+
+// HG::Core
 #include <GameObjectBuilder.hpp>
 #include <GameObjectCache.hpp>
-#include <CurrentLogger.hpp>
 #include <GameObject.hpp>
-#include <utility>
+#include <Transform.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Core::GameObjectBuilder::operator GameObject*()
 {

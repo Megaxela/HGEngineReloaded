@@ -1,8 +1,15 @@
-#include <glm/gtx/matrix_decompose.hpp>
+// C++ STL
 #include <algorithm>
-#include <CurrentLogger.hpp>
-#include <glm/gtx/transform.hpp>
+
+// HG::Core
 #include <Transform.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
+
+// GLM
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/transform.hpp>
 
 HG::Core::Transform::Transform() :
     Transform(nullptr)

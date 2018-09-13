@@ -10,8 +10,6 @@ if (${HG_BUILD_STANDARD_TESTS})
 endif()
 
 add_library(HGStandard STATIC
-    src/MeshLoaders/OBJ.cpp
-    include/MeshLoaders/OBJ.hpp
     src/Behaviours/FPSCameraMovement.cpp
     include/Behaviours/FPSCameraMovement.hpp
     src/Behaviours/ServiceInformationOverlay.cpp
@@ -28,7 +26,7 @@ add_library(HGStandard STATIC
     include/Behaviours/TiledMapCollider.hpp
     src/Behaviours/IngameConsole.cpp
     include/Behaviours/IngameConsole.hpp
-        )
+)
 
 target_include_directories(HGStandard PUBLIC
     include

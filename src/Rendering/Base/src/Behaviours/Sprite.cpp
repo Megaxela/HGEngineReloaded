@@ -1,5 +1,6 @@
-#include "Behaviours/Sprite.hpp"
-
+// HG::Rendering::Base
+#include <Behaviours/Sprite.hpp>
+#include <Texture.hpp>
 
 HG::Rendering::Base::Behaviours::Sprite::Sprite() :
     RenderBehaviour(Id),

@@ -1,13 +1,20 @@
 #pragma once
 
+// HG::Core
 #include <Data.hpp> // Required, because of template `load` method
+
+// HG::Utils
+#include <FutureHandler.hpp>
+
+// ALogger
 #include <CurrentLogger.hpp>
+
+// C++ STL
 #include <memory>
 #include <thread>
 #include <future>
 #include <functional>
 #include <queue>
-#include <FutureHandler.hpp>
 
 namespace HG::Core
 {
@@ -51,27 +58,9 @@ namespace HG::Core
          * @param accessor Pointer to resource accessor
          * implementation.
          */
-        template<typename Accessor>
-        typename std::enable_if<
-            std::is_base_of<ResourceAccessor, Accessor>::value
-        >::type setResourceAccessor()
-        {
-            if (m_accessor != nullptr)
-            {
-                Warning() << "Redefining ResourceAccessor accessor is bad practice.";
-                delete m_accessor;
-                m_accessor = nullptr;
-            }
+        void setResourceAccessor(ResourceAccessor* accessor);
 
-            m_accessor = new Accessor;
-        }
-
-        std::size_t jobsSize()
-        {
-            std::unique_lock<std::mutex> mutexLock(m_loaderJobsMutex);
-
-            return m_loaderJobs.size();
-        }
+        std::size_t jobsSize();
 
         /**
          * @brief Method for loading some resource

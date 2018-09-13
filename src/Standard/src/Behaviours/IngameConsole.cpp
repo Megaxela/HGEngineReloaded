@@ -1,11 +1,21 @@
-#include <Behaviours/IngameConsole.hpp>
-#include <Behaviours/DebugControllerOverlay.hpp>
-#include <Scene.hpp>
-#include <Application.hpp>
-#include <CurrentLogger.hpp>
-#include <StringTools.hpp>
+// C++ STL
 #include <algorithm>
 
+// HG::Core
+#include <Scene.hpp>
+#include <Application.hpp>
+
+// HG::Standard
+#include <Behaviours/IngameConsole.hpp>
+#include <Behaviours/DebugControllerOverlay.hpp>
+
+// HG::Utils
+#include <StringTools.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
+
+// ImGui
 #include <imgui.h>
 
 

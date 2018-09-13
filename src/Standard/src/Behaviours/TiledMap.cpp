@@ -1,11 +1,22 @@
-#include <Behaviours/TiledMap.hpp>
+// C++ STL
+#include <charconv>
+
+// HG::Core
 #include <ResourceAccessor.hpp>
-#include <CurrentLogger.hpp>
 #include <Data.hpp>
-#include <rapidxml.hpp>
+
+// HG::Standard
+#include <Behaviours/TiledMap.hpp>
+
+// HG::Utils
 #include <base64.hpp>
 #include <zlib.hpp>
-#include <charconv>
+
+// RapidXML
+#include <rapidxml.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 namespace {
     const char* SUPPORTED_VERSION = "1.1.6";

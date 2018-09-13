@@ -1,9 +1,20 @@
 #pragma once
 
-#include <Behaviour.hpp>
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
 #include <GameObject.hpp>
-#include <glm/vec2.hpp>
+
+// HG::Utils
 #include <Color.hpp>
+
+// GLM
+#include <glm/vec2.hpp>
+
+namespace HG::Core
+{
+    class Transform;
+    class GameObject;
+}
 
 namespace HG::Standard::Behaviours
 {

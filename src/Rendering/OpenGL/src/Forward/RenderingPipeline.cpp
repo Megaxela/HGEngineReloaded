@@ -1,17 +1,29 @@
+// HG::Core
+#include <GameObject.hpp>
+
+// HG::Rendering::OpenGL
 #include <Forward/RenderingPipeline.hpp>
 #include <Forward/AbstractRenderer.hpp>
-#include <SystemController.hpp>
-#include <GameObject.hpp>
-#include <Camera.hpp>
-#include <imgui.h>
+#include <GizmosRenderer.hpp>
+#include <ImGuiRenderer.hpp>
 
+// HG::Rendering::Base
+#include <MaterialCollection.hpp>
+#include <SystemController.hpp>
+#include <RenderBehaviour.hpp>
+#include <Renderer.hpp>
+#include <Camera.hpp>
+
+
+// ImGui
+#include <imgui.h>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
     m_behavioursCache(),
     m_sortedBehaviours(),
-    m_gizmosRenderer(application),
-    m_imguiRenderer(application),
+    m_gizmosRenderer(new HG::Rendering::OpenGL::GizmosRenderer(application)),
+    m_imguiRenderer(new HG::Rendering::OpenGL::ImGuiRenderer(application)),
     m_renderers()
 {
 
@@ -23,6 +35,9 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
     {
         delete renderer.second;
     }
+
+    delete m_gizmosRenderer;
+    delete m_imguiRenderer;
 }
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline *HG::Rendering::OpenGL::Forward::RenderingPipeline::addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer *renderer)
@@ -45,9 +60,9 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::init()
         renderer->init();
     }
 
-    m_gizmosRenderer.init();
+    m_gizmosRenderer->init();
 
-    m_imguiRenderer.init();
+    m_imguiRenderer->init();
 
     return true;
 }
@@ -61,14 +76,14 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
         renderer->deinit();
     }
 
-    m_gizmosRenderer.deinit();
+    m_gizmosRenderer->deinit();
 
-    m_imguiRenderer.deinit();
+    m_imguiRenderer->deinit();
 
     application()->renderer()->materialCollection()->clearCache();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Core::Scene::GameObjectsContainer& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
 {
 
     // Clearing main buffer
@@ -89,20 +104,20 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Core::S
     }
 
     // Render Gizmos
-    application()->renderer()->gizmos()->visitShapes(m_gizmosRenderer);
+    application()->renderer()->gizmos()->visitShapes(*m_gizmosRenderer);
 
-    m_gizmosRenderer.render();
+    m_gizmosRenderer->render();
 
     // Render ImGui
     ImGui::Render();
 
-    m_imguiRenderer.render();
+    m_imguiRenderer->render();
 
     // Swapping graphics buffers
     application()->systemController()->swapBuffers();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const HG::Core::Scene::GameObjectsContainer& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
 {
     // todo: Add cubemap rendering
 

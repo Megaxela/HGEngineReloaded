@@ -1,6 +1,7 @@
 #pragma once
 
-#include "RenderBehaviour.hpp"
+// HG::Rendering::Base
+#include <RenderBehaviour.hpp> // Required for inheritance
 
 namespace HG::Rendering::Base::Behaviours
 {

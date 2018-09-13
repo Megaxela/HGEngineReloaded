@@ -1,8 +1,9 @@
 
+// HG::Core
 #include <Behaviour.hpp>
 #include <GameObject.hpp>
-#include <Scene.hpp> // For getting application
-#include <Application.hpp> // For getting input
+#include <Scene.hpp>
+#include <Application.hpp>
 
 HG::Core::Behaviour::Behaviour(Type t) :
     m_type(t),
@@ -91,4 +92,23 @@ void HG::Core::Behaviour::addProperty(HG::Core::Behaviour::Property property)
 {
     // todo: Add checking if property with this name already exists
     m_properties.emplace_back(property.name(), property);
+}
+
+void HG::Core::Behaviour::getProperties(std::vector<HG::Core::Behaviour::Property>& container) const
+{
+    container.reserve(m_properties.size());
+
+    for (auto&& [name, prop] : m_properties)
+    {
+        container.push_back(prop);
+    }
+}
+
+std::vector<HG::Core::Behaviour::Property> HG::Core::Behaviour::getProperties() const
+{
+    std::vector<Property> container;
+
+    getProperties(container);
+
+    return container;
 }

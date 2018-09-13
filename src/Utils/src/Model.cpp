@@ -1,6 +1,8 @@
-
-#include <Model.hpp>
+// C++ STL
 #include <algorithm>
+
+// HG::Utils
+#include <Model.hpp>
 
 HG::Utils::Model::Model(HG::Utils::Model* parent) :
     m_meshes(),

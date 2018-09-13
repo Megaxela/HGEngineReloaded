@@ -1,7 +1,10 @@
 #pragma once
 
-#include <glm/glm.hpp>
+// C++ STL
 #include <string>
+
+// GLM
+#include <glm/glm.hpp>
 
 namespace HG::Core
 {

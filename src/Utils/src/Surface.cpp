@@ -1,5 +1,8 @@
-#include "Surface.hpp"
-#include "stb_image.h"
+// HG::Utils
+#include <Surface.hpp>
+
+// stb
+#include <stb_image.h>
 
 HG::Utils::Surface::Surface(FreeFunction f) :
     Data(nullptr),

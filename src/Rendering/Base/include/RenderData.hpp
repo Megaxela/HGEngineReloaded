@@ -1,10 +1,12 @@
 #pragma once
 
-#include <RenderSpecificData.hpp>
-#include <type_traits>
+// C++ STL
+#include <cstdint>
 
 namespace HG::Rendering::Base
 {
+    class RenderSpecificData;
+
     /**
      * @brief Class, that describes some data,
      * that can be initialized in rendering pipeline.
@@ -29,51 +31,14 @@ namespace HG::Rendering::Base
          * @tparam T Type of expected specific data.
          * @return Pointer to specific data.
          */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<RenderSpecificData, T>::value,
-            T*
-        >::type specificData()
-        {
-            return dynamic_cast<T*>(m_data);
-        }
+        RenderSpecificData* specificData();
 
         /**
          * @brief Method for setting specific data.
          * @tparam T Specific data type.
          * @return Created specific data.
          */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<RenderSpecificData, T>::value,
-            T*
-        >::type setSpecificData()
-        {
-            delete m_data;
-
-            m_data = new T();
-
-            return static_cast<T*>(m_data);
-        }
-
-        /**
-         * @brief Method for assigning specific data.
-         * @tparam T Specific data type.
-         * @return Created specific data.
-         */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<RenderSpecificData, T>::value,
-            void
-        >::type assignSpecificData(T* data)
-        {
-            m_data = data;
-        }
-
-        /**
-         * @brief Method for clearing external data.
-         */
-        void clearSpecificData();
+        void setSpecificData(RenderSpecificData* data);
 
         /**
          * @brief Method for getting render data

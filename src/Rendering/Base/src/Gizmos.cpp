@@ -1,5 +1,7 @@
-
+// HG::Rendering::Base
 #include <Gizmos.hpp>
+
+// GLM
 #include <glm/gtx/compatibility.hpp>
 
 HG::Utils::Color HG::Rendering::Base::Gizmos::defaultColor

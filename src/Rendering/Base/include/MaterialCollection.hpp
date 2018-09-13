@@ -1,10 +1,17 @@
 #pragma once
 
-#include <Loaders/StringLoader.hpp>
+// C++ STL
+#include <utility>
+
+// HG::Core
 #include <ResourceManager.hpp>
+
+// HG::Rendering::Base
 #include <Material.hpp>
 #include <Shader.hpp>
-#include <utility>
+
+// HG::Utils
+#include <Loaders/StringLoader.hpp>
 
 namespace HG::Rendering::Base
 {

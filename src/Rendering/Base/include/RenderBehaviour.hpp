@@ -1,8 +1,13 @@
 #pragma once
 
-#include <Behaviour.hpp>
+// C++ STL
 #include <cstdio>
-#include "RenderData.hpp"
+
+// HG::Core
+#include <Behaviour.hpp> // Required for inheritance
+
+// HG::Rendering::Base
+#include <RenderData.hpp> // Required for inheritance
 
 namespace HG::Rendering::Base
 {

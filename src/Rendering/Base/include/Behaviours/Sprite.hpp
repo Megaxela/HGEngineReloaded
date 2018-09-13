@@ -1,8 +1,15 @@
 #pragma once
 
-#include <RenderBehaviour.hpp>
-#include <Texture.hpp>
+// HG::Rendering::Base
+#include <RenderBehaviour.hpp> // Required for inheritance
+
+// HG::Utils
 #include <Rect.hpp>
+
+namespace HG::Rendering::Base
+{
+    class Texture;
+}
 
 namespace HG::Rendering::Base::Behaviours
 {

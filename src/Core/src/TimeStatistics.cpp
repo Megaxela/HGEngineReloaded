@@ -1,6 +1,9 @@
+// C++ STL
 #include <stdexcept>
-#include "TimeStatistics.hpp"
 #include <algorithm>
+
+// HG::Core
+#include <TimeStatistics.hpp>
 
 HG::Core::TimeStatistics::TimeStatistics() :
     m_timers()

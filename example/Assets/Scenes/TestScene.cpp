@@ -1,21 +1,32 @@
+// Assets
 #include <Assets/Scenes/TestScene.hpp>
-#include <Loaders/STBImageLoader.hpp>
-#include <Loaders/AssimpLoader.hpp>
-#include <Behaviours/ServiceInformationOverlay.hpp>
-#include <Behaviours/FPSCameraMovement.hpp>
-#include <Behaviours/Mesh.hpp>
-#include <Lights/PointLight.hpp>
-#include <GameObjectBuilder.hpp>
-#include <Application.hpp>
-#include <Texture.hpp>
-#include <Model.hpp>
-
 #include <Assets/Materials/LightMaterial.hpp>
 #include <Assets/Materials/PBRMaterial.hpp>
-
 #include <Assets/Behaviours/LocalRotation.hpp>
 #include <Assets/Behaviours/RotationBehaviour.hpp>
+
+// HG::Core
+#include <Application.hpp>
+#include <GameObjectBuilder.hpp>
+#include <TimeStatistics.hpp>
+
+// HG::Rendering::Base
+#include <MaterialCollection.hpp>
+#include <Lights/PointLight.hpp>
+#include <Behaviours/Mesh.hpp>
+#include <Renderer.hpp>
+#include <Texture.hpp>
+#include <Camera.hpp>
+
+// HG::Standard
+#include <Behaviours/ServiceInformationOverlay.hpp>
+#include <Behaviours/FPSCameraMovement.hpp>
 #include <Behaviours/DebugControllerOverlay.hpp>
+
+// HG::Utils
+#include <Loaders/STBImageLoader.hpp>
+#include <Loaders/AssimpLoader.hpp>
+#include <Model.hpp>
 
 void TestScene::start()
 {

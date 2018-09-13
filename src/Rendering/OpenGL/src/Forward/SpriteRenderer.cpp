@@ -1,15 +1,32 @@
+// HG::Core
+#include <Application.hpp>
+#include <GameObject.hpp>
+#include <Transform.hpp>
+
+// HG::Rendering::Base
+#include <MaterialCollection.hpp>
+#include <Behaviours/Sprite.hpp>
+#include <Renderer.hpp>
+#include <Shader.hpp>
+#include <Camera.hpp>
+#include <Texture.hpp>
+
+// HG::Rendering::OpenGL
 #include <Materials/SpriteMaterial.hpp>
 #include <Forward/SpriteRenderer.hpp>
 #include <Common/Texture2DData.hpp>
 #include <Common/ShaderData.hpp>
-#include <Behaviours/Sprite.hpp>
 #include <Common/MeshData.hpp>
-#include <Application.hpp>
-#include <GameObject.hpp>
+
+// HG::Utils
 #include <Surface.hpp>
 #include <Mesh.hpp>
-#include <Camera.hpp>
+
+// GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Rendering::OpenGL::Forward::SpriteRenderer::SpriteRenderer() :
     m_spriteMaterial(nullptr),
@@ -109,7 +126,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
 {
     auto spriteBehaviour = static_cast<HG::Rendering::Base::Behaviours::Sprite*>(renderBehaviour);
 
-    auto* program = m_spriteMaterial->shader()->specificData<Common::ShaderData>();
+    auto program = static_cast<Common::ShaderData*>(m_spriteMaterial->shader()->specificData());
 
     program->Program.use();
 
@@ -155,7 +172,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     {
         program->Program.set_uniform_1i(location, 0);
 
-        auto textureData = spriteBehaviour->texture()->specificData<Common::Texture2DData>();
+        auto textureData = static_cast<Common::Texture2DData*>(spriteBehaviour->texture()->specificData());
 
         if (textureData == nullptr ||
             !textureData->Texture.is_valid())
@@ -166,7 +183,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
                 return;
             }
 
-            textureData = spriteBehaviour->texture()->specificData<Common::Texture2DData>();
+            textureData = static_cast<Common::Texture2DData*>(spriteBehaviour->texture()->specificData());
         }
 
         textureData->Texture.set_active(0);

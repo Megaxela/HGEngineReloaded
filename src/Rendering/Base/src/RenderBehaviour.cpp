@@ -1,5 +1,8 @@
-#include <GameObject.hpp>
-#include "RenderBehaviour.hpp"
+// HG::Core
+#include <GameObject.hpp> // Required for enum
+
+// HG::Rendering::Base
+#include <RenderBehaviour.hpp>
 
 HG::Rendering::Base::RenderBehaviour::RenderBehaviour(std::size_t type) :
     Behaviour(HG::Core::Behaviour::Type::Render),

@@ -1,9 +1,18 @@
-#include <Controller.hpp>
-#include <PlayRho/PlayRho.hpp>
-#include <Application.hpp>
-#include <Color.hpp>
+// C++ STL
 #include <chrono>
 #include <set>
+
+// HG::Core
+#include <Application.hpp>
+
+// HG::Physics::PlayRho
+#include <Controller.hpp>
+
+// HG::Utils
+#include <Color.hpp>
+
+// PlayRho
+#include <PlayRho/PlayRho.hpp>
 
 using FixtureSet = std::set<playrho::d2::Fixture*>;
 

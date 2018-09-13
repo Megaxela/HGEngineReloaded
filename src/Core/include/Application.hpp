@@ -1,10 +1,5 @@
 #pragma once
 
-#include <Renderer.hpp>
-#include <ResourceManager.hpp>
-#include <TimeStatistics.hpp>
-#include <Input.hpp>
-
 namespace HG::Physics::Base
 {
     class PhysicsController;
@@ -13,11 +8,15 @@ namespace HG::Physics::Base
 namespace HG::Rendering::Base
 {
     class SystemController;
+    class Renderer;
 }
 
 namespace HG::Core
 {
     class Scene;
+    class Input;
+    class ResourceManager;
+    class TimeStatistics;
 
     /**
      * @brief Class, that describes
@@ -36,6 +35,8 @@ namespace HG::Core
 
         /**
          * @brief Destructor.
+         * It will delete controllers. (Deletion
+         * will be executed with `delete` operator)
          */
         ~Application();
 
@@ -118,29 +119,13 @@ namespace HG::Core
 
         /**
          * @brief Method for setting system controller.
-         * @tparam T Type of system controller. It must be
-         * derived from `HG::Rendering::Base::SystemController`.
          */
-        template<typename T>
-        void setSystemController()
-        {
-            delete m_systemController;
-
-            m_systemController = new T(this);
-        }
+        void setSystemController(HG::Rendering::Base::SystemController* systemController);
 
         /**
          * @brief Method for setting physics controller.
-         * @tparam T Type of physics controller. It must be
-         * derived form `HG::Physics::Base::PhysicsController`.
          */
-        template<typename T>
-        void setPhysicsController()
-        {
-            delete m_physicsController;
-
-            m_physicsController = new T(this);
-        }
+        void setPhysicsController(HG::Physics::Base::PhysicsController* physicsController);
 
         /**
          * @brief Method for getting physics controller.
@@ -148,14 +133,7 @@ namespace HG::Core
          * derived from `HG::Physics::Base::PhysicsController`.
          * @return Pointer to physics controller.
          */
-        template<typename T>
-        typename std::enable_if<
-            std::is_base_of<HG::Physics::Base::PhysicsController, T>::value,
-            T*
-        >::type physicsController()
-        {
-            return static_cast<T*>(m_physicsController);
-        }
+        HG::Physics::Base::PhysicsController* physicsController();
 
         /**
          * @brief Method for getting system controller.
@@ -173,7 +151,7 @@ namespace HG::Core
         void proceedScene();
 
         // Renderer object
-        HG::Rendering::Base::Renderer m_renderer;
+        HG::Rendering::Base::Renderer* m_renderer;
 
         // Application system controller
         HG::Rendering::Base::SystemController* m_systemController;
@@ -182,13 +160,13 @@ namespace HG::Core
         HG::Physics::Base::PhysicsController* m_physicsController;
 
         // Input receiver/productor
-        Input m_input;
+        Input* m_input;
 
         // Resource manager
-        ResourceManager m_resourceManager;
+        ResourceManager* m_resourceManager;
 
         // Time statistics
-        TimeStatistics m_timeStatistics;
+        TimeStatistics* m_timeStatistics;
 
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.

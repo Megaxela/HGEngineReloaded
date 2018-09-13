@@ -1,7 +1,5 @@
-
+// HG::Rendering::Base
 #include <Material.hpp>
-
-#include "Material.hpp"
 
 HG::Rendering::Base::Material::Material() :
     m_variableContainer(),
@@ -34,8 +32,8 @@ HG::Rendering::Base::Material::Material(HG::Rendering::Base::Shader *shader) :
 
 void HG::Rendering::Base::Material::set(const std::string& name, int value)
 {
-    Value val{};
-    val.type = Value::Type::Int;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Int;
     val.integer = value;
 
     set(name, val);
@@ -43,8 +41,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, int value)
 
 void HG::Rendering::Base::Material::set(const std::string& name, float value)
 {
-    Value val{};
-    val.type = Value::Type::Float;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Float;
     val.floating = value;
 
     set(name, val);
@@ -52,8 +50,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, float value)
 
 void HG::Rendering::Base::Material::set(const std::string& name, bool value)
 {
-    Value val{};
-    val.type = Value::Type::Boolean;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Boolean;
     val.boolean = value;
 
     set(name, val);
@@ -61,8 +59,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, bool value)
 
 void HG::Rendering::Base::Material::set(const std::string& name, glm::vec2 value)
 {
-    Value val{};
-    val.type = Value::Type::Vector2;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Vector2;
     val.vector2 = value;
 
     set(name, val);
@@ -70,8 +68,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, glm::vec2 value
 
 void HG::Rendering::Base::Material::set(const std::string& name, glm::vec3 value)
 {
-    Value val{};
-    val.type = Value::Type::Vector3;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Vector3;
     val.vector3 = value;
 
     set(name, val);
@@ -79,8 +77,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, glm::vec3 value
 
 void HG::Rendering::Base::Material::set(const std::string& name, glm::vec4 value)
 {
-    Value val{};
-    val.type = Value::Type::Vector4;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Vector4;
     val.vector4 = value;
 
     set(name, val);
@@ -88,8 +86,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, glm::vec4 value
 
 void HG::Rendering::Base::Material::set(const std::string& name, glm::mat2 value)
 {
-    Value val{};
-    val.type = Value::Type::Matrix2x2;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Matrix2x2;
     val.mat2x2= value;
 
     set(name, val);
@@ -97,8 +95,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, glm::mat2 value
 
 void HG::Rendering::Base::Material::set(const std::string& name, glm::mat3 value)
 {
-    Value val{};
-    val.type = Value::Type::Matrix3x3;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Matrix3x3;
     val.mat3x3 = value;
 
     set(name, val);
@@ -106,8 +104,8 @@ void HG::Rendering::Base::Material::set(const std::string& name, glm::mat3 value
 
 void HG::Rendering::Base::Material::set(const std::string& name, glm::mat4 value)
 {
-    Value val{};
-    val.type = Value::Type::Matrix4x4;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Matrix4x4;
     val.mat4x4 = value;
 
     set(name, val);
@@ -115,14 +113,14 @@ void HG::Rendering::Base::Material::set(const std::string& name, glm::mat4 value
 
 void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::Texture* value)
 {
-    Value val{};
-    val.type = Value::Type::Texture;
+    MaterialValue val{};
+    val.type = MaterialValue::Type::Texture;
     val.texture = value;
 
     set(name, val);
 }
 
-void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::Material::Value value)
+void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::MaterialValue value)
 {
     m_variableContainer[name] = value;
 }
