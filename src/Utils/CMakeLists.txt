@@ -57,6 +57,7 @@ target_link_libraries(HGUtils
     bytearray
     stdc++fs
     STLRoundBuffer
+    nlohmann_json
     assimp
     ${ZLIB_LIBRARIES}
 )

@@ -10,6 +10,7 @@ add_subdirectory(stb)
 add_subdirectory(rapidxml)
 add_subdirectory(ByteArray)
 add_subdirectory(RingBuffer)
+add_subdirectory(json)
 
 # Setting up assimp
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
