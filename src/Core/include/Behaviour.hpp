@@ -173,13 +173,13 @@ namespace HG::Core
          * @brief Method for getting gameobject.
          * @return Pointer to parent gameobject.
          */
-        GameObject* gameObject() const;
+        HG::Core::GameObject* gameObject() const;
 
         /**
          * @brief Method for receiving parent scene.
          * @return Scene.
          */
-        Scene* scene() const;
+        HG::Core::Scene* scene() const;
 
         /**
          * @brief Method for getting input controller
@@ -282,7 +282,7 @@ namespace HG::Core
          * @brief Method for setting parent gameobject.
          * @param ptr Parent gameobject.
          */
-        void setParentGameObject(GameObject* ptr);
+        void setParentGameObject(HG::Core::GameObject* ptr);
 
     private:
 
@@ -290,7 +290,7 @@ namespace HG::Core
 
         bool m_enabled;
 
-        GameObject* m_parent;
+        HG::Core::GameObject* m_parent;
 
         std::vector<
             std::pair<

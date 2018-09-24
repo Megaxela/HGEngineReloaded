@@ -48,7 +48,7 @@ namespace HG::Core
          * low level resources loading.
          * @return Pointer to resource accessor.
          */
-        ResourceAccessor* resourceAccessor() const;
+        HG::Core::ResourceAccessor* resourceAccessor() const;
 
         /**
          * @brief Method for setting resource accessor for
@@ -58,7 +58,7 @@ namespace HG::Core
          * @param accessor Pointer to resource accessor
          * implementation.
          */
-        void setResourceAccessor(ResourceAccessor* accessor);
+        void setResourceAccessor(HG::Core::ResourceAccessor* accessor);
 
         std::size_t jobsSize();
 
@@ -137,7 +137,7 @@ namespace HG::Core
          */
         void loaderThread();
 
-        ResourceAccessor* m_accessor;
+        HG::Core::ResourceAccessor* m_accessor;
 
         std::thread m_loaderThread;
         std::atomic_bool m_running;

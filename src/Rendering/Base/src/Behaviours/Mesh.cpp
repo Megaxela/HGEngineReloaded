@@ -4,9 +4,11 @@
 // HG::Rendering::Base
 #include <Behaviours/Mesh.hpp>
 
-HG::Rendering::Base::Behaviours::Mesh::Mesh() :
+HG::Rendering::Base::Behaviours::Mesh::Mesh(HG::Utils::MeshPtr mesh,
+                                            HG::Rendering::Base::Material* material) :
     RenderBehaviour(Id),
-    m_material(nullptr)
+    m_mesh(std::move(mesh)),
+    m_material(material)
 {
 
 }

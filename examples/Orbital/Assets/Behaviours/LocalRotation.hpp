@@ -10,6 +10,12 @@
 
 class LocalRotationBehaviour : public HG::Core::Behaviour
 {
+public:
+
+    explicit LocalRotationBehaviour(float speed = 1.0f) :
+        m_speed(speed)
+    {}
+
 protected:
     void onUpdate() override
     {
@@ -17,7 +23,7 @@ protected:
         auto dt = scene()
                       ->application()
                       ->timeStatistics()
-                      ->lastFrameDeltaTime().count() / 1000000.0;
+                      ->lastFrameDeltaTime().count() / 1000000.0 * m_speed;
 
         gameObject()
             ->transform()
@@ -28,4 +34,8 @@ protected:
                 glm::quat(glm::vec3(0, glm::radians(22.5f) * dt, 0))
             );
     }
+
+private:
+
+    float m_speed;
 };

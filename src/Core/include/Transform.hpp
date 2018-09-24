@@ -164,14 +164,14 @@ namespace HG::Core
          * @brief Method for getting gameObject of this transform.
          * @return Pointer to owner.
          */
-        GameObject* gameObject() const;
+        HG::Core::GameObject* gameObject() const;
 
     private:
 
         glm::quat m_localRotation;
         glm::vec3 m_localScale;
         glm::vec3 m_localPosition;
-        GameObject* m_owner;
+        HG::Core::GameObject* m_owner;
         Transform* m_parent;
         std::vector<Transform*> m_children;
 

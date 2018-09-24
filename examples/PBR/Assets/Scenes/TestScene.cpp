@@ -1,8 +1,7 @@
-// Assets
+// PBR example
 #include <Assets/Scenes/TestScene.hpp>
 #include <Assets/Materials/LightMaterial.hpp>
 #include <Assets/Materials/PBRMaterial.hpp>
-#include <Assets/Behaviours/LocalRotation.hpp>
 #include <Assets/Behaviours/RotationBehaviour.hpp>
 
 // HG::Core
@@ -36,10 +35,10 @@ void TestScene::start()
         .guaranteeGet();
 
     // Loading texture
-    auto hdrTexture = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/HDR/Tokyo_BigSight_3k.hdr")
-    );
+//    auto hdrTexture = new HG::Rendering::Base::Texture(
+//        application()->resourceManager()
+//            ->load<HG::Utils::STBImageLoader>("Assets/HDR/Tokyo_BigSight_3k.hdr")
+//    );
 
     auto albedo = new HG::Rendering::Base::Texture(
         application()->resourceManager()
@@ -88,7 +87,6 @@ void TestScene::start()
         HG::Core::GameObjectBuilder()
             .setName("Object")
             .addBehaviour(meshRenderer)
-            .addBehaviour(new LocalRotationBehaviour)
             .setGlobalPosition(glm::vec3(0.0f, 0.0f, 0.0f))
             .setScale({1.0f, 1.0f, 1.0f})
     );

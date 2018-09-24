@@ -32,7 +32,7 @@ namespace HG::Core
          * @param id ID of resource.
          * @return Loaded data.
          */
-        virtual DataPtr loadRaw(const std::string& id) = 0;
+        virtual HG::Core::DataPtr loadRaw(const std::string& id) = 0;
     };
 }
 

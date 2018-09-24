@@ -53,7 +53,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @param renderer Pointer to renderer.
          * @return Pointer to this pipeline.
          */
-        RenderingPipeline* addRenderer(AbstractRenderer* renderer);
+        RenderingPipeline* addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer* renderer);
 
         /**
          * @brief Actual render method.
@@ -85,15 +85,15 @@ namespace HG::Rendering::OpenGL::Forward
         std::multimap<float, HG::Rendering::Base::RenderBehaviour*> m_sortedBehaviours;
 
         // Gizmos rendering object
-        GizmosRenderer* m_gizmosRenderer;
+        HG::Rendering::OpenGL::GizmosRenderer* m_gizmosRenderer;
 
         // ImGui rendering object
-        ImGuiRenderer* m_imguiRenderer;
+        HG::Rendering::OpenGL::ImGuiRenderer* m_imguiRenderer;
 
         // Map with renderbehaviour renderers.
         std::map<
             std::size_t,
-            AbstractRenderer*
+            HG::Rendering::OpenGL::Forward::AbstractRenderer*
         > m_renderers;
     };
 }

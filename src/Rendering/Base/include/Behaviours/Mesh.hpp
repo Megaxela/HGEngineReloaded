@@ -35,7 +35,8 @@ namespace HG::Rendering::Base::Behaviours
         /**
          * @brief Constructor.
          */
-        Mesh();
+        explicit Mesh(HG::Utils::MeshPtr mesh=nullptr,
+                      HG::Rendering::Base::Material* material=nullptr);
 
         /**
          * @brief Method for getting smart pointer
@@ -55,18 +56,18 @@ namespace HG::Rendering::Base::Behaviours
          * @brief Method for getting material for rendering.
          * @return Pointer to material.
          */
-        Material* material() const;
+        HG::Rendering::Base::Material* material() const;
 
         /**
          * @brief Method for setting material for rendering.
          * @param material Pointer to material.
          */
-        void setMaterial(Material* material);
+        void setMaterial(HG::Rendering::Base::Material* material);
 
     private:
 
         HG::Utils::MeshPtr m_mesh;
-        Material* m_material;
+        HG::Rendering::Base::Material* m_material;
     };
 }
 

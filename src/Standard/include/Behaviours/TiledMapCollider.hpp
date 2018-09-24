@@ -3,6 +3,7 @@
 // HG::Core
 #include <Application.hpp>
 #include <Behaviour.hpp>
+#include <Scene.hpp>
 
 // HG::Physics::Base
 #include <PhysicsController.hpp>
@@ -74,7 +75,7 @@ namespace HG::Standard::Behaviours
                         body,
                         scene()
                             ->application()
-                            ->template physicsController<HG::Physics::Base::PhysicsController>()
+                            ->physicsController()
                     );
                 }
             }
@@ -149,7 +150,7 @@ namespace HG::Standard::Behaviours
                             rectangle->size.x * metersPerPixel,
                             rectangle->size.y * metersPerPixel,
 
-                            scene()->application()->template physicsController<HG::Physics::Base::PhysicsController>()
+                            scene()->application()->physicsController()
                         )
                     );
                 }
@@ -164,7 +165,7 @@ namespace HG::Standard::Behaviours
                             ellipse->size.x * metersPerPixel,
                             ellipse->size.y * metersPerPixel,
 
-                            scene()->application()->template physicsController<HG::Physics::Base::PhysicsController>()
+                            scene()->application()->physicsController()
                         )
                     );
                 }
@@ -190,7 +191,7 @@ namespace HG::Standard::Behaviours
                              (worldLayerSize.y / 2) - (offset.y + polygon->position.y) * metersPerPixel,
                             globalPointsOffset,
 
-                            scene()->application()->template physicsController<HG::Physics::Base::PhysicsController>()
+                            scene()->application()->physicsController()
                         )
                     );
                 }

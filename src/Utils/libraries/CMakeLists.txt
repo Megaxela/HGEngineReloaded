@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.9)
 add_subdirectory(ALogger)
 
 # Setting up glm build
+set(JSON_BuildTests OFF CACHE BOOL "" FORCE)
 set(GLM_TEST_ENABLE OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(glm)

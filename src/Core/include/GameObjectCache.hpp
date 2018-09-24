@@ -31,13 +31,13 @@ namespace HG::Core
          * can be allocated.
          * @return Pointer to game object.
          */
-        GameObject* create();
+        HG::Core::GameObject* create();
 
         /**
          * @brief Method for caching gameobject.
          * @param gameObject Pointer to game object.
          */
-        void cache(GameObject* gameObject);
+        void cache(HG::Core::GameObject* gameObject);
 
     private:
 
@@ -51,7 +51,7 @@ namespace HG::Core
          */
         ~GameObjectCache();
 
-        std::vector<GameObject*> m_cache;
+        std::vector<HG::Core::GameObject*> m_cache;
     };
 }
 

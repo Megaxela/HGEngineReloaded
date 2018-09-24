@@ -13,7 +13,7 @@ set(HG_TEST_ASSETS "" CACHE STRING "" FORCE)
 add_subdirectory(src)
 
 if (${HG_BUILD_EXAMPLES})
-    add_subdirectory(example)
+    add_subdirectory(examples)
 endif()
 
 if (${HG_BUILD_TESTS})

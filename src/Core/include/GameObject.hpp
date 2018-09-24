@@ -39,13 +39,13 @@ namespace HG::Core
          * @brief Method for getting parent scene.
          * @return Pointer to parent scene.
          */
-        Scene* scene() const;
+        HG::Core::Scene* scene() const;
 
         /**
          * @brief Method for adding new behaviour.
          * @param behaviour New behaviour.
          */
-        void addBehaviour(Behaviour* behaviour);
+        void addBehaviour(HG::Core::Behaviour* behaviour);
 
         /**
          * @brief Method for removing behaviour from
@@ -56,7 +56,7 @@ namespace HG::Core
          * method fill not handle this behaviour anymore.
          * @param behaviour Pointer to behaviour.
          */
-        void removeBehaviour(Behaviour* behaviour);
+        void removeBehaviour(HG::Core::Behaviour* behaviour);
 
         /**
          * @brief Method for setting internal game object
@@ -90,7 +90,7 @@ namespace HG::Core
          * transform.
          * @return Pointer to transform.
          */
-        Transform* transform();
+        HG::Core::Transform* transform();
 
         /**
          * @brief Method for clearing gameobject.
@@ -118,8 +118,8 @@ namespace HG::Core
         }
 
         // todo: Add commentary
-        template<typename Behaviour>
-        Behaviour* findBehaviour()
+        template<typename BehaviourType>
+        BehaviourType* findBehaviour()
         {
             for (auto&& behaviour : m_behaviours)
             {
@@ -128,7 +128,7 @@ namespace HG::Core
                     continue;
                 }
 
-                auto casted = dynamic_cast<Behaviour*>(behaviour);
+                auto casted = dynamic_cast<BehaviourType*>(behaviour);
 
                 if (casted != nullptr)
                 {
@@ -140,7 +140,7 @@ namespace HG::Core
         }
 
         // todo: Add commentary
-        template<typename Behaviour, typename Container>
+        template<typename BehaviourType, typename Container>
         void findBehaviours(Container& container)
         {
             for (auto&& behaviour : m_behaviours)
@@ -150,7 +150,7 @@ namespace HG::Core
                     continue;
                 }
 
-                auto casted = dynamic_cast<Behaviour*>(behaviour);
+                auto casted = dynamic_cast<BehaviourType*>(behaviour);
 
                 if (casted != nullptr)
                 {
@@ -210,7 +210,7 @@ namespace HG::Core
 
         std::string m_name;
 
-        Scene* m_parentScene;
+        HG::Core::Scene* m_parentScene;
 
         bool m_enabled;
     };

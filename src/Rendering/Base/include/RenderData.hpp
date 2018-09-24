@@ -31,14 +31,14 @@ namespace HG::Rendering::Base
          * @tparam T Type of expected specific data.
          * @return Pointer to specific data.
          */
-        RenderSpecificData* specificData();
+        HG::Rendering::Base::RenderSpecificData* specificData();
 
         /**
          * @brief Method for setting specific data.
          * @tparam T Specific data type.
          * @return Created specific data.
          */
-        void setSpecificData(RenderSpecificData* data);
+        void setSpecificData(HG::Rendering::Base::RenderSpecificData* data);
 
         /**
          * @brief Method for getting render data
@@ -48,7 +48,7 @@ namespace HG::Rendering::Base
 
     private:
 
-        RenderSpecificData* m_data;
+        HG::Rendering::Base::RenderSpecificData* m_data;
 
         std::size_t m_type;
 

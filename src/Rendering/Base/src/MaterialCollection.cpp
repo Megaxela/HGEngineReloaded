@@ -3,7 +3,7 @@
 #include <Renderer.hpp>
 
 HG::Rendering::Base::MaterialCollection::MaterialCollection(HG::Core::ResourceManager* resourceManager,
-                                                                 HG::Rendering::Base::Renderer* pipeline) :
+                                                            HG::Rendering::Base::Renderer* pipeline) :
     m_resourceManager(resourceManager),
     m_renderer(pipeline)
 {

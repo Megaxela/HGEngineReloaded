@@ -17,7 +17,7 @@ namespace HG::Rendering::OpenGL::Forward
      * @brief Class, that describes forward mesh
      * renderer.
      */
-    class MeshRenderer : public AbstractRenderer
+class MeshRenderer : public HG::Rendering::OpenGL::Forward::AbstractRenderer
     {
     public:
 

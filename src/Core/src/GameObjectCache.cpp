@@ -4,7 +4,7 @@
 
 HG::Core::GameObjectCache& HG::Core::GameObjectCache::i()
 {
-    static GameObjectCache cache;
+    static HG::Core::GameObjectCache cache;
 
     return cache;
 }
@@ -13,7 +13,7 @@ HG::Core::GameObject* HG::Core::GameObjectCache::create()
 {
     if (m_cache.empty())
     {
-        return new GameObject();
+        return new HG::Core::GameObject();
     }
     else
     {

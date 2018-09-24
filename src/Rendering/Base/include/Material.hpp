@@ -58,7 +58,7 @@ namespace HG::Rendering::Base
         void set(const std::string& name, glm::mat2 value);
         void set(const std::string& name, glm::mat3 value);
         void set(const std::string& name, glm::mat4 value);
-        void set(const std::string& name, Texture* value);
+        void set(const std::string& name, HG::Rendering::Base::Texture* value);
 
         void erase(const std::string& name);
 
@@ -81,13 +81,13 @@ namespace HG::Rendering::Base
          * @brief Method for setting shader to material.
          * @param shader Pointer to shader.
          */
-        void setShader(Shader* shader);
+        void setShader(HG::Rendering::Base::Shader* shader);
 
         /**
          * @brief Method for getting material shader.
          * @return Pointer to shader.
          */
-        Shader* shader() const;
+        HG::Rendering::Base::Shader* shader() const;
 
     protected:
         /**
@@ -101,7 +101,7 @@ namespace HG::Rendering::Base
     private:
         VariablesContainer m_variableContainer;
 
-        Shader* m_shader;
+        HG::Rendering::Base::Shader* m_shader;
     };
 }
 

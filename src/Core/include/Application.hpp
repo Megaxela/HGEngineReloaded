@@ -48,13 +48,13 @@ namespace HG::Core
          * `nullptr` will throw `std::invalid_argument`
          * exception.
          */
-        void setScene(Scene* scene);
+        void setScene(HG::Core::Scene* scene);
 
         /**
          * @brief Method for getting current or cached scene.
          * @return Current or cached scene.
          */
-        Scene* scene() const;
+        HG::Core::Scene* scene() const;
 
         /**
          * @brief Method for stopping main
@@ -99,14 +99,14 @@ namespace HG::Core
          * resource manager.
          * @return Pointer to resource manager.
          */
-        ResourceManager* resourceManager();
+        HG::Core::ResourceManager* resourceManager();
 
         /**
          * @brief Method for getting method for time
          * calculations.
          * @return Pointer to time statistics object.
          */
-        TimeStatistics* timeStatistics();
+        HG::Core::TimeStatistics* timeStatistics();
 
         /**
          * @brief Method for receiving pointer to
@@ -115,7 +115,7 @@ namespace HG::Core
          * `const_cast` with this pointer.
          * @return
          */
-        const Input* input() const;
+        const HG::Core::Input* input() const;
 
         /**
          * @brief Method for setting system controller.
@@ -160,17 +160,17 @@ namespace HG::Core
         HG::Physics::Base::PhysicsController* m_physicsController;
 
         // Input receiver/productor
-        Input* m_input;
+        HG::Core::Input* m_input;
 
         // Resource manager
-        ResourceManager* m_resourceManager;
+        HG::Core::ResourceManager* m_resourceManager;
 
         // Time statistics
-        TimeStatistics* m_timeStatistics;
+        HG::Core::TimeStatistics* m_timeStatistics;
 
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.
-        Scene* m_currentScene;
-        Scene* m_cachedScene;
+        HG::Core::Scene* m_currentScene;
+        HG::Core::Scene* m_cachedScene;
     };
 }

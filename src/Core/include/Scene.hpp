@@ -53,7 +53,7 @@ namespace HG::Core
          * instance.
          * @return Pointer to application.
          */
-        Application* application() const;
+        HG::Core::Application* application() const;
 
         /**
          * @brief Method, that's called every frame.
@@ -76,7 +76,7 @@ namespace HG::Core
          * from scene.
          * @param gameObject GameObject.
          */
-        void removeGameObject(GameObject* gameObject);
+        void removeGameObject(HG::Core::GameObject* gameObject);
 
         /**
          * @brief Method for adding new gameObject.
@@ -85,7 +85,7 @@ namespace HG::Core
          * be thrown.
          * @param gameObject Pointer to GameObject.
          */
-        void addGameObject(GameObject* gameObject);
+        void addGameObject(HG::Core::GameObject* gameObject);
 
         /**
          * @brief Method for searching for gameobject by name.
@@ -93,14 +93,14 @@ namespace HG::Core
          * @return Pointer to found game object or nullptr if
          * game object was not found.
          */
-        GameObject* findGameObject(const std::string& name);
+        HG::Core::GameObject* findGameObject(const std::string& name);
 
         /**
          * @brief Method for searching several objects by name.
          * @param name Game Object name.
          * @param container Container for results.
          */
-        void findGameObjects(const std::string& name, std::vector<GameObject*>& container);
+        void findGameObjects(const std::string& name, std::vector<HG::Core::GameObject*>& container);
 
         /**
          * @brief Method for getting all active gameobjects.
@@ -122,7 +122,7 @@ namespace HG::Core
         }
 
     private:
-        Application* m_mainApplication;
+        HG::Core::Application* m_mainApplication;
 
         GameObjectsContainer m_gameObjects;
     };

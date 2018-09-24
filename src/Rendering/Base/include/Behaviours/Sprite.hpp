@@ -31,7 +31,7 @@ namespace HG::Rendering::Base::Behaviours
          * @brief Initialize constructor.
          * @param texture Pointer to texture.
          */
-        explicit Sprite(Texture* texture);
+        explicit Sprite(HG::Rendering::Base::Texture* texture);
 
         /**
          * @brief Destructor.
@@ -42,13 +42,13 @@ namespace HG::Rendering::Base::Behaviours
          * @brief Method for setting texture for sprite.
          * @param texture Pointer to texture.
          */
-        void setTexture(Texture* texture);
+        void setTexture(HG::Rendering::Base::Texture* texture);
 
         /**
          * @brief Method for getting sprite texture.
          * @return Pointer to texture.
          */
-        Texture* texture() const;
+        HG::Rendering::Base::Texture* texture() const;
 
         /**
          * @brief Method for getting sprite clipping.
@@ -63,7 +63,7 @@ namespace HG::Rendering::Base::Behaviours
         HG::Utils::Rect clipping() const;
 
     private:
-        Texture* m_texture;
+        HG::Rendering::Base::Texture* m_texture;
         HG::Utils::Rect m_clipping;
         bool m_manualClipping;
     };

@@ -41,13 +41,13 @@ namespace HG::Rendering::Base
          * object.
          * @tparam PipelineType Type of pipeline object.
          */
-        void setPipeline(RenderingPipeline* pipeline);
+        void setPipeline(HG::Rendering::Base::RenderingPipeline* pipeline);
 
         /**
          * @brief Method for getting pipeline object.
          * @return Pointer to pipeline object.
          */
-        RenderingPipeline* pipeline();
+        HG::Rendering::Base::RenderingPipeline* pipeline();
 
         /**
          * @brief Method for initializing pipeline.
@@ -97,7 +97,7 @@ namespace HG::Rendering::Base
          * @param data Pointer to render data.
          * @return Success.
          */
-        bool setup(RenderData* data);
+        bool setup(HG::Rendering::Base::RenderData* data);
 
     private:
 

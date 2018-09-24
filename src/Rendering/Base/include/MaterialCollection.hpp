@@ -47,7 +47,7 @@ namespace HG::Rendering::Base
          */
         template<typename MaterialType>
         typename std::enable_if<
-            std::is_base_of<Material, MaterialType>::value,
+            std::is_base_of<HG::Rendering::Base::Material, MaterialType>::value,
             MaterialType*
         >::type getMaterial()
         {
@@ -76,7 +76,7 @@ namespace HG::Rendering::Base
          */
         template< typename MaterialType >
         typename std::enable_if<
-            std::is_base_of<Material, MaterialType>::value
+            std::is_base_of<HG::Rendering::Base::Material, MaterialType>::value
         >::type prepareMaterial()
         {
             static_assert(has_raw_text<MaterialType>::value != sizeof(typename has_raw_text<MaterialType>::hasNothing),
@@ -90,7 +90,7 @@ namespace HG::Rendering::Base
             }
 
             // Creating shader
-            auto newShader = new Shader();
+            auto newShader = new HG::Rendering::Base::Shader();
 
             if constexpr (has_raw_text<MaterialType>::value ==
                           sizeof(typename has_raw_text<MaterialType>::hasRawData))
@@ -145,11 +145,11 @@ namespace HG::Rendering::Base
          * implemented to decouple Renderer.hpp and MaterialCollection.hpp.
          * @param shader Pointer to shader.
          */
-        void setup(Shader* shader);
+        void setup(HG::Rendering::Base::Shader* shader);
 
         HG::Core::ResourceManager* m_resourceManager;
 
-        std::map<std::size_t, Shader*> m_shaders;
+        std::map<std::size_t, HG::Rendering::Base::Shader*> m_shaders;
         HG::Rendering::Base::Renderer* m_renderer;
     };
 }

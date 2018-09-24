@@ -42,21 +42,21 @@ namespace HG::Core
          * to gameobject. (Deploying)
          * @return Pointer to created game object.
          */
-        operator GameObject*();
+        operator HG::Core::GameObject*();
 
         /**
          * @brief Explicit deployment. Maybe useful
          * if required to save in auto variable.
          * @return
          */
-        GameObject* deploy();
+        HG::Core::GameObject* deploy();
 
         /**
          * @brief Method for setting game object to setup.
          * @param ptr GameObject pointer.
          * @return Reference to builder instance.
          */
-        GameObjectBuilder& setGameObject(GameObject* ptr);
+        GameObjectBuilder& setGameObject(HG::Core::GameObject* ptr);
 
 
         /**
@@ -65,7 +65,7 @@ namespace HG::Core
          * @param behaviour Pointer to behaviour.
          * @return Reference to builder.
          */
-        GameObjectBuilder& addBehaviour(Behaviour* behaviour);
+        GameObjectBuilder& addBehaviour(HG::Core::Behaviour* behaviour);
 
         /**
          * @brief Method to set game object local position.
@@ -107,14 +107,14 @@ namespace HG::Core
          * @param parent Parent GameObject.
          * @return Reference to builder instance.
          */
-        GameObjectBuilder& setParent(GameObject* parent);
+        GameObjectBuilder& setParent(HG::Core::GameObject* parent);
 
         /**
          * @brief Method to set game object parent.
          * @param parent Parent game object's transform.
          * @return Reference to builder instance.
          */
-        GameObjectBuilder& setParent(Transform* parent);
+        GameObjectBuilder& setParent(HG::Core::Transform* parent);
 
     private:
 
@@ -124,7 +124,7 @@ namespace HG::Core
          */
         void pickCurrentGameObject();
 
-        GameObject* m_currentGameObject;
+        HG::Core::GameObject* m_currentGameObject;
     };
 }
 

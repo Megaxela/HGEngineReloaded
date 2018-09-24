@@ -46,7 +46,7 @@ void HG::Core::GameObjectBuilder::pickCurrentGameObject()
     }
     else
     {
-        m_currentGameObject = GameObjectCache::i().create();
+        m_currentGameObject = HG::Core::GameObjectCache::i().create();
     }
 }
 
@@ -54,7 +54,7 @@ HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGameObject(HG::Core
 {
     if (m_currentGameObject != nullptr)
     {
-        GameObjectCache::i().cache(m_currentGameObject);
+        HG::Core::GameObjectCache::i().cache(m_currentGameObject);
     }
 
     m_currentGameObject = ptr;

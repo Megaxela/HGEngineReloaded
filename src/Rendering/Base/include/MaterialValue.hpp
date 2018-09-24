@@ -42,7 +42,7 @@ namespace HG::Rendering::Base
             glm::mat2 mat2x2;
             glm::mat3 mat3x3;
             glm::mat4 mat4x4;
-            Texture* texture;
+            HG::Rendering::Base::Texture* texture;
         };
     };
 }

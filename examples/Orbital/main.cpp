@@ -1,5 +1,5 @@
-// Assets
-#include <Assets/Scenes/TestScene.hpp>
+// Orbital example
+#include <Assets/Scenes/OrbitalScene.hpp>
 
 // HG::Core
 #include <Application.hpp>
@@ -23,29 +23,6 @@
 #include <CurrentLogger.hpp>
 #include <Loggers/BasicLogger.hpp>
 
-
-//HG::Rendering::Base::CubeMapTexture* loadCubemap(HG::Core::Application& application)
-//{
-//    auto cubeMap = new HG::Rendering::Base::CubeMapTexture(
-//        application.resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/right.png"),
-//        application.resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/left.png"),
-//        application.resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/top.png"),
-//        application.resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/bottom.png"),
-//        application.resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/front.png"),
-//        application.resourceManager()
-//            ->load<HG::Utils::STBImageLoader>("Assets/Skybox/back.png")
-//    );
-//
-//    application.renderer()->setup(cubeMap);
-//
-//    return cubeMap;
-//}
-
 int main(int argc, char** argv)
 {
     CurrentLogger::setCurrentLogger(std::make_shared<Loggers::BasicLogger>());
@@ -55,7 +32,7 @@ int main(int argc, char** argv)
 
     // Setting resource accessor implementation
     application.resourceManager()
-            ->setResourceAccessor(new HG::Standard::FilesystemResourceAccessor());
+        ->setResourceAccessor(new HG::Standard::FilesystemResourceAccessor());
 
     // Setting system controller
     application.setSystemController(new HG::Rendering::OpenGL::GLFWSystemController(&application));
@@ -75,7 +52,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    application.setScene(new TestScene());
+    application.setScene(new OrbitalScene());
 
     return application.exec();
 }

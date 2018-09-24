@@ -66,14 +66,14 @@ namespace HG::Rendering::Base
          * @brief Method for setting up render behaviour.
          * @param data Pointer to render behaviour.
          */
-        virtual bool setup(RenderData* data);
+        virtual bool setup(HG::Rendering::Base::RenderData* data);
 
         /**
          * @brief Method for adding render data processor.
          * That will setup any render data.
          * @param processor Pointer to processor.
          */
-        RenderingPipeline* addRenderDataProcessor(AbstractRenderDataProcessor* processor);
+        HG::Rendering::Base::RenderingPipeline* addRenderDataProcessor(HG::Rendering::Base::AbstractRenderDataProcessor* processor);
 
     protected:
 
@@ -82,7 +82,7 @@ namespace HG::Rendering::Base
          * set up.
          * @param behaviour Pointer to behaviour.
          */
-        virtual bool setupRenderBehaviour(RenderBehaviour* behaviour);
+        virtual bool setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour);
 
     private:
 
@@ -90,7 +90,7 @@ namespace HG::Rendering::Base
 
         std::map<
             std::size_t,
-            AbstractRenderDataProcessor*
+            HG::Rendering::Base::AbstractRenderDataProcessor*
         > m_renderDataProcessor;
     };
 }
