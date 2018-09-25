@@ -12,7 +12,7 @@ namespace HG::Rendering::Base
     /**
      * @brief Class, that describes shader.
      */
-    class Shader : public RenderData
+    class Shader : public HG::Rendering::Base::RenderData
     {
     public:
 

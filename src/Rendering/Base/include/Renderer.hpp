@@ -16,6 +16,7 @@ namespace HG::Rendering::Base
     class MaterialCollection;
     class Gizmos;
     class RenderData;
+    class RenderTarget;
 
     /**
      * @brief Class, that describes
@@ -35,6 +36,12 @@ namespace HG::Rendering::Base
          * @brief Destructor.
          */
         ~Renderer();
+
+        /**
+         * @brief Method for getting default render target.
+         * @return Pointer to default render target.
+         */
+        HG::Rendering::Base::RenderTarget* defaultRenderTarget() const;
 
         /**
          * @brief Method for setting pipeline
@@ -99,6 +106,13 @@ namespace HG::Rendering::Base
          */
         bool setup(HG::Rendering::Base::RenderData* data);
 
+        /**
+         * @brief Method for checking is render data requires
+         * setup?
+         * @param data Pointer to data.
+         */
+        bool needSetup(HG::Rendering::Base::RenderData* data);
+
     private:
 
         HG::Core::Application* m_parentApplication;
@@ -111,6 +125,7 @@ namespace HG::Rendering::Base
 
         HG::Rendering::Base::Camera* m_activeCamera;
 
+        HG::Rendering::Base::RenderTarget* m_defaultRenderTarget;
     };
 }
 

@@ -101,3 +101,13 @@ std::size_t HG::Rendering::OpenGL::Common::MeshDataProcessor::getTarget()
 {
     return HG::Rendering::Base::Behaviours::Mesh::Id;
 }
+
+bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+{
+    auto meshData = static_cast<MeshData*>(data->specificData());
+
+    return  meshData == nullptr ||
+           !meshData->VAO.is_valid() ||
+           !meshData->VBO.is_valid() ||
+           !meshData->EBO.is_valid();
+}

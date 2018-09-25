@@ -26,7 +26,7 @@ void main()
 #endif
 
 #ifdef FragmentShader
-out vec4 FragColor;
+layout (location = 0) out vec4 resultColor;
 
 in VS_OUT {
     vec3 FragPos;
@@ -35,10 +35,6 @@ in VS_OUT {
 } fs_in;
 
 uniform vec3 viewPos;
-
-//uniform float metallic;
-//uniform float roughness;
-//uniform float ao;
 
 // texture samplers
 uniform sampler2D albedoMap;
@@ -156,7 +152,7 @@ void main()
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0 / 2.2));
 
-    FragColor = vec4(color, 1.0);
+    resultColor = vec4(color, 1.0);
 }
 
 #endif

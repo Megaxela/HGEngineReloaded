@@ -17,6 +17,7 @@ namespace HG::Rendering::Base
     class RenderBehaviour;
     class AbstractRenderDataProcessor;
     class RenderData;
+    class RenderTarget;
 
     /**
      * @brief Class, that describes
@@ -57,6 +58,14 @@ namespace HG::Rendering::Base
         virtual void render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects) = 0;
 
         /**
+         * @brief Method for rendering specified
+         * render behaviour.
+         * @param behaviour Pointer to render behaviour.
+         * @return Render sucсeed.
+         */
+        virtual bool render(HG::Rendering::Base::RenderBehaviour* behaviour) = 0;
+
+        /**
          * @brief Method for getting parent application.
          * @return Pointer to parent application.
          */
@@ -69,11 +78,32 @@ namespace HG::Rendering::Base
         virtual bool setup(HG::Rendering::Base::RenderData* data);
 
         /**
+         * @brief Method for checking is render data needs
+         * to set up.
+         * @param data Pointer to render data.
+         * @return Is render data required to be set up.
+         */
+        virtual bool needSetup(HG::Rendering::Base::RenderData* data);
+
+        /**
          * @brief Method for adding render data processor.
          * That will setup any render data.
          * @param processor Pointer to processor.
          */
         HG::Rendering::Base::RenderingPipeline* addRenderDataProcessor(HG::Rendering::Base::AbstractRenderDataProcessor* processor);
+
+        /**
+         * @brief Method for settring render target.
+         * @param target Pointer to render target.
+         */
+        virtual void setRenderTarget(HG::Rendering::Base::RenderTarget* target);
+
+        /**
+         * @brief Method for getting render target.
+         * @return Pointer to render target.
+         * (Default render target by default)
+         */
+        HG::Rendering::Base::RenderTarget* renderTarget() const;
 
     protected:
 
@@ -84,9 +114,17 @@ namespace HG::Rendering::Base
          */
         virtual bool setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour);
 
+        /**
+         * @brief Method, that's called, when render behaviour has to be
+         * checked for set up.
+         * @param behaviour Pointer to behaviour.
+         */
+        virtual bool needSetupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour);
+
     private:
 
         HG::Core::Application* m_parentApplication;
+        HG::Rendering::Base::RenderTarget* m_currentRenderTarget;
 
         std::map<
             std::size_t,

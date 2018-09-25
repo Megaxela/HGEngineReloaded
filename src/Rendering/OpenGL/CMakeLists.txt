@@ -79,7 +79,12 @@ add_library(HGRenderingOGL STATIC
     include/Common/Texture2DDataProcessor.hpp
     src/Common/CubeMapTextureDataProcessor.cpp
     include/Common/CubeMapTextureDataProcessor.hpp
-        src/Deferred/RenderingPipeline.cpp include/Deferred/RenderingPipeline.hpp)
+    src/Deferred/RenderingPipeline.cpp
+    include/Deferred/RenderingPipeline.hpp
+    include/Common/RenderTargetData.hpp
+    src/Common/RenderTargetDataProcessor.cpp
+    include/Common/RenderTargetDataProcessor.hpp
+)
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
 

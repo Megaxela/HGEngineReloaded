@@ -7,7 +7,9 @@ add_executable(HGExampleOrital
     main.cpp
     Assets/Scenes/OrbitalScene.cpp
     Assets/Scenes/OrbitalScene.hpp
-        Assets/Materials/PlainMaterial.cpp Assets/Materials/PlainMaterial.hpp)
+    Assets/Materials/PlainMaterial.cpp
+    Assets/Materials/PlainMaterial.hpp
+)
 
 target_include_directories(HGExampleOrital PRIVATE .)
 

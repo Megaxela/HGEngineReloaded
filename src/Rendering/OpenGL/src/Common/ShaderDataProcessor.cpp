@@ -1,7 +1,12 @@
+// HG::Rendering::Base
+#include <Shader.hpp>
+
+// HG::Rendering::OpenGL
 #include <Common/ShaderDataProcessor.hpp>
 #include <Common/ShaderData.hpp>
+
+// ALogger
 #include <CurrentLogger.hpp>
-#include <Shader.hpp>
 
 #define SHADER_DEFAULT_STRUCTS \
 "#define MAX_POINT_LIGHTS 128\n" \
@@ -42,12 +47,12 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 {
     auto shader = dynamic_cast<HG::Rendering::Base::Shader*>(data);
 
-    Common::ShaderData* externalData = nullptr;
+    ShaderData* externalData = nullptr;
 
     // Creating external data if not presented
     if ((externalData = static_cast<ShaderData*>(shader->specificData())) == nullptr)
     {
-        externalData = new Common::ShaderData();
+        externalData = new ShaderData();
         shader->setSpecificData(externalData);
     }
 
@@ -103,6 +108,14 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     }
 
     return true;
+}
+
+bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+{
+    auto shaderData = static_cast<ShaderData*>(data->specificData());
+
+    return  shaderData == nullptr ||
+           !shaderData->Program.is_valid();
 }
 
 std::size_t HG::Rendering::OpenGL::Common::ShaderDataProcessor::getTarget()

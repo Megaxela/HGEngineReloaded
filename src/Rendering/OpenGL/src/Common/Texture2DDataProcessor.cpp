@@ -36,12 +36,6 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     auto texture = dynamic_cast<HG::Rendering::Base::Texture*>(data);
 
     // Checking surface on texture
-    if (texture->surface() == nullptr)
-    {
-//        Error() << "Can't setup texture without surface on it.";
-        return false;
-    }
-
     Common::Texture2DData* externalData = nullptr;
 
     // Creating external data if not presented
@@ -51,71 +45,100 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         texture->setSpecificData(externalData);
     }
 
-    if (!externalData->Texture.is_valid())
-    {
-        externalData->Texture = std::move(gl::texture_2d());
-    }
-
     externalData->Texture.set_min_filter(
-        getFilter(
-            texture->minificationMethod()
-        )
+        getFilter(texture->minificationMethod())
     );
     externalData->Texture.set_mag_filter(
-        getFilter(
-            texture->magnificationMethod()
-        )
+        getFilter(texture->magnificationMethod())
     );
 
-    GLuint fileFormat;
-
-    // Getting type
-    switch (texture->surface()->Bpp)
+    // Prepare storage if required
+    if (texture->size() != externalData->Size)
     {
-    case 1:
-        fileFormat = GL_RED;
-        break;
+        // Setting size
+        externalData->Size = texture->size();
 
-    case 2:
-        fileFormat = GL_RG;
-        break;
+        GLuint internalFormat = GL_RGBA8;
 
-    case 3:
-        fileFormat = GL_RGB;
-        break;
+        switch (texture->internalFormat())
+        {
+        case Base::Texture::RGBA:
+            internalFormat = GL_RGBA8;
+            break;
+        case Base::Texture::Depth:
+            internalFormat = GL_DEPTH24_STENCIL8;
+            break;
+        }
 
-    case 4:
-        fileFormat = GL_RGBA;
-        break;
-
-    default:
-        Error() << "Can't setup texture because of unknown texture format.";
-        break;
+        // Setting up storage
+        externalData->Texture.set_storage(
+            1, // Levels
+            internalFormat, // Internal format
+            externalData->Size.x, // Width
+            externalData->Size.y  // Height
+        );
     }
 
-    // Setting up storage
-    externalData->Texture.set_storage(
-        1,       // Levels
-        GL_RGBA8, // Internal format
-        texture->surface()->Width,
-        texture->surface()->Height
-    );
+    // Load surface if surface is presented.
+    // Surface is removed after texture is
+    // filled.
+    if (texture->surface() &&
+        !externalData->Valid)
+    {
+        externalData->Valid = true;
+        GLuint fileFormat = GL_RGBA;
 
-    // Loading data into texture
-    externalData->Texture.set_sub_image(
-        0, // Level
-        0, // X offset
-        0, // Y Offset
-        texture->surface()->Width,  // Width
-        texture->surface()->Height, // Height
-        fileFormat,       // Format
-        GL_UNSIGNED_BYTE, // Type
-        texture->surface()->Data
-    );
+        // Getting type
+        switch (texture->surface()->Bpp)
+        {
+        case 1:
+            fileFormat = GL_RED;
+            break;
+
+        case 2:
+            fileFormat = GL_RG;
+            break;
+
+        case 3:
+            fileFormat = GL_RGB;
+            break;
+
+        case 4:
+            fileFormat = GL_RGBA;
+            break;
+
+        default:
+            Error() << "Can't setup texture because of unknown texture format.";
+            break;
+        }
+
+        // Loading data into texture
+        externalData->Texture.set_sub_image(
+            0, // Level
+            0, // X offset
+            0, // Y Offset
+            texture->surface()->Width,  // Width
+            texture->surface()->Height, // Height
+            fileFormat,       // Format
+            GL_UNSIGNED_BYTE, // Type
+            texture->surface()->Data
+        );
+    }
 
     externalData->Texture.unbind();
 
     return true;
+}
+
+bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+{
+    auto texture = static_cast<HG::Rendering::Base::Texture*>(data);
+    auto externalData = static_cast<Common::Texture2DData*>(texture->specificData());
+
+    return  externalData == nullptr ||
+           !externalData->Texture.is_valid() ||
+            externalData->Size != texture->size() ||
+           !externalData->Valid;
 }
 
 size_t HG::Rendering::OpenGL::Common::Texture2DDataProcessor::getTarget()

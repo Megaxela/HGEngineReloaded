@@ -96,6 +96,27 @@ bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderDa
     return processorIterator->second->setup(data);
 }
 
+bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::RenderData* data)
+{
+    if (data->dataType() == HG::Rendering::Base::RenderBehaviour::DataId)
+    {
+        return needSetupRenderBehaviour(
+            dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data)
+        );
+    }
+
+    // Search for data processor.
+    auto processorIterator = m_renderDataProcessor.find(data->dataType());
+
+    if (processorIterator == m_renderDataProcessor.end())
+    {
+        Error() << "Can't setup render data with " << data->dataType() << " type. No processor.";
+        return false;
+    }
+
+    return processorIterator->second->needSetup(data);
+}
+
 bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
 {
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
@@ -109,9 +130,33 @@ bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering:
     return processorIterator->second->setup(behaviour);
 }
 
+bool HG::Rendering::Base::RenderingPipeline::needSetupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
+{
+    auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
+
+    if (processorIterator == m_renderDataProcessor.end())
+    {
+        Error() << "Can't check rendering behaviour's setup requirement with " << behaviour->renderBehaviourType() << " type. No processor.";
+        return false;
+    }
+
+    return processorIterator->second->needSetup(behaviour);
+}
+
 HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::RenderingPipeline::addRenderDataProcessor(HG::Rendering::Base::AbstractRenderDataProcessor* processor)
 {
+    processor->setRenderingPipeline(this);
     m_renderDataProcessor[processor->getTarget()] = processor;
 
     return &(*this);
+}
+
+void HG::Rendering::Base::RenderingPipeline::setRenderTarget(HG::Rendering::Base::RenderTarget* target)
+{
+    m_currentRenderTarget = target;
+}
+
+HG::Rendering::Base::RenderTarget* HG::Rendering::Base::RenderingPipeline::renderTarget() const
+{
+    return m_currentRenderTarget;
 }

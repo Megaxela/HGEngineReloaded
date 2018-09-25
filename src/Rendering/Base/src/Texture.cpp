@@ -10,7 +10,9 @@ HG::Rendering::Base::Texture::Texture() :
     m_minFiltering(Filtering::Nearest),
     m_magFiltering(Filtering::Nearest),
     m_sWrapping(Wrapping::Repeat),
-    m_tWrapping(Wrapping::Repeat)
+    m_tWrapping(Wrapping::Repeat),
+    m_size({0, 0}),
+    m_internalFormat(Format::RGBA)
 {
 
 }
@@ -23,13 +25,37 @@ HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::Surfac
     m_minFiltering(minification),
     m_magFiltering(magnification),
     m_sWrapping(Wrapping::Repeat),
-    m_tWrapping(Wrapping::Repeat)
+    m_tWrapping(Wrapping::Repeat),
+    m_size({0, 0}),
+    m_internalFormat(Format::RGBA)
 {
 
 }
 
-glm::ivec2 HG::Rendering::Base::Texture::size() const
+HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
+                                      HG::Rendering::Base::Texture::Format format,
+                                      HG::Rendering::Base::Texture::Filtering minification,
+                                      HG::Rendering::Base::Texture::Filtering magnification) :
+    RenderData(DataId),
+    m_surface(nullptr),
+    m_minFiltering(minification),
+    m_magFiltering(magnification),
+    m_sWrapping(Wrapping::Repeat),
+    m_tWrapping(Wrapping::Repeat),
+    m_size(size),
+    m_internalFormat(format)
 {
+
+}
+
+glm::ivec2 HG::Rendering::Base::Texture::size()
+{
+    auto surf = m_surface.get();
+    if (surf)
+    {
+        m_size = {surf->Width, surf->Height};
+    }
+
     return m_size;
 }
 
@@ -42,14 +68,10 @@ void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)
 {
     m_surface = std::move(ptr);
 
-//    if (m_surface.get())
-//    {
-//        m_size = glm::vec2(m_surface->Width, m_surface->Height);
-//    }
-//    else
-//    {
-//        m_size = glm::ivec2();
-//    }
+    if (m_surface.get() == nullptr)
+    {
+        m_size = {0, 0};
+    }
 }
 
 void HG::Rendering::Base::Texture::setMagnificationMethod(HG::Rendering::Base::Texture::Filtering value)
@@ -90,4 +112,9 @@ void HG::Rendering::Base::Texture::setTWrapping(HG::Rendering::Base::Texture::Wr
 HG::Rendering::Base::Texture::Wrapping HG::Rendering::Base::Texture::tWrapping() const
 {
     return m_tWrapping;
+}
+
+HG::Rendering::Base::Texture::Format HG::Rendering::Base::Texture::internalFormat() const
+{
+    return m_internalFormat;
 }

@@ -14,7 +14,6 @@
 #include <Renderer.hpp>
 #include <Camera.hpp>
 
-
 // ImGui
 #include <imgui.h>
 
@@ -105,12 +104,10 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::
 
     // Render Gizmos
     application()->renderer()->gizmos()->visitShapes(*m_gizmosRenderer);
-
     m_gizmosRenderer->render();
 
     // Render ImGui
     ImGui::Render();
-
     m_imguiRenderer->render();
 
     // Swapping graphics buffers
@@ -164,17 +161,24 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
 
     for (auto& [distance, behaviour] : m_sortedBehaviours)
     {
-        auto renderer = m_renderers.find(behaviour->renderBehaviourType());
-
-        if (renderer == m_renderers.end())
-        {
-            Info()
-                << "Trying to render unknown render behaviour \""
-                << SystemTools::getTypeName(behaviour)
-                << "\"";
-            continue;
-        }
-
-        renderer->second->render(behaviour);
+        render(behaviour);
     }
+}
+
+bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Base::RenderBehaviour* behaviour)
+{
+    auto rendererIterator = m_renderers.find(behaviour->renderBehaviourType());
+
+    if (rendererIterator == m_renderers.end())
+    {
+        Info()
+            << "Trying to render unknown render behaviour \""
+            << SystemTools::getTypeName(behaviour)
+            << "\"";
+        return false;
+    }
+
+    rendererIterator->second->render(behaviour);
+
+    return true;
 }

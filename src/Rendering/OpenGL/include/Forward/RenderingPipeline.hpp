@@ -62,6 +62,13 @@ namespace HG::Rendering::OpenGL::Forward
         void render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects) override;
 
         /**
+         * @brief Method for rendering specified render
+         * behaviour.
+         * @param behaviour
+         */
+        bool render(HG::Rendering::Base::RenderBehaviour* behaviour) override;
+
+        /**
          * @brief Init method.
          * @return Init success.
          */

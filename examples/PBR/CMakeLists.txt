@@ -37,8 +37,6 @@ configure_file(Assets/PBR/GreasyPan/normal.png Assets/PBR/GreasyPan/normal.png C
 configure_file(Assets/PBR/GreasyPan/roughness.png Assets/PBR/GreasyPan/roughness.png COPYONLY)
 
 configure_file(Assets/HDR/Tokyo_BigSight_3k.hdr Assets/HDR/Tokyo_BigSight_3k.hdr COPYONLY)
-configure_file(Assets/Models/cube.obj Assets/Models/cube.obj COPYONLY)
-configure_file(Assets/Models/cube.mtl Assets/Models/cube.mtl COPYONLY)
 configure_file(Assets/Models/icosphere.obj Assets/Models/icosphere.obj COPYONLY)
 configure_file(Assets/Models/icosphere.mtl Assets/Models/icosphere.mtl COPYONLY)
 configure_file(Assets/Models/icosphere_hq.obj Assets/Models/icosphere_hq.obj COPYONLY)

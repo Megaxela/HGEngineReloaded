@@ -25,7 +25,7 @@ namespace HG::Rendering::Base
      * @brief Class, that describes texture
      * for rendering (in GPU / prepared for GPU).
      */
-    class Texture : public RenderData
+    class Texture : public HG::Rendering::Base::RenderData
     {
     public:
 
@@ -52,16 +52,38 @@ namespace HG::Rendering::Base
         };
 
         /**
+         * @brief Texture internal format.
+         */
+        enum Format
+        {
+            RGBA,
+            Depth
+        };
+
+        /**
          * @brief Constructor.
          */
         Texture();
 
         /**
          * @brief Constructor from surface.
+         * It will set format to RGBA.
          */
         explicit Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr,
                          Filtering minification =Nearest,
                          Filtering magnification=Nearest);
+
+        /**
+         * @brief Initializer constructor.
+         * @param size Texture size.
+         * @param format Texture format.
+         * @param minification Minification filter.
+         * @param magnification Magnification filter.
+         */
+        Texture(glm::ivec2 size,
+                Format format,
+                Filtering minification =Nearest,
+                Filtering magnification=Nearest);
 
         /**
          * @brief Method for getting binded surface to
@@ -80,7 +102,7 @@ namespace HG::Rendering::Base
          * @brief Method for getting texture size in pixels.
          * @return Texture size in pixels.
          */
-        glm::ivec2 size() const;
+        glm::ivec2 size();
 
         /**
          * @brief Method for changing current magnification
@@ -138,6 +160,12 @@ namespace HG::Rendering::Base
          */
         Wrapping tWrapping() const;
 
+        /**
+         * @brief Method for getting internal texture
+         * format.
+         */
+        Format internalFormat() const;
+
     private:
         HG::Utils::SurfaceFuturePtr  m_surface;
 
@@ -145,9 +173,9 @@ namespace HG::Rendering::Base
         Filtering m_magFiltering;
         Wrapping m_sWrapping;
         Wrapping m_tWrapping;
+        Format m_internalFormat;
 
         glm::ivec2 m_size;
-
     };
 }
 

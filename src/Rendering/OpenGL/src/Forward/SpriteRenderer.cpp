@@ -174,8 +174,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
 
         auto textureData = static_cast<Common::Texture2DData*>(spriteBehaviour->texture()->specificData());
 
-        if (textureData == nullptr ||
-            !textureData->Texture.is_valid())
+        if (application()->renderer()->needSetup(spriteBehaviour->texture()))
         {
             if (!application()->renderer()->setup(spriteBehaviour->texture()))
             {

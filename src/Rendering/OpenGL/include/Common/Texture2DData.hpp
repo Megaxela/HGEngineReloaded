@@ -6,6 +6,9 @@
 // gl
 #include <gl/all.hpp>
 
+// GLM
+#include <glm/glm.hpp>
+
 namespace HG::Rendering::OpenGL::Common
 {
     /**
@@ -16,5 +19,7 @@ namespace HG::Rendering::OpenGL::Common
     public:
 
         gl::texture_2d Texture;
+        bool Valid = false; // If valid is false - this object requires setup
+        glm::ivec2 Size = {0, 0};
     };
 }

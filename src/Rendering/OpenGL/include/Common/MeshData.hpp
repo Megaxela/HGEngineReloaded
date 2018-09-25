@@ -1,7 +1,7 @@
 #pragma once
 
 // HG::Rendering::Base
-#include <RenderSpecificData.hpp> // Requierd for inheritance
+#include <RenderSpecificData.hpp> // Required for inheritance
 
 // gl
 #include <gl/all.hpp>

@@ -69,17 +69,10 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::deinit()
 void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
     auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
-    
     auto data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
 
     // todo: On errors, render "error" mesh instead.
-    // Additional information in mesh is
-    // contains VAO, VBO, EBO, so here is just
-    // rendering of that info.
-    if ( data == nullptr ||
-         !data->VAO.is_valid() ||
-         !data->VBO.is_valid() ||
-         !data->EBO.is_valid())
+    if (application()->renderer()->needSetup(meshBehaviour))
     {
         if (!application()->renderer()->setup(meshBehaviour))
         {
@@ -106,19 +99,15 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     {
         auto shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
 
-        if (shaderData == nullptr ||
-            !shaderData->Program.is_valid())
+        if (application()->renderer()->needSetup(meshBehaviour->material()->shader()))
         {
             if (!application()->renderer()->setup(meshBehaviour->material()->shader()))
             {
                 // If can't setup shader
                 shaderData = static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData());
             }
-            else
-            {
-                shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
-            }
         }
+
         program = &shaderData->Program;
         program->use();
 
@@ -165,7 +154,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     for (auto&& light : lights)
     {
-        if (light->gameObject() == nullptr ||
+        if ( light->gameObject() == nullptr ||
             !light->gameObject()->isEnabled() ||
             !light->isEnabled())
         {

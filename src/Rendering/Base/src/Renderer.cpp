@@ -7,6 +7,7 @@
 #include <Renderer.hpp>
 #include <Camera.hpp>
 #include <Gizmos.hpp>
+#include <RenderTarget.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -16,7 +17,8 @@ HG::Rendering::Base::Renderer::Renderer(HG::Core::Application* application) :
     m_pipeline(nullptr),
     m_gizmos(new HG::Rendering::Base::Gizmos()),
     m_materialCollection(new HG::Rendering::Base::MaterialCollection(application->resourceManager(), this)),
-    m_activeCamera(nullptr)
+    m_activeCamera(nullptr),
+    m_defaultRenderTarget(HG::Rendering::Base::RenderTarget::createDefault())
 {
     Debug() << "Creating renderer.";
 }
@@ -29,9 +31,15 @@ HG::Rendering::Base::Renderer::~Renderer()
     delete m_materialCollection;
 }
 
+HG::Rendering::Base::RenderTarget* HG::Rendering::Base::Renderer::defaultRenderTarget() const
+{
+    return m_defaultRenderTarget;
+}
+
 void HG::Rendering::Base::Renderer::setPipeline(HG::Rendering::Base::RenderingPipeline* pipeline)
 {
     m_pipeline = pipeline;
+    m_pipeline->setRenderTarget(m_defaultRenderTarget);
 }
 
 bool HG::Rendering::Base::Renderer::init()
@@ -108,4 +116,15 @@ bool HG::Rendering::Base::Renderer::setup(HG::Rendering::Base::RenderData* data)
     }
 
     return m_pipeline->setup(data);
+}
+
+bool HG::Rendering::Base::Renderer::needSetup(HG::Rendering::Base::RenderData* data)
+{
+    if (m_pipeline == nullptr)
+    {
+        Info() << "There is no rendering pipeline to check for setup requirement.";
+        return false;
+    }
+
+    return m_pipeline->needSetup(data);
 }

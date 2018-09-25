@@ -117,8 +117,8 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
 
         auto textureData = static_cast<Common::Texture2DData*>(value.texture->specificData());
 
-        if (textureData == nullptr ||
-            !textureData->Texture.is_valid())
+        // Setup texture if not valid
+        if (application()->renderer()->needSetup(value.texture))
         {
             if (!application()->renderer()->setup(value.texture))
             {
