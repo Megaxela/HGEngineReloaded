@@ -56,7 +56,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::init()
         ->materialCollection()
         ->getMaterial<Materials::ImGuiMaterial>();
 
-    m_vbo            = std::move(gl::buffer());
+    m_vbo = std::move(gl::buffer());
     m_ebo = std::move(gl::buffer());
 
     auto* program = &static_cast<Common::ShaderData*>(m_material->shader()->specificData())->Program;

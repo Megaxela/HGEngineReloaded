@@ -9,6 +9,7 @@
 // HG::Rendering::Base
 #include <Camera.hpp>
 #include <Renderer.hpp>
+#include <RenderTarget.hpp>
 
 // HG::Rendering::OpenGL
 #include <GLFWSystemController.hpp>
@@ -301,8 +302,12 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     gl::set_depth_test_enabled(true);
     gl::set_depth_function(GL_LESS);
 
-    // Setting viewport
-    gl::set_viewport({0, 0}, {static_cast<GLsizei>(width), static_cast<GLsizei>(height)});
+    // Setting default render target size
+    controller
+        ->application()
+        ->renderer()
+        ->defaultRenderTarget()
+        ->setSize({width, height});
 
     return true;
 }
@@ -330,7 +335,12 @@ void HG::Rendering::OpenGL::GLFWSystemController::pollEvents()
     glfwPollEvents();
     handleGamepadsEvents();
     handleWindowEvents();
-    imGuiNewFrame();
+
+    // ImGui requires render before new frame
+    if (application()->scene())
+    {
+        imGuiNewFrame();
+    }
 }
 
 void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
@@ -660,12 +670,16 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleWindowEvents()
 
 void HG::Rendering::OpenGL::GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
-    gl::set_viewport({0, 0}, {width, height});
-
-    if (controller->application()->renderer()->activeCamera())
-    {
-        controller->application()->renderer()->activeCamera()->setViewport(0, 0, width, height);
-    }
+//    gl::set_viewport({0, 0}, {width, height});
+    controller
+        ->application()
+        ->renderer()
+        ->defaultRenderTarget()
+        ->setSize({width, height});
+//    if (controller->application()->renderer()->activeCamera())
+//    {
+//        controller->application()->renderer()->activeCamera()->setViewport(0, 0, width, height);
+//    }
 
 }
 
@@ -742,20 +756,24 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
         ErrorEx("OpenGL::RendererController")
             << "OpenGL Error:\n" << ss.str();
     }
-    else
-    {
-        WarningEx("OpenGL::RendererController")
-            << "OpenGL Warning:\n" << ss.str();
-    }
+//    else
+//    {
+//        WarningEx("OpenGL::RendererController")
+//            << "OpenGL Warning:\n" << ss.str();
+//    }
 }
 
 HG::Utils::Rect HG::Rendering::OpenGL::GLFWSystemController::viewport() const
 {
-    HG::Utils::Rect rect;
+//    HG::Utils::Rect rect;
 
-    glGetIntegerv(GL_VIEWPORT, reinterpret_cast<GLint*>(&rect));
+    auto sz = controller
+        ->application()
+        ->renderer()
+        ->defaultRenderTarget()
+        ->size();
 
-    return rect;
+    return {0, 0, sz.x, sz.y};
 }
 
 #endif

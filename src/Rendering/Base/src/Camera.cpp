@@ -8,6 +8,8 @@
 #include <Renderer.hpp>
 #include <Camera.hpp>
 #include <SystemController.hpp>
+#include <RenderingPipeline.hpp>
+#include <RenderTarget.hpp>
 
 // HG::Utils
 #include <glmex.hpp>
@@ -116,7 +118,6 @@ HG::Rendering::Base::Camera::Camera() :
     m_projectionMatrixChanged(true),
     m_projectionMatrix(1.0f),
     m_projection(),
-    m_viewport({0, 0, 1, 1}),
     m_near(0.1f),
     m_far(1000.0f),
     m_orthogonalSettings(),
@@ -182,17 +183,27 @@ HG::Rendering::Base::Camera::Projection HG::Rendering::Base::Camera::projection(
 
 glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
 {
-    if (!m_projectionMatrixChanged)
+    auto viewportSize = scene()
+        ->application()
+        ->renderer()
+        ->pipeline()
+        ->renderTarget()
+        ->size(); // Current render target
+    
+    if (!m_projectionMatrixChanged &&
+        m_cachedViewportSize == viewportSize)
     {
         return m_projectionMatrix;
     }
 
+    m_cachedViewportSize = viewportSize;
+    
     switch (m_projection)
     {
     case Projection::Perspective:
         m_projectionMatrix = glm::perspective(
             glm::radians(m_perspectiveSettings.fieldOfView()),
-            (float) m_viewport.w / (float) m_viewport.h,
+            (float) viewportSize.x / (float) viewportSize.y,
             m_near,
             m_far
         );
@@ -202,8 +213,8 @@ glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
     {
         auto metersPerHighestSide = 10;
 
-        auto width =  m_viewport.w / (float) std::min(m_viewport.w, m_viewport.h) * metersPerHighestSide;
-        auto height = m_viewport.h / (float) std::min(m_viewport.w, m_viewport.h) * metersPerHighestSide;
+        auto width =  viewportSize.x / (float) std::min(viewportSize.x, viewportSize.y) * metersPerHighestSide;
+        auto height = viewportSize.y / (float) std::min(viewportSize.x, viewportSize.y) * metersPerHighestSide;
 
         m_projectionMatrix = glm::ortho(
             (float) -(width / 2.0f)  * m_orthogonalSettings.zoom(),
@@ -222,25 +233,6 @@ glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
     }
 
     return m_projectionMatrix;
-}
-
-void HG::Rendering::Base::Camera::setViewport(int x, int y, int w, int h)
-{
-    m_viewport.x = x;
-    m_viewport.y = y;
-    m_viewport.w = w;
-    m_viewport.h = h;
-    m_projectionMatrixChanged = true;
-}
-
-void HG::Rendering::Base::Camera::setViewport(const HG::Utils::Rect& rect)
-{
-    m_viewport = rect;
-}
-
-HG::Utils::Rect HG::Rendering::Base::Camera::viewport() const
-{
-    return m_viewport;
 }
 
 void HG::Rendering::Base::Camera::setNear(HG::Rendering::Base::Camera::CullType value)
@@ -298,9 +290,6 @@ void HG::Rendering::Base::Camera::onStart()
         return;
     }
 #endif
-
-    auto viewport = scene()->application()->systemController()->viewport();
-    m_viewport = viewport;
 
     // If there is no active camera, set this.
     if (!scene()->application()->renderer()->activeCamera())

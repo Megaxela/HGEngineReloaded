@@ -23,10 +23,13 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
 {
     auto renderTarget = dynamic_cast<HG::Rendering::Base::RenderTarget*>(data);
 
-    if (renderTarget->isDefault() &&
-        renderTarget->specificData() != m_defaultData)
+    if (renderTarget->isDefault())
     {
-        renderTarget->setSpecificData(m_defaultData);
+        if (renderTarget->specificData() != m_defaultData)
+        {
+            renderTarget->setSpecificData(m_defaultData);
+        }
+
         return true;
     }
 

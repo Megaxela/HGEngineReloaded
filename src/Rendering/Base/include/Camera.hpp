@@ -260,10 +260,9 @@ namespace HG::Rendering::Base
         // Caching of projection matrix.
         mutable bool m_projectionMatrixChanged;
         mutable glm::mat4 m_projectionMatrix;
+        mutable glm::ivec2 m_cachedViewportSize;
 
         Projection m_projection;
-
-        HG::Utils::Rect m_viewport;
 
         float m_near;
         float m_far;

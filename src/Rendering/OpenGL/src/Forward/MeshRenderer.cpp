@@ -114,6 +114,12 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         applyShaderUniforms(meshBehaviour->material());
     }
 
+    // No active camera. No rendering.
+    if (application()->renderer()->activeCamera() == nullptr)
+    {
+        return;
+    }
+
     // Checking for VBO, VAO and EBO
 
     GLint location;

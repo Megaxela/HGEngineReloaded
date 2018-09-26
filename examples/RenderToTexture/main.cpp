@@ -1,3 +1,6 @@
+// RenderToTexture
+#include <Assets/Scenes/RenderToTextureScene.hpp>
+
 // HG::Core
 #include <Application.hpp>
 #include <ResourceManager.hpp>
@@ -51,7 +54,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-//    application.setScene(new OrbitalScene());
+    application.setScene(new RenderToTextureScene());
 
     return application.exec();
 }

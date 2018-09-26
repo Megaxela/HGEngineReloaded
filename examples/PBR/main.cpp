@@ -22,6 +22,7 @@
 // ALogger
 #include <CurrentLogger.hpp>
 #include <Loggers/BasicLogger.hpp>
+#include <Common/RenderTargetDataProcessor.hpp>
 
 int main(int argc, char** argv)
 {
@@ -42,6 +43,7 @@ int main(int argc, char** argv)
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::MeshDataProcessor);
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::Texture2DDataProcessor);
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::ShaderDataProcessor);
+    pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::RenderTargetDataProcessor);
 
     // Setting rendering to forward
     application.renderer()->setPipeline(pipeline);

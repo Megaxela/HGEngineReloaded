@@ -6,6 +6,7 @@
 #include <RenderingPipeline.hpp>
 #include <SystemController.hpp>
 #include <RenderBehaviour.hpp>
+#include <Renderer.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -49,6 +50,14 @@ bool HG::Rendering::Base::RenderingPipeline::init()
         Error() << "Can't create window. See errors above.";
         return false;
     }
+
+    if (!m_parentApplication->renderer())
+    {
+        Error() << "No parent renderer. Can't set default render target.";
+        return false;
+    }
+
+    setRenderTarget(m_parentApplication->renderer()->defaultRenderTarget());
 
     return true;
 }
@@ -110,7 +119,7 @@ bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::Rend
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        Error() << "Can't setup render data with " << data->dataType() << " type. No processor.";
+        Error() << "Can't check is render data with type " << data->dataType() << " requires to be set up. No processor.";
         return false;
     }
 

@@ -11,11 +11,13 @@
 #include <MaterialCollection.hpp>
 #include <SystemController.hpp>
 #include <RenderBehaviour.hpp>
+#include <RenderTarget.hpp>
 #include <Renderer.hpp>
 #include <Camera.hpp>
 
 // ImGui
 #include <imgui.h>
+#include <Common/RenderTargetData.hpp>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
@@ -82,17 +84,27 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
     application()->renderer()->materialCollection()->clearCache();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color color)
 {
-
     // Clearing main buffer
-    gl::set_clear_color({0.1f, 0.1f, 0.1f, 1.0f});
+    auto colorArray = color.toRGBAVector().data;
+
+    gl::set_clear_color({
+        colorArray.data[0],
+        colorArray.data[1],
+        colorArray.data[2],
+        colorArray.data[3]
+    });
 
     gl::clear(
         GL_COLOR_BUFFER_BIT |
         GL_DEPTH_BUFFER_BIT
     );
+}
 
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
+{
+    clear(HG::Utils::Color::fromRGB(25, 25, 25));
 
     // Getting camera
     auto camera = application()->renderer()->activeCamera();
@@ -178,7 +190,39 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Ba
         return false;
     }
 
+    // If rendertarget size changed - change viewport
+    updateViewport();
+
     rendererIterator->second->render(behaviour);
 
     return true;
+}
+
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::setRenderTarget(HG::Rendering::Base::RenderTarget* target)
+{
+    HG::Rendering::Base::RenderingPipeline::setRenderTarget(target);
+
+    if (needSetup(target))
+    {
+        if (!setup(target))
+        {
+            Error() << "Can't setup target.";
+            return;
+        }
+    }
+
+    auto externalData = static_cast<Common::RenderTargetData*>(target->specificData());
+
+    externalData->Framebuffer.bind(GL_FRAMEBUFFER);
+
+    updateViewport();
+}
+
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::updateViewport()
+{
+    if (m_cachedViewport != renderTarget()->size())
+    {
+        m_cachedViewport = renderTarget()->size();
+        gl::set_viewport({0, 0}, {m_cachedViewport.x, m_cachedViewport.y});
+    }
 }

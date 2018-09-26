@@ -99,6 +99,7 @@ namespace HG::Core
                         if (data == nullptr)
                         {
                             promise->set_value(nullptr);
+                            return;
                         }
 
                         Loader loader;

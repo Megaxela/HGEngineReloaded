@@ -55,6 +55,8 @@ namespace HG::Rendering::OpenGL::Forward
          */
         RenderingPipeline* addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer* renderer);
 
+        void clear(HG::Utils::Color color) override;
+
         /**
          * @brief Actual render method.
          * @param objects Container with objects.
@@ -79,7 +81,14 @@ namespace HG::Rendering::OpenGL::Forward
          */
         void deinit() override;
 
+        void setRenderTarget(HG::Rendering::Base::RenderTarget* target) override;
+
     private:
+
+        /**
+         * @brief Method for updating viewport if required.
+         */
+        void updateViewport();
 
         /**
          * @brief Method for processing game objects and it's behaviours.
@@ -90,6 +99,7 @@ namespace HG::Rendering::OpenGL::Forward
         // Caching
         std::vector<HG::Rendering::Base::RenderBehaviour*> m_behavioursCache;
         std::multimap<float, HG::Rendering::Base::RenderBehaviour*> m_sortedBehaviours;
+        glm::ivec2 m_cachedViewport;
 
         // Gizmos rendering object
         HG::Rendering::OpenGL::GizmosRenderer* m_gizmosRenderer;

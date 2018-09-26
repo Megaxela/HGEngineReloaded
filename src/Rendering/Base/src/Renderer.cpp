@@ -39,7 +39,6 @@ HG::Rendering::Base::RenderTarget* HG::Rendering::Base::Renderer::defaultRenderT
 void HG::Rendering::Base::Renderer::setPipeline(HG::Rendering::Base::RenderingPipeline* pipeline)
 {
     m_pipeline = pipeline;
-    m_pipeline->setRenderTarget(m_defaultRenderTarget);
 }
 
 bool HG::Rendering::Base::Renderer::init()

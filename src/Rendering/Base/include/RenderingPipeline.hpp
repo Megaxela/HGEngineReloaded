@@ -5,6 +5,7 @@
 
 // HG::Utils
 #include <DoubleBufferContainer.hpp>
+#include <Color.hpp>
 
 namespace HG::Core
 {
@@ -50,6 +51,13 @@ namespace HG::Rendering::Base
          * and creates window.
          */
         virtual void deinit();
+
+        /**
+         * @brief Method for clearing current
+         * render target.
+         * @param color Clear color.
+         */
+        virtual void clear(HG::Utils::Color color) = 0;
 
         /**
          * @brief Rendering method.
