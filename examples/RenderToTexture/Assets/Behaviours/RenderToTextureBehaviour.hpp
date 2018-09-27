@@ -18,7 +18,9 @@ public:
 
     ~RenderToTextureBehaviour() override;
 
-    void setTarget(HG::Rendering::Base::Texture* texture);
+    void setTarget1(HG::Rendering::Base::Texture* texture);
+
+    void setTarget2(HG::Rendering::Base::Texture* texture);
 
     void setRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour);
 
@@ -26,7 +28,10 @@ protected:
     void onUpdate() override;
 
 private:
-    HG::Rendering::Base::RenderTarget* m_renderTarget;
+    HG::Rendering::Base::RenderTarget* m_renderTarget1;
+    HG::Rendering::Base::RenderTarget* m_renderTarget2;
     HG::Rendering::Base::RenderBehaviour* m_renderBehaviour;
+
+    bool m_switch;
 };
 

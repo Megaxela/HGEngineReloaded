@@ -16,6 +16,9 @@
 // HG::Rendering::OpenGL
 #include <Behaviours/Mesh.hpp>
 
+// HG::Standard
+#include <Behaviours/DebugControllerOverlay.hpp>
+
 // HG::Utils
 #include <Loaders/AssimpLoader.hpp>
 #include <Model.hpp>
@@ -24,6 +27,25 @@
 // GLM
 #include <glm/gtx/quaternion.hpp>
 
+// ImGui
+#include <imgui.h>
+
+class DescriptionBehaviour : public HG::Core::Behaviour
+{
+protected:
+
+    void onUpdate() override
+    {
+        if (ImGui::Begin("Description"))
+        {
+            ImGui::Text(
+                "This example shows gameobject parent system.\n"
+                "Scene is described in \"Assets/Scenes/OribitalScene\"."
+            );
+            ImGui::End();
+        }
+    }
+};
 
 void OrbitalScene::start()
 {
@@ -60,6 +82,8 @@ void OrbitalScene::start()
             .setGlobalPosition({-3.0f, 2.5f, 3.0f})
             .setRotation(glm::quat(glm::vec3(0.7f, 0.6f, 0.5f))) // Euler with radians
             .addBehaviour(new HG::Rendering::Base::Camera)
+            .addBehaviour(new HG::Standard::Behaviours::DebugControllerOverlay)
+            .addBehaviour(new DescriptionBehaviour)
     );
 
     // Creating biggest (Red) sphere

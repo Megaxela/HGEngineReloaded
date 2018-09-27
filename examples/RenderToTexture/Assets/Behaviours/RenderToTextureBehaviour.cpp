@@ -14,15 +14,18 @@
 
 
 RenderToTextureBehaviour::RenderToTextureBehaviour() :
-    m_renderTarget(new HG::Rendering::Base::RenderTarget({200, 200})),
-    m_renderBehaviour(nullptr)
+    m_renderTarget1(new HG::Rendering::Base::RenderTarget({400, 400})),
+    m_renderTarget2(new HG::Rendering::Base::RenderTarget({400, 400})),
+    m_renderBehaviour(nullptr),
+    m_switch(false)
 {
 
 }
 
 RenderToTextureBehaviour::~RenderToTextureBehaviour()
 {
-    delete m_renderTarget;
+    delete m_renderTarget1;
+    delete m_renderTarget2;
 }
 
 void RenderToTextureBehaviour::setRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
@@ -30,9 +33,14 @@ void RenderToTextureBehaviour::setRenderBehaviour(HG::Rendering::Base::RenderBeh
     m_renderBehaviour = behaviour;
 }
 
-void RenderToTextureBehaviour::setTarget(HG::Rendering::Base::Texture* texture)
+void RenderToTextureBehaviour::setTarget1(HG::Rendering::Base::Texture* texture)
 {
-    m_renderTarget->setColorTexture(texture, 0);
+    m_renderTarget1->setColorTexture(texture, 0);
+}
+
+void RenderToTextureBehaviour::setTarget2(HG::Rendering::Base::Texture* texture)
+{
+    m_renderTarget2->setColorTexture(texture, 0);
 }
 
 void RenderToTextureBehaviour::onUpdate()
@@ -46,10 +54,23 @@ void RenderToTextureBehaviour::onUpdate()
 
     auto previous = pipeline->renderTarget();
     {
-        pipeline->setRenderTarget(m_renderTarget);
+        pipeline->setRenderTarget(m_switch ? m_renderTarget2 : m_renderTarget1);
+
+        auto rb = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(m_renderBehaviour);
 
         pipeline->clear(HG::Utils::Color::Red);
+
+        rb->material()->set(
+            "textureMap",
+            m_switch
+            ?
+            m_renderTarget1->colorTexture(0)
+            :
+            m_renderTarget2->colorTexture(0)
+        );
         pipeline->render(m_renderBehaviour);
     }
     pipeline->setRenderTarget(previous);
+
+    m_switch = !m_switch;
 }

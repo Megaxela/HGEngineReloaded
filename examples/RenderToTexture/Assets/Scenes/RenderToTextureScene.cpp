@@ -26,6 +26,32 @@
 // GLM
 #include <glm/gtx/quaternion.hpp>
 
+// ImGui
+#include <imgui.h>
+
+class DescriptionBehaviour : public HG::Core::Behaviour
+{
+protected:
+
+    void onUpdate() override
+    {
+        if (ImGui::Begin("Description"))
+        {
+            ImGui::Text(
+                "This example shows rendering to texture ability.\n"
+                "Cube is just renders again in separate framebuffer with\n"
+                "current camera. And this framebuffers texture is applied to\n"
+                "cube. (to show different recursion levels, shader change color\n"
+                "of texture a little).\n"
+                "Recursion rendering was bypassed by using 2 textures\n"
+                "(like in double buffering).\n"
+                "You are able to enable FPS camera movement with `R`."
+            );
+            ImGui::End();
+        }
+    }
+};
+
 void RenderToTextureScene::start()
 {
     // Loading model
@@ -34,9 +60,14 @@ void RenderToTextureScene::start()
         .guaranteeGet();
 
 
-    // Creating texture
-    auto texture = new HG::Rendering::Base::Texture(
-        {200, 200},
+    // Creating textures for recursion
+    auto texture1 = new HG::Rendering::Base::Texture(
+        {400, 400},
+        HG::Rendering::Base::Texture::Format::RGBA
+    );
+
+    auto texture2 = new HG::Rendering::Base::Texture(
+        {400, 400},
         HG::Rendering::Base::Texture::Format::RGBA
     );
 
@@ -46,7 +77,7 @@ void RenderToTextureScene::start()
         ->materialCollection()
         ->getMaterial<TextureMaterial>();
 
-    material->setTexture(texture);
+    material->setTexture(texture1);
 
     // Creation mesh behaviour
     auto meshRenderingBehaviour = new HG::Rendering::Base::Behaviours::Mesh(
@@ -57,16 +88,18 @@ void RenderToTextureScene::start()
     // Creating behaviour
     auto renderToTexture = new RenderToTextureBehaviour();
 
-    renderToTexture->setTarget(texture);
+    renderToTexture->setTarget1(texture1);
+    renderToTexture->setTarget2(texture2);
     renderToTexture->setRenderBehaviour(meshRenderingBehaviour);
 
     // Creating camera
     addGameObject(
         HG::Core::GameObjectBuilder()
             .setGlobalPosition({0, 0, 2})
+            .addBehaviour(new DescriptionBehaviour)
             .addBehaviour(new HG::Rendering::Base::Camera)
             .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)
-        );
+    );
 
     // Creating object
     addGameObject(

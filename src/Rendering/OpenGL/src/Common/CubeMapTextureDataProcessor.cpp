@@ -3,7 +3,7 @@
 #include <Common/CubeMapTextureData.hpp>
 
 // HG::Rendering::Base
-#include <CubeMapTexture.hpp>
+#include <CubeMap.hpp>
 
 // HG::Utils
 #include <Surface.hpp>
@@ -46,49 +46,33 @@ namespace
         }
 
         // Loading data into texture
-        glTexImage2D(
-            side,
-            0,
-            GL_RGBA8,
-            surface->Width,
-            surface->Height,
-            0,
-            fileFormat,
-            GL_UNSIGNED_BYTE,
-            surface->Data
+        texture.set_sub_image(
+            0,                // Level
+            0,                // X offset
+            0,                // Y Offset
+            0,                // Z Offset
+            surface->Width,   // Width
+            surface->Height,  // Height
+            0,                // Depth
+            fileFormat,       // Format
+            GL_UNSIGNED_BYTE, // Type
+            surface->Data     // Actual data
         );
-
-//    texture.set_storage(
-//        1,       // Levels
-//        GL_RGBA8, // Internal format
-//        surface->Width,
-//        surface->Height
-//    );
-//    texture.set_sub_image(
-//        0, // Level
-//        0, // X offset
-//        0, // Y Offset
-//        surface->Width,  // Width
-//        surface->Height, // Height
-//        fileFormat,       // Format
-//        GL_UNSIGNED_BYTE, // Type
-//        surface->Data
-//    );
     }
 }
 
 bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data)
 {
-    auto texture = static_cast<HG::Rendering::Base::CubeMapTexture*>(data);
+    auto texture = static_cast<HG::Rendering::Base::CubeMap*>(data);
 
     // If one of surfaces are not available
     // post error
-    if (texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Right ) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Left  ) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Top   ) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Bottom) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Front ) == nullptr ||
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Back  ) == nullptr)
+    if (texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Right ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Left  ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Top   ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Bottom) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Front ) == nullptr ||
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Back  ) == nullptr)
     {
         Error() << "Can't setup not fully set up cube map texture.";
         return false;
@@ -111,32 +95,34 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
     //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
     setupCubeMapSide(
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Right),
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Right),
         externalData->Texture,
-        GL_TEXTURE_CUBE_MAP_POSITIVE_X
+//        GL_TEXTURE_CUBE_MAP_POSITIVE_X
+        HG::Rendering::Base::CubeMap::Side::Right
     );
     setupCubeMapSide(
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Left),
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Left),
         externalData->Texture,
-        GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+//        GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+        HG::Rendering::Base::CubeMap::Side::Left
     );
     setupCubeMapSide(
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Top),
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Top),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_POSITIVE_Y
     );
     setupCubeMapSide(
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Bottom),
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Bottom),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
     );
     setupCubeMapSide(
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Front),
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Front),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_POSITIVE_Z
     );
     setupCubeMapSide(
-        texture->getSideSurface(HG::Rendering::Base::CubeMapTexture::Side::Back),
+        texture->getSideSurface(HG::Rendering::Base::CubeMap::Side::Back),
         externalData->Texture,
         GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
     );
@@ -153,5 +139,5 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
 
 size_t HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::getTarget()
 {
-    return HG::Rendering::Base::CubeMapTexture::Id;
+    return HG::Rendering::Base::CubeMap::Id;
 }

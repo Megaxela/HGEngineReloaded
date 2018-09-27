@@ -756,11 +756,11 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
         ErrorEx("OpenGL::RendererController")
             << "OpenGL Error:\n" << ss.str();
     }
-//    else
-//    {
-//        WarningEx("OpenGL::RendererController")
-//            << "OpenGL Warning:\n" << ss.str();
-//    }
+    else
+    {
+        WarningEx("OpenGL::RendererController")
+            << "OpenGL Warning:\n" << ss.str();
+    }
 }
 
 HG::Utils::Rect HG::Rendering::OpenGL::GLFWSystemController::viewport() const

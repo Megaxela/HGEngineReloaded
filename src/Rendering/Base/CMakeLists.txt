@@ -33,8 +33,8 @@ add_library(HGRenderingBase STATIC
     include/Lights/DirectionalLight.hpp
     src/Behaviours/CubeMap.cpp
     include/Behaviours/CubeMap.hpp
-    include/CubeMapTexture.hpp
-    src/CubeMapTexture.cpp
+        include/CubeMap.hpp
+        src/CubeMap.cpp
     src/Behaviours/Sprite.cpp
     include/Behaviours/Sprite.hpp
     src/Gizmos.cpp

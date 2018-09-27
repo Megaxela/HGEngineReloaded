@@ -21,7 +21,7 @@ namespace HG::Rendering::Base
      * @brief Class, that describes cube map
      * texture for rendering (in GPU / prepared for GPU)
      */
-    class CubeMapTexture : public RenderData
+    class CubeMap : public RenderData
     {
     public:
 
@@ -32,18 +32,18 @@ namespace HG::Rendering::Base
          */
         enum Side
         {
-            Right,
-            Left,
-            Top,
-            Bottom,
-            Front,
-            Back
+            Right = 0,
+            Left  = 1,
+            Top   = 2,
+            Bottom = 3,
+            Front  = 4,
+            Back   = 5
         };
 
         /**
          * @brief Constructor.
          */
-        CubeMapTexture();
+        CubeMap();
 
         /**
          * @brief Initialize constructor.
@@ -54,12 +54,12 @@ namespace HG::Rendering::Base
          * @param front Front side surface.
          * @param back Back side surface.
          */
-        CubeMapTexture(HG::Utils::SurfacePtr right,
-                       HG::Utils::SurfacePtr left,
-                       HG::Utils::SurfacePtr top,
-                       HG::Utils::SurfacePtr bottom,
-                       HG::Utils::SurfacePtr front,
-                       HG::Utils::SurfacePtr back);
+        CubeMap(HG::Utils::SurfacePtr right,
+                HG::Utils::SurfacePtr left,
+                HG::Utils::SurfacePtr top,
+                HG::Utils::SurfacePtr bottom,
+                HG::Utils::SurfacePtr front,
+                HG::Utils::SurfacePtr back);
 
         /**
          * @brief Destructor. Clears external data.

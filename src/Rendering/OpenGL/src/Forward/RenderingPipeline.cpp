@@ -86,6 +86,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color color)
 {
+    updateViewport();
+
     // Clearing main buffer
     auto colorArray = color.toRGBAVector().data;
 

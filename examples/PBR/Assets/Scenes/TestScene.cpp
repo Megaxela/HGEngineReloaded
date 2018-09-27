@@ -27,6 +27,29 @@
 #include <Loaders/AssimpLoader.hpp>
 #include <Model.hpp>
 
+// ImGui
+#include <imgui.h>
+
+class DescriptionBehaviour : public HG::Core::Behaviour
+{
+protected:
+
+    void onUpdate() override
+    {
+        if (ImGui::Begin("Description"))
+        {
+            ImGui::Text(
+                "This example shows PBR material example.\n"
+                "Actual PBR material is implemented in custom "
+                "material class (\"Assets/Materials/PBRMaterial\").\n"
+                "All scene setup is performed in (\"Assets/Scenes/TestScene\").\n"
+                "You are able to enable FPS camera movement with `R`."
+            );
+            ImGui::End();
+        }
+    }
+};
+
 void TestScene::start()
 {
     // Loading model info
@@ -94,6 +117,7 @@ void TestScene::start()
     addGameObject(
         HG::Core::GameObjectBuilder()
             .setName("Camera")
+            .addBehaviour(new DescriptionBehaviour)
             .addBehaviour(new HG::Rendering::Base::Camera)
             .addBehaviour(new HG::Standard::Behaviours::ServiceInformationOverlay)
             .addBehaviour(new HG::Standard::Behaviours::DebugControllerOverlay)
