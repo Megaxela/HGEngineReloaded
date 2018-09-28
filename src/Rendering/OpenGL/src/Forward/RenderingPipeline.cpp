@@ -18,6 +18,7 @@
 // ImGui
 #include <imgui.h>
 #include <Common/RenderTargetData.hpp>
+#include <Behaviours/CubeMap.hpp>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
@@ -133,6 +134,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
     // todo: Add cubemap rendering
 
     m_sortedBehaviours.clear();
+    HG::Rendering::Base::RenderBehaviour* cubemapBehaviour = nullptr;
 
     // Getting camera positions
     glm::vec3 cameraPos(0.0f, 0.0f, 0.0f);
@@ -165,14 +167,39 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
 
             auto cameraSpace = gameObject->transform()->globalPosition() - cameraPos;
 
-            // Not inverting, because Z is positive towards camera)
-            m_sortedBehaviours.insert({
-                (cameraSpace * glm::inverse(cameraRot)).z,
-                behaviour
-            });
+            if (behaviour->renderBehaviourType() == HG::Rendering::Base::Behaviours::CubeMap::RenderBehaviourId)
+            {
+                if (cubemapBehaviour)
+                {
+                    Warning() << "Several cubemap behaviours are available at the same time.";
+                }
+
+                cubemapBehaviour = behaviour;
+            }
+            else
+            {
+                // Not inverting, because Z is positive towards camera)
+                m_sortedBehaviours.insert({
+                    (cameraSpace * glm::inverse(cameraRot)).z,
+                    behaviour
+                });
+            }
         }
     }
 
+    if (cubemapBehaviour != nullptr)
+    {
+        // Disabling depth test
+        gl::set_depth_test_enabled(false);
+
+        // Render cubemap
+        render(cubemapBehaviour);
+
+        // Enabling depth test back
+        gl::set_depth_test_enabled(true);
+    }
+
+    // Rendering other scene scene
     for (auto& [distance, behaviour] : m_sortedBehaviours)
     {
         render(behaviour);

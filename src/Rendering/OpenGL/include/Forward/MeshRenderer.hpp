@@ -3,9 +3,6 @@
 // HG::Rendering::OpenGL
 #include <Forward/AbstractRenderer.hpp> // Required for inheritance
 
-// gl
-#include <gl/all.hpp>
-
 namespace HG::Rendering::Base
 {
     class Material;
@@ -17,7 +14,7 @@ namespace HG::Rendering::OpenGL::Forward
      * @brief Class, that describes forward mesh
      * renderer.
      */
-class MeshRenderer : public HG::Rendering::OpenGL::Forward::AbstractRenderer
+    class MeshRenderer : public HG::Rendering::OpenGL::Forward::AbstractRenderer
     {
     public:
 
@@ -29,7 +26,7 @@ class MeshRenderer : public HG::Rendering::OpenGL::Forward::AbstractRenderer
         /**
          * @brief Destructor.
          */
-        virtual ~MeshRenderer();
+        ~MeshRenderer() override;
 
         /**
          * @brief Method for performs actual mesh rendering.

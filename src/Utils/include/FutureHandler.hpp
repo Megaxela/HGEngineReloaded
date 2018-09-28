@@ -25,11 +25,17 @@ namespace HG::Utils
             m_future(std::move(future))
         {}
 
+        /**
+         * @brief Move constructor.
+         */
         FutureHandler(FutureHandler<ResultType>&& rhs) noexcept :
             m_predefinedValue(std::move(rhs.m_predefinedValue)),
             m_future(std::move(rhs.m_future))
         {}
 
+        /**
+         * @brief Move operator.
+         */
         FutureHandler<ResultType>& operator=(FutureHandler<ResultType>&& rhs) noexcept
         {
             m_future = std::move(rhs.m_future);
@@ -38,11 +44,17 @@ namespace HG::Utils
             return (*this);
         }
 
+        /**
+         * @brief Copy constructor.
+         */
         FutureHandler(const FutureHandler<ResultType>& rhs) :
             m_predefinedValue(rhs.m_predefinedValue),
             m_future(rhs.m_future)
         {}
 
+        /**
+         * @brief Copy operator.
+         */
         FutureHandler<ResultType>& operator=(const FutureHandler<ResultType>& rhs)
         {
             m_future = rhs.m_future;
@@ -83,6 +95,11 @@ namespace HG::Utils
             }
         }
 
+        /**
+         * @brief Blocking method for getting future
+         * result.
+         * @return Actual result.
+         */
         ResultType guaranteeGet()
         {
             return m_future.get();
@@ -96,6 +113,10 @@ namespace HG::Utils
             return get();
         }
 
+        /**
+         * @brief Arrow operator for using this like future result.
+         * May be dangerous if result was not checked.
+         */
         ResultType operator->()
         {
             return get();

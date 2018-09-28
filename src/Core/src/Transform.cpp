@@ -162,18 +162,18 @@ glm::quat HG::Core::Transform::globalRotation() const
         return m_localRotation;
     }
 
-    return m_parent->globalRotation() * m_localRotation;
+    return glm::normalize(m_parent->globalRotation() * m_localRotation);
 }
 
 void HG::Core::Transform::setGlobalRotation(const glm::quat& rotation)
 {
     if (m_parent == nullptr)
     {
-        m_localRotation = rotation;
+        m_localRotation = glm::normalize(rotation);
     }
     else
     {
-        m_localRotation = rotation * glm::inverse(m_parent->globalRotation());
+        m_localRotation = glm::normalize(rotation) * glm::normalize(glm::inverse(m_parent->globalRotation()));
     }
 }
 

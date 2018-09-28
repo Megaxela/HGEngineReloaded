@@ -25,6 +25,9 @@
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
 
+// gl
+#include <gl/all.hpp>
+
 HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() :
     m_meshFallbackMaterial(nullptr)
 {
@@ -285,5 +288,5 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
 size_t HG::Rendering::OpenGL::Forward::MeshRenderer::getTarget()
 {
-    return HG::Rendering::Base::Behaviours::Mesh::Id;
+    return HG::Rendering::Base::Behaviours::Mesh::RenderBehaviourId;
 }

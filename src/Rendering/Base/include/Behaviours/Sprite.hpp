@@ -5,6 +5,7 @@
 
 // HG::Utils
 #include <Rect.hpp>
+#include <StringTools.hpp>
 
 namespace HG::Rendering::Base
 {
@@ -16,11 +17,11 @@ namespace HG::Rendering::Base::Behaviours
     /**
      * @brief Class, that describes sprite render behaviour.
      */
-    class Sprite : public RenderBehaviour
+    class Sprite : public HG::Rendering::Base::RenderBehaviour
     {
     public:
 
-        static constexpr std::size_t Id = 0;
+        static constexpr std::size_t RenderBehaviourId = STR_HASH("RenderBehaviour::Sprite");
 
         /**
          * @brief Constructor.

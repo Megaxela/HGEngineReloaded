@@ -12,6 +12,8 @@
 #include <MaterialCollection.hpp>
 #include <Renderer.hpp>
 #include <Camera.hpp>
+#include <CubeMap.hpp>
+#include <Behaviours/CubeMap.hpp>
 
 // HG::Rendering::OpenGL
 #include <Behaviours/Mesh.hpp>
@@ -23,6 +25,7 @@
 #include <Loaders/AssimpLoader.hpp>
 #include <Model.hpp>
 #include <Behaviours/FPSCameraMovement.hpp>
+#include <Loaders/STBImageLoader.hpp>
 
 // GLM
 #include <glm/gtx/quaternion.hpp>
@@ -54,7 +57,25 @@ void OrbitalScene::start()
         ->load<HG::Utils::AssimpLoader>("Assets/Models/icosphere.obj")
         .guaranteeGet();
 
-    // Center material
+    // Creating cubemap object
+    // and loading cubemap textures
+    // (async loading)
+    auto cubemap = new HG::Rendering::Base::CubeMap(
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_ft.tga"),
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_bk.tga"),
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_up.tga"),
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_dn.tga"),
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_lf.tga"),
+        application()->resourceManager()
+            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_rt.tga")
+    );
+
+    // Creating materials
     auto firstMaterial = application()
         ->renderer()
         ->materialCollection()
@@ -82,12 +103,14 @@ void OrbitalScene::start()
             .setGlobalPosition({-3.0f, 2.5f, 3.0f})
             .setRotation(glm::quat(glm::vec3(0.7f, 0.6f, 0.5f))) // Euler with radians
             .addBehaviour(new HG::Rendering::Base::Camera)
+            .addBehaviour(new HG::Rendering::Base::Behaviours::CubeMap(cubemap))
             .addBehaviour(new HG::Standard::Behaviours::DebugControllerOverlay)
             .addBehaviour(new DescriptionBehaviour)
     );
 
     // Creating biggest (Red) sphere
     auto firstParent = HG::Core::GameObjectBuilder()
+        .setName("Big Red Planet")
         .setGlobalPosition({0.0f, 0.0f, 0.0f})
         .addBehaviour(
             new LocalRotationBehaviour(4.0f)
@@ -100,6 +123,7 @@ void OrbitalScene::start()
 
     // Creating smaller (Green) sphere
     auto secondParent = HG::Core::GameObjectBuilder()
+        .setName("Smaller Green Planet")
         .setParent(firstParent)
         .setGlobalPosition({0.0f, 0.0f, 2.0f})
         .setScale({0.5f, 0.5f, 0.5f})
@@ -114,6 +138,7 @@ void OrbitalScene::start()
 
     // Creating smallest (Blue) sphere
     auto thirdParent = HG::Core::GameObjectBuilder()
+        .setName("Smallest Blue Planet")
         .setParent(secondParent)
         .setGlobalPosition({0.0f, 0.0f, 2.7f})
         .setScale({0.3f, 0.3f, 0.3f})

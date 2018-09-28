@@ -35,6 +35,12 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
 {
     auto texture = dynamic_cast<HG::Rendering::Base::Texture*>(data);
 
+    if (texture == nullptr)
+    {
+        Error() << "Got non texture render data in texture data processor. Types are corrupted.";
+        exit(-1);
+    }
+
     // Checking surface on texture
     Common::Texture2DData* externalData = nullptr;
 

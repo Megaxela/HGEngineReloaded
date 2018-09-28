@@ -94,6 +94,9 @@ namespace HG::Core
                 std::bind(
                     [this, id](std::shared_ptr<std::promise<typename Loader::ResultType>> &promise)
                     {
+                        std::this_thread::sleep_for(
+                            std::chrono::milliseconds(500)
+                        );
                         auto data = loadRawFromAccessor(id);
 
                         if (data == nullptr)

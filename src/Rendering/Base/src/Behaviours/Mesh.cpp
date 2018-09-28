@@ -6,7 +6,7 @@
 
 HG::Rendering::Base::Behaviours::Mesh::Mesh(HG::Utils::MeshPtr mesh,
                                             HG::Rendering::Base::Material* material) :
-    RenderBehaviour(Id),
+    RenderBehaviour(RenderBehaviourId),
     m_mesh(std::move(mesh)),
     m_material(material)
 {

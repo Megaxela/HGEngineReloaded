@@ -42,7 +42,7 @@ protected:
                 "Cube is just renders again in separate framebuffer with\n"
                 "current camera. And this framebuffers texture is applied to\n"
                 "cube. (to show different recursion levels, shader change color\n"
-                "of texture a little).\n"
+                "of texture a little. see \"Assets/Materials/TextureMaterial\").\n"
                 "Recursion rendering was bypassed by using 2 textures\n"
                 "(like in double buffering).\n"
                 "You are able to enable FPS camera movement with `R`."
@@ -62,12 +62,12 @@ void RenderToTextureScene::start()
 
     // Creating textures for recursion
     auto texture1 = new HG::Rendering::Base::Texture(
-        {400, 400},
+        {800, 800},
         HG::Rendering::Base::Texture::Format::RGBA
     );
 
     auto texture2 = new HG::Rendering::Base::Texture(
-        {400, 400},
+        {800, 800},
         HG::Rendering::Base::Texture::Format::RGBA
     );
 
@@ -95,7 +95,7 @@ void RenderToTextureScene::start()
     // Creating camera
     addGameObject(
         HG::Core::GameObjectBuilder()
-            .setGlobalPosition({0, 0, 2})
+            .setGlobalPosition({0.0f, 0.0f, 2.5f})
             .addBehaviour(new DescriptionBehaviour)
             .addBehaviour(new HG::Rendering::Base::Camera)
             .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)

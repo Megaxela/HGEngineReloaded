@@ -47,6 +47,12 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 {
     auto shader = dynamic_cast<HG::Rendering::Base::Shader*>(data);
 
+    if (shader == nullptr)
+    {
+        Error() << "Got non shader render data in shader data processor. Types are corrupted.";
+        exit(-1);
+    }
+
     ShaderData* externalData = nullptr;
 
     // Creating external data if not presented

@@ -3,7 +3,7 @@
 #include <Texture.hpp>
 
 HG::Rendering::Base::Behaviours::Sprite::Sprite() :
-    RenderBehaviour(Id),
+    RenderBehaviour(RenderBehaviourId),
     m_texture(nullptr),
     m_clipping()
 {
@@ -11,7 +11,7 @@ HG::Rendering::Base::Behaviours::Sprite::Sprite() :
 }
 
 HG::Rendering::Base::Behaviours::Sprite::Sprite(HG::Rendering::Base::Texture* texture) :
-    RenderBehaviour(Id),
+    RenderBehaviour(RenderBehaviourId),
     m_texture(),
     m_clipping()
 {

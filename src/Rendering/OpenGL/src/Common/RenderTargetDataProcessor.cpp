@@ -8,6 +8,8 @@
 #include <Common/RenderTargetData.hpp>
 #include <Common/Texture2DData.hpp>
 
+// ALogger
+#include <CurrentLogger.hpp>
 
 HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProcessor() :
     m_defaultData(new RenderTargetData(
@@ -22,6 +24,12 @@ HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProces
 bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data)
 {
     auto renderTarget = dynamic_cast<HG::Rendering::Base::RenderTarget*>(data);
+
+    if (renderTarget == nullptr)
+    {
+        Error() << "Got non render target render data in render target data processor. Types are corrupted.";
+        exit(-1);
+    }
 
     if (renderTarget->isDefault())
     {

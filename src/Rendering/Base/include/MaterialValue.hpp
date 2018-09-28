@@ -9,6 +9,7 @@
 namespace HG::Rendering::Base
 {
     class Texture;
+    class CubeMap;
 
     /**
      * @brief Struct, that describes
@@ -28,6 +29,7 @@ namespace HG::Rendering::Base
             Matrix3x3,
             Matrix4x4,
             Texture,
+            CubeMap
         };
 
         Type type;
@@ -43,6 +45,7 @@ namespace HG::Rendering::Base
             glm::mat3 mat3x3;
             glm::mat4 mat4x4;
             HG::Rendering::Base::Texture* texture;
+            HG::Rendering::Base::CubeMap* cubeMap;
         };
     };
 }

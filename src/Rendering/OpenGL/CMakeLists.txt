@@ -49,13 +49,13 @@ add_library(HGRenderingOGL STATIC
     include/GLFWSystemController.hpp
     src/GizmosRenderer.cpp
     include/GizmosRenderer.hpp
-    src/Material/GizmosLineMaterial.cpp
+    src/Materials/GizmosLineMaterial.cpp
     include/Materials/GizmosLineMaterial.hpp
-    src/Material/GizmosMeshMaterial.cpp
+    src/Materials/GizmosMeshMaterial.cpp
     include/Materials/GizmosMeshMaterial.hpp
-    src/Material/MeshFallbackMaterial.cpp
+    src/Materials/MeshFallbackMaterial.cpp
     include/Materials/MeshFallbackMaterial.hpp
-    src/Material/SpriteMaterial.cpp
+    src/Materials/SpriteMaterial.cpp
     include/Materials/SpriteMaterial.hpp
     src/Forward/AbstractRenderer.cpp
     include/Forward/AbstractRenderer.hpp
@@ -68,7 +68,7 @@ add_library(HGRenderingOGL STATIC
     include/Forward/SpriteRenderer.hpp
     src/ImGuiRenderer.cpp
     include/ImGuiRenderer.hpp
-    src/Material/ImGuiMaterial.cpp
+    src/Materials/ImGuiMaterial.cpp
     include/Materials/ImGuiMaterial.hpp
     include/Common/CubeMapTextureData.hpp
     src/Common/MeshDataProcessor.cpp
@@ -84,6 +84,10 @@ add_library(HGRenderingOGL STATIC
     include/Common/RenderTargetData.hpp
     src/Common/RenderTargetDataProcessor.cpp
     include/Common/RenderTargetDataProcessor.hpp
+    src/Forward/CubeMapRenderer.cpp
+    include/Forward/CubeMapRenderer.hpp
+    src/Materials/SkyboxMaterial.cpp 
+    include/Materials/SkyboxMaterial.hpp
 )
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)

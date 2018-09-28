@@ -5,6 +5,7 @@
 
 // HG::Utils
 #include <FutureHandler.hpp>
+#include <StringTools.hpp>
 
 // C++ STL
 #include <memory>
@@ -29,7 +30,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t DataId = 3;
+        static constexpr std::size_t DataId = STR_HASH("RenderData::Texture");
 
         /**
          * @brief Texture filtering methods.
@@ -69,7 +70,7 @@ namespace HG::Rendering::Base
          * @brief Constructor from surface.
          * It will set format to RGBA.
          */
-        explicit Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr,
+        explicit Texture(HG::Utils::SurfaceFuturePtr ptr,
                          Filtering minification =Nearest,
                          Filtering magnification=Nearest);
 

@@ -6,6 +6,9 @@
 // HG::Rendering::Base
 #include <RenderData.hpp>
 
+// HG::Utils
+#include <StringTools.hpp>
+
 // GLM
 #include <glm/vec2.hpp>
 
@@ -22,7 +25,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t DataId = 5;
+        static constexpr std::size_t DataId = STR_HASH("RenderData::RenderTarget");
 
         using TextureContainer = std::map<uint32_t, HG::Rendering::Base::Texture*>;
 

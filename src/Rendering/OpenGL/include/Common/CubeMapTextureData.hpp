@@ -15,6 +15,16 @@ namespace HG::Rendering::OpenGL::Common
     {
     public:
 
-        gl::cubemap_texture Texture;
+        gl::cubemap_texture_array Texture;
+
+        bool StoragePrepared = false;
+
+        /**
+         * It's bitfield.
+         * ->
+         * index | 0     | 1    | 2   | 3      | 4     | 5
+         * side  | Right | Left | Top | Bottom | Front | Back
+         */
+        uint8_t LoadedSides = 0;
     };
 }

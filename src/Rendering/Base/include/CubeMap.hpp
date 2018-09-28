@@ -6,6 +6,10 @@
 // HG::Rendering::Base
 #include <RenderData.hpp> // Required for inheritance
 
+// HG::Utils
+#include <FutureHandler.hpp>
+#include <StringTools.hpp>
+
 // ALogger
 #include <CurrentLogger.hpp>
 
@@ -13,6 +17,7 @@ namespace HG::Utils
 {
     class Surface;
     using SurfacePtr = std::shared_ptr<Surface>;
+    using SurfaceFuturePtr = FutureHandler<SurfacePtr>;
 }
 
 namespace HG::Rendering::Base
@@ -21,23 +26,24 @@ namespace HG::Rendering::Base
      * @brief Class, that describes cube map
      * texture for rendering (in GPU / prepared for GPU)
      */
-    class CubeMap : public RenderData
+    class CubeMap : public HG::Rendering::Base::RenderData
     {
     public:
 
-        constexpr static std::size_t Id = 4;
+        constexpr static std::size_t Id = STR_HASH("RenderData::CubeMap");
 
         /**
          * @brief Cube side.
          */
         enum Side
         {
-            Right = 0,
-            Left  = 1,
-            Top   = 2,
+            Right  = 0,
+            Left   = 1,
+            Top    = 2,
             Bottom = 3,
-            Front  = 4,
-            Back   = 5
+            Back   = 4,
+            Front  = 5,
+            Last
         };
 
         /**
@@ -54,12 +60,12 @@ namespace HG::Rendering::Base
          * @param front Front side surface.
          * @param back Back side surface.
          */
-        CubeMap(HG::Utils::SurfacePtr right,
-                HG::Utils::SurfacePtr left,
-                HG::Utils::SurfacePtr top,
-                HG::Utils::SurfacePtr bottom,
-                HG::Utils::SurfacePtr front,
-                HG::Utils::SurfacePtr back);
+        CubeMap(HG::Utils::SurfaceFuturePtr right,
+                HG::Utils::SurfaceFuturePtr left,
+                HG::Utils::SurfaceFuturePtr top,
+                HG::Utils::SurfaceFuturePtr bottom,
+                HG::Utils::SurfaceFuturePtr front,
+                HG::Utils::SurfaceFuturePtr back);
 
         /**
          * @brief Destructor. Clears external data.
@@ -70,7 +76,7 @@ namespace HG::Rendering::Base
          * @param side Side.
          * @return Smart pointer to surface.
          */
-        HG::Utils::SurfacePtr getSideSurface(Side side) const;
+        HG::Utils::SurfacePtr getSideSurface(Side side);
 
         /**
          * @brief Method for setting side surface.
@@ -79,17 +85,17 @@ namespace HG::Rendering::Base
          * @param side Side.
          * @param surface Smart pointer to surface.
          */
-        void setSideSurface(Side side, HG::Utils::SurfacePtr surface);
+        void setSideSurface(Side side, HG::Utils::SurfaceFuturePtr surface);
 
     private:
 
         // Surfaces
-        HG::Utils::SurfacePtr m_right;
-        HG::Utils::SurfacePtr m_left;
-        HG::Utils::SurfacePtr m_top;
-        HG::Utils::SurfacePtr m_bottom;
-        HG::Utils::SurfacePtr m_front;
-        HG::Utils::SurfacePtr m_back;
+        HG::Utils::SurfaceFuturePtr m_right;
+        HG::Utils::SurfaceFuturePtr m_left;
+        HG::Utils::SurfaceFuturePtr m_top;
+        HG::Utils::SurfaceFuturePtr m_bottom;
+        HG::Utils::SurfaceFuturePtr m_front;
+        HG::Utils::SurfaceFuturePtr m_back;
     };
 }
 

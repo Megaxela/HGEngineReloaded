@@ -14,8 +14,8 @@
 
 
 RenderToTextureBehaviour::RenderToTextureBehaviour() :
-    m_renderTarget1(new HG::Rendering::Base::RenderTarget({400, 400})),
-    m_renderTarget2(new HG::Rendering::Base::RenderTarget({400, 400})),
+    m_renderTarget1(new HG::Rendering::Base::RenderTarget({800, 800})),
+    m_renderTarget2(new HG::Rendering::Base::RenderTarget({800, 800})),
     m_renderBehaviour(nullptr),
     m_switch(false)
 {

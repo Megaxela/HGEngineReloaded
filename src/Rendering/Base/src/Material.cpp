@@ -120,6 +120,15 @@ void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::
     set(name, val);
 }
 
+void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::CubeMap* value)
+{
+    MaterialValue val{};
+    val.type = MaterialValue::Type::CubeMap;
+    val.cubeMap = value;
+
+    set(name, val);
+}
+
 void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::MaterialValue value)
 {
     m_variableContainer[name] = value;

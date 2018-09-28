@@ -9,6 +9,9 @@
 // HG::Rendering::Base
 #include <RenderData.hpp> // Required for inheritance
 
+// HG::Utils
+#include <StringTools.hpp>
+
 namespace HG::Rendering::Base
 {
     /**
@@ -20,7 +23,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t DataId = 1;
+        static constexpr std::size_t RenderDataId = STR_HASH("RenderData::RenderBehaviour");
 
         /**
          * @brief Constructor.

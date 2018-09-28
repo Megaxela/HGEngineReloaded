@@ -10,7 +10,13 @@
 
 bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData)
 {
-    auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderData);
+    auto meshBehaviour = dynamic_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderData);
+
+    if (meshBehaviour == nullptr)
+    {
+        Error() << "Got non mesh behaviour render data in mesh behaviour data processor. Types are corrupted.";
+        exit(-1);
+    }
 
     if (meshBehaviour->mesh() == nullptr)
     {
@@ -99,7 +105,7 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
 
 std::size_t HG::Rendering::OpenGL::Common::MeshDataProcessor::getTarget()
 {
-    return HG::Rendering::Base::Behaviours::Mesh::Id;
+    return HG::Rendering::Base::Behaviours::Mesh::RenderBehaviourId;
 }
 
 bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)

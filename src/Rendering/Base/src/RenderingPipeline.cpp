@@ -86,7 +86,7 @@ HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() con
 
 bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderData* data)
 {
-    if (data->dataType() == HG::Rendering::Base::RenderBehaviour::DataId)
+    if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
         return setupRenderBehaviour(
             dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data)
@@ -107,7 +107,7 @@ bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderDa
 
 bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::RenderData* data)
 {
-    if (data->dataType() == HG::Rendering::Base::RenderBehaviour::DataId)
+    if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
         return needSetupRenderBehaviour(
             dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data)

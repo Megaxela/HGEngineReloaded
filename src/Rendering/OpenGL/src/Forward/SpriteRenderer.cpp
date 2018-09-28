@@ -207,5 +207,5 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
 
 size_t HG::Rendering::OpenGL::Forward::SpriteRenderer::getTarget()
 {
-    return HG::Rendering::Base::Behaviours::Sprite::Id;
+    return HG::Rendering::Base::Behaviours::Sprite::RenderBehaviourId;
 }

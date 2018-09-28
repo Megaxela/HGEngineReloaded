@@ -6,6 +6,9 @@
 // HG::Rendering::Base
 #include <RenderBehaviour.hpp> // Required for inheritance
 
+// HG::Utils
+#include <StringTools.hpp>
+
 // ALogger
 #include <CurrentLogger.hpp>
 
@@ -25,12 +28,12 @@ namespace HG::Rendering::Base::Behaviours
     /**
      * @brief Class, that describes mesh rendering.
      */
-    class Mesh : public RenderBehaviour
+    class Mesh : public HG::Rendering::Base::RenderBehaviour
     {
     public:
 
         // Mesh type id
-        static constexpr std::size_t Id = 1;
+        static constexpr std::size_t RenderBehaviourId = STR_HASH("RenderBehaviour::Mesh");
 
         /**
          * @brief Constructor.

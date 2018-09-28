@@ -59,6 +59,7 @@ namespace HG::Rendering::Base
         void set(const std::string& name, glm::mat3 value);
         void set(const std::string& name, glm::mat4 value);
         void set(const std::string& name, HG::Rendering::Base::Texture* value);
+        void set(const std::string& name, HG::Rendering::Base::CubeMap* value);
 
         void erase(const std::string& name);
 

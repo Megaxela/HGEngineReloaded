@@ -23,3 +23,9 @@ target_link_libraries(HGExampleOrital
 
 configure_file(Assets/Models/icosphere.obj Assets/Models/icosphere.obj COPYONLY)
 configure_file(Assets/Models/icosphere.mtl Assets/Models/icosphere.mtl COPYONLY)
+configure_file(Assets/Cubemaps/PurpleNebula/purplenebula_rt.tga Assets/Cubemaps/PurpleNebula/purplenebula_rt.tga COPYONLY)
+configure_file(Assets/Cubemaps/PurpleNebula/purplenebula_lf.tga Assets/Cubemaps/PurpleNebula/purplenebula_lf.tga COPYONLY)
+configure_file(Assets/Cubemaps/PurpleNebula/purplenebula_up.tga Assets/Cubemaps/PurpleNebula/purplenebula_up.tga COPYONLY)
+configure_file(Assets/Cubemaps/PurpleNebula/purplenebula_dn.tga Assets/Cubemaps/PurpleNebula/purplenebula_dn.tga COPYONLY)
+configure_file(Assets/Cubemaps/PurpleNebula/purplenebula_ft.tga Assets/Cubemaps/PurpleNebula/purplenebula_ft.tga COPYONLY)
+configure_file(Assets/Cubemaps/PurpleNebula/purplenebula_bk.tga Assets/Cubemaps/PurpleNebula/purplenebula_bk.tga COPYONLY)
