@@ -23,7 +23,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t RenderDataId = STR_HASH("RenderData::RenderBehaviour");
+        static constexpr std::size_t RenderDataId = HG::Utils::StringTools::hash("RenderData::RenderBehaviour");
 
         /**
          * @brief Constructor.

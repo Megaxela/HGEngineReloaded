@@ -19,7 +19,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t DataId = STR_HASH("RenderData::Shader");
+        static constexpr std::size_t DataId = HG::Utils::StringTools::hash("RenderData::Shader");
 
         /**
          * @brief Constructor.

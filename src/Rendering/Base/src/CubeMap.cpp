@@ -40,6 +40,7 @@ HG::Utils::SurfacePtr HG::Rendering::Base::CubeMap::getSideSurface(HG::Rendering
     case Bottom: return m_bottom.get();
     case Front:  return m_front .get();
     case Back:   return m_back  .get();
+    default: break;
     }
 
     return nullptr;
@@ -56,6 +57,7 @@ void HG::Rendering::Base::CubeMap::setSideSurface(HG::Rendering::Base::CubeMap::
     case Bottom: m_bottom = std::move(surface); break;
     case Front:  m_front  = std::move(surface); break;
     case Back:   m_back   = std::move(surface); break;
+    default: break;
     }
 
     throw std::invalid_argument("Wrong side value.");

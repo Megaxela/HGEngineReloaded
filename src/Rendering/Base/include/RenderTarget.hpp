@@ -25,7 +25,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t DataId = STR_HASH("RenderData::RenderTarget");
+        static constexpr std::size_t DataId = HG::Utils::StringTools::hash("RenderData::RenderTarget");
 
         using TextureContainer = std::map<uint32_t, HG::Rendering::Base::Texture*>;
 

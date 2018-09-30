@@ -30,7 +30,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        static constexpr std::size_t DataId = STR_HASH("RenderData::Texture");
+        static constexpr std::size_t DataId = HG::Utils::StringTools::hash("RenderData::Texture");
 
         /**
          * @brief Texture filtering methods.

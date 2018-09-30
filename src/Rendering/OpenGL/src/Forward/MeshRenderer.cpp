@@ -79,10 +79,6 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     {
         if (!application()->renderer()->setup(meshBehaviour))
         {
-            Error()
-                << "Mesh rendering behaviour of \""
-                << meshBehaviour->gameObject()->name()
-                << "\" has not external data or has non valid buffers.";
             return;
         }
 
@@ -100,7 +96,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     }
     else
     {
-        auto shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
+        Common::ShaderData* shaderData = nullptr;
 
         if (application()->renderer()->needSetup(meshBehaviour->material()->shader()))
         {
@@ -109,6 +105,11 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 // If can't setup shader
                 shaderData = static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData());
             }
+        }
+
+        if (shaderData == nullptr)
+        {
+            shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
         }
 
         program = &shaderData->Program;

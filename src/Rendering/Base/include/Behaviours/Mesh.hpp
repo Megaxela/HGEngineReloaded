@@ -33,7 +33,7 @@ namespace HG::Rendering::Base::Behaviours
     public:
 
         // Mesh type id
-        static constexpr std::size_t RenderBehaviourId = STR_HASH("RenderBehaviour::Mesh");
+        static constexpr std::size_t RenderBehaviourId = HG::Utils::StringTools::hash("RenderBehaviour::Mesh");
 
         /**
          * @brief Constructor.

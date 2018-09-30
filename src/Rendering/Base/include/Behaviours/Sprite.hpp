@@ -21,7 +21,7 @@ namespace HG::Rendering::Base::Behaviours
     {
     public:
 
-        static constexpr std::size_t RenderBehaviourId = STR_HASH("RenderBehaviour::Sprite");
+        static constexpr std::size_t RenderBehaviourId = HG::Utils::StringTools::hash("RenderBehaviour::Sprite");
 
         /**
          * @brief Constructor.

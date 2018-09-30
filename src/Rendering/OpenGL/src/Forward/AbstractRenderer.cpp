@@ -11,9 +11,11 @@
 #include <Material.hpp>
 #include <Texture.hpp>
 #include <Shader.hpp>
+#include <CubeMap.hpp>
 
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
+#include <Common/CubeMapTextureData.hpp>
 
 HG::Rendering::OpenGL::Forward::AbstractRenderer::AbstractRenderer() :
     m_application(nullptr),
@@ -107,7 +109,39 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
             value.mat4x4
         );
         break;
+
+    case Base::MaterialValue::Type::CubeMap:
+    {
+        // todo: If any errors on texture, render fallback texture.
+        // Setting texture unit
+        program->set_uniform_1i(
+            location,
+            m_textureNumber
+        );
+
+        auto cubemapData = static_cast<Common::CubeMapTextureData*>(value.cubeMap->specificData());
+
+        // Setup texture if not valid
+        if (application()->renderer()->needSetup(value.cubeMap))
+        {
+            if (!application()->renderer()->setup(value.cubeMap))
+            {
+                // FALLBACK HERE
+                return;
+            }
+
+            cubemapData = static_cast<Common::CubeMapTextureData*>(value.cubeMap->specificData());
+        }
+
+        cubemapData->Texture.set_active(m_textureNumber);
+        cubemapData->Texture.bind();
+
+        ++m_textureNumber;
+
+        break;
+    }
     case Base::MaterialValue::Type::Texture:
+    {
         // todo: If any errors on texture, render fallback texture.
         // Setting texture unit
         program->set_uniform_1i(
@@ -135,5 +169,6 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
         ++m_textureNumber;
 
         break;
+    }
     }
 }

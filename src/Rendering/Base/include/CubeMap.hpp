@@ -30,7 +30,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        constexpr static std::size_t Id = STR_HASH("RenderData::CubeMap");
+        constexpr static std::size_t Id = HG::Utils::StringTools::hash("RenderData::CubeMap");
 
         /**
          * @brief Cube side.
