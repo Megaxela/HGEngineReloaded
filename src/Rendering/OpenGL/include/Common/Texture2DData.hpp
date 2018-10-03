@@ -19,6 +19,7 @@ namespace HG::Rendering::OpenGL::Common
     public:
 
         gl::texture_2d Texture;
+        bool Allocated = false;
         glm::ivec2 Size = {0, 0};
     };
 }

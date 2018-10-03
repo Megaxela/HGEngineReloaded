@@ -83,12 +83,19 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
             externalData->Size.x, // Width
             externalData->Size.y  // Height
         );
+
+        // If storage was setup
+        if (gl::error() == GL_NO_ERROR)
+        {
+            externalData->Allocated = true;
+        }
     }
 
     // Load surface if surface is presented.
     // Surface is removed after texture is
     // filled.
-    if (texture->surface() &&
+    if (externalData->Allocated &&
+        texture->surface() &&
         !externalData->Valid)
     {
         externalData->Valid = true;
