@@ -126,6 +126,11 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     externalData->Texture.set_wrap_t(GL_CLAMP_TO_EDGE);
     externalData->Texture.set_wrap_r(GL_CLAMP_TO_EDGE);
 
+    if (externalData->LoadedSides == ((1 << 6) - 1))
+    {
+        externalData->Valid = true;
+    }
+
     return true;
 }
 
@@ -135,6 +140,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::needSetup(HG::R
 
     return externalData == nullptr ||
            externalData->LoadedSides != ((1 << 6) - 1) || // Fully loaded bitfield
+           !externalData->Valid ||
            !externalData->Texture.is_valid();
 }
 

@@ -100,6 +100,8 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
     data->VAO.set_attribute_format(3, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, tangent)));
     data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 
+    data->Valid = true;
+
     return true;
 }
 
@@ -115,5 +117,6 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::
     return  meshData == nullptr ||
            !meshData->VAO.is_valid() ||
            !meshData->VBO.is_valid() ||
-           !meshData->EBO.is_valid();
+           !meshData->EBO.is_valid() ||
+           !meshData->Valid;
 }

@@ -29,3 +29,13 @@ std::size_t HG::Rendering::Base::RenderData::dataType() const
 {
     return m_type;
 }
+
+void HG::Rendering::Base::RenderData::invalidate()
+{
+    if (m_data == nullptr)
+    {
+        return;
+    }
+
+    m_data->Valid = false;
+}

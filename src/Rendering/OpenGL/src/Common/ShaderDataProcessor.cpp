@@ -113,6 +113,8 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
         return false;
     }
 
+    externalData->Valid = true;
+
     return true;
 }
 
@@ -121,7 +123,8 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::needSetup(HG::Rendering
     auto shaderData = static_cast<ShaderData*>(data->specificData());
 
     return  shaderData == nullptr ||
-           !shaderData->Program.is_valid();
+           !shaderData->Program.is_valid() ||
+           !shaderData->Valid;
 }
 
 std::size_t HG::Rendering::OpenGL::Common::ShaderDataProcessor::getTarget()

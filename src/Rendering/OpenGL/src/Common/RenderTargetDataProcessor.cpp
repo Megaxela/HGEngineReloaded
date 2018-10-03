@@ -86,6 +86,8 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
         );
     }
 
+    externalData->Valid = true;
+
     return true;
 }
 
@@ -102,5 +104,6 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::needSetup(HG::Ren
     return  renderTargetData == nullptr ||
             renderTargetData->Size != renderTarget->size() ||
            !renderTargetData->Framebuffer.is_valid() ||
-            renderTargetData->Framebuffer.status() == GL_FRAMEBUFFER_COMPLETE;
+            renderTargetData->Framebuffer.status() == GL_FRAMEBUFFER_COMPLETE ||
+           !renderTargetData->Valid;
 }

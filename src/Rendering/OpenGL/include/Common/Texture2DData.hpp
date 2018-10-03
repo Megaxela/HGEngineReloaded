@@ -19,7 +19,6 @@ namespace HG::Rendering::OpenGL::Common
     public:
 
         gl::texture_2d Texture;
-        bool Valid = false; // If valid is false - this object requires setup
         glm::ivec2 Size = {0, 0};
     };
 }

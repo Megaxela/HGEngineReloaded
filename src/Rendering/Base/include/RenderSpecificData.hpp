@@ -10,5 +10,7 @@ namespace HG::Rendering::Base
     struct RenderSpecificData
     {
         virtual ~RenderSpecificData() = default;
+
+        bool Valid = false;
     };
 }

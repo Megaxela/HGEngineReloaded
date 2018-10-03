@@ -46,6 +46,12 @@ namespace HG::Rendering::Base
          */
         std::size_t dataType() const;
 
+        /**
+         * @brief Method for invalidating render data.
+         * (Required reinitialization)
+         */
+        void invalidate();
+
     private:
 
         HG::Rendering::Base::RenderSpecificData* m_data;
