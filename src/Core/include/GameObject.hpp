@@ -136,6 +136,24 @@ namespace HG::Core
                 }
             }
 
+            if constexpr (std::is_base_of<HG::Rendering::Base::RenderBehaviour, BehaviourType>::value)
+            {
+                for (auto&& behaviour : m_renderBehaviours)
+                {
+                    if (m_renderBehaviours.isRemoving(behaviour))
+                    {
+                        continue;
+                    }
+
+                    auto casted = dynamic_cast<BehaviourType*>(behaviour);
+
+                    if (casted != nullptr)
+                    {
+                        return casted;
+                    }
+                }
+            }
+
             return nullptr;
         }
 
