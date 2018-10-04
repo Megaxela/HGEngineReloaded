@@ -24,23 +24,12 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
         return false;
     }
 
-    auto searchResult = m_meshes.find(meshBehaviour->mesh());
-    if (searchResult != m_meshes.end())
-    {
-        delete meshBehaviour->specificData();
-        meshBehaviour->setSpecificData(searchResult->second);
-
-        return true;
-    }
-
     Common::MeshData* data = nullptr;
 
     if ((data = static_cast<MeshData*>(meshBehaviour->specificData())) == nullptr)
     {
         data = new Common::MeshData();
         meshBehaviour->setSpecificData(data);
-
-        m_meshes[meshBehaviour->mesh()] = data;
     }
 
     if (!data->VAO.is_valid())

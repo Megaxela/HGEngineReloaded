@@ -100,22 +100,25 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
     //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
 
-    for (int side = HG::Rendering::Base::CubeMap::Side::Right;
-         side < HG::Rendering::Base::CubeMap::Side::Last;
-         ++side)
+    if (externalData->StoragePrepared)
     {
-        if ((externalData->LoadedSides & (1 << side)) == 0)
+        for (int side = HG::Rendering::Base::CubeMap::Side::Right;
+             side < HG::Rendering::Base::CubeMap::Side::Last;
+             ++side)
         {
-            auto surface = texture->getSideSurface(static_cast<Base::CubeMap::Side>(side));
-
-            // Surface was not ready
-            if (!surface)
+            if ((externalData->LoadedSides & (1 << side)) == 0)
             {
-                continue;
-            }
+                auto surface = texture->getSideSurface(static_cast<Base::CubeMap::Side>(side));
 
-            externalData->LoadedSides |= (1 << side);
-            setupCubeMapSide(surface, externalData->Texture, static_cast<GLuint>(side));
+                // Surface was not ready
+                if (!surface)
+                {
+                    continue;
+                }
+
+                externalData->LoadedSides |= (1 << side);
+                setupCubeMapSide(surface, externalData->Texture, static_cast<GLuint>(side));
+            }
         }
     }
 
