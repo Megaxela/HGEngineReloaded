@@ -158,7 +158,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
         inputDirection.x += speed;
     }
 
-    if (input->isPressed(HG::Core::Input::Keyboard::Key::F))
+    if (input->isPushed(HG::Core::Input::Keyboard::Key::F))
     {
         if (m_camera->projection() == HG::Rendering::Base::Camera::Projection::Orthogonal)
         {
