@@ -5,9 +5,9 @@
 #include <PhysicsController.hpp>
 
 // HG::Core
-#include <Application.hpp>
 #include <Scene.hpp>
 #include <ResourceManager.hpp>
+#include <ThreadPool.hpp>
 
 // HG::Rendering::Base
 #include <Renderer.hpp>
@@ -19,8 +19,9 @@ HG::Core::Application::Application(int /* argc */, char** /* argv */) :
     m_renderer(new HG::Rendering::Base::Renderer(this)),
     m_systemController(nullptr),
     m_physicsController(nullptr),
+    m_threadPool(new HG::Core::ThreadPool()),
     m_input(new HG::Core::Input()),
-    m_resourceManager(new HG::Core::ResourceManager()),
+    m_resourceManager(new HG::Core::ResourceManager(this)),
     m_timeStatistics(new HG::Core::TimeStatistics()),
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
@@ -32,6 +33,7 @@ HG::Core::Application::~Application()
 {
     delete m_timeStatistics;
     delete m_resourceManager;
+    delete m_threadPool;
     delete m_input;
     delete m_renderer;
     delete m_systemController;
@@ -197,6 +199,11 @@ HG::Core::ResourceManager* HG::Core::Application::resourceManager()
 HG::Core::TimeStatistics* HG::Core::Application::timeStatistics()
 {
     return m_timeStatistics;
+}
+
+HG::Core::ThreadPool* HG::Core::Application::threadPool()
+{
+    return m_threadPool;
 }
 
 const HG::Core::Input *HG::Core::Application::input() const

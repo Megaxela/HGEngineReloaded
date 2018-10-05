@@ -279,8 +279,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     gl::draw_range_elements(
         GL_TRIANGLES, // mode
         0,            // start
-        static_cast<GLuint>(meshBehaviour->mesh()->Indices.size()),
-        static_cast<GLsizei>(meshBehaviour->mesh()->Indices.size()),
+        static_cast<GLuint>(data->Count),
+        static_cast<GLsizei>(data->Count),
         GL_UNSIGNED_INT
     );
 

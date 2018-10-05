@@ -17,6 +17,7 @@ namespace HG::Core
     class Input;
     class ResourceManager;
     class TimeStatistics;
+    class ThreadPool;
 
     /**
      * @brief Class, that describes
@@ -109,6 +110,12 @@ namespace HG::Core
         HG::Core::TimeStatistics* timeStatistics();
 
         /**
+         * @brief Method for getting application thread pool.
+         * @return Pointer to application thread pool.
+         */
+        HG::Core::ThreadPool* threadPool();
+
+        /**
          * @brief Method for receiving pointer to
          * input controller/receiver. If you are
          * coding behaviour, you shall not using
@@ -159,7 +166,10 @@ namespace HG::Core
         // Physics controller
         HG::Physics::Base::PhysicsController* m_physicsController;
 
-        // Input receiver/productor
+        // Thread pool
+        HG::Core::ThreadPool* m_threadPool;
+
+        // Input receiver/producer
         HG::Core::Input* m_input;
 
         // Resource manager

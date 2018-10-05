@@ -1,7 +1,9 @@
 #pragma once
 
 // HG::Core
-#include <Data.hpp> // Required, because of template `load` method
+#include <Data.hpp> // Required, because of template `load` method.
+#include <Application.hpp> // Required, because of template `load` method.
+#include <ThreadPool.hpp>
 
 // HG::Utils
 #include <FutureHandler.hpp>
@@ -36,12 +38,18 @@ namespace HG::Core
         /**
          * @brief Constructor.
          */
-        ResourceManager();
+        explicit ResourceManager(HG::Core::Application* parent);
 
         /**
          * @brief Destructor.
          */
         virtual ~ResourceManager();
+
+        /**
+         * @brief Method for getting parent application.
+         * @return Pointer to parent application.
+         */
+        HG::Core::Application* application();
 
         /**
          * @brief Method for getting resource accessor for
@@ -59,8 +67,6 @@ namespace HG::Core
          * implementation.
          */
         void setResourceAccessor(HG::Core::ResourceAccessor* accessor);
-
-        std::size_t jobsSize();
 
         /**
          * @brief Method for loading some resource
@@ -85,40 +91,22 @@ namespace HG::Core
             typename Loader::ResultType
         > load(const std::string& id)
         {
-            // todo: Fix promise to lambda capture lately
-            auto promise = std::make_shared<std::promise<typename Loader::ResultType>>();
+            return application()->threadPool()->push(
+                [this, id]() -> typename Loader::ResultType
+                {
+                    auto data = loadRawFromAccessor(id);
 
-            auto future = std::shared_future(promise->get_future());
-
-            auto job =
-                std::bind(
-                    [this, id](std::shared_ptr<std::promise<typename Loader::ResultType>> &promise)
+                    if (data == nullptr)
                     {
-                        auto data = loadRawFromAccessor(id);
+                        return nullptr;
+                    }
 
-                        if (data == nullptr)
-                        {
-                            promise->set_value(nullptr);
-                            return;
-                        }
+                    Loader loader;
 
-                        Loader loader;
-
-                        promise->set_value(loader.load(data->data(), data->size()));
-                    },
-                    std::move(promise)
-                );
-
-            {
-                std::unique_lock<std::mutex> jobsLock(m_loaderJobsMutex);
-                m_loaderJobs.emplace(job);
-            }
-
-            m_loaderNotifier.notify_all();
-
-            return typename HG::Utils::FutureHandler<
-                typename Loader::ResultType
-            >(std::move(future));
+                    return loader.load(data->data(), data->size());
+                },
+                HG::Core::ThreadPool::Type::FileLoadingThread
+            );
         }
 
     private:
@@ -132,19 +120,8 @@ namespace HG::Core
          */
         HG::Core::DataPtr loadRawFromAccessor(const std::string& id);
 
-        /**
-         * @brief Method, that's executing in
-         * separate thread and
-         */
-        void loaderThread();
-
         HG::Core::ResourceAccessor* m_accessor;
-
-        std::thread m_loaderThread;
-        std::atomic_bool m_running;
-        std::condition_variable m_loaderNotifier;
-        std::queue<std::function<void()>> m_loaderJobs;
-        std::mutex m_loaderJobsMutex;
+        HG::Core::Application* m_application;
     };
 }
 

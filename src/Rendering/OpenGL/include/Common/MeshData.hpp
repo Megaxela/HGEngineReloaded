@@ -15,6 +15,8 @@ namespace HG::Rendering::OpenGL::Common
     {
     public:
 
+        uint32_t Count;
+
         gl::vertex_array VAO;
         gl::buffer VBO;
         gl::buffer EBO;

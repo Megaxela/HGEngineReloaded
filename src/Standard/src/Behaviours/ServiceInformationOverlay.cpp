@@ -3,6 +3,7 @@
 #include <TimeStatistics.hpp>
 #include <Application.hpp>
 #include <Scene.hpp>
+#include <ThreadPool.hpp>
 
 // HG::Standard
 #include <Behaviours/ServiceInformationOverlay.hpp>
@@ -66,7 +67,10 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
 
         ImGui::Text(
             "Resource queue: %ld",
-            scene()->application()->resourceManager()->jobsSize()
+            scene()
+                ->application()
+                ->threadPool()
+                ->numberOfJobs(HG::Core::ThreadPool::Type::FileLoadingThread)
         );
 
         ImGui::End();

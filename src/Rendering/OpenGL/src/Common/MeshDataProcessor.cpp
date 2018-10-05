@@ -90,6 +90,7 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
     data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 
     data->Valid = true;
+    data->Count = static_cast<uint32_t>(mesh->Indices.size());
 
     return true;
 }
