@@ -18,6 +18,13 @@ namespace HG::Core
     /**
      * @brief Class, that describes
      * abstract scene actor.
+     * Behaviours, bound to gameobject will be
+     * deleted if gameobject will be removed from scene.
+     * (Because after removing gameobject from scene,
+     * gameobject cached back to HG::Core::GameObjectCache,
+     * and HG::Core::GameObjectCache::cache deletes all behaviours.
+     * If it's not applicable - remove behaviours from gameobject
+     * and behaviour's life owner will be changed to user.
      */
     class GameObject
     {

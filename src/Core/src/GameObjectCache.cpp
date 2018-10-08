@@ -26,6 +26,9 @@ HG::Core::GameObject* HG::Core::GameObjectCache::create()
 
 void HG::Core::GameObjectCache::cache(HG::Core::GameObject* gameObject)
 {
+    // Removing all behaviours
+    gameObject->clear();
+
     m_cache.push_back(gameObject);
 }
 

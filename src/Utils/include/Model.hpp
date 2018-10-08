@@ -15,7 +15,8 @@ namespace HG::Utils
     /**
      * @brief Class, that describes model,
      * loaded from resource.
-     * It's tree of models.
+     * It's tree of models. Parent will delete
+     * children.
      */
     class Model
     {
@@ -28,6 +29,11 @@ namespace HG::Utils
          * nullptr - it's root model.
          */
         explicit Model(Model* parent=nullptr);
+
+        /**
+         * @brief Destructor.
+         */
+        ~Model();
 
         /**
          * @brief Method for getting models parent model.

@@ -60,36 +60,44 @@ void OrbitalScene::start()
     // Creating cubemap object
     // and loading cubemap textures
     // (async loading)
-    auto cubemap = new HG::Rendering::Base::CubeMap(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_ft.tga"),
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_bk.tga"),
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_up.tga"),
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_dn.tga"),
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_lf.tga"),
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_rt.tga")
+    auto cubemap = registerResource(
+        new HG::Rendering::Base::CubeMap(
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_ft.tga"),
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_bk.tga"),
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_up.tga"),
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_dn.tga"),
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_lf.tga"),
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_rt.tga")
+        )
     );
 
     // Creating materials
-    auto firstMaterial = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<PlainMaterial>();
+    auto firstMaterial = registerResource(
+        application()
+            ->renderer()
+            ->materialCollection()
+            ->getMaterial<PlainMaterial>()
+    );
 
-    auto secondMaterial = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<PlainMaterial>();
+    auto secondMaterial = registerResource(
+        application()
+            ->renderer()
+            ->materialCollection()
+            ->getMaterial<PlainMaterial>()
+    );
 
-    auto thirdMaterial = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<PlainMaterial>();
+    auto thirdMaterial = registerResource(
+        application()
+            ->renderer()
+            ->materialCollection()
+            ->getMaterial<PlainMaterial>()
+    );
 
 
     firstMaterial->setColor(HG::Utils::Color::Red);

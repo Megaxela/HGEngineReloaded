@@ -16,6 +16,29 @@ HG::Core::Scene::Scene() :
 
 }
 
+HG::Core::Scene::~Scene()
+{
+    // Removing gameobject (caching)
+    for (auto iter = m_gameObjects.addedBegin(),
+              end = m_gameObjects.addedEnd();
+              iter != end;
+              ++iter)
+    {
+        removeGameObject(*iter);
+    }
+
+    for (auto&& gameObject : m_gameObjects)
+    {
+        removeGameObject(gameObject);
+    }
+
+    // Clearing registered resources
+    for (auto&& deleter : m_deleteExecutors)
+    {
+        deleter();
+    }
+}
+
 void HG::Core::Scene::setApplication(HG::Core::Application *application)
 {
     m_mainApplication = application;

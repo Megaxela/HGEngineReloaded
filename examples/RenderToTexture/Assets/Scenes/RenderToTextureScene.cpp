@@ -61,21 +61,27 @@ void RenderToTextureScene::start()
 
 
     // Creating textures for recursion
-    auto texture1 = new HG::Rendering::Base::Texture(
-        {800, 800},
-        HG::Rendering::Base::Texture::Format::RGBA
+    auto texture1 = registerResource(
+        new HG::Rendering::Base::Texture(
+            {800, 800},
+            HG::Rendering::Base::Texture::Format::RGBA
+        )
     );
 
-    auto texture2 = new HG::Rendering::Base::Texture(
-        {800, 800},
-        HG::Rendering::Base::Texture::Format::RGBA
+    auto texture2 = registerResource(
+        new HG::Rendering::Base::Texture(
+            {800, 800},
+            HG::Rendering::Base::Texture::Format::RGBA
+        )
     );
 
     // Material
-    auto material = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<TextureMaterial>();
+    auto material = registerResource(
+        application()
+            ->renderer()
+            ->materialCollection()
+            ->getMaterial<TextureMaterial>()
+    );
 
     material->setTexture(texture1);
 

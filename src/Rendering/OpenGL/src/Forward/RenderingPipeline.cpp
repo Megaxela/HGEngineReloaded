@@ -24,6 +24,7 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::A
     HG::Rendering::Base::RenderingPipeline(application),
     m_behavioursCache(),
     m_sortedBehaviours(),
+    m_cachedViewport({-1, -1}),
     m_gizmosRenderer(new HG::Rendering::OpenGL::GizmosRenderer(application)),
     m_imguiRenderer(new HG::Rendering::OpenGL::ImGuiRenderer(application)),
     m_renderers()

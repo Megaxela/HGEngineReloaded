@@ -63,38 +63,48 @@ void TestScene::start()
 //            ->load<HG::Utils::STBImageLoader>("Assets/HDR/Tokyo_BigSight_3k.hdr")
 //    );
 
-    auto albedo = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/albedo.png"),
-        HG::Rendering::Base::Texture::Filtering::Linear,
-        HG::Rendering::Base::Texture::Filtering::Linear
+    auto albedo = registerResource(
+        new HG::Rendering::Base::Texture(
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/albedo.png"),
+            HG::Rendering::Base::Texture::Filtering::Linear,
+            HG::Rendering::Base::Texture::Filtering::Linear
+        )
     );
 
-    auto metallic = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/metallic.png"),
-        HG::Rendering::Base::Texture::Filtering::Linear,
-        HG::Rendering::Base::Texture::Filtering::Linear
+    auto metallic = registerResource(
+        new HG::Rendering::Base::Texture(
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/metallic.png"),
+            HG::Rendering::Base::Texture::Filtering::Linear,
+            HG::Rendering::Base::Texture::Filtering::Linear
+        )
     );
 
-    auto normal = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/normal.png"),
-        HG::Rendering::Base::Texture::Filtering::Linear,
-        HG::Rendering::Base::Texture::Filtering::Linear
+    auto normal = registerResource(
+        new HG::Rendering::Base::Texture(
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/normal.png"),
+            HG::Rendering::Base::Texture::Filtering::Linear,
+            HG::Rendering::Base::Texture::Filtering::Linear
+        )
     );
 
-    auto roughness = new HG::Rendering::Base::Texture(
-        application()->resourceManager()
-            ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/roughness.png"),
-        HG::Rendering::Base::Texture::Filtering::Linear,
-        HG::Rendering::Base::Texture::Filtering::Linear
+    auto roughness = registerResource(
+        new HG::Rendering::Base::Texture(
+            application()->resourceManager()
+                ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/roughness.png"),
+            HG::Rendering::Base::Texture::Filtering::Linear,
+            HG::Rendering::Base::Texture::Filtering::Linear
+        )
     );
 
-    auto material = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<PBRMaterial>();
+    auto material = registerResource(
+        application()
+            ->renderer()
+            ->materialCollection()
+            ->getMaterial<PBRMaterial>()
+    );
 
     material->setAlbedoMap          (albedo);
     material->setMetallicMap        (metallic);

@@ -12,6 +12,14 @@ HG::Utils::Model::Model(HG::Utils::Model* parent) :
     setParent(parent);
 }
 
+HG::Utils::Model::~Model()
+{
+    for (auto&& child : m_children)
+    {
+        delete child;
+    }
+}
+
 HG::Utils::Model* HG::Utils::Model::parent() const
 {
     return m_parent;

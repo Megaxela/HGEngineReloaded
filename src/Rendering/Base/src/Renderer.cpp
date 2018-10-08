@@ -29,6 +29,7 @@ HG::Rendering::Base::Renderer::~Renderer()
     delete m_pipeline;
     delete m_gizmos;
     delete m_materialCollection;
+    delete m_defaultRenderTarget;
 }
 
 HG::Rendering::Base::RenderTarget* HG::Rendering::Base::Renderer::defaultRenderTarget() const

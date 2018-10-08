@@ -2,6 +2,7 @@
 
 // C++ STL
 #include <chrono>
+#include <functional>
 
 // HG::Utils
 #include <DoubleBufferContainer.hpp>
@@ -19,7 +20,13 @@ namespace HG::Core
 
     /**
      * @brief Class, that describes
-     * application scene.
+     * application scene. This class also
+     * provides simple garbage collection system.
+     * If some resource has to be deallocated (delete)
+     * on scene deallocation - you have to register
+     * resource with HG::Core::Scene::registerResource
+     * method. You can't unregister resource from
+     * this GC. Or call garbage collection at any time.
      */
     class Scene
     {
@@ -39,7 +46,7 @@ namespace HG::Core
         /**
          * @brief Destructor.
          */
-        virtual ~Scene() = default;
+        virtual ~Scene();
 
         /**
          * @brief Method for setting application
@@ -121,10 +128,30 @@ namespace HG::Core
             }
         }
 
+        /**
+         * @brief Method for registrating resource
+         * for deleting after scene delete.
+         * @tparam Type Type of resource.
+         * @param resource Pointer to resource.
+         * @return Pointer to resource.
+         */
+        template<typename Type>
+        Type* registerResource(Type* resource)
+        {
+            m_deleteExecutors.push_back(
+                [resource]()
+                {
+                    delete resource;
+                }
+            );
+
+            return resource;
+        }
+
     private:
         HG::Core::Application* m_mainApplication;
-
         GameObjectsContainer m_gameObjects;
+        std::vector<std::function<void()>> m_deleteExecutors;
     };
 }
 
