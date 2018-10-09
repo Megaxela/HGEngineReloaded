@@ -13,6 +13,7 @@
 #include <Behaviours/Mesh.hpp>
 #include <Camera.hpp>
 #include <CubeMap.hpp>
+#include <Behaviours/CubeMap.hpp>
 
 // HG::Standard
 #include <Behaviours/FPSCameraMovement.hpp>
@@ -41,18 +42,25 @@ void TransparentScene::start()
     auto cubemap = registerResource(
         new HG::Rendering::Base::CubeMap(
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_ft.tga"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_ft.JPG"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_bk.tga"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_bk.JPG"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_up.tga"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_up.JPG"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_dn.tga"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_dn.JPG"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_lf.tga"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_lf.JPG"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/PurpleNebula/purplenebula_rt.tga")
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_rt.JPG")
         )
+    );
+
+    // Service GO
+    addGameObject(
+        HG::Core::GameObjectBuilder()
+            .setName("Service")
+            .addBehaviour(new HG::Rendering::Base::Behaviours::CubeMap(cubemap))
     );
 
     // Adding camera
@@ -84,4 +92,3 @@ void TransparentScene::start()
         }
     }
 }
-18.17.10

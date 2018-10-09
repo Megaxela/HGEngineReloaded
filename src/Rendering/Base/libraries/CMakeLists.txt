@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.9)
 
 # ImGui cmake
 add_library(imgui STATIC

@@ -17,6 +17,7 @@ namespace HG::Rendering::Base
     class Gizmos;
     class RenderData;
     class RenderTarget;
+    class CubeMap;
 
     /**
      * @brief Class, that describes
@@ -113,6 +114,22 @@ namespace HG::Rendering::Base
          */
         bool needSetup(HG::Rendering::Base::RenderData* data);
 
+        /**
+         * @brief Method for getting currently active cube map
+         * object. Can be nullptr.
+         * @return Pointer to currently active cube map.
+         */
+        HG::Rendering::Base::CubeMap* activeCubeMap() const;
+
+        /**
+         * @brief Method for setting currently active cube map.
+         * This method is called by CubeMapRenderer of
+         * selected rendering pipeline. (Because cubemap is renders
+         * at first).
+         * @param cubemap Pointer to new active cube map.
+         */
+        void setActiveCubeMap(HG::Rendering::Base::CubeMap* cubemap);
+
     private:
 
         HG::Core::Application* m_parentApplication;
@@ -126,6 +143,8 @@ namespace HG::Rendering::Base
         HG::Rendering::Base::Camera* m_activeCamera;
 
         HG::Rendering::Base::RenderTarget* m_defaultRenderTarget;
+
+        HG::Rendering::Base::CubeMap* m_activeCubemap;
     };
 }
 

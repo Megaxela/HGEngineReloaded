@@ -107,6 +107,16 @@ void HG::Rendering::Base::Renderer::setActiveCamera(HG::Rendering::Base::Camera 
     m_activeCamera = camera;
 }
 
+HG::Rendering::Base::CubeMap *HG::Rendering::Base::Renderer::activeCubeMap() const
+{
+    return m_activeCubemap;
+}
+
+void HG::Rendering::Base::Renderer::setActiveCubeMap(HG::Rendering::Base::CubeMap *cubemap)
+{
+    m_activeCubemap = cubemap;
+}
+
 bool HG::Rendering::Base::Renderer::setup(HG::Rendering::Base::RenderData* data)
 {
     if (m_pipeline == nullptr)

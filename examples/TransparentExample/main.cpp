@@ -19,6 +19,8 @@
 #include <Common/Texture2DDataProcessor.hpp>
 #include <Common/ShaderDataProcessor.hpp>
 #include <Common/RenderTargetDataProcessor.hpp>
+#include <Forward/CubeMapRenderer.hpp>
+#include <Common/CubeMapTextureDataProcessor.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -39,11 +41,13 @@ int main(int argc, char** argv)
     application.setSystemController(new HG::Rendering::OpenGL::GLFWSystemController(&application));
 
     auto pipeline = new HG::Rendering::OpenGL::Forward::RenderingPipeline(&application);
-    pipeline->addRenderer(new HG::Rendering::OpenGL::Forward::MeshRenderer());
+    pipeline->addRenderer(new HG::Rendering::OpenGL::Forward::MeshRenderer);
+    pipeline->addRenderer(new HG::Rendering::OpenGL::Forward::CubeMapRenderer);
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::RenderTargetDataProcessor);
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::MeshDataProcessor);
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::Texture2DDataProcessor);
     pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::ShaderDataProcessor);
+    pipeline->addRenderDataProcessor(new HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor);
 
     // Setting rendering to forward
     application.renderer()->setPipeline(pipeline);

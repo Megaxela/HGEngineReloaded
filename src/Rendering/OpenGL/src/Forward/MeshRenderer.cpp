@@ -115,6 +115,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         program = &shaderData->Program;
         program->use();
 
+        meshBehaviour->material()->set("cubemap", application()->renderer()->activeCubeMap());
+
         applyShaderUniforms(meshBehaviour->material());
     }
 
@@ -141,8 +143,6 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
                 ->globalPosition()
         );
     }
-
-    static std::string cubemapName = "cubemap";
 
     static std::string modelName = "model";
     if ((location = program->uniform_location(modelName)) != -1)

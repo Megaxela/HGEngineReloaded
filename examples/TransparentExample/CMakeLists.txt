@@ -22,3 +22,9 @@ target_link_libraries(HGExampleTransparent
 )
 
 configure_file(Assets/Models/bottle.obj Assets/Models/bottle.obj COPYONLY)
+configure_file(Assets/Cubemaps/Lake/lake2_ft.JPG Assets/Cubemaps/Lake/lake2_ft.JPG COPYONLY)
+configure_file(Assets/Cubemaps/Lake/lake2_bk.JPG Assets/Cubemaps/Lake/lake2_bk.JPG COPYONLY)
+configure_file(Assets/Cubemaps/Lake/lake2_up.JPG Assets/Cubemaps/Lake/lake2_up.JPG COPYONLY)
+configure_file(Assets/Cubemaps/Lake/lake2_dn.JPG Assets/Cubemaps/Lake/lake2_dn.JPG COPYONLY)
+configure_file(Assets/Cubemaps/Lake/lake2_lf.JPG Assets/Cubemaps/Lake/lake2_lf.JPG COPYONLY)
+configure_file(Assets/Cubemaps/Lake/lake2_rt.JPG Assets/Cubemaps/Lake/lake2_rt.JPG COPYONLY)

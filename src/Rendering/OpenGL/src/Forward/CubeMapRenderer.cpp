@@ -180,6 +180,8 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base
         0, 36
     );
 
+    application()->renderer()->setActiveCubeMap(cubemap);
+
     m_vao.unbind();
     cubemapExternalData->Texture.unbind();
 }

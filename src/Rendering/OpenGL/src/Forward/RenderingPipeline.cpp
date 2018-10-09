@@ -215,7 +215,7 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Ba
     {
         Info()
             << "Trying to render unknown render behaviour \""
-            << SystemTools::getTypeName(behaviour)
+            << SystemTools::getTypeName(*behaviour)
             << "\"";
         return false;
     }
