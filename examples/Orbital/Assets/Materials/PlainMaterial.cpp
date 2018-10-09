@@ -1,7 +1,5 @@
 // Orbital
 #include <Assets/Materials/PlainMaterial.hpp>
-#include "PlainMaterial.hpp"
-
 
 const char* PlainMaterial::rawShader = R"(
 #ifdef VertexShader

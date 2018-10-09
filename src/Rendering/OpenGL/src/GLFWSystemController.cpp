@@ -302,6 +302,11 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     gl::set_depth_test_enabled(true);
     gl::set_depth_function(GL_LESS);
 
+    // Blending
+    gl::set_blending_enabled(true);
+    gl::set_blend_function(GL_SRC_ALPHA, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // Setting default render target size
     controller
         ->application()

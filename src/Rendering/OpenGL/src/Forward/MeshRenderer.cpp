@@ -128,6 +128,22 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     GLint location;
 
+    static std::string cameraName = "camera";
+    if ((location = program->uniform_location(cameraName)) != -1)
+    {
+        program->set_uniform(
+            location,
+            application()
+                ->renderer()
+                ->activeCamera()
+                ->gameObject()
+                ->transform()
+                ->globalPosition()
+        );
+    }
+
+    static std::string cubemapName = "cubemap";
+
     static std::string modelName = "model";
     if ((location = program->uniform_location(modelName)) != -1)
     {
