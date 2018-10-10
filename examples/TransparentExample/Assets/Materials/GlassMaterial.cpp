@@ -65,9 +65,7 @@ void main()
     vec4 refractionColor = texture(cubemap, vec4(normalize(vs_in.refraction), 0));
     vec4 reflectionColor = texture(cubemap, vec4(normalize(vs_in.reflection), 0));
 
-    //FragColor = mix(refractionColor, reflectionColor, vs_in.fresnel);
-    //FragColor = reflectionColor;
-    FragColor = refractionColor;
+    FragColor = mix(refractionColor, reflectionColor, vs_in.fresnel);
     FragColor.a = 0.7;
 }
 

@@ -130,9 +130,9 @@ namespace HG::Rendering::Base
 
         private:
 
-            template<typename C> static hasRawData test(typeof(C::rawShader));
+            template<typename C> static hasRawData test(decltype(C::rawShader));
 
-            template<typename C> static hasPaths test(typeof(C::shaderPath));
+            template<typename C> static hasPaths test(decltype(C::shaderPath));
 
             template<typename C> static hasNothing test(...);
 

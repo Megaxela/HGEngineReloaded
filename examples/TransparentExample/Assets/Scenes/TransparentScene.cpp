@@ -42,17 +42,17 @@ void TransparentScene::start()
     auto cubemap = registerResource(
         new HG::Rendering::Base::CubeMap(
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_ft.JPG"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_ft.tga"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_bk.JPG"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_bk.tga"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_up.JPG"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_up.tga"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_dn.JPG"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_dn.tga"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_lf.JPG"),
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_lf.tga"),
             application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_rt.JPG")
+                ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_rt.tga")
         )
     );
 

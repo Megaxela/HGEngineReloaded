@@ -17,6 +17,7 @@ namespace HG::Core
     class Input;
     class ResourceManager;
     class TimeStatistics;
+    class CountStatistics;
     class ThreadPool;
 
     /**
@@ -103,11 +104,18 @@ namespace HG::Core
         HG::Core::ResourceManager* resourceManager();
 
         /**
-         * @brief Method for getting method for time
+         * @brief Method for getting object for time
          * calculations.
          * @return Pointer to time statistics object.
          */
         HG::Core::TimeStatistics* timeStatistics();
+
+        /**
+         * @brief Method for getting object for
+         * counting statistics.
+         * @return Pointer to count statistics object.
+         */
+        HG::Core::CountStatistics* countStatistics();
 
         /**
          * @brief Method for getting application thread pool.
@@ -177,6 +185,9 @@ namespace HG::Core
 
         // Time statistics
         HG::Core::TimeStatistics* m_timeStatistics;
+
+        // Count statistics
+        HG::Core::CountStatistics* m_countStatistics;
 
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.

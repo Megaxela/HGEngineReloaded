@@ -2,9 +2,7 @@
 #include <stdexcept>
 
 // HG::Physics::Base
-#ifdef HG_HAS_PHYSICS_BASE
-    #include <PhysicsController.hpp>
-#endif
+#include <PhysicsController.hpp>
 
 // HG::Core
 #include <Scene.hpp>
@@ -13,31 +11,27 @@
 #include <BuildProperties.hpp>
 #include <TimeStatistics.hpp>
 #include <Input.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Rendering::Base
 #include <Renderer.hpp>
 #include <SystemController.hpp>
+#include <Application.hpp>
+
 
 HG::Core::Application::Application(int /* argc */, char** /* argv */) :
-    m_renderer(nullptr),
+    m_renderer(new HG::Rendering::Base::Renderer(this)),
     m_systemController(nullptr),
     m_physicsController(nullptr),
     m_threadPool(new HG::Core::ThreadPool()),
     m_input(new HG::Core::Input()),
     m_resourceManager(new HG::Core::ResourceManager(this)),
     m_timeStatistics(new HG::Core::TimeStatistics()),
+    m_countStatistics(new HG::Core::CountStatistics()),
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
 {
-    if constexpr (HG::Core::BuildProperties::hasRenderingBase())
-    {
-        m_renderer = new HG::Rendering::Base::Renderer(this);
-    }
 
-    if constexpr (HG::Core::BuildProperties::hasPhysicsBase())
-    {
-        m_physicsController = new HG::Physics::Base::PhysicsController(this);
-    }
 }
 
 HG::Core::Application::~Application()
@@ -110,19 +104,16 @@ bool HG::Core::Application::performCycle()
 
     // Tick counting frame time
 
-    if constexpr (HG::Core::BuildProperties::hasPhysicsBase())
+    if (m_physicsController)
     {
-        if (m_physicsController)
-        {
-            // Start counting physics time
-            m_timeStatistics->tickTimerBegin(TimeStatistics::PhysicsTime);
+        // Start counting physics time
+        m_timeStatistics->tickTimerBegin(TimeStatistics::PhysicsTime);
 
-            // Processing physics, if available
-            m_physicsController->tick(dt);
+        // Processing physics, if available
+        m_physicsController->tick(dt);
 
-            // Finish counting physics time
-            m_timeStatistics->tickTimerEnd(TimeStatistics::PhysicsTime);
-        }
+        // Finish counting physics time
+        m_timeStatistics->tickTimerEnd(TimeStatistics::PhysicsTime);
     }
 
     // Start counting update time (events are in update section)
@@ -162,6 +153,8 @@ bool HG::Core::Application::performCycle()
         // Finishing counting rendering time
         m_timeStatistics->tickTimerEnd(TimeStatistics::RenderTime);
     }
+
+    m_countStatistics->frameChanged();
 
     return true;
 }
@@ -213,6 +206,11 @@ HG::Core::ResourceManager* HG::Core::Application::resourceManager()
 HG::Core::TimeStatistics* HG::Core::Application::timeStatistics()
 {
     return m_timeStatistics;
+}
+
+HG::Core::CountStatistics *HG::Core::Application::countStatistics()
+{
+    return m_countStatistics;
 }
 
 HG::Core::ThreadPool* HG::Core::Application::threadPool()
