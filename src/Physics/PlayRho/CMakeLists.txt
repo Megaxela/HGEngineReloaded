@@ -29,6 +29,10 @@ target_include_directories(HGPhysicsPlayRho PUBLIC
     include
 )
 
+target_compile_definitions(HGPhysicsPlayRho PUBLIC
+    HG_HAS_PHYSICS_PLAYRHO=1
+)
+
 if (${HG_BUILD_WARNINGS})
     target_compile_options(HGPhysicsPlayRho
         PRIVATE

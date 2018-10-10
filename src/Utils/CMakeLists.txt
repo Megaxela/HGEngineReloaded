@@ -62,8 +62,9 @@ target_link_libraries(HGUtils
     ${ZLIB_LIBRARIES}
 )
 
-target_compile_definitions(HGUtils
-    PUBLIC -DGLM_ENABLE_EXPERIMENTAL
+target_compile_definitions(HGUtils PUBLIC
+    -DGLM_ENABLE_EXPERIMENTAL
+    HG_HAS_UTILS=1
 )
 
 if (${HG_BUILD_WARNINGS})

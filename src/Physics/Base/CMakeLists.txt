@@ -16,6 +16,10 @@ target_include_directories(HGPhysicsBase PUBLIC
     include
 )
 
+target_compile_definitions(HGPhysicsBase PUBLIC
+    HG_HAS_PHYSICS_BASE=1
+)
+
 if (${HG_BUILD_WARNINGS})
     target_compile_options(HGPhysicsBase
         PRIVATE

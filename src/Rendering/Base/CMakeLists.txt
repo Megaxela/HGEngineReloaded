@@ -62,6 +62,10 @@ target_link_libraries(HGRenderingBase
     imgui
 )
 
+target_compile_definitions(HGRenderingBase PUBLIC
+    HG_HAS_RENDERING_BASE
+)
+
 if (${HG_BUILD_WARNINGS})
     target_compile_options(HGRenderingBase
         PRIVATE

@@ -1,3 +1,6 @@
+// HG::Core
+#include <BuildProperties.hpp>
+
 // HG::Rendering::Base
 #include <Lights/AbstractLight.hpp>
 
@@ -44,18 +47,17 @@ HG::Utils::Color HG::Rendering::Base::AbstractLight::color() const
 
 void HG::Rendering::Base::AbstractLight::onStart()
 {
-#ifndef NDEBUG
-
-    if (std::find(
-        AbstractLight::m_lights.begin(),
-        AbstractLight::m_lights.end(),
-        this
-    ) != AbstractLight::m_lights.end())
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "Trying to add light to global light system, several times.";
+        if (std::find(
+            AbstractLight::m_lights.begin(),
+            AbstractLight::m_lights.end(),
+            this
+        ) != AbstractLight::m_lights.end())
+        {
+            Error() << "Trying to add light to global light system, several times.";
+        }
     }
-
-#endif
 
     AbstractLight::m_lights.push_back(this);
 }

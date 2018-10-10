@@ -39,6 +39,10 @@ target_link_libraries(HGStandard
     ALogger
 )
 
+target_compile_definitions(HGStandard PUBLIC
+    HG_HAS_STANDARD
+)
+
 if (${HG_BUILD_WARNINGS})
     target_compile_options(HGStandard
         PRIVATE

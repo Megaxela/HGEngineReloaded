@@ -3,6 +3,7 @@
 #include <GameObject.hpp>
 #include <Scene.hpp>
 #include <Transform.hpp>
+#include <BuildProperties.hpp>
 
 // HG::Rendering::Base
 #include <Renderer.hpp>
@@ -257,39 +258,38 @@ HG::Rendering::Base::Camera::CullType HG::Rendering::Base::Camera::getFar() cons
 
 void HG::Rendering::Base::Camera::onStart()
 {
-#ifndef NDEBUG
-    if (gameObject() == nullptr)
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        throw std::runtime_error("Starting camera, w/o GameObject.");
-    }
-#endif
+        if (gameObject() == nullptr)
+        {
+            throw std::runtime_error("Starting camera, w/o GameObject.");
+        }
 
-    // Getting current viewport
-#ifndef NDEBUG
-    if (scene() == nullptr)
-    {
-        Error() << "No scene set. Can't determine initial viewport.";
-        return;
-    }
+        // Getting current viewport
+        if (scene() == nullptr)
+        {
+            Error() << "No scene set. Can't determine initial viewport.";
+            return;
+        }
 
-    if (scene()->application() == nullptr)
-    {
-        Error() << "No application set in scene. Can't determine initial viewport.";
-        return;
-    }
+        if (scene()->application() == nullptr)
+        {
+            Error() << "No application set in scene. Can't determine initial viewport.";
+            return;
+        }
 
-    if (scene()->application()->renderer() == nullptr)
-    {
-        Error() << "No renderer set for application.";
-        return;
-    }
+        if (scene()->application()->renderer() == nullptr)
+        {
+            Error() << "No renderer set for application.";
+            return;
+        }
 
-    if (scene()->application()->systemController() == nullptr)
-    {
-        Error() << "No system controller set in application. Can't determine initial viewport.";
-        return;
+        if (scene()->application()->systemController() == nullptr)
+        {
+            Error() << "No system controller set in application. Can't determine initial viewport.";
+            return;
+        }
     }
-#endif
 
     // If there is no active camera, set this.
     if (!scene()->application()->renderer()->activeCamera())
@@ -316,15 +316,14 @@ void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3
     glm::vec4 perspective;
     glm::decompose(resultMatrix, scale, rotation, translation, skew, perspective);
 
-#ifndef NDEBUG
-
-    if (gameObject() == nullptr)
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "Can't make camera look at without gameobject.";
-        return;
+        if (gameObject() == nullptr)
+        {
+            Error() << "Can't make camera look at without gameobject.";
+            return;
+        }
     }
-
-#endif
 
     gameObject()->transform()->setLocalRotation(rotation);
 }

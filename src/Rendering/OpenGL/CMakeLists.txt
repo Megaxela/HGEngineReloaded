@@ -104,9 +104,9 @@ target_include_directories(HGRenderingOGL PUBLIC
     ${RENDERER_INCLUDE}
 )
 
-target_compile_definitions(HGRenderingOGL
-    PUBLIC
-    -D${RENDERER_DEFINITION}
+target_compile_definitions(HGRenderingOGL PUBLIC
+    ${RENDERER_DEFINITION}=1
+    HG_HAS_RENDERING_OGL=1
 )
 
 if (${HG_BUILD_WARNINGS})

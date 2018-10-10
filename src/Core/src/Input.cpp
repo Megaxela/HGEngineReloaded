@@ -3,6 +3,7 @@
 
 // HG::Core
 #include <Input.hpp>
+#include <BuildProperties.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -19,52 +20,56 @@ HG::Core::Input::Keyboard::Keyboard() :
 
 bool HG::Core::Input::Keyboard::isPressed(HG::Core::Input::Keyboard::Key key) const
 {
-#ifndef NDEBUG
-    if (std::size_t(key) >= m_pressed.size())
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
-        return false;
+        if (std::size_t(key) >= m_pressed.size())
+        {
+            Error() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
+            return false;
+        }
     }
-#endif
 
     return m_pressed[std::size_t(key)];
 }
 
 bool HG::Core::Input::Keyboard::isPushed(HG::Core::Input::Keyboard::Key key) const
 {
-#ifndef NDEBUG
-    if (std::size_t(key) >= m_pushed.size())
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
-        return false;
+        if (std::size_t(key) >= m_pushed.size())
+        {
+            Error() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
+            return false;
+        }
     }
-#endif
 
     return m_pushed[std::size_t(key)];
 }
 
 bool HG::Core::Input::Keyboard::isReleased(HG::Core::Input::Keyboard::Key key) const
 {
-#ifndef NDEBUG
-    if (std::size_t(key) >= m_released.size())
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
-        return false;
+        if (std::size_t(key) >= m_released.size())
+        {
+            Error() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
+            return false;
+        }
     }
-#endif
 
     return m_released[std::size_t(key)];
 }
 
 bool HG::Core::Input::Keyboard::isModifierPressed(HG::Core::Input::Keyboard::Modifiers modifier) const
 {
-#ifndef NDEBUG
-    if (int(modifier) > 7)
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "There is no modifier with code " << int(modifier) << " requested. Returning false.";
-        return false;
+        if (int(modifier) > 7)
+        {
+            Error() << "There is no modifier with code " << int(modifier) << " requested. Returning false.";
+            return false;
+        }
     }
-#endif
 
     return static_cast<bool>(m_pressedModifiers & (1u << int(modifier)));
 }
@@ -76,13 +81,14 @@ uint32_t HG::Core::Input::Keyboard::pressedCharacter() const
 
 void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Key key, bool pressed)
 {
-#ifndef NDEBUG
-    if (std::size_t(key) >= m_pressed.size())
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "There is no key with code " << std::size_t(key) << " requested. Doing nothing.";
-        return;
+        if (std::size_t(key) >= m_pressed.size())
+        {
+            Error() << "There is no key with code " << std::size_t(key) << " requested. Doing nothing.";
+            return;
+        }
     }
-#endif
 
 
     if (pressed)
@@ -99,13 +105,14 @@ void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Key key, b
 
 void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Modifiers modifier, bool pressed)
 {
-#ifndef NDEBUG
-    if (int(modifier) > 7)
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "There is no modifier with code " << int(modifier) << " requested. Doing nothing.";
-        return;
+        if (int(modifier) > 7)
+        {
+            Error() << "There is no modifier with code " << int(modifier) << " requested. Doing nothing.";
+            return;
+        }
     }
-#endif
 
     if (pressed)
     {

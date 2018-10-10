@@ -264,6 +264,7 @@ namespace HG::Core
         };
 
         // Timers container
+        // todo: Replace with unordered map at optimization
         std::map<int, Timer> m_timers;
 
     };

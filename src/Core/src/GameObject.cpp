@@ -3,6 +3,7 @@
 #include <Behaviour.hpp>
 #include <Scene.hpp>
 #include <Transform.hpp>
+#include <BuildProperties.hpp>
 
 // HG::Rendering::Base
 #include <RenderBehaviour.hpp>
@@ -70,13 +71,14 @@ void HG::Core::GameObject::update()
 
 void HG::Core::GameObject::removeBehaviour(HG::Core::Behaviour *behaviour)
 {
-#ifndef NDEBUG
-    if (behaviour->gameObject() != this)
+    if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        Error() << "Trying to remove behaviour from GameObject, that's not it's parent.";
-        return;
+        if (behaviour->gameObject() != this)
+        {
+            Error() << "Trying to remove behaviour from GameObject, that's not it's parent.";
+            return;
+        }
     }
-#endif
 
     // Remove this gameobject as parent
     behaviour->setParentGameObject(nullptr);

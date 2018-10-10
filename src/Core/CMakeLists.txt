@@ -32,7 +32,12 @@ add_library(HGCore STATIC
     src/Input.cpp
     include/Input.hpp
     include/Data.hpp
-        src/ThreadPool.cpp include/ThreadPool.hpp)
+    src/ThreadPool.cpp
+    include/ThreadPool.hpp
+    src/CountStatistics.cpp
+    include/CountStatistics.hpp
+    include/BuildProperties.hpp
+)
 
 target_include_directories(HGCore PUBLIC
     include
