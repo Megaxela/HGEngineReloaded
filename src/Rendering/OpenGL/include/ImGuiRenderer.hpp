@@ -14,6 +14,7 @@ namespace HG
     namespace Rendering::Base
     {
         class Material;
+        class Texture;
     }
 }
 
@@ -62,7 +63,7 @@ namespace HG::Rendering::OpenGL
         gl::buffer m_vbo;
         gl::buffer m_ebo;
 
-        gl::texture_2d m_fontTexture;
+        HG::Rendering::Base::Texture* m_fontTexture;
 
         GLint m_uniformLocationTex = 0,
               m_uniformLocationProjMtx = 0;

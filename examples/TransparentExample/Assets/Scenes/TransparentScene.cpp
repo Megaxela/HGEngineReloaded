@@ -17,6 +17,7 @@
 
 // HG::Standard
 #include <Behaviours/FPSCameraMovement.hpp>
+#include <Behaviours/ServiceInformationOverlay.hpp>
 
 // HG::Utils
 #include <Loaders/AssimpLoader.hpp>
@@ -69,10 +70,11 @@ void TransparentScene::start()
             .setName("Camera")
             .setGlobalPosition({0, 0, 0})
             .addBehaviour(new HG::Rendering::Base::Camera)
+            .addBehaviour(new HG::Standard::Behaviours::ServiceInformationOverlay)
             .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)
     );
 
-    glm::ivec2 amount(10, 10);
+    glm::ivec2 amount(20, 20);
 
     // Adding bottles
     int i = 0;

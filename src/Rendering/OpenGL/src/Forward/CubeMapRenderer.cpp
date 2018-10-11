@@ -2,6 +2,7 @@
 #include <Application.hpp>
 #include <GameObject.hpp>
 #include <Transform.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Rendering::Base
 #include <Renderer.hpp>
@@ -179,6 +180,14 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base
         GL_TRIANGLES,
         0, 36
     );
+
+    if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+    {
+        application()->countStatistics()->add(
+            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+            36
+        );
+    }
 
     application()->renderer()->setActiveCubeMap(cubemap);
 

@@ -20,7 +20,7 @@
 
 
 HG::Core::Application::Application(int /* argc */, char** /* argv */) :
-    m_renderer(new HG::Rendering::Base::Renderer(this)),
+    m_renderer(nullptr),
     m_systemController(nullptr),
     m_physicsController(nullptr),
     m_threadPool(new HG::Core::ThreadPool()),
@@ -31,7 +31,7 @@ HG::Core::Application::Application(int /* argc */, char** /* argv */) :
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
 {
-
+    m_renderer = new HG::Rendering::Base::Renderer(this);
 }
 
 HG::Core::Application::~Application()

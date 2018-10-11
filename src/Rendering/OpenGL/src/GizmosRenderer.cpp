@@ -1,3 +1,7 @@
+// HG::Core
+#include <Application.hpp>
+#include <CountStatistics.hpp>
+
 // HG::Rendering::OpenGL
 #include <Materials/GizmosLineMaterial.hpp>
 #include <Materials/GizmosMeshMaterial.hpp>
@@ -135,6 +139,14 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
         0,
         m_lineData.size() * 2
     );
+
+    if (m_application->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+    {
+        m_application->countStatistics()->add(
+            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+            m_lineData.size() * 2
+        );
+    }
 
     m_linesVAO.unbind();
 

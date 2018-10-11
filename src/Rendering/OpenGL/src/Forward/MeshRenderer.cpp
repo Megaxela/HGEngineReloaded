@@ -2,6 +2,7 @@
 #include <Application.hpp>
 #include <GameObject.hpp>
 #include <Transform.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Rendering::OpenGL
 #include <Materials/MeshFallbackMaterial.hpp>
@@ -115,7 +116,10 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         program = &shaderData->Program;
         program->use();
 
-        meshBehaviour->material()->set("cubemap", application()->renderer()->activeCubeMap());
+        if (application()->renderer()->activeCubeMap())
+        {
+            meshBehaviour->material()->set("cubemap", application()->renderer()->activeCubeMap());
+        }
 
         applyShaderUniforms(meshBehaviour->material());
     }
@@ -299,6 +303,14 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         static_cast<GLsizei>(data->Count),
         GL_UNSIGNED_INT
     );
+
+    if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+    {
+        application()->countStatistics()->add(
+            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+            data->Count
+        );
+    }
 
     data->VAO.unbind();
 }

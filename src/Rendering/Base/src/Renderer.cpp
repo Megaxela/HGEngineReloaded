@@ -1,5 +1,6 @@
 // HG::Core
 #include <Application.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Rendering::Base
 #include <RenderingPipeline.hpp>
@@ -18,14 +19,28 @@ HG::Rendering::Base::Renderer::Renderer(HG::Core::Application* application) :
     m_gizmos(new HG::Rendering::Base::Gizmos()),
     m_materialCollection(new HG::Rendering::Base::MaterialCollection(application->resourceManager(), this)),
     m_activeCamera(nullptr),
-    m_defaultRenderTarget(HG::Rendering::Base::RenderTarget::createDefault())
+    m_defaultRenderTarget(HG::Rendering::Base::RenderTarget::createDefault()),
+    m_activeCubemap(nullptr)
 {
     Debug() << "Creating renderer.";
+
+    m_parentApplication
+        ->countStatistics()
+        ->addCounter(
+            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+            HG::Core::CountStatistics::CounterType::LastFrame
+        );
 }
 
 HG::Rendering::Base::Renderer::~Renderer()
 {
     Debug() << "Destroying renderer.";
+    m_parentApplication
+        ->countStatistics()
+        ->removeCounter(
+            HG::Core::CountStatistics::CommonCounter::NumberOfVertices
+        );
+
     delete m_pipeline;
     delete m_gizmos;
     delete m_materialCollection;

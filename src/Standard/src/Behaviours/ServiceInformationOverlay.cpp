@@ -4,6 +4,7 @@
 #include <Application.hpp>
 #include <Scene.hpp>
 #include <ThreadPool.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Standard
 #include <Behaviours/ServiceInformationOverlay.hpp>
@@ -37,6 +38,7 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
     ))
     {
         auto timeStat = scene()->application()->timeStatistics();
+        auto countStat = scene()->application()->countStatistics();
 
         auto totalRam = HG::Utils::PhysicalResource::getTotalRAM();
 
@@ -55,7 +57,9 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
             timeStat->frameDeltaTime() .count() / 1000.0f
         );
 
-        // Moving all elements to left
+        // Resources
+
+
 
         ImGui::Text(
             "RAM: %.1fMB / %.1fMB\n"
@@ -71,6 +75,12 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
                 ->application()
                 ->threadPool()
                 ->numberOfJobs(HG::Core::ThreadPool::Type::FileLoadingThread)
+        );
+
+        // Counters
+        ImGui::Text(
+            "Vertices: %llu\n",
+            countStat->value(HG::Core::CountStatistics::CommonCounter::NumberOfVertices)
         );
 
         ImGui::End();

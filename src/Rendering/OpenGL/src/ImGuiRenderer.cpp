@@ -1,14 +1,17 @@
 // HG::Core
 #include <Application.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Rendering::Base
 #include <Renderer.hpp>
 #include <MaterialCollection.hpp>
+#include <Texture.hpp>
 
 // HG::Rendering::OpenGL
 #include <Materials/ImGuiMaterial.hpp>
 #include <Common/ShaderData.hpp>
 #include <ImGuiRenderer.hpp>
+#include <Common/Texture2DData.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -19,13 +22,14 @@
 // GLM
 #include <glm/gtc/matrix_transform.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
+#include <Surface.hpp>
 
 HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* application) :
     m_application(application),
     m_material(nullptr),
     m_vbo(gl::invalid_id),
     m_ebo(gl::invalid_id),
-    m_fontTexture(gl::invalid_id)
+    m_fontTexture(nullptr)
 {
 
 }
@@ -44,7 +48,8 @@ void HG::Rendering::OpenGL::ImGuiRenderer::deinit()
 
     m_vbo = std::move(gl::buffer(gl::invalid_id));
     m_ebo = std::move(gl::buffer(gl::invalid_id));
-    m_fontTexture = std::move(gl::texture_2d(gl::invalid_id));
+    delete m_fontTexture;
+    m_fontTexture = nullptr;
 }
 
 void HG::Rendering::OpenGL::ImGuiRenderer::init()
@@ -187,10 +192,21 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
             }
             else
             {
-                glBindTexture(
-                    GL_TEXTURE_2D,
-                    (GLuint)(intptr_t)pcmd->TextureId
-                );
+                auto texture = static_cast<HG::Rendering::Base::Texture*>(pcmd->TextureId);
+
+                if (m_application->renderer()->needSetup(texture))
+                {
+                    if (!m_application->renderer()->setup(texture))
+                    {
+                        continue;
+                    }
+                }
+
+                auto data = dynamic_cast<
+                    HG::Rendering::OpenGL::Common::Texture2DData*
+                >(texture->specificData());
+
+                data->Texture.bind();
 
                 gl::set_scissor(
                     {
@@ -209,6 +225,16 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
                     GL_UNSIGNED_SHORT, // May cause errors after imgui update, because of propaply uint
                     idx_buffer_offset
                 );
+
+                data->Texture.unbind();
+
+                if (m_application->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+                {
+                    m_application->countStatistics()->add(
+                        HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+                        pcmd->ElemCount
+                    );
+                }
             }
 
             idx_buffer_offset += pcmd->ElemCount;
@@ -226,37 +252,26 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
 
 void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
 {
-    m_fontTexture = std::move(gl::texture_2d());
 
     auto& io = ImGui::GetIO();
 
-    unsigned char* pixels;
-    int width, height;
-    io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
+    auto surface = std::make_shared<HG::Utils::Surface>();
+    surface->Bpp = 4;
 
-    // Upload texture to graphics system
-    m_fontTexture.bind();
-    m_fontTexture.set_min_filter(GL_LINEAR);
-    m_fontTexture.set_mag_filter(GL_LINEAR);
+    io.Fonts->GetTexDataAsRGBA32(&surface->Data, &surface->Width, &surface->Height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
 
-    m_fontTexture.set_storage(
-        1,        // Levels
-        GL_RGBA8, // Internal format,
-        width,    // Width
-        height    // Height
-    );
+    m_fontTexture = new HG::Rendering::Base::Texture(surface);
 
-    m_fontTexture.set_sub_image(
-        0,        // Level
-        0,        // X offset
-        0,        // Y offset
-        width,    // Width
-        height,   // Height
-        GL_RGBA, // External format
-        GL_UNSIGNED_BYTE, // Type
-        pixels
-    );
-
-    // Store our identifier
-    io.Fonts->TexID = (void *)(intptr_t) m_fontTexture.id();
+    if (m_application->renderer()->needSetup(m_fontTexture))
+    {
+        if (m_application->renderer()->setup(m_fontTexture))
+        {
+            // Store our identifier
+            io.Fonts->TexID = m_fontTexture;
+        }
+        else
+        {
+            Error() << "Can't setup ImGUI font data.";
+        }
+    }
 }

@@ -2,6 +2,7 @@
 #include <Application.hpp>
 #include <GameObject.hpp>
 #include <Transform.hpp>
+#include <CountStatistics.hpp>
 
 // HG::Rendering::Base
 #include <MaterialCollection.hpp>
@@ -201,6 +202,14 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
         static_cast<GLsizei>(6),
         GL_UNSIGNED_INT
     );
+
+    if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+    {
+        application()->countStatistics()->add(
+            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+            6
+        );
+    }
 
     m_spriteData->VAO.unbind();
 }

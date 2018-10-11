@@ -31,6 +31,11 @@ namespace HG::Core
             LastFrame
         };
 
+        enum CommonCounter
+        {
+            NumberOfVertices
+        };
+
         using ValueType = uint64_t;
 
         /**
@@ -69,6 +74,15 @@ namespace HG::Core
          * @param counter Counter id.
          */
         ValueType value(int counter) const;
+
+        /**
+         * @brief Method for adding value to counter.
+         * Can throw `std::invalid_argument` exception if there is
+         * no counter with specified id.
+         * @param counter Counter id.
+         * @param value Value.
+         */
+        void add(int counter, ValueType value);
 
         /**
          * @brief Method for resetting counter.

@@ -57,6 +57,18 @@ HG::Core::CountStatistics::ValueType HG::Core::CountStatistics::value(int counte
     return iterator->second->value();
 }
 
+void HG::Core::CountStatistics::add(int counter, HG::Core::CountStatistics::ValueType value)
+{
+    auto iterator = m_counters.find(counter);
+
+    if (iterator == m_counters.end())
+    {
+        throw std::invalid_argument("There is not counter with id " + std::to_string(counter));
+    }
+
+    return iterator->second->add(value);
+}
+
 void HG::Core::CountStatistics::reset(int counter)
 {
     auto iterator = m_counters.find(counter);

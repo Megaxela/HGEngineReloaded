@@ -18,6 +18,7 @@
 
 // HG::Standard
 #include <Behaviours/FPSCameraMovement.hpp>
+#include <Behaviours/ServiceInformationOverlay.hpp>
 
 // HG::Utils
 #include <Loaders/AssimpLoader.hpp>
@@ -31,6 +32,21 @@
 
 class DescriptionBehaviour : public HG::Core::Behaviour
 {
+public:
+
+    DescriptionBehaviour(HG::Rendering::Base::Texture* texture1,
+                         HG::Rendering::Base::Texture* texture2) :
+        m_tex1(texture1),
+        m_tex2(texture2)
+    {
+
+    }
+
+private:
+
+    HG::Rendering::Base::Texture* m_tex1;
+    HG::Rendering::Base::Texture* m_tex2;
+
 protected:
 
     void onUpdate() override
@@ -47,6 +63,15 @@ protected:
                 "(like in double buffering).\n"
                 "You are able to enable FPS camera movement with `R`."
             );
+
+            ImGui::Text("1:");
+            ImGui::SameLine();
+            ImGui::Image(m_tex1, {100, 100});
+            ImGui::SameLine();
+            ImGui::Text("2:");
+            ImGui::SameLine();
+            ImGui::Image(m_tex2, {100, 100});
+
             ImGui::End();
         }
     }
@@ -102,8 +127,9 @@ void RenderToTextureScene::start()
     addGameObject(
         HG::Core::GameObjectBuilder()
             .setGlobalPosition({0.0f, 0.0f, 2.5f})
-            .addBehaviour(new DescriptionBehaviour)
+            .addBehaviour(new DescriptionBehaviour(texture1, texture2))
             .addBehaviour(new HG::Rendering::Base::Camera)
+            .addBehaviour(new HG::Standard::Behaviours::ServiceInformationOverlay)
             .addBehaviour(new HG::Standard::Behaviours::FPSCameraMovement)
     );
 
