@@ -72,8 +72,8 @@ protected:
             ImGui::SameLine();
             ImGui::Image(m_tex2, {100, 100});
 
-            ImGui::End();
         }
+        ImGui::End();
     }
 };
 

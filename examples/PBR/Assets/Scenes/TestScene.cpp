@@ -45,8 +45,8 @@ protected:
                 "All scene setup is performed in (\"Assets/Scenes/TestScene\").\n"
                 "You are able to enable FPS camera movement with `R`."
             );
-            ImGui::End();
         }
+        ImGui::End();
     }
 };
 

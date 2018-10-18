@@ -55,6 +55,10 @@ namespace HG::Rendering::OpenGL::Forward
          */
         RenderingPipeline* addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer* renderer);
 
+        /**
+         * @brief Renderbuffer clear implementation.
+         * @param color Clear color.
+         */
         void clear(HG::Utils::Color color) override;
 
         /**
@@ -81,6 +85,11 @@ namespace HG::Rendering::OpenGL::Forward
          */
         void deinit() override;
 
+        /**
+         * @brief Method for setting current render target and
+         * setting it up.
+         * @param target Pointer to rendertarget.
+         */
         void setRenderTarget(HG::Rendering::Base::RenderTarget* target) override;
 
     private:

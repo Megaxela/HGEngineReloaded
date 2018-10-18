@@ -112,6 +112,11 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
 
     case Base::MaterialValue::Type::CubeMap:
     {
+        if (value.cubeMap == nullptr)
+        {
+            break;
+        }
+
         // todo: If any errors on texture, render fallback texture.
         // Setting texture unit
         program->set_uniform_1i(
@@ -142,6 +147,11 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
     }
     case Base::MaterialValue::Type::Texture:
     {
+        if  (value.texture == nullptr)
+        {
+            break;
+        }
+
         // todo: If any errors on texture, render fallback texture.
         // Setting texture unit
         program->set_uniform_1i(

@@ -45,8 +45,8 @@ protected:
                 "This example shows gameobject parent system.\n"
                 "Scene is described in \"Assets/Scenes/OribitalScene\"."
             );
-            ImGui::End();
         }
+        ImGui::End();
     }
 };
 

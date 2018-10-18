@@ -179,7 +179,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
             }
             else
             {
-                // Not inverting, because Z is positive towards camera)
+                // Not inverting, because Z is positive towards camera
                 m_sortedBehaviours.insert({
                     (cameraSpace * glm::inverse(cameraRot)).z,
                     behaviour
@@ -200,7 +200,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
         gl::set_depth_test_enabled(true);
     }
 
-    // Rendering other scene scene
+    // Rendering other scene
     for (auto& [distance, behaviour] : m_sortedBehaviours)
     {
         render(behaviour);
