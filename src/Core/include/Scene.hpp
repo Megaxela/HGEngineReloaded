@@ -111,22 +111,9 @@ namespace HG::Core
 
         /**
          * @brief Method for getting all active gameobjects.
-         * @tparam Container Container type.
          * @param container Container object.
          */
-        template<typename Container>
-        void getGameObjects(Container& container)
-        {
-            for (auto&& gameObject : m_gameObjects)
-            {
-                if (m_gameObjects.isRemoving(gameObject))
-                {
-                    continue;
-                }
-
-                container.push_back(gameObject);
-            }
-        }
+        void getGameObjects(std::vector<GameObject*>& container);
 
         /**
          * @brief Method for registrating resource

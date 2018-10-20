@@ -15,7 +15,8 @@ HG::Core::GameObject::GameObject() :
     m_behaviours(),
     m_transform(new HG::Core::Transform(this)),
     m_parentScene(nullptr),
-    m_enabled(true)
+    m_enabled(true),
+    m_hidden(false)
 {
 
 }
@@ -171,4 +172,14 @@ bool HG::Core::GameObject::isEnabled() const
 void HG::Core::GameObject::setEnabled(bool value)
 {
     m_enabled = value;
+}
+
+bool HG::Core::GameObject::isHidden() const
+{
+    return m_hidden;
+}
+
+void HG::Core::GameObject::setHidden(bool value)
+{
+    m_hidden = value;
 }

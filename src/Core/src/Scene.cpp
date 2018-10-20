@@ -100,7 +100,8 @@ HG::Core::GameObject *HG::Core::Scene::findGameObject(const std::string &name)
 {
     for (auto&& gameObject : m_gameObjects)
     {
-        if (m_gameObjects.isRemoving(gameObject))
+        if (gameObject->isHidden() ||
+            m_gameObjects.isRemoving(gameObject))
         {
             continue;
         }
@@ -119,7 +120,8 @@ void HG::Core::Scene::findGameObjects(const std::string &name,
 {
     for (auto&& gameObject : m_gameObjects)
     {
-        if (m_gameObjects.isRemoving(gameObject))
+        if (gameObject->isHidden() ||
+            m_gameObjects.isRemoving(gameObject))
         {
             continue;
         }
@@ -128,5 +130,19 @@ void HG::Core::Scene::findGameObjects(const std::string &name,
         {
             container.push_back(gameObject);
         }
+    }
+}
+
+void HG::Core::Scene::getGameObjects(std::vector<HG::Core::GameObject *> &container)
+{
+    for (auto&& gameObject : m_gameObjects)
+    {
+        if (gameObject->isHidden() ||
+            m_gameObjects.isRemoving(gameObject))
+        {
+            continue;
+        }
+
+        container.push_back(gameObject);
     }
 }

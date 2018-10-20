@@ -93,6 +93,22 @@ namespace HG::Core
         void setEnabled(bool value);
 
         /**
+         * @brief Method for checking is gameobject hidden.
+         * If gameobject is hidden - it will operate as
+         * usual, but it will be impossible to locate
+         * gameobject with external methods like HG::Core::Scene::findGameObject or
+         * HG::Core::Scene::getGameObjects, but it's still possible to remove
+         * or add gameobject to scene.
+         */
+        bool isHidden() const;
+
+        /**
+         * @brief Method for setting gameobject hidden state.
+         * @return Hidden state.
+         */
+        void setHidden(bool value);
+
+        /**
          * @brief Method for getting game object
          * transform.
          * @return Pointer to transform.
@@ -238,6 +254,7 @@ namespace HG::Core
         HG::Core::Scene* m_parentScene;
 
         bool m_enabled;
+        bool m_hidden;
     };
 }
 
