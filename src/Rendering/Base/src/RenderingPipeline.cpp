@@ -45,7 +45,7 @@ bool HG::Rendering::Base::RenderingPipeline::init()
         return false;
     }
 
-    if (!m_parentApplication->systemController()->createWindow(800, 600, "place_name_here"))
+    if (!m_parentApplication->systemController()->createWindow(800, 600, m_parentApplication->title()))
     {
         Error() << "Can't create window. See errors above.";
         return false;

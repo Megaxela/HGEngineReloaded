@@ -171,7 +171,7 @@ namespace HG::Standard::Behaviours
 
         Logger::LogsListenerPtr m_logsListener;
 
-        std::map<std::string, Command> m_commands;
+        std::unordered_map<std::string, Command> m_commands;
 
         ringbuffer<
             std::pair<

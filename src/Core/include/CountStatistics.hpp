@@ -1,7 +1,7 @@
 #pragma once
 
 // C++ STL
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 namespace HG::Core
@@ -234,7 +234,7 @@ namespace HG::Core
             ValueType m_currentFrameValue;
         };
 
-        std::map<int, AbstractCounter*> m_counters;
+        std::unordered_map<int, AbstractCounter*> m_counters;
     };
 }
 

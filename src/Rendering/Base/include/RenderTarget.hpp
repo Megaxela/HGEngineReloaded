@@ -1,7 +1,7 @@
 #pragma once
 
 // C++ STL
-#include <map>
+#include <unordered_map>
 
 // HG::Rendering::Base
 #include <RenderData.hpp>
@@ -27,7 +27,7 @@ namespace HG::Rendering::Base
 
         static constexpr std::size_t DataId = HG::Utils::StringTools::hash("RenderData::RenderTarget");
 
-        using TextureContainer = std::map<uint32_t, HG::Rendering::Base::Texture*>;
+        using TextureContainer = std::unordered_map<uint32_t, HG::Rendering::Base::Texture*>;
 
         /**
          * @brief Constructor.

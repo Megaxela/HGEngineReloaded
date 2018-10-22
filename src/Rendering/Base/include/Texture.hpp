@@ -100,6 +100,14 @@ namespace HG::Rendering::Base
         void setSurface(HG::Utils::SurfaceFuturePtr ptr);
 
         /**
+         * @brief Method for setting texture size in pixels.
+         * This call is useless if texture is created with
+         * surface.
+         * @param size Texture size in pixels.
+         */
+        void setSize(glm::ivec2 size);
+
+        /**
          * @brief Method for getting texture size in pixels.
          * @return Texture size in pixels.
          */

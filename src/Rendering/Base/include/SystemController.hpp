@@ -61,6 +61,12 @@ namespace HG::Rendering::Base
                                   std::string title) = 0;
 
         /**
+         * @brief Method for changing window title.
+         * @param title New window title.
+         */
+        virtual void changeTitle(std::string title) = 0;
+
+        /**
          * @brief Method for closing opened window.
          */
         virtual void closeWindow() = 0;

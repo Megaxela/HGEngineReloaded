@@ -118,7 +118,7 @@ namespace HG::Standard::Behaviours
         std::vector<HG::Core::GameObject*> m_layers;
 
         // Loaded tileset textures.
-        std::map<std::string, HG::Rendering::Base::Texture*> m_tilesets;
+        std::unordered_map<std::string, HG::Rendering::Base::Texture*> m_tilesets;
         
         // Map rendering shader
         HG::Rendering::Base::Shader* m_mapShader;

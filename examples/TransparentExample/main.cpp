@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     CurrentLogger::setCurrentLogger(std::make_shared<Loggers::BasicLogger>());
 
     InfoF() << "Creating application";
-    HG::Core::Application application(argc, argv);
+    HG::Core::Application application("HEEngine Transparent Example", argc, argv);
 
     // Setting resource accessor implementation
     application.resourceManager()

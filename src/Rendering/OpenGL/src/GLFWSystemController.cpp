@@ -458,7 +458,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, 
     (void) scancode;
     (void) mods;
 
-    static std::map<int, HG::Core::Input::Keyboard::Key> keys = {
+    static std::unordered_map<int, HG::Core::Input::Keyboard::Key> keys = {
         {GLFW_KEY_0,                HG::Core::Input::Keyboard::Key::N0},
         {GLFW_KEY_1,                HG::Core::Input::Keyboard::Key::N1},
         {GLFW_KEY_2,                HG::Core::Input::Keyboard::Key::N2},
@@ -578,7 +578,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, 
         {GLFW_KEY_MENU,             HG::Core::Input::Keyboard::Key::Menu}
     };
 
-    static std::map<int, HG::Core::Input::Keyboard::Modifiers> modifiers = {
+    static std::unordered_map<int, HG::Core::Input::Keyboard::Modifiers> modifiers = {
         {GLFW_KEY_LEFT_ALT,         HG::Core::Input::Keyboard::Modifiers::Alt},
         {GLFW_KEY_RIGHT_ALT,        HG::Core::Input::Keyboard::Modifiers::Alt},
         {GLFW_KEY_LEFT_SHIFT,       HG::Core::Input::Keyboard::Modifiers::Shift},
@@ -779,6 +779,14 @@ HG::Utils::Rect HG::Rendering::OpenGL::GLFWSystemController::viewport() const
         ->size();
 
     return {0, 0, sz.x, sz.y};
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::changeTitle(std::string title)
+{
+    if (m_window)
+    {
+        glfwSetWindowTitle(m_window, title.c_str());
+    }
 }
 
 #endif

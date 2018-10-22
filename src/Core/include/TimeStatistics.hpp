@@ -3,7 +3,7 @@
 // C++ STL
 #include <chrono>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 namespace HG::Core
 {
@@ -264,8 +264,7 @@ namespace HG::Core
         };
 
         // Timers container
-        // todo: Replace with unordered map at optimization
-        std::map<int, Timer> m_timers;
+        std::unordered_map<int, Timer> m_timers;
 
     };
 }

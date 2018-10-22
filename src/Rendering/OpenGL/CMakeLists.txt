@@ -36,6 +36,9 @@ elseif(${HGRenderingOGL_USE_Qt})
     set(RENDERER_DEFINITION GRAPHICS_USE_QT)
 
 else()
+    message(STATUS "Available renderers:")
+    message(STATUS "    HGRenderingOGL_USE_GLFW")
+    message(STATUS "    HGRenderingOGL_USE_Qt")
     message(FATAL_ERROR "You must select 1 opengl providing library.")
 endif()
 

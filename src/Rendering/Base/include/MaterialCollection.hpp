@@ -149,7 +149,7 @@ namespace HG::Rendering::Base
 
         HG::Core::ResourceManager* m_resourceManager;
 
-        std::map<std::size_t, HG::Rendering::Base::Shader*> m_shaders;
+        std::unordered_map<std::size_t, HG::Rendering::Base::Shader*> m_shaders;
         HG::Rendering::Base::Renderer* m_renderer;
     };
 }

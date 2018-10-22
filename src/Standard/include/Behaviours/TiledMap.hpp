@@ -430,7 +430,7 @@ namespace HG::Standard::Behaviours
         };
 
         // <TileID,
-        using AnimatedTiles = std::map<uint32_t, TileAnimation>;
+        using AnimatedTiles = std::unordered_map<uint32_t, TileAnimation>;
 
         /**
          * @brief Default constructor.

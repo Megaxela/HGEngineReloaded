@@ -52,12 +52,27 @@ namespace HG::Core
         HG::Core::GameObject* deploy();
 
         /**
+         * @brief Method for setting game object hidden
+         * state.
+         * @param hidden Hidden state.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setHidden(bool hidden);
+
+        /**
+         * @brief Method for setting game object enabled
+         * state.
+         * @param enabled Enabled state.
+         * @return Reference to builder instance.
+         */
+        GameObjectBuilder& setEnabled(bool enabled);
+
+        /**
          * @brief Method for setting game object to setup.
          * @param ptr GameObject pointer.
          * @return Reference to builder instance.
          */
         GameObjectBuilder& setGameObject(HG::Core::GameObject* ptr);
-
 
         /**
          * @brief Method for adding behaviour to

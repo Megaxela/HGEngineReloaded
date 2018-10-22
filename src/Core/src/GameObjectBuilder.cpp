@@ -24,6 +24,20 @@ HG::Core::GameObject* HG::Core::GameObjectBuilder::deploy()
     return result;
 }
 
+HG::Core::GameObjectBuilder &HG::Core::GameObjectBuilder::setHidden(bool hidden)
+{
+    m_currentGameObject->setHidden(hidden);
+
+    return (*this);
+}
+
+HG::Core::GameObjectBuilder &HG::Core::GameObjectBuilder::setEnabled(bool enabled)
+{
+    m_currentGameObject->setEnabled(enabled);
+
+    return (*this);
+}
+
 HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addBehaviour(HG::Core::Behaviour* behaviour)
 {
     m_currentGameObject->addBehaviour(behaviour);

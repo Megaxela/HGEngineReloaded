@@ -46,6 +46,8 @@ namespace HG::Rendering::OpenGL
          */
         bool createWindow(uint32_t width, uint32_t height, std::string title) override;
 
+        void changeTitle(std::string title) override;
+
         /**
          * @brief Method for swapping buffers in window.
          */

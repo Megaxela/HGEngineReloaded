@@ -281,7 +281,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
 
     layerGameObject->transform()->setLocalPosition(pos);
 
-    std::map<
+    std::unordered_map<
         HG::Rendering::Base::Texture*,
         HG::Utils::MeshPtr
     > rendererMeshInfo;

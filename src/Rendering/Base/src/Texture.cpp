@@ -48,6 +48,16 @@ HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
 
 }
 
+void HG::Rendering::Base::Texture::setSize(glm::ivec2 size)
+{
+    if (m_surface.get() == nullptr)
+    {
+        return;
+    }
+
+    m_size = size;
+}
+
 glm::ivec2 HG::Rendering::Base::Texture::size()
 {
     auto surf = m_surface.get();

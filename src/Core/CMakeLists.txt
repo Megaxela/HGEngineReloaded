@@ -37,6 +37,8 @@ add_library(HGCore STATIC
     src/CountStatistics.cpp
     include/CountStatistics.hpp
     include/BuildProperties.hpp
+    src/Logging.cpp
+    include/Logging.hpp
 )
 
 target_include_directories(HGCore PUBLIC

@@ -371,7 +371,7 @@ namespace HG::Core
             };
 
             glm::vec2 m_mousePos;
-            std::map<uint8_t, ButtonState> m_buttonStates;
+            std::unordered_map<uint8_t, ButtonState> m_buttonStates;
 
             std::function<void(bool)> m_disabledAction;
             std::function<void(bool)> m_hiddenAction;
@@ -570,14 +570,14 @@ namespace HG::Core
                 {}
 
                 bool connected;
-                std::map<uint8_t, ButtonState> buttons;
-                std::map<uint8_t, float> axises;
+                std::unordered_map<uint8_t, ButtonState> buttons;
+                std::unordered_map<uint8_t, float> axises;
                 uint8_t numberOfButtons;
                 uint8_t numberOfAxises;
                 uint8_t numberOfAnalogs;
             };
 
-            std::map<uint8_t, GamepadData> m_gamepads;
+            std::unordered_map<uint8_t, GamepadData> m_gamepads;
         };
 
         /**

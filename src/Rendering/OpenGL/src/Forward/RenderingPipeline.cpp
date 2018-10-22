@@ -14,11 +14,13 @@
 #include <RenderTarget.hpp>
 #include <Renderer.hpp>
 #include <Camera.hpp>
+#include <Shader.hpp>
 
 // ImGui
 #include <imgui.h>
 #include <Common/RenderTargetData.hpp>
 #include <Behaviours/CubeMap.hpp>
+#include <Common/ShaderData.hpp>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
@@ -132,8 +134,6 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
 {
-    // todo: Add cubemap rendering
-
     m_sortedBehaviours.clear();
     HG::Rendering::Base::RenderBehaviour* cubemapBehaviour = nullptr;
 

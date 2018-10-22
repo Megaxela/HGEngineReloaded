@@ -1,7 +1,7 @@
 #pragma once
 
 // C++ STL
-#include <map>
+#include <unordered_map>
 
 // HG::Utils
 #include <DoubleBufferContainer.hpp>
@@ -134,7 +134,7 @@ namespace HG::Rendering::Base
         HG::Core::Application* m_parentApplication;
         HG::Rendering::Base::RenderTarget* m_currentRenderTarget;
 
-        std::map<
+        std::unordered_map<
             std::size_t,
             HG::Rendering::Base::AbstractRenderDataProcessor*
         > m_renderDataProcessor;

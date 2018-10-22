@@ -19,7 +19,8 @@
 #include <Application.hpp>
 
 
-HG::Core::Application::Application(int /* argc */, char** /* argv */) :
+HG::Core::Application::Application(std::string name, int /* argc */, char** /* argv */) :
+    m_applicationTitle(std::move(name)),
     m_renderer(nullptr),
     m_systemController(nullptr),
     m_physicsController(nullptr),
@@ -95,6 +96,11 @@ bool HG::Core::Application::init()
 void HG::Core::Application::deinit()
 {
     m_renderer->deinit();
+}
+
+std::string HG::Core::Application::title() const
+{
+    return m_applicationTitle;
 }
 
 bool HG::Core::Application::performCycle()

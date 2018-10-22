@@ -9,6 +9,7 @@
 #include <Camera.hpp>
 #include <Gizmos.hpp>
 #include <RenderTarget.hpp>
+#include <Texture.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

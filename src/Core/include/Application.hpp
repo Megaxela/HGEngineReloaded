@@ -1,5 +1,8 @@
 #pragma once
 
+// C++ STL
+#include <string>
+
 namespace HG::Physics::Base
 {
     class PhysicsController;
@@ -33,7 +36,7 @@ namespace HG::Core
          * @param argc Number of command line arguments.
          * @param argv Command line arguments.
          */
-        explicit Application(int argc=0, char** argv=nullptr);
+        explicit Application(std::string name, int argc=0, char** argv=nullptr);
 
         /**
          * @brief Destructor.
@@ -133,6 +136,13 @@ namespace HG::Core
         const HG::Core::Input* input() const;
 
         /**
+         * @brief Method for getting initial application
+         * title.
+         * @return
+         */
+        std::string title() const;
+
+        /**
          * @brief Method for setting system controller.
          */
         void setSystemController(HG::Rendering::Base::SystemController* systemController);
@@ -164,6 +174,9 @@ namespace HG::Core
          * scene swapping.
          */
         void proceedScene();
+
+        // Title for created window
+        std::string m_applicationTitle;
 
         // Renderer object
         HG::Rendering::Base::Renderer* m_renderer;

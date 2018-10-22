@@ -1,7 +1,11 @@
 #pragma once
 
+// C++ STL
+#include <map>
+
 // HG::Rendering::Base
 #include <RenderingPipeline.hpp> // Required for inheritance
+#include <gl/vertex_array.hpp>
 
 namespace HG::Core
 {
@@ -117,7 +121,7 @@ namespace HG::Rendering::OpenGL::Forward
         HG::Rendering::OpenGL::ImGuiRenderer* m_imguiRenderer;
 
         // Map with renderbehaviour renderers.
-        std::map<
+        std::unordered_map<
             std::size_t,
             HG::Rendering::OpenGL::Forward::AbstractRenderer*
         > m_renderers;

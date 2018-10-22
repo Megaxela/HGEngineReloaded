@@ -2,7 +2,7 @@
 
 // C++ STL
 #include <string>
-#include <map>
+#include <unordered_map>
 
 // HG::Rendering::Base
 #include <MaterialValue.hpp>
@@ -19,7 +19,7 @@ namespace HG::Rendering::Base
     {
     public:
 
-        using VariablesContainer = std::map<std::string, MaterialValue>;
+        using VariablesContainer = std::unordered_map<std::string, MaterialValue>;
 
         /**
          * @brief Constructor.
