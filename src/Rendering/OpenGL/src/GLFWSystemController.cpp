@@ -96,6 +96,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiInit()
     m_mouseCursors[ImGuiMouseCursor_ResizeEW]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
     m_mouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
     m_mouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    m_mouseCursors[ImGuiMouseCursor_Hand]       = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
 }
 
 void HG::Rendering::OpenGL::GLFWSystemController::imGuiDeinit()
@@ -103,8 +104,11 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiDeinit()
     // Destroying cursors
     for (auto&& cursor : m_mouseCursors)
     {
-        glfwDestroyCursor(cursor);
-        cursor = nullptr;
+        if (cursor != nullptr)
+        {
+            glfwDestroyCursor(cursor);
+            cursor = nullptr;
+        }
     }
 }
 

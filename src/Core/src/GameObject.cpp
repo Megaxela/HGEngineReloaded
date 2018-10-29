@@ -127,6 +127,8 @@ void HG::Core::GameObject::clear()
 {
     m_parentScene = nullptr;
 
+    m_transform->setParent(nullptr);
+
     // Merge, to prevent double free 
     m_behaviours.merge();
     

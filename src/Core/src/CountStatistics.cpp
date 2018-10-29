@@ -7,6 +7,17 @@ HG::Core::CountStatistics::CountStatistics() :
 
 }
 
+
+HG::Core::CountStatistics::~CountStatistics()
+{
+    for (auto&& [id, counter] : m_counters)
+    {
+        delete counter;
+    }
+
+    m_counters.clear();
+}
+
 void HG::Core::CountStatistics::addCounter(int counter, HG::Core::CountStatistics::CounterType type)
 {
     auto iterator = m_counters.find(counter);

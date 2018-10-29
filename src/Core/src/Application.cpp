@@ -44,6 +44,7 @@ HG::Core::Application::~Application()
     delete m_renderer;
     delete m_systemController;
     delete m_physicsController;
+    delete m_countStatistics;
 }
 
 

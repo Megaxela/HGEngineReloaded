@@ -30,16 +30,7 @@ HG::Core::Transform::Transform(GameObject* owner) :
 
 HG::Core::Transform::~Transform()
 {
-    if (m_parent != nullptr)
-    {
-        m_parent->m_children.erase(
-            std::find(
-                m_parent->m_children.begin(),
-                m_parent->m_children.end(),
-                this
-            )
-        );
-    }
+    setParent(nullptr);
 }
 
 void HG::Core::Transform::rotateAround(glm::vec3 anchor, glm::quat rotValue)

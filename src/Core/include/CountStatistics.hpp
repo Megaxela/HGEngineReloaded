@@ -44,6 +44,11 @@ namespace HG::Core
         CountStatistics();
 
         /**
+         * @brief Destructor.
+         */
+        ~CountStatistics();
+
+        /**
          * @brief Method for adding new counter.
          * Can throw exception `std::invalid_argument` if counter
          * with this id is already presented in debug mode.
