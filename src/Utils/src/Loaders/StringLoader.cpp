@@ -1,5 +1,5 @@
 // HG::Utils
-#include <Loaders/StringLoader.hpp>
+#include <HG/Utils/Loaders/StringLoader.hpp>
 
 HG::Utils::StringLoader::StringLoader()
 {

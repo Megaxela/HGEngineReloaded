@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Material.hpp>
+#include <HG/Rendering/Base/Material.hpp>
 
 namespace HG::Rendering::Base
 {

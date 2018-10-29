@@ -1,5 +1,5 @@
 // HG::Utils
-#include <Rect.hpp>
+#include <HG/Utils/Rect.hpp>
 
 HG::Utils::Rect::Rect() :
     x(0),

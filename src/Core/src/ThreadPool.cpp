@@ -1,5 +1,5 @@
 // HG::Core
-#include <ThreadPool.hpp>
+#include <HG/Core/ThreadPool.hpp>
 
 // HG::Utils
 

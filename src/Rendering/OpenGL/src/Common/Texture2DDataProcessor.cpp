@@ -1,8 +1,8 @@
-#include <Texture.hpp>
-#include "Common/Texture2DDataProcessor.hpp"
-#include <Common/Texture2DData.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 #include <CurrentLogger.hpp>
-#include <Surface.hpp>
+#include <HG/Utils/Surface.hpp>
 
 namespace
 {

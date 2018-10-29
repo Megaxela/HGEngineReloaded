@@ -1,10 +1,10 @@
 // HG::Core
-#include <GameObject.hpp>
-#include <GameObjectCache.hpp>
-#include <Scene.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/GameObjectCache.hpp>
+#include <HG/Core/Scene.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

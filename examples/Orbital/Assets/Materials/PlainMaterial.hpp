@@ -1,10 +1,10 @@
 #pragma once
 
 // HG::Rendering::Base
-#include <Material.hpp>
+#include <HG/Rendering/Base/Material.hpp>
 
 // HG::Utils
-#include <Color.hpp>
+#include <HG/Utils/Color.hpp>
 
 class PlainMaterial : public HG::Rendering::Base::Material
 {

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "bytearray.hpp"
 #include <string_view>
-#include <base64.hpp>
+#include <HG/Utils/base64.hpp>
 
 using namespace std::literals;
 

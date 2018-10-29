@@ -1,6 +1,6 @@
 // HG::Rendering::Base
-#include <RenderData.hpp>
-#include <RenderSpecificData.hpp>
+#include <HG/Rendering/Base/RenderData.hpp>
+#include <HG/Rendering/Base/RenderSpecificData.hpp>
 
 HG::Rendering::Base::RenderData::RenderData(std::size_t type) :
     m_data(nullptr),

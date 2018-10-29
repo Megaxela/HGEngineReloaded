@@ -1,5 +1,1 @@
-//
-// Created by megaxela on 9/5/18.
-//
-
-#include "Deferred/RenderingPipeline.hpp"
+#include <HG/Rendering/OpenGL/Deferred/RenderingPipeline.hpp>

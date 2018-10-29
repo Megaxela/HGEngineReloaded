@@ -2,7 +2,7 @@
 #include <fstream>
 
 // HG::Standard
-#include <FilesystemResourceAccessor.hpp>
+#include <HG/Standard/FilesystemResourceAccessor.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

@@ -3,8 +3,8 @@
 #include <Controller.hpp>
 
 // HG::Core
-#include <Scene.hpp>
-#include <Application.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Application.hpp>
 
 // ImGUI
 #include <imgui.h>

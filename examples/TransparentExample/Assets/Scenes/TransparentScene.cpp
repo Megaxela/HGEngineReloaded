@@ -3,16 +3,16 @@
 #include <Assets/Materials/GlassMaterial.hpp>
 
 // HG::Core
-#include <Application.hpp>
-#include <ResourceManager.hpp>
-#include <GameObjectBuilder.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <MaterialCollection.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <Behaviours/Mesh.hpp>
-#include <Camera.hpp>
-#include <CubeMap.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/CubeMap.hpp>
 #include <Behaviours/CubeMap.hpp>
 
 // HG::Standard
@@ -21,7 +21,7 @@
 
 // HG::Utils
 #include <Loaders/AssimpLoader.hpp>
-#include <Model.hpp>
+#include <HG/Utils/Model.hpp>
 #include <Loaders/STBImageLoader.hpp>
 
 void TransparentScene::start()

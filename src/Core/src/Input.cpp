@@ -2,8 +2,8 @@
 #include <algorithm>
 
 // HG::Core
-#include <Input.hpp>
-#include <BuildProperties.hpp>
+#include <HG/Core/Input.hpp>
+#include <HG/Core/BuildProperties.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

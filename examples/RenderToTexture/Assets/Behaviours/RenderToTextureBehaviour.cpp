@@ -2,14 +2,14 @@
 #include <Assets/Behaviours/RenderToTextureBehaviour.hpp>
 
 // HG::Core
-#include <Scene.hpp>
-#include <Application.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <Material.hpp>
-#include <RenderingPipeline.hpp>
-#include <RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
 #include <Behaviours/Mesh.hpp>
 
 

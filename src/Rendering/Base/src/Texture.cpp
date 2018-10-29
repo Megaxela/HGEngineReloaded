@@ -1,8 +1,8 @@
 // HG::Rendering::Base
-#include <Texture.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Utils
-#include <Surface.hpp>
+#include <HG/Utils/Surface.hpp>
 
 HG::Rendering::Base::Texture::Texture() :
     RenderData(DataId),

@@ -1,19 +1,19 @@
 // HG::Core
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Scene.hpp>
-#include <Transform.hpp>
-#include <BuildProperties.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/BuildProperties.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <Camera.hpp>
-#include <SystemController.hpp>
-#include <RenderingPipeline.hpp>
-#include <RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
 
 // HG::Utils
-#include <glmex.hpp>
+#include <HG/Utils/glmex.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

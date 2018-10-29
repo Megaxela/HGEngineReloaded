@@ -1,27 +1,27 @@
 // HG::Core
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Transform.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::Base
-#include <MaterialCollection.hpp>
-#include <Behaviours/Sprite.hpp>
-#include <Renderer.hpp>
-#include <Shader.hpp>
-#include <Camera.hpp>
-#include <Texture.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Behaviours/Sprite.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Shader.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <Materials/SpriteMaterial.hpp>
-#include <Forward/SpriteRenderer.hpp>
-#include <Common/Texture2DData.hpp>
-#include <Common/ShaderData.hpp>
-#include <Common/MeshData.hpp>
+#include <HG/Rendering/OpenGL/Materials/SpriteMaterial.hpp>
+#include <HG/Rendering/OpenGL/Forward/SpriteRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshData.hpp>
 
 // HG::Utils
-#include <Surface.hpp>
-#include <Mesh.hpp>
+#include <HG/Utils/Surface.hpp>
+#include <HG/Utils/Mesh.hpp>
 
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>

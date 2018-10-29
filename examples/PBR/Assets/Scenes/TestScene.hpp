@@ -1,7 +1,7 @@
 #pragma once
 
 // HG::Core
-#include <Scene.hpp> // Required for inheritance
+#include <HG/Core/Scene.hpp> // Required for inheritance
 
 class TestScene : public HG::Core::Scene
 {

@@ -1,21 +1,21 @@
 // HG::Core
-#include <Application.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Rendering::OpenGL
-#include <Forward/AbstractRenderer.hpp>
-#include <Common/Texture2DData.hpp>
-#include <Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
+#include <HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <Material.hpp>
-#include <Texture.hpp>
-#include <Shader.hpp>
-#include <CubeMap.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/Base/Shader.hpp>
+#include <HG/Rendering/Base/CubeMap.hpp>
 
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
-#include <Common/CubeMapTextureData.hpp>
 
 HG::Rendering::OpenGL::Forward::AbstractRenderer::AbstractRenderer() :
     m_application(nullptr),

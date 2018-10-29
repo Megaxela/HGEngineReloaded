@@ -1,12 +1,12 @@
 // HG::Rendering::Base
-#include <RenderTarget.hpp>
-#include <RenderingPipeline.hpp>
-#include <Texture.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <Common/RenderTargetDataProcessor.hpp>
-#include <Common/RenderTargetData.hpp>
-#include <Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

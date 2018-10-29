@@ -1,6 +1,6 @@
 // HG::Utils
-#include <Loaders/STBImageLoader.hpp>
-#include <Surface.hpp>
+#include <HG/Utils/Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Surface.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

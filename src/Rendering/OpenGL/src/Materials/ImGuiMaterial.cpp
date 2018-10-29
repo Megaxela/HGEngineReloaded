@@ -1,5 +1,5 @@
 // HG::Rendering::OpenGL
-#include <Materials/ImGuiMaterial.hpp>
+#include <HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp>
 
 const char* HG::Rendering::OpenGL::Materials::ImGuiMaterial::rawShader = R"(
 #ifdef VertexShader

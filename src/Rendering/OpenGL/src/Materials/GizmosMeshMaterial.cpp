@@ -1,4 +1,4 @@
 // HG::Rendering::OpenGL
-#include <Materials/GizmosMeshMaterial.hpp>
+#include <HG/Rendering/OpenGL/Materials/GizmosMeshMaterial.hpp>
 
 const char* HG::Rendering::OpenGL::Materials::GizmosMeshMaterial::rawShader = R"()";

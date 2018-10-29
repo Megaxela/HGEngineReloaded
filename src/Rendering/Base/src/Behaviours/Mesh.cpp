@@ -2,7 +2,7 @@
 #include <memory>
 
 // HG::Rendering::Base
-#include <Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 
 HG::Rendering::Base::Behaviours::Mesh::Mesh(HG::Utils::MeshPtr mesh,
                                             HG::Rendering::Base::Material* material) :

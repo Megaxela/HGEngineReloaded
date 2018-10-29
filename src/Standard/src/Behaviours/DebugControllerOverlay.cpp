@@ -1,17 +1,17 @@
 // HG::Core
-#include <Application.hpp>
-#include <Transform.hpp>
-#include <Scene.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/Scene.hpp>
 
 // HG::Rendering::Base
-#include <Camera.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 
 // HG::Standard
-#include <Behaviours/DebugControllerOverlay.hpp>
-#include <Behaviours/IngameConsole.hpp>
+#include <HG/Standard/Behaviours/DebugControllerOverlay.hpp>
+#include <HG/Standard/Behaviours/IngameConsole.hpp>
 
 // HG::Utils
-#include <Color.hpp>
+#include <HG/Utils/Color.hpp>
 
 // ALogger
 #include <SystemTools.h>

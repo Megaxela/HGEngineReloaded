@@ -1,4 +1,4 @@
 // HG::Standard
-#include <Behaviours/TiledMapCollider.hpp>
+#include <HG/Standard/Behaviours/TiledMapCollider.hpp>
 
 

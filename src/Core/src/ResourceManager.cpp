@@ -1,7 +1,7 @@
 // HG::Core
-#include <ResourceManager.hpp>
-#include <ResourceAccessor.hpp>
-#include <Application.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/ResourceAccessor.hpp>
+#include <HG/Core/Application.hpp>
 
 HG::Core::ResourceManager::ResourceManager(HG::Core::Application* parent) :
     m_accessor(nullptr),

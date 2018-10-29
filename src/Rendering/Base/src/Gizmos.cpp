@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <Gizmos.hpp>
+#include <HG/Rendering/Base/Gizmos.hpp>
 
 // GLM
 #include <glm/gtx/compatibility.hpp>

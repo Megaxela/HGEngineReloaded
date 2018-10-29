@@ -1,26 +1,26 @@
 // HG::Core
-#include <GameObject.hpp>
+#include <HG/Core/GameObject.hpp>
 
 // HG::Rendering::OpenGL
-#include <Forward/RenderingPipeline.hpp>
-#include <Forward/AbstractRenderer.hpp>
-#include <GizmosRenderer.hpp>
-#include <ImGuiRenderer.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp>
+#include <HG/Rendering/OpenGL/GizmosRenderer.hpp>
+#include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 
 // HG::Rendering::Base
-#include <MaterialCollection.hpp>
-#include <SystemController.hpp>
-#include <RenderBehaviour.hpp>
-#include <RenderTarget.hpp>
-#include <Renderer.hpp>
-#include <Camera.hpp>
-#include <Shader.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
+#include <HG/Rendering/Base/RenderBehaviour.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/Shader.hpp>
 
 // ImGui
 #include <imgui.h>
-#include <Common/RenderTargetData.hpp>
-#include <Behaviours/CubeMap.hpp>
-#include <Common/ShaderData.hpp>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),

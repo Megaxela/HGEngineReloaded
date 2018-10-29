@@ -1,21 +1,21 @@
 // HG::Core
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Transform.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <Camera.hpp>
-#include <MaterialCollection.hpp>
-#include <Behaviours/CubeMap.hpp>
-#include <CubeMap.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
+#include <HG/Rendering/Base/CubeMap.hpp>
 
 // HG::Rendering::OpenGL
-#include <Forward/CubeMapRenderer.hpp>
-#include <Materials/SkyboxMaterial.hpp>
-#include <Common/ShaderData.hpp>
-#include <Common/CubeMapTextureData.hpp>
+#include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
+#include <HG/Rendering/OpenGL/Materials/SkyboxMaterial.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>

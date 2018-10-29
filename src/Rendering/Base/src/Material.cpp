@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <Material.hpp>
+#include <HG/Rendering/Base/Material.hpp>
 
 HG::Rendering::Base::Material::Material() :
     m_variableContainer(),

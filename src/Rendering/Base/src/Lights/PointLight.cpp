@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <Lights/PointLight.hpp>
+#include <HG/Rendering/Base/Lights/PointLight.hpp>
 
 HG::Rendering::Base::Lights::PointLight::PointLight() :
     AbstractLight(Type::Point),

@@ -2,7 +2,7 @@
 #include <algorithm>
 
 // HG::Utils
-#include <StringTools.hpp>
+#include <HG/Utils/StringTools.hpp>
 
 std::vector<std::string> HG::Utils::StringTools::split(const std::string &s, char delim)
 {

@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <CubeMap.hpp>
+#include <HG/Rendering/Base/CubeMap.hpp>
 
 HG::Rendering::Base::CubeMap::CubeMap() :
     RenderData(Id),

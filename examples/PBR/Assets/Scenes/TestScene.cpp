@@ -5,27 +5,27 @@
 #include <Assets/Behaviours/RotationBehaviour.hpp>
 
 // HG::Core
-#include <Application.hpp>
-#include <GameObjectBuilder.hpp>
-#include <TimeStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 
 // HG::Rendering::Base
-#include <MaterialCollection.hpp>
-#include <Lights/PointLight.hpp>
-#include <Behaviours/Mesh.hpp>
-#include <Renderer.hpp>
-#include <Texture.hpp>
-#include <Camera.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Lights/PointLight.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 
 // HG::Standard
-#include <Behaviours/ServiceInformationOverlay.hpp>
-#include <Behaviours/FPSCameraMovement.hpp>
-#include <Behaviours/DebugControllerOverlay.hpp>
+#include <HG/Standard/Behaviours/ServiceInformationOverlay.hpp>
+#include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
+#include <HG/Standard/Behaviours/DebugControllerOverlay.hpp>
 
 // HG::Utils
-#include <Loaders/STBImageLoader.hpp>
-#include <Loaders/AssimpLoader.hpp>
-#include <Model.hpp>
+#include <HG/Utils/Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Loaders/AssimpLoader.hpp>
+#include <HG/Utils/Model.hpp>
 
 // ImGui
 #include <imgui.h>

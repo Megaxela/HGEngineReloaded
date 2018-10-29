@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <Behaviours/TiledMap.hpp>
-#include <FilesystemResourceAccessor.hpp>
+#include <HG/Utils/FilesystemResourceAccessor.hpp>
 
 TEST(Standard, TiledLoad1)
 {

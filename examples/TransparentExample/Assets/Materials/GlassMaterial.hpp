@@ -1,7 +1,7 @@
 #pragma once
 
 // HG::Rendering::Base
-#include <Material.hpp>
+#include <HG/Rendering/Base/Material.hpp>
 
 /**
  * @brief Class, that descibrs glass material.

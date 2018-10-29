@@ -1,27 +1,27 @@
 // HG::Core
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Transform.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::OpenGL
-#include <Materials/MeshFallbackMaterial.hpp>
-#include <Forward/MeshRenderer.hpp>
-#include <Common/ShaderData.hpp>
-#include <Common/MeshData.hpp>
+#include <HG/Rendering/OpenGL/Materials/MeshFallbackMaterial.hpp>
+#include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshData.hpp>
 
 // HG::Rendering::Base
-#include <Lights/DirectionalLight.hpp>
-#include <Lights/AbstractLight.hpp>
-#include <MaterialCollection.hpp>
-#include <Lights/PointLight.hpp>
-#include <Behaviours/Mesh.hpp>
-#include <Renderer.hpp>
-#include <Material.hpp>
-#include <Camera.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Lights/AbstractLight.hpp>
+#include <HG/Rendering/Base/Lights/DirectionalLight.hpp>
+#include <HG/Rendering/Base/Lights/PointLight.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 
 // HG::Utils
-#include <Mesh.hpp>
+#include <HG/Utils/Mesh.hpp>
 
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>

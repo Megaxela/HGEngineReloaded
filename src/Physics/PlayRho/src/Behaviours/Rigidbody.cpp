@@ -6,9 +6,9 @@
 #include <Controller.hpp>
 
 // HG::Core
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Scene.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Scene.hpp>
 
 // ImGUI
 #include <imgui.h>

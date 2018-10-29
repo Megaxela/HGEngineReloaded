@@ -7,16 +7,16 @@ add_subdirectory(libraries)
 
 add_library(HGPhysicsPlayRho STATIC
     src/Behaviours/Rigidbody.cpp
-    include/Behaviours/Rigidbody.hpp
+        include/HG/Physics/PlayRho/Behaviours/Rigidbody.hpp
     src/Controller.cpp
-    include/Controller.hpp
-    include/TiledMap/Creator.hpp
-    include/TiledMap/Remover.hpp
+        include/HG/Physics/PlayRho/Controller.hpp
+        include/HG/Physics/PlayRho/TiledMap/Creator.hpp
+        include/HG/Physics/PlayRho/TiledMap/Remover.hpp
     src/DebugDraw.cpp
-    include/DebugDraw.hpp
-    include/DebugSettings.hpp
+        include/HG/Physics/PlayRho/DebugDraw.hpp
+        include/HG/Physics/PlayRho/DebugSettings.hpp
     src/Behaviours/DebugControllerBehaviour.cpp
-    include/Behaviours/DebugControllerBehaviour.hpp
+        include/HG/Physics/PlayRho/Behaviours/DebugControllerBehaviour.hpp
 )
 
 target_link_libraries(HGPhysicsPlayRho

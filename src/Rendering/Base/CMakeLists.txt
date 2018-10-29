@@ -7,49 +7,49 @@ set(RENDER_OPENGL On)
 add_subdirectory(libraries)
 
 add_library(HGRenderingBase STATIC
-    include/Camera.hpp
+        include/HG/Rendering/Base/Camera.hpp
     src/Camera.cpp
-    include/Lights/AbstractLight.hpp
+        include/HG/Rendering/Base/Lights/AbstractLight.hpp
     src/Lights/AbstractLight.cpp
-    include/Renderer.hpp
+        include/HG/Rendering/Base/Renderer.hpp
     src/Renderer.cpp
-    include/RenderingPipeline.hpp
+        include/HG/Rendering/Base/RenderingPipeline.hpp
     src/RenderingPipeline.cpp
     src/RenderBehaviour.cpp
-    include/RenderBehaviour.hpp
+        include/HG/Rendering/Base/RenderBehaviour.hpp
     src/Behaviours/Mesh.cpp
-    include/Behaviours/Mesh.hpp
+        include/HG/Rendering/Base/Behaviours/Mesh.hpp
     src/SystemController.cpp
-    include/SystemController.hpp
+        include/HG/Rendering/Base/SystemController.hpp
     src/Material.cpp
-    include/Material.hpp
+        include/HG/Rendering/Base/Material.hpp
     src/Texture.cpp
-    include/Texture.hpp
+        include/HG/Rendering/Base/Texture.hpp
     src/ShaderData.cpp
-    include/Shader.hpp
+        include/HG/Rendering/Base/Shader.hpp
     src/Lights/PointLight.cpp
-    include/Lights/PointLight.hpp
+        include/HG/Rendering/Base/Lights/PointLight.hpp
     src/Lights/DirectionalLight.cpp
-    include/Lights/DirectionalLight.hpp
+        include/HG/Rendering/Base/Lights/DirectionalLight.hpp
     src/Behaviours/CubeMap.cpp
-    include/Behaviours/CubeMap.hpp
-    include/CubeMap.hpp
+        include/HG/Rendering/Base/Behaviours/CubeMap.hpp
+        include/HG/Rendering/Base/CubeMap.hpp
     src/CubeMap.cpp
     src/Behaviours/Sprite.cpp
-    include/Behaviours/Sprite.hpp
+        include/HG/Rendering/Base/Behaviours/Sprite.hpp
     src/Gizmos.cpp
-    include/Gizmos.hpp
+        include/HG/Rendering/Base/Gizmos.hpp
     src/MaterialCollection.cpp
-    include/MaterialCollection.hpp
-    include/RenderSpecificData.hpp
+        include/HG/Rendering/Base/MaterialCollection.hpp
+        include/HG/Rendering/Base/RenderSpecificData.hpp
     src/RenderData.cpp
-    include/RenderData.hpp
+        include/HG/Rendering/Base/RenderData.hpp
     src/AbstractRenderDataProcessor.cpp
-    include/AbstractRenderDataProcessor.hpp
+        include/HG/Rendering/Base/AbstractRenderDataProcessor.hpp
     src/MaterialValue.cpp
-    include/MaterialValue.hpp
+        include/HG/Rendering/Base/MaterialValue.hpp
     src/RenderTarget.cpp
-    include/RenderTarget.hpp
+        include/HG/Rendering/Base/RenderTarget.hpp
 )
 
 target_include_directories(HGRenderingBase PUBLIC

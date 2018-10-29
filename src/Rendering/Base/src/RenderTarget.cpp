@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <RenderTarget.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
 
 HG::Rendering::Base::RenderTarget::RenderTarget(glm::ivec2 size) :
     RenderData(DataId),

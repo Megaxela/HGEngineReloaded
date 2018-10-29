@@ -2,21 +2,21 @@
 #include <stdexcept>
 
 // HG::Physics::Base
-#include <PhysicsController.hpp>
+#include <HG/Physics/Base/PhysicsController.hpp>
 
 // HG::Core
-#include <Scene.hpp>
-#include <ResourceManager.hpp>
-#include <ThreadPool.hpp>
-#include <BuildProperties.hpp>
-#include <TimeStatistics.hpp>
-#include <Input.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/BuildProperties.hpp>
+#include <HG/Core/TimeStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/ThreadPool.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Input.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <SystemController.hpp>
-#include <Application.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
 
 
 HG::Core::Application::Application(std::string name, int /* argc */, char** /* argv */) :

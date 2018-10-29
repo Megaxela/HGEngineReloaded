@@ -1,6 +1,6 @@
 // HG::Core
-#include <GameObject.hpp>
-#include <GameObjectCache.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/GameObjectCache.hpp>
 
 HG::Core::GameObjectCache& HG::Core::GameObjectCache::i()
 {

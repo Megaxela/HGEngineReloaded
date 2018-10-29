@@ -14,34 +14,34 @@ add_subdirectory(libraries)
 find_package(ZLIB REQUIRED)
 
 add_library(HGUtils STATIC
-    include/DoubleBufferContainer.hpp
-    include/Rect.hpp
+        include/HG/Utils/DoubleBufferContainer.hpp
+        include/HG/Utils/Rect.hpp
     src/Rect.cpp
-    include/Color.hpp
+        include/HG/Utils/Color.hpp
     src/Color.cpp
-    include/Vertex.hpp
+        include/HG/Utils/Vertex.hpp
     src/Vertex.cpp
-    include/Mesh.hpp
+        include/HG/Utils/Mesh.hpp
     src/Mesh.cpp
-    include/glmex.hpp
+        include/HG/Utils/glmex.hpp
     src/Surface.cpp
-    include/Surface.hpp
+        include/HG/Utils/Surface.hpp
     src/Loaders/STBImageLoader.cpp
-    include/Loaders/STBImageLoader.hpp
-    include/base64.hpp
-    include/zlib.hpp
+        include/HG/Utils/Loaders/STBImageLoader.hpp
+        include/HG/Utils/base64.hpp
+        include/HG/Utils/zlib.hpp
     src/PhysicalResource.cpp
-    include/PhysicalResource.hpp
-    include/Platform.hpp
+        include/HG/Utils/PhysicalResource.hpp
+        include/HG/Utils/Platform.hpp
     src/StringTools.cpp
-    include/StringTools.hpp
+        include/HG/Utils/StringTools.hpp
     src/Loaders/StringLoader.cpp
-    include/Loaders/StringLoader.hpp
+        include/HG/Utils/Loaders/StringLoader.hpp
     src/Loaders/AssimpLoader.cpp
-    include/Loaders/AssimpLoader.hpp
+        include/HG/Utils/Loaders/AssimpLoader.hpp
     src/Model.cpp
-    include/Model.hpp
-    include/FutureHandler.hpp
+        include/HG/Utils/Model.hpp
+        include/HG/Utils/FutureHandler.hpp
 )
 
 target_include_directories(HGUtils PUBLIC

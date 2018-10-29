@@ -3,13 +3,13 @@
 #include <set>
 
 // HG::Core
-#include <Application.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Physics::PlayRho
 #include <Controller.hpp>
 
 // HG::Utils
-#include <Color.hpp>
+#include <HG/Utils/Color.hpp>
 
 // PlayRho
 #include <PlayRho/PlayRho.hpp>

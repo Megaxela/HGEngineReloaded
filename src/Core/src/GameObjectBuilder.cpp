@@ -2,10 +2,10 @@
 #include <utility>
 
 // HG::Core
-#include <GameObjectBuilder.hpp>
-#include <GameObjectCache.hpp>
-#include <GameObject.hpp>
-#include <Transform.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
+#include <HG/Core/GameObjectCache.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Transform.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

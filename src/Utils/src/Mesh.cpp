@@ -1,5 +1,5 @@
 // HG::Utils
-#include <Mesh.hpp>
+#include <HG/Utils/Mesh.hpp>
 
 HG::Utils::Mesh::Mesh() :
     Vertices(),

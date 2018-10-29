@@ -1,5 +1,5 @@
 // HG::Utils
-#include <Color.hpp>
+#include <HG/Utils/Color.hpp>
 
 namespace
 {

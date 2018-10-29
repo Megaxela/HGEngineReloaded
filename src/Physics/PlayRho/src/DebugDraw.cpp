@@ -1,6 +1,6 @@
 
 // HG::Rendering::Base
-#include <Gizmos.hpp>
+#include <HG/Rendering/Base/Gizmos.hpp>
 
 // HG::Physics::PlayRho
 #include <DebugDraw.hpp>

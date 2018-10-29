@@ -1,5 +1,5 @@
 // HG::Rendering::OpenGL
-#include <Materials/SkyboxMaterial.hpp>
+#include <HG/Rendering/OpenGL/Materials/SkyboxMaterial.hpp>
 
 const char* HG::Rendering::OpenGL::Materials::SkyboxMaterial::rawShader = R"(
 #ifdef VertexShader

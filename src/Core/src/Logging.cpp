@@ -1,5 +1,5 @@
 // HG::Core
-#include <Logging.hpp>
+#include <HG/Core/Logging.hpp>
 
 // ALogger
 #include <Loggers/BasicLogger.hpp>

@@ -2,27 +2,27 @@
 #include <Assets/Scenes/TestScene.hpp>
 
 // HG::Core
-#include <Application.hpp>
-#include <ResourceManager.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/ResourceManager.hpp>
 
 // HG::Standard
-#include <FilesystemResourceAccessor.hpp>
+#include <HG/Standard/FilesystemResourceAccessor.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 // HG::Rendering::OpenGL
-#include <GLFWSystemController.hpp>
-#include <Forward/RenderingPipeline.hpp>
-#include <Forward/MeshRenderer.hpp>
-#include <Common/MeshDataProcessor.hpp>
-#include <Common/Texture2DDataProcessor.hpp>
-#include <Common/ShaderDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
 #include <Loggers/BasicLogger.hpp>
-#include <Common/RenderTargetDataProcessor.hpp>
 
 int main(int argc, char** argv)
 {

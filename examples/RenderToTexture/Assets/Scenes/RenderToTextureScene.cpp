@@ -4,16 +4,16 @@
 #include <Assets/Behaviours/RenderToTextureBehaviour.hpp>
 
 // HG::Core
-#include <Behaviour.hpp>
-#include <Application.hpp>
-#include <ResourceManager.hpp>
-#include <GameObjectBuilder.hpp>
+#include <HG/Core/Behaviour.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <MaterialCollection.hpp>
-#include <Texture.hpp>
-#include <Camera.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 #include <Behaviours/Mesh.hpp>
 
 // HG::Standard
@@ -22,7 +22,7 @@
 
 // HG::Utils
 #include <Loaders/AssimpLoader.hpp>
-#include <Model.hpp>
+#include <HG/Utils/Model.hpp>
 
 // GLM
 #include <glm/gtx/quaternion.hpp>

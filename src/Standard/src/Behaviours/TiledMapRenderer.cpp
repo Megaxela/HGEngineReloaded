@@ -1,28 +1,28 @@
 // C++ STL
-#include <filesystem>
+#include <HG/Utils/filesystem>
 
 // HG::Core
-#include <GameObjectBuilder.hpp>
-#include <GameObjectCache.hpp>
-#include <ResourceManager.hpp>
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Transform.hpp>
-#include <Scene.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
+#include <HG/Core/GameObjectCache.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/Scene.hpp>
 
 // HG::Rendering::Base
-#include <Behaviours/Mesh.hpp>
-#include <Renderer.hpp>
-#include <Material.hpp>
-#include <Texture.hpp>
-#include <Shader.hpp>
-#include <Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/Base/Shader.hpp>
 
 // HG::Standard
-#include <Behaviours/TiledMapRenderer.hpp>
+#include <HG/Standard/Behaviours/TiledMapRenderer.hpp>
 
 // HG::Utils
-#include <Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Mesh.hpp>
+#include <HG/Utils/Loaders/STBImageLoader.hpp>
 
 
 HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :

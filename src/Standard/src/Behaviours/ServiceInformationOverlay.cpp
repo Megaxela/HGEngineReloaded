@@ -1,16 +1,16 @@
 // HG::Core
-#include <ResourceManager.hpp>
-#include <TimeStatistics.hpp>
-#include <Application.hpp>
-#include <Scene.hpp>
-#include <ThreadPool.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/TimeStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/ThreadPool.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Standard
-#include <Behaviours/ServiceInformationOverlay.hpp>
+#include <HG/Standard/Behaviours/ServiceInformationOverlay.hpp>
 
 // HG::Utils
-#include <PhysicalResource.hpp>
+#include <HG/Utils/PhysicalResource.hpp>
 
 // ImGui
 #include <imgui.h>

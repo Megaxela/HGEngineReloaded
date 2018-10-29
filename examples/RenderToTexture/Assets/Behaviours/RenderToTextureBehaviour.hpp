@@ -1,7 +1,7 @@
 #pragma once
 
 // HG::Core
-#include <Behaviour.hpp> // Required for inheritance
+#include <HG/Core/Behaviour.hpp> // Required for inheritance
 
 namespace HG::Rendering::Base
 {

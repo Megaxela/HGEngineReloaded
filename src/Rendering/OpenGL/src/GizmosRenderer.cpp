@@ -1,19 +1,19 @@
 // HG::Core
-#include <Application.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::OpenGL
-#include <Materials/GizmosLineMaterial.hpp>
-#include <Materials/GizmosMeshMaterial.hpp>
-#include <Forward/RenderingPipeline.hpp>
-#include <Common/ShaderData.hpp>
-#include <GizmosRenderer.hpp>
+#include <HG/Rendering/OpenGL/Materials/GizmosLineMaterial.hpp>
+#include <HG/Rendering/OpenGL/Materials/GizmosMeshMaterial.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/GizmosRenderer.hpp>
 
 // HG::Rendering::Base
-#include <MaterialCollection.hpp>
-#include <Renderer.hpp>
-#include <Material.hpp>
-#include <Camera.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>

@@ -3,7 +3,7 @@
 #include <algorithm>
 
 // HG::Core
-#include <TimeStatistics.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 
 HG::Core::TimeStatistics::TimeStatistics() :
     m_timers()

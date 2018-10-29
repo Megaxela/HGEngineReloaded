@@ -11,21 +11,21 @@ endif()
 
 add_library(HGStandard STATIC
     src/Behaviours/FPSCameraMovement.cpp
-    include/Behaviours/FPSCameraMovement.hpp
+        include/HG/Standard/Behaviours/FPSCameraMovement.hpp
     src/Behaviours/ServiceInformationOverlay.cpp
-    include/Behaviours/ServiceInformationOverlay.hpp
+        include/HG/Standard/Behaviours/ServiceInformationOverlay.hpp
     src/FilesystemResourceAccessor.cpp
-    include/FilesystemResourceAccessor.hpp
+        include/HG/Standard/FilesystemResourceAccessor.hpp
     src/Behaviours/TiledMap.cpp
-    include/Behaviours/TiledMap.hpp
+        include/HG/Standard/Behaviours/TiledMap.hpp
     src/Behaviours/DebugControllerOverlay.cpp
-    include/Behaviours/DebugControllerOverlay.hpp
+        include/HG/Standard/Behaviours/DebugControllerOverlay.hpp
     src/Behaviours/TiledMapRenderer.cpp
-    include/Behaviours/TiledMapRenderer.hpp
+        include/HG/Standard/Behaviours/TiledMapRenderer.hpp
     src/Behaviours/TiledMapCollider.cpp
-    include/Behaviours/TiledMapCollider.hpp
+        include/HG/Standard/Behaviours/TiledMapCollider.hpp
     src/Behaviours/IngameConsole.cpp
-    include/Behaviours/IngameConsole.hpp
+        include/HG/Standard/Behaviours/IngameConsole.hpp
 )
 
 target_include_directories(HGStandard PUBLIC

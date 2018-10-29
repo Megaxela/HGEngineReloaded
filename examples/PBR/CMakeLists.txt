@@ -3,6 +3,8 @@ project(HGExamplePBR)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS -fsanitize=address)
+
 add_executable(HGExamplePBR
     main.cpp
     Assets/Scenes/TestScene.cpp

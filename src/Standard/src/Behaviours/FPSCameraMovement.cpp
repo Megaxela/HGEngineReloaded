@@ -1,16 +1,16 @@
 // HG::Core
-#include <TimeStatistics.hpp>
-#include <Application.hpp>
-#include <GameObject.hpp>
-#include <Scene.hpp>
-#include <Input.hpp>
-#include <Transform.hpp>
+#include <HG/Core/TimeStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Input.hpp>
+#include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
-#include <Camera.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 
 // HG::Standard
-#include <Behaviours/FPSCameraMovement.hpp>
+#include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

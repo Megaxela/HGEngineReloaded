@@ -1,8 +1,8 @@
 // HG::Core
-#include <BuildProperties.hpp>
+#include <HG/Core/BuildProperties.hpp>
 
 // HG::Rendering::Base
-#include <Lights/AbstractLight.hpp>
+#include <HG/Rendering/Base/Lights/AbstractLight.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

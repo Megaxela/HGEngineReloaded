@@ -5,40 +5,42 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(HG_BUILD_CORE_TESTS "Build core tests" Off)
 
+set(CMAKE_CXX_FLAGS -fsanitize=address)
+
 if (${HG_BUILD_CORE_TESTS})
     add_subdirectory(tests)
 endif()
 
 add_library(HGCore STATIC
     src/Application.cpp
-    include/Application.hpp
+        include/HG/Core/Application.hpp
     src/Scene.cpp
-    include/Scene.hpp
+        include/HG/Core/Scene.hpp
     src/GameObject.cpp
-    include/GameObject.hpp
+        include/HG/Core/GameObject.hpp
     src/Behaviour.cpp
-    include/Behaviour.hpp
+        include/HG/Core/Behaviour.hpp
     src/GameObjectBuilder.cpp
-    include/GameObjectBuilder.hpp
+        include/HG/Core/GameObjectBuilder.hpp
     src/GameObjectCache.cpp
-    include/GameObjectCache.hpp
+        include/HG/Core/GameObjectCache.hpp
     src/Transform.cpp
-    include/Transform.hpp
+        include/HG/Core/Transform.hpp
     src/ResourceManager.cpp
-    include/ResourceManager.hpp
-    include/ResourceAccessor.hpp
+        include/HG/Core/ResourceManager.hpp
+        include/HG/Core/ResourceAccessor.hpp
     src/TimeStatistics.cpp
-    include/TimeStatistics.hpp
+        include/HG/Core/TimeStatistics.hpp
     src/Input.cpp
-    include/Input.hpp
-    include/Data.hpp
+        include/HG/Core/Input.hpp
+        include/HG/Core/Data.hpp
     src/ThreadPool.cpp
-    include/ThreadPool.hpp
+        include/HG/Core/ThreadPool.hpp
     src/CountStatistics.cpp
-    include/CountStatistics.hpp
-    include/BuildProperties.hpp
+        include/HG/Core/CountStatistics.hpp
+        include/HG/Core/BuildProperties.hpp
     src/Logging.cpp
-    include/Logging.hpp
+        include/HG/Core/Logging.hpp
 )
 
 target_include_directories(HGCore PUBLIC

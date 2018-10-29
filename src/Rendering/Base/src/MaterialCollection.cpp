@@ -1,6 +1,6 @@
 // HG::Rendering::Base
-#include <MaterialCollection.hpp>
-#include <Renderer.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 HG::Rendering::Base::MaterialCollection::MaterialCollection(HG::Core::ResourceManager* resourceManager,
                                                             HG::Rendering::Base::Renderer* pipeline) :

@@ -1,12 +1,12 @@
 // HG::Rendering::OpenGL
-#include <Common/MeshDataProcessor.hpp>
-#include <Common/MeshData.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshData.hpp>
 
 // HG::Rendering::Base
-#include <Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 
 // HG::Utils
-#include <Mesh.hpp>
+#include <HG/Utils/Mesh.hpp>
 
 bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData)
 {

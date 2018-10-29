@@ -1,6 +1,6 @@
 // HG::Utils
-#include <Platform.hpp>
-#include <PhysicalResource.hpp>
+#include <HG/Utils/Platform.hpp>
+#include <HG/Utils/PhysicalResource.hpp>
 
 // Linux
 #ifdef OS_LINUX

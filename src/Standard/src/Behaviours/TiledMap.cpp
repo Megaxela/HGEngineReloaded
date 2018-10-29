@@ -2,15 +2,15 @@
 #include <charconv>
 
 // HG::Core
-#include <ResourceAccessor.hpp>
-#include <Data.hpp>
+#include <HG/Core/ResourceAccessor.hpp>
+#include <HG/Core/Data.hpp>
 
 // HG::Standard
-#include <Behaviours/TiledMap.hpp>
+#include <HG/Standard/Behaviours/TiledMap.hpp>
 
 // HG::Utils
-#include <base64.hpp>
-#include <zlib.hpp>
+#include <HG/Utils/base64.hpp>
+#include <HG/Utils/zlib.hpp>
 
 // RapidXML
 #include <rapidxml.hpp>

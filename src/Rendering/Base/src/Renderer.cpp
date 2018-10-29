@@ -1,15 +1,15 @@
 // HG::Core
-#include <Application.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::Base
-#include <RenderingPipeline.hpp>
-#include <MaterialCollection.hpp>
-#include <Renderer.hpp>
-#include <Camera.hpp>
-#include <Gizmos.hpp>
-#include <RenderTarget.hpp>
-#include <Texture.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/Gizmos.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

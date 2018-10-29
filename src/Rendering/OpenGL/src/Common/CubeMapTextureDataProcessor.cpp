@@ -1,12 +1,12 @@
 // HG::Rendering::OpenGL
-#include <Common/CubeMapTextureDataProcessor.hpp>
-#include <Common/CubeMapTextureData.hpp>
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
 
 // HG::Rendering::Base
-#include <CubeMap.hpp>
+#include <HG/Rendering/Base/CubeMap.hpp>
 
 // HG::Utils
-#include <Surface.hpp>
+#include <HG/Utils/Surface.hpp>
 
 // gl
 #include <gl/all.hpp>

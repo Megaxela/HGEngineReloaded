@@ -1,9 +1,9 @@
 
 // HG::Core
-#include <Behaviour.hpp>
-#include <GameObject.hpp>
-#include <Scene.hpp>
-#include <Application.hpp>
+#include <HG/Core/Behaviour.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Application.hpp>
 
 HG::Core::Behaviour::Behaviour(Type t) :
     m_type(t),

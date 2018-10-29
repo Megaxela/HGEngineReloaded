@@ -1,17 +1,17 @@
 // HG::Core
-#include <Application.hpp>
-#include <CountStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
-#include <MaterialCollection.hpp>
-#include <Texture.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <Materials/ImGuiMaterial.hpp>
-#include <Common/ShaderData.hpp>
-#include <ImGuiRenderer.hpp>
-#include <Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -22,7 +22,7 @@
 // GLM
 #include <glm/gtc/matrix_transform.hpp>
 #include <gl/auxiliary/glm_uniforms.hpp>
-#include <Surface.hpp>
+#include <HG/Utils/Surface.hpp>
 
 HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* application) :
     m_application(application),

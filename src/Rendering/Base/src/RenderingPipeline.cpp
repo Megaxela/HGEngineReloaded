@@ -1,12 +1,12 @@
 // HG::Core
-#include <Application.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Rendering::Base
-#include <AbstractRenderDataProcessor.hpp>
-#include <RenderingPipeline.hpp>
-#include <SystemController.hpp>
-#include <RenderBehaviour.hpp>
-#include <Renderer.hpp>
+#include <HG/Rendering/Base/AbstractRenderDataProcessor.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
+#include <HG/Rendering/Base/RenderBehaviour.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

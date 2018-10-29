@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <Transform.hpp>
+#include <HG/Core/Transform.hpp>
 
 TEST(Core, TransformDefaultConstructor)
 {

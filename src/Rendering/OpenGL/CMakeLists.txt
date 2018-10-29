@@ -25,6 +25,11 @@ if (${HGRenderingOGL_USE_GLFW})
         
     else()
         set(RENDERER_LIBRARY glfw)
+
+        find_package(GLFW REQUIRED)
+
+        set(RENDERER_LIBRARY ${GLFW_LIBRARY})
+        set(RENDERER_INCLUDE ${GLFW_INCLUDE_DIR})
     endif()
 #    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/../Base/libraries/GWork/cmake/Modules/")
 #    find_package(GLFW REQUIRED)
@@ -45,52 +50,52 @@ endif()
 add_subdirectory(libraries)
 
 add_library(HGRenderingOGL STATIC
-    include/GL/gl_ordered.hpp
+        include/HG/Rendering/OpenGL/GL/gl_ordered.hpp
     src/Forward/RenderingPipeline.cpp
-    include/Forward/RenderingPipeline.hpp
+        include/HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp
     src/GLFWSystemController.cpp
-    include/GLFWSystemController.hpp
+        include/HG/Rendering/OpenGL/GLFWSystemController.hpp
     src/GizmosRenderer.cpp
-    include/GizmosRenderer.hpp
+        include/HG/Rendering/OpenGL/GizmosRenderer.hpp
     src/Materials/GizmosLineMaterial.cpp
-    include/Materials/GizmosLineMaterial.hpp
+        include/HG/Rendering/OpenGL/Materials/GizmosLineMaterial.hpp
     src/Materials/GizmosMeshMaterial.cpp
-    include/Materials/GizmosMeshMaterial.hpp
+        include/HG/Rendering/OpenGL/Materials/GizmosMeshMaterial.hpp
     src/Materials/MeshFallbackMaterial.cpp
-    include/Materials/MeshFallbackMaterial.hpp
+        include/HG/Rendering/OpenGL/Materials/MeshFallbackMaterial.hpp
     src/Materials/SpriteMaterial.cpp
-    include/Materials/SpriteMaterial.hpp
+        include/HG/Rendering/OpenGL/Materials/SpriteMaterial.hpp
     src/Forward/AbstractRenderer.cpp
-    include/Forward/AbstractRenderer.hpp
+        include/HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp
     src/Forward/MeshRenderer.cpp
-    include/Forward/MeshRenderer.hpp
-    include/Common/ShaderData.hpp
-    include/Common/MeshData.hpp
-    include/Common/Texture2DData.hpp
+        include/HG/Rendering/OpenGL/Forward/MeshRenderer.hpp
+        include/HG/Rendering/OpenGL/Common/ShaderData.hpp
+        include/HG/Rendering/OpenGL/Common/MeshData.hpp
+        include/HG/Rendering/OpenGL/Common/Texture2DData.hpp
     src/Forward/SpriteRenderer.cpp
-    include/Forward/SpriteRenderer.hpp
+        include/HG/Rendering/OpenGL/Forward/SpriteRenderer.hpp
     src/ImGuiRenderer.cpp
-    include/ImGuiRenderer.hpp
+        include/HG/Rendering/OpenGL/ImGuiRenderer.hpp
     src/Materials/ImGuiMaterial.cpp
-    include/Materials/ImGuiMaterial.hpp
-    include/Common/CubeMapTextureData.hpp
+        include/HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp
+        include/HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp
     src/Common/MeshDataProcessor.cpp
-    include/Common/MeshDataProcessor.hpp
+        include/HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp
     src/Common/ShaderDataProcessor.cpp
-    include/Common/ShaderDataProcessor.hpp
+        include/HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp
     src/Common/Texture2DDataProcessor.cpp
-    include/Common/Texture2DDataProcessor.hpp
+        include/HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp
     src/Common/CubeMapTextureDataProcessor.cpp
-    include/Common/CubeMapTextureDataProcessor.hpp
+        include/HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp
     src/Deferred/RenderingPipeline.cpp
-    include/Deferred/RenderingPipeline.hpp
-    include/Common/RenderTargetData.hpp
+        include/HG/Rendering/OpenGL/Deferred/RenderingPipeline.hpp
+        include/HG/Rendering/OpenGL/Common/RenderTargetData.hpp
     src/Common/RenderTargetDataProcessor.cpp
-    include/Common/RenderTargetDataProcessor.hpp
+        include/HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp
     src/Forward/CubeMapRenderer.cpp
-    include/Forward/CubeMapRenderer.hpp
-    src/Materials/SkyboxMaterial.cpp 
-    include/Materials/SkyboxMaterial.hpp
+        include/HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp
+    src/Materials/SkyboxMaterial.cpp
+        include/HG/Rendering/OpenGL/Materials/SkyboxMaterial.hpp
 )
 
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)

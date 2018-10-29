@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <AbstractRenderDataProcessor.hpp>
+#include <HG/Rendering/Base/AbstractRenderDataProcessor.hpp>
 
 HG::Rendering::Base::AbstractRenderDataProcessor::AbstractRenderDataProcessor() :
     m_pipeline(nullptr)

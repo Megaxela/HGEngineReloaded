@@ -1,5 +1,5 @@
 // HG::Rendering::Base
-#include <Behaviours/CubeMap.hpp>
+#include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
 
 HG::Rendering::Base::Behaviours::CubeMap::CubeMap(HG::Rendering::Base::CubeMap* cubeMap) :
     RenderBehaviour(RenderBehaviourId),

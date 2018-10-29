@@ -2,17 +2,17 @@
 
 #ifdef GRAPHICS_USE_GLFW
 // HG::Core
-#include <Input.hpp>
-#include <Application.hpp>
-#include <TimeStatistics.hpp>
+#include <HG/Core/Input.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 
 // HG::Rendering::Base
-#include <Camera.hpp>
-#include <Renderer.hpp>
-#include <RenderTarget.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
 
 // HG::Rendering::OpenGL
-#include <GLFWSystemController.hpp>
+#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

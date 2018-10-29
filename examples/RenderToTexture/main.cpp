@@ -2,17 +2,17 @@
 #include <Assets/Scenes/RenderToTextureScene.hpp>
 
 // HG::Core
-#include <Application.hpp>
-#include <ResourceManager.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/ResourceManager.hpp>
 
 // HG::Standard
-#include <FilesystemResourceAccessor.hpp>
+#include <HG/Utils/FilesystemResourceAccessor.hpp>
 
 // HG::Rendering::Base
-#include <Renderer.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 // HG::Rendering::OpenGL
-#include <GLFWSystemController.hpp>
+#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
 #include <Forward/RenderingPipeline.hpp>
 #include <Forward/MeshRenderer.hpp>
 #include <Common/MeshDataProcessor.hpp>

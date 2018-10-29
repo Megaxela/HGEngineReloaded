@@ -1,8 +1,8 @@
 
 // HG::Utils
-#include <Loaders/AssimpLoader.hpp>
-#include <Model.hpp>
-#include <Mesh.hpp>
+#include <HG/Utils/Loaders/AssimpLoader.hpp>
+#include <HG/Utils/Model.hpp>
+#include <HG/Utils/Mesh.hpp>
 
 // Assimp
 #include <assimp/Importer.hpp>

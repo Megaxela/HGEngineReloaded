@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <zlib.hpp>
+#include <HG/Utils/zlib.hpp>
 #include <cstddef>
 #include <string_view>
 #include <unitypes.h>

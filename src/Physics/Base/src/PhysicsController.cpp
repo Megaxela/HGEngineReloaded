@@ -1,5 +1,5 @@
 // HG::Physics::Base
-#include <PhysicsController.hpp>
+#include <HG/Physics/Base/PhysicsController.hpp>
 
 HG::Physics::Base::PhysicsController::PhysicsController(HG::Core::Application *application) :
     m_parent(application)

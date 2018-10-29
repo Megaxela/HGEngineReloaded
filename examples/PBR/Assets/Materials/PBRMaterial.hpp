@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Material.hpp>
-#include <Color.hpp>
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Utils/Color.hpp>
 
 namespace HG::Rendering::Base
 {

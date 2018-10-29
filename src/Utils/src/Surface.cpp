@@ -1,5 +1,5 @@
 // HG::Utils
-#include <Surface.hpp>
+#include <HG/Utils/Surface.hpp>
 
 // stb
 #include <stb_image.h>

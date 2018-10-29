@@ -2,15 +2,15 @@
 #include <algorithm>
 
 // HG::Core
-#include <Scene.hpp>
-#include <Application.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Standard
-#include <Behaviours/IngameConsole.hpp>
-#include <Behaviours/DebugControllerOverlay.hpp>
+#include <HG/Standard/Behaviours/IngameConsole.hpp>
+#include <HG/Standard/Behaviours/DebugControllerOverlay.hpp>
 
 // HG::Utils
-#include <StringTools.hpp>
+#include <HG/Utils/StringTools.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

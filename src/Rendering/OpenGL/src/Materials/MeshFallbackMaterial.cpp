@@ -1,5 +1,5 @@
 // HG::Rendering::OpenGL
-#include <Materials/MeshFallbackMaterial.hpp>
+#include <HG/Rendering/OpenGL/Materials/MeshFallbackMaterial.hpp>
 
 const char* HG::Rendering::OpenGL::Materials::MeshFallbackMaterial::rawShader = R"(
 #ifdef VertexShader

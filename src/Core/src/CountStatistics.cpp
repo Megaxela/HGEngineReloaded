@@ -1,5 +1,5 @@
 // HG::Core
-#include <CountStatistics.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 HG::Core::CountStatistics::CountStatistics() :
     m_counters()

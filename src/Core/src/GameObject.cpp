@@ -1,12 +1,12 @@
 // HG::Core
-#include <GameObject.hpp>
-#include <Behaviour.hpp>
-#include <Scene.hpp>
-#include <Transform.hpp>
-#include <BuildProperties.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Behaviour.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/Transform.hpp>
+#include <HG/Core/BuildProperties.hpp>
 
 // HG::Rendering::Base
-#include <RenderBehaviour.hpp>
+#include <HG/Rendering/Base/RenderBehaviour.hpp>
 
 // ALogger library
 #include <CurrentLogger.hpp>

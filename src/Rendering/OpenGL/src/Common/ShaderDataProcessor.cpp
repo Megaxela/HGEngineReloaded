@@ -1,9 +1,9 @@
 // HG::Rendering::Base
-#include <Shader.hpp>
+#include <HG/Rendering/Base/Shader.hpp>
 
 // HG::Rendering::OpenGL
-#include <Common/ShaderDataProcessor.hpp>
-#include <Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>

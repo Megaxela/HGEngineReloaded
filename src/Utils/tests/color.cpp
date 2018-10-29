@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <Color.hpp>
+#include <HG/Utils/Color.hpp>
 
 TEST(Utils, ColorIdentity)
 {
