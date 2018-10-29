@@ -13,19 +13,17 @@
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/CubeMap.hpp>
-#include <Behaviours/CubeMap.hpp>
-
-// HG::Rendering::OpenGL
-#include <Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 
 // HG::Standard
-#include <Behaviours/DebugControllerOverlay.hpp>
+#include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
+#include <HG/Standard/Behaviours/DebugControllerOverlay.hpp>
 
 // HG::Utils
-#include <Loaders/AssimpLoader.hpp>
 #include <HG/Utils/Model.hpp>
-#include <Behaviours/FPSCameraMovement.hpp>
-#include <Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Loaders/AssimpLoader.hpp>
+#include <HG/Utils/Loaders/STBImageLoader.hpp>
 
 // GLM
 #include <glm/gtx/quaternion.hpp>

@@ -10,7 +10,7 @@
 #include <HG/Rendering/Base/Material.hpp>
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/RenderTarget.hpp>
-#include <Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 
 
 RenderToTextureBehaviour::RenderToTextureBehaviour() :

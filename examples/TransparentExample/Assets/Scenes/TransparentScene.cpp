@@ -10,19 +10,19 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/MaterialCollection.hpp>
-#include <Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/CubeMap.hpp>
-#include <Behaviours/CubeMap.hpp>
+#include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
 
 // HG::Standard
-#include <Behaviours/FPSCameraMovement.hpp>
-#include <Behaviours/ServiceInformationOverlay.hpp>
+#include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
+#include <HG/Standard/Behaviours/ServiceInformationOverlay.hpp>
 
 // HG::Utils
-#include <Loaders/AssimpLoader.hpp>
+#include <HG/Utils/Loaders/AssimpLoader.hpp>
 #include <HG/Utils/Model.hpp>
-#include <Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Loaders/STBImageLoader.hpp>
 
 void TransparentScene::start()
 {

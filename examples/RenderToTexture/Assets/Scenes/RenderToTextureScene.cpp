@@ -14,14 +14,14 @@
 #include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
-#include <Behaviours/Mesh.hpp>
+#include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 
 // HG::Standard
-#include <Behaviours/FPSCameraMovement.hpp>
-#include <Behaviours/ServiceInformationOverlay.hpp>
+#include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
+#include <HG/Standard/Behaviours/ServiceInformationOverlay.hpp>
 
 // HG::Utils
-#include <Loaders/AssimpLoader.hpp>
+#include <HG/Utils/Loaders/AssimpLoader.hpp>
 #include <HG/Utils/Model.hpp>
 
 // GLM

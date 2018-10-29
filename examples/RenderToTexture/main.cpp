@@ -6,19 +6,19 @@
 #include <HG/Core/ResourceManager.hpp>
 
 // HG::Standard
-#include <HG/Utils/FilesystemResourceAccessor.hpp>
+#include <HG/Standard/FilesystemResourceAccessor.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
-#include <Forward/RenderingPipeline.hpp>
-#include <Forward/MeshRenderer.hpp>
-#include <Common/MeshDataProcessor.hpp>
-#include <Common/Texture2DDataProcessor.hpp>
-#include <Common/ShaderDataProcessor.hpp>
-#include <Common/RenderTargetDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
