@@ -50,7 +50,7 @@ HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
 
 void HG::Rendering::Base::Texture::setSize(glm::ivec2 size)
 {
-    if (m_surface.get() == nullptr)
+    if (m_surface.get() != nullptr)
     {
         return;
     }

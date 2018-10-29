@@ -18,6 +18,7 @@
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/Shader.hpp>
+#include <HG/Rendering/Base/RenderOverride.hpp>
 
 // ImGui
 #include <imgui.h>
@@ -29,7 +30,8 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::A
     m_cachedViewport({-1, -1}),
     m_gizmosRenderer(new HG::Rendering::OpenGL::GizmosRenderer(application)),
     m_imguiRenderer(new HG::Rendering::OpenGL::ImGuiRenderer(application)),
-    m_renderers()
+    m_renderers(),
+    m_savedRenderTarget(nullptr)
 {
 
 }
@@ -90,6 +92,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color color)
 {
+    proceedRenderTargetOverride();
     updateViewport();
 
     // Clearing main buffer
@@ -118,6 +121,13 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::
     if (camera != nullptr)
     {
         proceedGameObjects(objects);
+    }
+
+    // Restore render target (after override)
+    if (m_savedRenderTarget != nullptr)
+    {
+        setRenderTarget(m_savedRenderTarget);
+        m_savedRenderTarget = nullptr;
     }
 
     // Render Gizmos
@@ -209,6 +219,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
 
 bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Base::RenderBehaviour* behaviour)
 {
+    proceedRenderTargetOverride();
+
     auto rendererIterator = m_renderers.find(behaviour->renderBehaviourType());
 
     if (rendererIterator == m_renderers.end())
@@ -254,5 +266,26 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::updateViewport()
     {
         m_cachedViewport = renderTarget()->size();
         gl::set_viewport({0, 0}, {m_cachedViewport.x, m_cachedViewport.y});
+    }
+}
+
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverride()
+{
+    if ((renderOverride() == nullptr ||
+         renderOverride()->mainRenderTarget == nullptr) &&
+        m_savedRenderTarget != nullptr)
+    {
+        setRenderTarget(m_savedRenderTarget);
+        m_savedRenderTarget = nullptr;
+    }
+    else if (renderOverride() &&
+             renderOverride()->mainRenderTarget)
+    {
+        if (m_savedRenderTarget == nullptr)
+        {
+            m_savedRenderTarget = renderTarget();
+        }
+
+        setRenderTarget(renderOverride()->mainRenderTarget);
     }
 }

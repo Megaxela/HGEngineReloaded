@@ -19,6 +19,7 @@ namespace HG::Rendering::Base
     class AbstractRenderDataProcessor;
     class RenderData;
     class RenderTarget;
+    struct RenderOverride;
 
     /**
      * @brief Class, that describes
@@ -113,6 +114,21 @@ namespace HG::Rendering::Base
          */
         HG::Rendering::Base::RenderTarget* renderTarget() const;
 
+        /**
+         * @brief Method for setting pointer to render override
+         * system.
+         * @param renderOverride Pointer to render override.
+         * Can be nullptr.
+         */
+        void setRenderOverride(HG::Rendering::Base::RenderOverride* renderOverride);
+
+        /**
+         * @brief Method for getting pointer to render override
+         * system.
+         * @return Pointer to render override. Can be nullptr.
+         */
+        HG::Rendering::Base::RenderOverride* renderOverride() const;
+
     protected:
 
         /**
@@ -138,6 +154,8 @@ namespace HG::Rendering::Base
             std::size_t,
             HG::Rendering::Base::AbstractRenderDataProcessor*
         > m_renderDataProcessor;
+
+        HG::Rendering::Base::RenderOverride* m_renderOverride;
     };
 }
 

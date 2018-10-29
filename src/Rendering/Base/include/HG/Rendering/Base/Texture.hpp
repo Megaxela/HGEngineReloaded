@@ -58,6 +58,7 @@ namespace HG::Rendering::Base
         enum Format
         {
             RGBA,
+            RGB,
             Depth
         };
 

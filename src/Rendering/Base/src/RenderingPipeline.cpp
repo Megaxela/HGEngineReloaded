@@ -12,7 +12,10 @@
 #include <CurrentLogger.hpp>
 
 HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
-    m_parentApplication(application)
+    m_parentApplication(application),
+    m_currentRenderTarget(nullptr),
+    m_renderDataProcessor(),
+    m_renderOverride(nullptr)
 {
 
 }
@@ -168,4 +171,14 @@ void HG::Rendering::Base::RenderingPipeline::setRenderTarget(HG::Rendering::Base
 HG::Rendering::Base::RenderTarget* HG::Rendering::Base::RenderingPipeline::renderTarget() const
 {
     return m_currentRenderTarget;
+}
+
+void HG::Rendering::Base::RenderingPipeline::setRenderOverride(HG::Rendering::Base::RenderOverride *renderOverride)
+{
+    m_renderOverride = renderOverride;
+}
+
+HG::Rendering::Base::RenderOverride *HG::Rendering::Base::RenderingPipeline::renderOverride() const
+{
+    return m_renderOverride;
 }

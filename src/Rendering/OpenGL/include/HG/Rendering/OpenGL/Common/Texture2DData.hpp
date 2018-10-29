@@ -18,7 +18,7 @@ namespace HG::Rendering::OpenGL::Common
     {
     public:
 
-        gl::texture_2d Texture;
+        gl::texture_2d Texture = gl::texture_2d(gl::invalid_id);
         bool Allocated = false;
         glm::ivec2 Size = {0, 0};
     };

@@ -99,6 +99,12 @@ namespace HG::Rendering::OpenGL::Forward
     private:
 
         /**
+         * @brief Method for updating render target
+         * according to override system.
+         */
+        void proceedRenderTargetOverride();
+
+        /**
          * @brief Method for updating viewport if required.
          */
         void updateViewport();
@@ -125,6 +131,9 @@ namespace HG::Rendering::OpenGL::Forward
             std::size_t,
             HG::Rendering::OpenGL::Forward::AbstractRenderer*
         > m_renderers;
+
+        // Saved "current" render target
+        HG::Rendering::Base::RenderTarget* m_savedRenderTarget;
     };
 }
 

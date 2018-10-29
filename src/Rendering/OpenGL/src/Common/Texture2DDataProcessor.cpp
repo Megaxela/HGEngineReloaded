@@ -51,16 +51,18 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         texture->setSpecificData(externalData);
     }
 
-    externalData->Texture.set_min_filter(
-        getFilter(texture->minificationMethod())
-    );
-    externalData->Texture.set_mag_filter(
-        getFilter(texture->magnificationMethod())
-    );
-
     // Prepare storage if required
     if (texture->size() != externalData->Size)
     {
+        externalData->Texture = std::move(gl::texture_2d());
+
+        externalData->Texture.set_min_filter(
+            getFilter(texture->minificationMethod())
+        );
+        externalData->Texture.set_mag_filter(
+            getFilter(texture->magnificationMethod())
+        );
+
         // Setting size
         externalData->Size = texture->size();
 
@@ -70,6 +72,9 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         {
         case Base::Texture::RGBA:
             internalFormat = GL_RGBA8;
+            break;
+        case Base::Texture::RGB:
+            internalFormat = GL_RGB8;
             break;
         case Base::Texture::Depth:
             internalFormat = GL_DEPTH24_STENCIL8;
