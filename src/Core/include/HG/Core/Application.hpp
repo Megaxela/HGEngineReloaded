@@ -43,7 +43,7 @@ namespace HG::Core
          * It will delete controllers. (Deletion
          * will be executed with `delete` operator)
          */
-        ~Application();
+        virtual ~Application();
 
         /**
          * @brief Method for setting current scene.
@@ -71,18 +71,18 @@ namespace HG::Core
          * @brief Initialization.
          * @return Initialization success.
          */
-        bool init();
+        virtual bool init();
 
         /**
          * @brief Deinitialization.
          */
-        void deinit();
+        virtual void deinit();
 
         /**
          * @brief Method for performing one game cycle.
          * @return Cycle success.
          */
-        bool performCycle();
+        virtual bool performCycle();
 
         /**
          * @brief Method for executing application.
@@ -90,7 +90,7 @@ namespace HG::Core
          * performing cycles until window closed)
          * @return Result code.
          */
-        int exec();
+        virtual int exec();
 
         /**
          * @brief Method for getting pointer to
@@ -167,13 +167,15 @@ namespace HG::Core
          */
         HG::Rendering::Base::SystemController* systemController() const;
 
-    private:
+    protected:
 
         /**
          * @brief Method for processing
          * scene swapping.
          */
-        void proceedScene();
+        virtual void proceedScene();
+
+    private:
 
         // Title for created window
         std::string m_applicationTitle;

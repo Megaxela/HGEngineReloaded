@@ -14,12 +14,12 @@ namespace HG::Utils::StringTools
      */
     constexpr size_t hash(const char* input)
     {
-        size_t hash = sizeof(size_t) == 8 ? 0xcbf29ce484222325 : 0x811c9dc5;
-        const size_t prime = sizeof(size_t) == 8 ? 0x00000100000001b3 : 0x01000193;
+        std::size_t hash = sizeof(std::size_t) == 8 ? 0xcbf29ce484222325 : 0x811c9dc5;
+        const std::size_t prime = sizeof(std::size_t) == 8 ? 0x00000100000001b3 : 0x01000193;
 
         while (*input)
         {
-            hash ^= static_cast<size_t>(*input);
+            hash ^= static_cast<std::size_t>(*input);
             hash *= prime;
             ++input;
         }

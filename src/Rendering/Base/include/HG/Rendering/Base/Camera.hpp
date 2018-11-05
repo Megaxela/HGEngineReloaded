@@ -194,27 +194,6 @@ namespace HG::Rendering::Base
         glm::mat4 viewMatrix() const;
 
         /**
-         * @brief Method for setting viewport rect.
-         * @param x Left side position.
-         * @param y Top side position.
-         * @param w Width.
-         * @param h Height.
-         */
-        void setViewport(int x, int y, int w, int h);
-
-        /**
-         * @brief Method for setting viewport.
-         * @param rect Viewport rectangle.
-         */
-        void setViewport(const HG::Utils::Rect &rect);
-
-        /**
-         * @brief Method for getting viewport rect.
-         * @return Viewport rect.
-         */
-        HG::Utils::Rect viewport() const;
-
-        /**
          * @brief Method to set near value.
          * @param value Near value.
          */
