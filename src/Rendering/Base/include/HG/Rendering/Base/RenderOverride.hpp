@@ -3,6 +3,7 @@
 namespace HG::Rendering::Base
 {
     class RenderTarget;
+    class Material;
 
     /**
      * @brief Structure, that describes data for rendering
@@ -16,6 +17,9 @@ namespace HG::Rendering::Base
         // initial render target value)
         HG::Rendering::Base::RenderTarget* mainRenderTarget = nullptr;
 
+        // Pointer to material that will replace all
+        // materials in render targets.
+        HG::Rendering::Base::Material* material = nullptr;
     };
 }
 

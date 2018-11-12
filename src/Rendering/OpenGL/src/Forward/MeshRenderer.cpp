@@ -19,6 +19,8 @@
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Material.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/RenderOverride.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
 
 // HG::Utils
 #include <HG/Utils/Mesh.hpp>
@@ -74,6 +76,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 {
     auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
     auto data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
+    auto override = application()->renderer()->pipeline()->renderOverride();
 
     // todo: On errors, render "error" mesh instead.
     if (application()->renderer()->needSetup(meshBehaviour))
@@ -88,40 +91,69 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     gl::program* program = nullptr;
 
-    if (meshBehaviour->material() == nullptr ||
-        meshBehaviour->material()->shader() == nullptr)
+    if (override == nullptr ||
+        override->material == nullptr)
     {
-        program = &static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData())->Program;
+        if (meshBehaviour->material() == nullptr ||
+            meshBehaviour->material()->shader() == nullptr)
+        {
+            program = &static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData())->Program;
 
-        program->use();
+            program->use();
+        }
+        else
+        {
+            Common::ShaderData* shaderData = nullptr;
+
+            if (application()->renderer()->needSetup(meshBehaviour->material()->shader()))
+            {
+                if (!application()->renderer()->setup(meshBehaviour->material()->shader()))
+                {
+                    // If can't setup shader
+                    shaderData = static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData());
+                }
+            }
+
+            if (shaderData == nullptr)
+            {
+                shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
+            }
+
+            program = &shaderData->Program;
+            program->use();
+
+            if (application()->renderer()->activeCubeMap())
+            {
+                meshBehaviour->material()->set("cubemap", application()->renderer()->activeCubeMap());
+            }
+
+            applyShaderUniforms(meshBehaviour->material());
+        }
     }
     else
     {
         Common::ShaderData* shaderData = nullptr;
 
-        if (application()->renderer()->needSetup(meshBehaviour->material()->shader()))
+        if (application()->renderer()->needSetup(override->material->shader()))
         {
-            if (!application()->renderer()->setup(meshBehaviour->material()->shader()))
+            if (!application()->renderer()->setup(override->material->shader()))
             {
-                // If can't setup shader
-                shaderData = static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData());
+                // todo: Make decision on replace shader unavailability
+                return; // Do not apply fallback if replace enabled
             }
         }
 
-        if (shaderData == nullptr)
-        {
-            shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
-        }
+        shaderData = static_cast<Common::ShaderData*>(override->material->shader()->specificData());
 
         program = &shaderData->Program;
         program->use();
 
         if (application()->renderer()->activeCubeMap())
         {
-            meshBehaviour->material()->set("cubemap", application()->renderer()->activeCubeMap());
+            override->material->set("cubemap", application()->renderer()->activeCubeMap());
         }
 
-        applyShaderUniforms(meshBehaviour->material());
+        applyShaderUniforms(override->material);
     }
 
     // No active camera. No rendering.
