@@ -225,130 +225,69 @@ namespace HG::Utils
             return m_current[i];
         }
 
-        /**
-         * @brief Method to get number of current elements.
-         * @return Number of current elements.
-         */
         size_type size() const
         {
             return m_current.size();
         }
 
-        /**
-         * @brief Method to get number of added elements.
-         * @return Size.
-         */
-        size_type numberOfAdded() const
+        const container& removable() const
         {
-            return m_added.size();
+            return m_removable;
         }
 
-        /**
-         * @brief Method to get begin const iterator of current container.
-         * @return Const iterator.
-         */
-        const_iterator begin() const
+        container& removable()
         {
-            return m_current.begin();
+            return m_removable;
         }
 
-        /**
-         * @brief Method to get end const iterator of current container.
-         * @return Const iterator.
-         */
-        const_iterator end() const
+        const container& added() const
         {
-            return m_current.end();
+            return m_added;
         }
 
-        /**
-         * @brief Method to get begin iterator of current container.
-         * @return Iterator.
-         */
+        container& added()
+        {
+            return m_added;
+        }
+
+        const container& current() const
+        {
+            return m_current;
+        }
+
+        container& current()
+        {
+            return m_current;
+        }
+
         iterator begin()
         {
             return m_current.begin();
         }
 
-        /**
-         * @brief Method to get end iterator of current container.
-         * @return Iterator.
-         */
+        const_iterator begin() const
+        {
+            return m_current.begin();
+        }
+
+        const_iterator cbegin() const
+        {
+            return m_current.cbegin();
+        }
+
         iterator end()
         {
             return m_current.end();
         }
 
-        /**
-         * @brief Method to get begin iterator of addable container.
-         * @return Iterator.
-         */
-        iterator addedBegin()
+        const_iterator end() const
         {
-            return m_added.begin();
+            return m_current.end();
         }
 
-        /**
-         * @brief Method to get end iterator of addable container.
-         * @return Iterator.
-         */
-        iterator addedEnd()
+        const_iterator cend() const
         {
-            return m_added.end();
-        }
-
-        /**
-         * @brief Method to get const begin iterator of addable container.
-         * @return Iterator.
-         */
-        const_iterator addedBegin() const
-        {
-            return m_added.begin();
-        }
-
-        /**
-         * @brief Method to get const end iterator of addable container.
-         * @return Iterator.
-         */
-        const_iterator addedEnd() const
-        {
-            return m_added.end();
-        }
-
-        /**
-         * @brief Method to get const begin iterator of removable container.
-         * @return Const iterator.
-         */
-        const_iterator removableBegin() const
-        {
-            return m_removable.begin();
-        }
-
-        /**
-         * @brief Method to get begin iterator of removable container.
-         * @return Iterator.
-         */
-        iterator removableBegin()
-        {
-            return m_removable.begin();
-        }
-
-        /**
-         * @brief Method to get end const iterator of removable container.
-         * @return Const iterator.
-         */
-        const_iterator removableEnd() const
-        {
-            return m_removable.end();
-        }
-
-        /**
-         * @brief Method to get end iterator of removable container.
-         * @return Iterator.
-         */
-        iterator removableEnd()
-        {
-            return m_removable.end();
+            return m_current.cend();
         }
 
     private:

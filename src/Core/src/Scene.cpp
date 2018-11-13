@@ -19,12 +19,9 @@ HG::Core::Scene::Scene() :
 HG::Core::Scene::~Scene()
 {
     // Removing gameobject (caching)
-    for (auto iter = m_gameObjects.addedBegin(),
-              end = m_gameObjects.addedEnd();
-              iter != end;
-              ++iter)
+    for (auto&& behaviour : m_gameObjects.added())
     {
-        removeGameObject(*iter);
+        removeGameObject(behaviour);
     }
 
     for (auto&& gameObject : m_gameObjects)

@@ -64,7 +64,7 @@ namespace HG::Rendering::Base
          * @brief Rendering method.
          * @param objects Objects.
          */
-        virtual void render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects) = 0;
+        virtual void render(const std::vector<HG::Core::GameObject*>& objects) = 0;
 
         /**
          * @brief Method for rendering specified

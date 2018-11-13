@@ -69,7 +69,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Actual render method.
          * @param objects Container with objects.
          */
-        void render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects) override;
+        void render(const std::vector<HG::Core::GameObject*>& objects) override;
 
         /**
          * @brief Method for rendering specified render
@@ -113,7 +113,7 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Method for processing game objects and it's behaviours.
          * @param objects Objects.
          */
-        void proceedGameObjects(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects);
+        void proceedGameObjects(const std::vector<HG::Core::GameObject*>& objects);
 
         // Caching
         std::vector<HG::Rendering::Base::RenderBehaviour*> m_behavioursCache;

@@ -111,7 +111,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color c
     );
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const std::vector<HG::Core::GameObject*>& objects)
 {
     clear(HG::Utils::Color::fromRGB(25, 25, 25));
 
@@ -142,7 +142,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const HG::Utils::
     application()->systemController()->swapBuffers();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const std::vector<HG::Core::GameObject*>& objects)
 {
     m_sortedBehaviours.clear();
     HG::Rendering::Base::RenderBehaviour* cubemapBehaviour = nullptr;
