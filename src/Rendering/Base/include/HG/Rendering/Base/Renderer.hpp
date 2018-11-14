@@ -2,6 +2,7 @@
 
 // HG::Utils
 #include <HG/Utils/DoubleBufferContainer.hpp>
+#include <HG/Utils/Color.hpp>
 
 namespace HG::Core
 {
@@ -18,6 +19,7 @@ namespace HG::Rendering::Base
     class RenderData;
     class RenderTarget;
     class CubeMap;
+    class Texture;
 
     /**
      * @brief Class, that describes
@@ -129,6 +131,15 @@ namespace HG::Rendering::Base
          * @param cubemap Pointer to new active cube map.
          */
         void setActiveCubeMap(HG::Rendering::Base::CubeMap* cubemap);
+
+        /**
+         * @brief Method for getting texture pixel value. May
+         * throw `std::runtime_error` if there is no pipeline set.
+         * @param texture Pointer to texture.
+         * @param pos Pixel position.
+         * @return Pixel color.
+         */
+        HG::Utils::Color getTexturePixel(HG::Rendering::Base::Texture* texture, glm::ivec2 pos);
 
     private:
 

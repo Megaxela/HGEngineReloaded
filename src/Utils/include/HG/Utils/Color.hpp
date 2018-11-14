@@ -153,4 +153,6 @@ namespace HG::Utils
         float m_b;
         float m_a = 1;
     };
+
+    std::ostream& operator<<(std::ostream& stream, HG::Utils::Color& color);
 }

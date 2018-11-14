@@ -19,9 +19,11 @@
 #include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/Shader.hpp>
 #include <HG/Rendering/Base/RenderOverride.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // ImGui
 #include <imgui.h>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
@@ -288,4 +290,19 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverr
 
         setRenderTarget(renderOverride()->mainRenderTarget);
     }
+}
+
+HG::Utils::Color HG::Rendering::OpenGL::Forward::RenderingPipeline::getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos)
+{
+    auto textureData = dynamic_cast<Common::Texture2DData*>(texture->specificData());
+
+    if (textureData == nullptr)
+    {
+        Error() << "No texture data.";
+        return HG::Utils::Color::White;
+    }
+
+    auto data = textureData->Texture.sub_image(0, pos.x, pos.y, 0, 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE);
+
+    return HG::Utils::Color::fromRGB(data[0], data[1], data[2]);
 }

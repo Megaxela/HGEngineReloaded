@@ -19,6 +19,7 @@ namespace HG::Rendering::Base
     class AbstractRenderDataProcessor;
     class RenderData;
     class RenderTarget;
+    class Texture;
     struct RenderOverride;
 
     /**
@@ -128,6 +129,14 @@ namespace HG::Rendering::Base
          * @return Pointer to render override. Can be nullptr.
          */
         HG::Rendering::Base::RenderOverride* renderOverride() const;
+
+        /**
+         * @brief Method for getting texture pixel value.
+         * @param texture Pointer to texture.
+         * @param pos Pixel position.
+         * @return Pixel color.
+         */
+        virtual HG::Utils::Color getTexturePixel(HG::Rendering::Base::Texture* texture, glm::ivec2 pos) = 0;
 
     protected:
 

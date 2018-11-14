@@ -96,6 +96,8 @@ namespace HG::Rendering::OpenGL::Forward
          */
         void setRenderTarget(HG::Rendering::Base::RenderTarget* target) override;
 
+        Utils::Color getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos) override;
+
     private:
 
         /**

@@ -1,3 +1,6 @@
+// C++ STL
+#include <iostream>
+
 // HG::Utils
 #include <HG/Utils/Color.hpp>
 
@@ -212,4 +215,16 @@ bool HG::Utils::Color::operator==(const HG::Utils::Color &rhs) const
            std::abs(rhs.m_g - m_g) < 0.01 &&
            std::abs(rhs.m_b - m_b) < 0.01 &&
            std::abs(rhs.m_a - m_a) < 0.01;
+}
+
+std::ostream& HG::Utils::operator<<(std::ostream &stream, HG::Utils::Color &color)
+{
+    stream
+        << "Color("
+        << int(color.red())   << ", "
+        << int(color.green()) << ", "
+        << int(color.blue())  << ", "
+        << int(color.alpha()) << ")";
+
+    return stream;
 }

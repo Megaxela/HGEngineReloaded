@@ -32,7 +32,7 @@ void HG::Core::GameObject::update()
     // Merging rendering behaviours
     m_renderBehaviours.merge();
 
-    const auto& newBehaviours = m_behaviours.added();
+    auto newBehaviours = m_behaviours.added();
 
     // Removing behaviours
     for (auto&& behaviour : m_behaviours.removable())

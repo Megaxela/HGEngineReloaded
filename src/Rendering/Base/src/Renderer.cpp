@@ -88,7 +88,7 @@ void HG::Rendering::Base::Renderer::render(const HG::Utils::DoubleBufferContaine
         return;
     }
 
-    m_pipeline->render(gameObjects);
+    m_pipeline->render(gameObjects.current());
 
     m_gizmos->clear();
 }
@@ -153,4 +153,14 @@ bool HG::Rendering::Base::Renderer::needSetup(HG::Rendering::Base::RenderData* d
     }
 
     return m_pipeline->needSetup(data);
+}
+
+HG::Utils::Color HG::Rendering::Base::Renderer::getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos)
+{
+    if (m_pipeline == nullptr)
+    {
+        throw std::runtime_error("No pipeline to work with.");
+    }
+
+    return m_pipeline->getTexturePixel(texture, pos);
 }
