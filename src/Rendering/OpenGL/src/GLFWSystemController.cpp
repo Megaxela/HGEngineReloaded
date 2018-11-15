@@ -679,17 +679,11 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleWindowEvents()
 
 void HG::Rendering::OpenGL::GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
-//    gl::set_viewport({0, 0}, {width, height});
     controller
         ->application()
         ->renderer()
         ->defaultRenderTarget()
         ->setSize({width, height});
-//    if (controller->application()->renderer()->activeCamera())
-//    {
-//        controller->application()->renderer()->activeCamera()->setViewport(0, 0, width, height);
-//    }
-
 }
 
 void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
@@ -721,21 +715,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
     }
 
     std::stringstream ss;
-    ss << "Debug message (" << id << "): " <<  message << std::endl;
 
-    ss << "Source: ";
-    switch (source)
-    {
-    case GL_DEBUG_SOURCE_API:             ss << "API"; break;
-    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   ss << "Window System"; break;
-    case GL_DEBUG_SOURCE_SHADER_COMPILER: ss << "Shader Compiler"; break;
-    case GL_DEBUG_SOURCE_THIRD_PARTY:     ss << "Third Party"; break;
-    case GL_DEBUG_SOURCE_APPLICATION:     ss << "Application"; break;
-    case GL_DEBUG_SOURCE_OTHER:           ss << "Other"; break;
-    default:                              ss << "Unexpected"; break;;
-    } ss << std::endl;
-
-    ss << "Type: ";
     switch (type)
     {
     case GL_DEBUG_TYPE_ERROR:               ss << "Error"; break;
@@ -748,27 +728,57 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
     case GL_DEBUG_TYPE_POP_GROUP:           ss << "Pop Group"; break;
     case GL_DEBUG_TYPE_OTHER:               ss << "Other"; break;
     default:                                ss << "Unexpected"; break;
-    } ss << std::endl;
+    }
 
-    ss << "Severity: ";
+    ss << " (severity: ";
+
     switch (severity)
     {
     case GL_DEBUG_SEVERITY_HIGH:         ss << "high"; break;
     case GL_DEBUG_SEVERITY_MEDIUM:       ss << "medium"; break;
     case GL_DEBUG_SEVERITY_LOW:          ss << "low"; break;
     default:                             ss << "unexpected"; break;
-    } ss << std::endl;
-    ss << std::endl;
-
-    if (type == GL_DEBUG_TYPE_ERROR)
-    {
-        ErrorEx("OpenGL::RendererController")
-            << "OpenGL Error:\n" << ss.str();
     }
-    else
+
+    ss << ") message received from ";
+
+    switch (source)
     {
-        WarningEx("OpenGL::RendererController")
-            << "OpenGL Warning:\n" << ss.str();
+    case GL_DEBUG_SOURCE_API:             ss << "API"; break;
+    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   ss << "Window System"; break;
+    case GL_DEBUG_SOURCE_SHADER_COMPILER: ss << "Shader Compiler"; break;
+    case GL_DEBUG_SOURCE_THIRD_PARTY:     ss << "Third Party"; break;
+    case GL_DEBUG_SOURCE_APPLICATION:     ss << "Application"; break;
+    case GL_DEBUG_SOURCE_OTHER:           ss << "Other"; break;
+    default:                              ss << "Unexpected"; break;;
+    }
+
+    std::string messageCopy(message);
+
+    std::replace(messageCopy.begin(), messageCopy.end(), '\n', ' ');
+
+    ss << ": " << messageCopy;
+
+    switch (type)
+    {
+    case GL_DEBUG_TYPE_ERROR:
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+        ErrorEx("OpenGL::RendererController") << ss.str();
+        break;
+
+    case GL_DEBUG_TYPE_PORTABILITY:
+    case GL_DEBUG_TYPE_PERFORMANCE:
+    case GL_DEBUG_TYPE_MARKER:
+        WarningEx("OpenGL::RendererController") << ss.str();
+        break;
+
+    case GL_DEBUG_TYPE_PUSH_GROUP:
+    case GL_DEBUG_TYPE_POP_GROUP:
+    case GL_DEBUG_TYPE_OTHER:
+    default:
+        InfoEx("OpenGL::RendererController") << ss.str();
+        break;
     }
 }
 
