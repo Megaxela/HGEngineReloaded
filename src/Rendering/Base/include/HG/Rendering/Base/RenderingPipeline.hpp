@@ -15,6 +15,7 @@ namespace HG::Core
 
 namespace HG::Rendering::Base
 {
+    class BlitData;
     class RenderBehaviour;
     class AbstractRenderDataProcessor;
     class RenderData;
@@ -74,6 +75,14 @@ namespace HG::Rendering::Base
          * @return Render sucсeed.
          */
         virtual bool render(HG::Rendering::Base::RenderBehaviour* behaviour) = 0;
+
+        /**
+         * @brief Method for blitting
+         * some data to some rendertarget.
+         * @param target Rendertarget.
+         * @param blitData Data to blit.
+         */
+        virtual void blit(HG::Rendering::Base::RenderTarget* target, HG::Rendering::Base::BlitData* blitData) = 0;
 
         /**
          * @brief Method for getting parent application.

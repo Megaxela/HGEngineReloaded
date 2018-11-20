@@ -23,6 +23,11 @@ namespace HG::Rendering::OpenGL
     class ImGuiRenderer;
 }
 
+namespace HG::Rendering::OpenGL::Materials
+{
+    class BlitMaterial;
+}
+
 namespace HG::Rendering::OpenGL::Forward
 {
     class AbstractRenderer;
@@ -77,6 +82,13 @@ namespace HG::Rendering::OpenGL::Forward
          * @param behaviour
          */
         bool render(HG::Rendering::Base::RenderBehaviour* behaviour) override;
+
+        /**
+         * @brief Method for blitting blit data to target rendertarget.
+         * @param target Pointer to rendertarget.
+         * @param blitData Pointer to blit data.
+         */
+        void blit(HG::Rendering::Base::RenderTarget *target, HG::Rendering::Base::BlitData *blitData) override;
 
         /**
          * @brief Init method.
@@ -136,6 +148,9 @@ namespace HG::Rendering::OpenGL::Forward
 
         // Saved "current" render target
         HG::Rendering::Base::RenderTarget* m_savedRenderTarget;
+
+        // Blitting material
+        HG::Rendering::OpenGL::Materials::BlitMaterial* m_blitMaterial;
     };
 }
 

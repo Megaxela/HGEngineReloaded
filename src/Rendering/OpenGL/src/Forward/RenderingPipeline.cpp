@@ -8,6 +8,7 @@
 #include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
 #include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Materials/BlitMaterial.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/MaterialCollection.hpp>
@@ -20,6 +21,10 @@
 #include <HG/Rendering/Base/Shader.hpp>
 #include <HG/Rendering/Base/RenderOverride.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/Base/BlitData.hpp>
+
+// GLM
+#include <glm/glm.hpp>
 
 // ImGui
 #include <imgui.h>
@@ -305,4 +310,26 @@ HG::Utils::Color HG::Rendering::OpenGL::Forward::RenderingPipeline::getTexturePi
     auto data = textureData->Texture.sub_image(0, pos.x, pos.y, 0, 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE);
 
     return HG::Utils::Color::fromRGB(data[0], data[1], data[2]);
+}
+
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base::RenderTarget *target,
+                                                             HG::Rendering::Base::BlitData *blitData)
+{
+    auto savedRenderTarget = renderTarget();
+    setRenderTarget(target);
+
+    // Creating projection matrix
+    auto projection = glm::ortho(
+            0, target->size().x,
+            target->size().y, 0
+    );
+
+    for (const auto& [texture, data] : blitData->blitContainer())
+    {
+        m_blitMaterial->setTexture(texture);
+
+        // todo: Finish implementation
+    }
+
+    setRenderTarget(savedRenderTarget);
 }

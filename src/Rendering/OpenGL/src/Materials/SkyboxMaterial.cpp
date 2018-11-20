@@ -3,17 +3,17 @@
 
 const char* HG::Rendering::OpenGL::Materials::SkyboxMaterial::rawShader = R"(
 #ifdef VertexShader
-layout (location = 0) in vec3 inPosition;
+layout (location = 0) in vec3 position;
 
-out vec3 TexCoords;
+out vec3 texCoordinates;
 
 uniform mat4 projection;
 uniform mat4 view;
 
 void main()
 {
-    TexCoords = inPosition;
-    vec4 pos = projection * view * vec4(inPosition, 1.0);
+    texCoordinates = position;
+    vec4 pos = projection * view * vec4(position, 1.0);
     gl_Position = pos.xyww;
 }
 #endif
@@ -21,14 +21,13 @@ void main()
 #ifdef FragmentShader
 layout (location = 0) out vec4 FragColor;
 
-in vec3 TexCoords;
+in vec3 texCoordinates;
 
 uniform samplerCubeArray skybox;
 
 void main()
 {
-    FragColor = texture(skybox, vec4(TexCoords, 0.0));
-//    FragColor = vec4(TexCoords, 1.0f);
+    FragColor = texture(skybox, vec4(texCoordinates, 0.0));
 }
 #endif
 )";
