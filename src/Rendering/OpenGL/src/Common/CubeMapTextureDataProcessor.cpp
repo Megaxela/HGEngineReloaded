@@ -1,3 +1,6 @@
+// HG::Core
+#include <HG/Core/Benchmark.hpp>
+
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
@@ -17,6 +20,7 @@ namespace
                           gl::cubemap_texture_array& texture,
                           GLuint side)
     {
+
         // todo: Fix this `unused` variable.
         (void) texture;
         GLuint fileFormat = GL_RGB;
@@ -81,6 +85,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
 
     if (surf && !externalData->StoragePrepared)
     {
+        BENCH("Creating texture storage");
         externalData->StoragePrepared = true;
 
         externalData->Texture.set_storage(
@@ -92,20 +97,13 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
         );
     }
 
-    // Setting up textures
-    //#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
-    //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X 0x8516
-    //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Y 0x8517
-    //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 0x8518
-    //#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
-    //#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
-
     if (externalData->StoragePrepared)
     {
         for (int side = HG::Rendering::Base::CubeMap::Side::Right;
              side < HG::Rendering::Base::CubeMap::Side::Last;
              ++side)
         {
+            BENCH("Loading side data to texture");
             if ((externalData->LoadedSides & (1 << side)) == 0)
             {
                 auto surface = texture->getSideSurface(static_cast<Base::CubeMap::Side>(side));

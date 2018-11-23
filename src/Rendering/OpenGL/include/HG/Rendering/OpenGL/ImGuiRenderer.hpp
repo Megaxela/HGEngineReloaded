@@ -53,6 +53,12 @@ namespace HG::Rendering::OpenGL
          */
         void render();
 
+        /**
+         * @brief Method for getting parent application.
+         * @return Pointer to parent application.
+         */
+        HG::Core::Application* application() const;
+
     private:
 
         void createFontsTexture();

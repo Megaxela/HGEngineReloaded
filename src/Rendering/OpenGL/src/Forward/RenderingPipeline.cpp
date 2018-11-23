@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/GameObject.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
@@ -138,19 +139,27 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const std::vector
     }
 
     // Render Gizmos
-    application()->renderer()->gizmos()->visitShapes(*m_gizmosRenderer);
-    m_gizmosRenderer->render();
+    {
+        BENCH("Gizmos rendering");
+        application()->renderer()->gizmos()->visitShapes(*m_gizmosRenderer);
+        m_gizmosRenderer->render();
+    }
 
     // Render ImGui
-    ImGui::Render();
-    m_imguiRenderer->render();
+    {
+        BENCH("ImGUI rendering");
+        ImGui::Render();
+        m_imguiRenderer->render();
+    }
 
     // Swapping graphics buffers
+    BENCH("Swapping buffers");
     application()->systemController()->swapBuffers();
 }
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const std::vector<HG::Core::GameObject*>& objects)
 {
+    BENCH("Proceeding gameobjects");
     m_sortedBehaviours.clear();
     HG::Rendering::Base::RenderBehaviour* cubemapBehaviour = nullptr;
 
@@ -163,50 +172,54 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
     cameraPos = camera->gameObject()->transform()->globalPosition();
     cameraRot = camera->gameObject()->transform()->globalRotation();
 
-    // Using multimap for sorting objects by distance from camera
-    for (auto&& gameObject : objects)
     {
-        if (!gameObject->isEnabled())
+        BENCH("Gameobjects sorting");
+        // Using multimap for sorting objects by distance from camera
+        for (auto&& gameObject : objects)
         {
-            continue;
-        }
-
-        m_behavioursCache.clear();
-
-        // Getting rendering behaviours of GO
-        gameObject->getRenderingBehaviours(m_behavioursCache);
-
-        for (auto&& behaviour : m_behavioursCache)
-        {
-            if (!behaviour->isEnabled())
+            if (!gameObject->isEnabled())
             {
                 continue;
             }
 
-            auto cameraSpace = gameObject->transform()->globalPosition() - cameraPos;
+            m_behavioursCache.clear();
 
-            if (behaviour->renderBehaviourType() == HG::Rendering::Base::Behaviours::CubeMap::RenderBehaviourId)
+            // Getting rendering behaviours of GO
+            gameObject->getRenderingBehaviours(m_behavioursCache);
+
+            for (auto&& behaviour : m_behavioursCache)
             {
-                if (cubemapBehaviour)
+                if (!behaviour->isEnabled())
                 {
-                    Warning() << "Several cubemap behaviours are available at the same time.";
+                    continue;
                 }
 
-                cubemapBehaviour = behaviour;
-            }
-            else
-            {
-                // Not inverting, because Z is positive towards camera
-                m_sortedBehaviours.insert({
-                    (cameraSpace * glm::inverse(cameraRot)).z,
-                    behaviour
-                });
+                auto cameraSpace = gameObject->transform()->globalPosition() - cameraPos;
+
+                if (behaviour->renderBehaviourType() == HG::Rendering::Base::Behaviours::CubeMap::RenderBehaviourId)
+                {
+                    if (cubemapBehaviour)
+                    {
+                        Warning() << "Several cubemap behaviours are available at the same time.";
+                    }
+
+                    cubemapBehaviour = behaviour;
+                }
+                else
+                {
+                    // Not inverting, because Z is positive towards camera
+                    m_sortedBehaviours.insert({
+                        (cameraSpace * glm::inverse(cameraRot)).z,
+                        behaviour
+                    });
+                }
             }
         }
     }
 
     if (cubemapBehaviour != nullptr)
     {
+        BENCH("Cubemap rendering");
         // Disabling depth test
         gl::set_depth_test_enabled(false);
 
@@ -220,6 +233,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
     // Rendering other scene
     for (auto& [distance, behaviour] : m_sortedBehaviours)
     {
+        BENCH("Rendering behaviour");
         render(behaviour);
     }
 }
@@ -299,6 +313,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverr
 
 HG::Utils::Color HG::Rendering::OpenGL::Forward::RenderingPipeline::getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos)
 {
+    BENCH("Getting texture pixel");
     auto textureData = dynamic_cast<Common::Texture2DData*>(texture->specificData());
 
     if (textureData == nullptr)
@@ -327,6 +342,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base
     for (const auto& [texture, data] : blitData->blitContainer())
     {
         m_blitMaterial->setTexture(texture);
+
+
 
         // todo: Finish implementation
     }

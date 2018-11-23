@@ -1,8 +1,18 @@
+// HG::Core
+#include <HG/Core/Benchmark.hpp>
+
+// HG::Rendering::Base
 #include <HG/Rendering/Base/Texture.hpp>
+
+// HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
-#include <CurrentLogger.hpp>
+
+// HG::Utils
 #include <HG/Utils/Surface.hpp>
+
+// ALogger
+#include <CurrentLogger.hpp>
 
 namespace
 {
@@ -54,6 +64,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     // Prepare storage if required
     if (texture->size() != externalData->Size)
     {
+        BENCH("Preparing storage");
         externalData->Texture = std::move(gl::texture_2d());
 
         externalData->Texture.set_min_filter(
@@ -103,6 +114,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         texture->surface() &&
         !externalData->Valid)
     {
+        BENCH("Loading surface to texture");
         externalData->Valid = true;
         GLuint fileFormat = GL_RGBA;
 
@@ -145,7 +157,11 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
 
     externalData->Texture.unbind();
 
-    return true;
+    return  externalData->Allocated &&
+            (externalData->Valid ||
+             (texture->surface() == nullptr &&
+              !externalData->Valid));
+
 }
 
 bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)

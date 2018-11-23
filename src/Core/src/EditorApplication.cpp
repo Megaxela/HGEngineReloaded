@@ -13,6 +13,7 @@
 #include <HG/Core/ThreadPool.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Input.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -29,6 +30,7 @@ HG::Core::Application::Application(std::string name, int /* argc */, char** /* a
     m_resourceManager(new HG::Core::ResourceManager(this)),
     m_timeStatistics(new HG::Core::TimeStatistics()),
     m_countStatistics(new HG::Core::CountStatistics()),
+    m_benchmark(new HG::Core::Benchmark()),
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
 {
@@ -109,10 +111,14 @@ bool HG::Core::Application::performCycle()
     // Saving last deltatime
     auto dt = m_timeStatistics->tickTimerAtomic(TimeStatistics::FrameTime);
 
+    // Ticking benchmark
+    m_benchmark->tick();
+
     // Tick counting frame time
 
     if (m_physicsController)
     {
+        BENCH_D(this, "Physics tick");
         // Start counting physics time
         m_timeStatistics->tickTimerBegin(TimeStatistics::PhysicsTime);
 
@@ -130,6 +136,7 @@ bool HG::Core::Application::performCycle()
     if (m_renderer->pipeline() != nullptr &&
         systemController() != nullptr)
     {
+        BENCH_D(this, "Events polling");
         systemController()->pollEvents();
     }
 
@@ -137,6 +144,7 @@ bool HG::Core::Application::performCycle()
     proceedScene();
 
     {
+        BENCH_D(this, "Updating");
         // Calling update on scene.
         if (m_currentScene)
         {
@@ -148,6 +156,8 @@ bool HG::Core::Application::performCycle()
     }
 
     {
+        BENCH_D(this, "Rendering");
+
         // Start counting rendering time
         m_timeStatistics->tickTimerBegin(TimeStatistics::RenderTime);
 
@@ -188,6 +198,7 @@ int HG::Core::Application::exec()
 
 void HG::Core::Application::proceedScene()
 {
+    BENCH_D(this, "Scene processing");
     if (m_cachedScene != nullptr)
     {
         // Deleting current scene
@@ -218,6 +229,11 @@ HG::Core::TimeStatistics* HG::Core::Application::timeStatistics()
 HG::Core::CountStatistics *HG::Core::Application::countStatistics()
 {
     return m_countStatistics;
+}
+
+HG::Core::Benchmark *HG::Core::Application::benchmark()
+{
+    return m_benchmark;
 }
 
 HG::Core::ThreadPool* HG::Core::Application::threadPool()

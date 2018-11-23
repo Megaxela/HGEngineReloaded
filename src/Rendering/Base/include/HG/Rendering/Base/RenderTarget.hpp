@@ -50,7 +50,7 @@ namespace HG::Rendering::Base
          * @brief Method for setting texture for color texture.
          * @param texture Pointer to texture.
          */
-        void setColorTexture(HG::Rendering::Base::Texture* texture, uint32_t index);
+        void setColorTexture(HG::Rendering::Base::Texture* texture, uint32_t index=0);
 
         /**
          * @brief Method for getting texture for color texture.

@@ -3,6 +3,11 @@
 // C++ STL
 #include <cstdlib>
 
+namespace HG::Core
+{
+    class Application;
+}
+
 namespace HG::Rendering::Base
 {
     class RenderData;
@@ -60,7 +65,14 @@ namespace HG::Rendering::Base
          * @brief Method for getting parent rendering pipeline.
          * @return Parent rendering pipeline.
          */
-        HG::Rendering::Base::RenderingPipeline* renderingPipeline();
+        HG::Rendering::Base::RenderingPipeline* renderingPipeline() const;
+
+        /**
+         * @brief Method for getting parent application (it will be taked
+         * from rendering pipeline)
+         * @return Pointer to parent applicaiton.
+         */
+        HG::Core::Application* application() const;
 
     private:
 

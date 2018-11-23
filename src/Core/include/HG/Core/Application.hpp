@@ -22,6 +22,7 @@ namespace HG::Core
     class TimeStatistics;
     class CountStatistics;
     class ThreadPool;
+    class Benchmark;
 
     /**
      * @brief Class, that describes
@@ -121,6 +122,13 @@ namespace HG::Core
         HG::Core::CountStatistics* countStatistics();
 
         /**
+         * @brief Method for getting object
+         * for benchmarking.
+         * @return Pointer to benchmark.
+         */
+        HG::Core::Benchmark* benchmark();
+
+        /**
          * @brief Method for getting application thread pool.
          * @return Pointer to application thread pool.
          */
@@ -203,6 +211,9 @@ namespace HG::Core
 
         // Count statistics
         HG::Core::CountStatistics* m_countStatistics;
+
+        // Benchmarking
+        HG::Core::Benchmark* m_benchmark;
 
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.

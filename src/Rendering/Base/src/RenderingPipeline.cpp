@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/AbstractRenderDataProcessor.hpp>
@@ -89,6 +90,8 @@ HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() con
 
 bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderData* data)
 {
+    BENCH("Setup of resource " + std::to_string(data->dataType()));
+
     if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
         return setupRenderBehaviour(
@@ -110,6 +113,7 @@ bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderDa
 
 bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::RenderData* data)
 {
+    BENCH("Checking is setup required for " + std::to_string(data->dataType()));
     if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
         return needSetupRenderBehaviour(
@@ -131,6 +135,7 @@ bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::Rend
 
 bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
 {
+    BENCH("Setup of rendering behaviour " + std::to_string(behaviour->renderBehaviourType()));
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
 
     if (processorIterator == m_renderDataProcessor.end())
@@ -144,6 +149,7 @@ bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering:
 
 bool HG::Rendering::Base::RenderingPipeline::needSetupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
 {
+    BENCH("Is setup required for rendering behaviour " + std::to_string(behaviour->renderBehaviourType()));
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
 
     if (processorIterator == m_renderDataProcessor.end())
@@ -160,7 +166,7 @@ HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::RenderingPipeline::
     processor->setRenderingPipeline(this);
     m_renderDataProcessor[processor->getTarget()] = processor;
 
-    return &(*this);
+    return this;
 }
 
 void HG::Rendering::Base::RenderingPipeline::setRenderTarget(HG::Rendering::Base::RenderTarget* target)

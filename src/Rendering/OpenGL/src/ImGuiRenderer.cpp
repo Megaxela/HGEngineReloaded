@@ -1,6 +1,7 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -37,6 +38,11 @@ HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* appli
 HG::Rendering::OpenGL::ImGuiRenderer::~ImGuiRenderer()
 {
     deinit();
+}
+
+HG::Core::Application *HG::Rendering::OpenGL::ImGuiRenderer::application() const
+{
+    return m_application;
 }
 
 void HG::Rendering::OpenGL::ImGuiRenderer::deinit()
@@ -157,6 +163,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
          commandListIndex < draw_data->CmdListsCount;
          commandListIndex++)
     {
+        BENCH("Drawing ImGui command list");
         const auto* cmd_list = draw_data->CmdLists[commandListIndex];
         const ImDrawIdx* idx_buffer_offset = nullptr;
 
@@ -184,6 +191,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
              commandIndex < cmd_list->CmdBuffer.Size;
              ++commandIndex)
         {
+            BENCH("Drawing command from list");
             const auto* pcmd = &cmd_list->CmdBuffer[commandIndex];
 
             if (pcmd->UserCallback)
@@ -252,6 +260,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
 
 void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
 {
+    BENCH("Creating fonts texture");
 
     auto& io = ImGui::GetIO();
 

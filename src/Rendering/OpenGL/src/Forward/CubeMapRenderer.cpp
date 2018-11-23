@@ -3,6 +3,7 @@
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Transform.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -137,6 +138,7 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base
 
     auto cubemapExternalData = static_cast<Common::CubeMapTextureData*>(cubemap->specificData());
 
+    BENCH("Drawing cubemap");
     auto* program = &static_cast<Common::ShaderData*>(
         m_skyboxMaterial
         ->shader()

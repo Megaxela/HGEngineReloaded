@@ -5,6 +5,7 @@
 #include <HG/Core/Input.hpp>
 #include <HG/Core/Application.hpp>
 #include <HG/Core/TimeStatistics.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Camera.hpp>
@@ -339,15 +340,27 @@ void HG::Rendering::OpenGL::GLFWSystemController::swapBuffers()
 void HG::Rendering::OpenGL::GLFWSystemController::pollEvents()
 {
     // Ticking pushed/released values in input subsystem
-    const_cast<HG::Core::Input*>(controller->application()->input())->tickControllers();
+    const_cast<HG::Core::Input*>(application()->input())->tickControllers();
 
-    glfwPollEvents();
-    handleGamepadsEvents();
-    handleWindowEvents();
+    {
+        BENCH("GLFW poll events");
+        glfwPollEvents();
+    }
+
+    {
+        BENCH("Handling gamepad events");
+        handleGamepadsEvents();
+    }
+
+    {
+        BENCH("Handling window events");
+        handleWindowEvents();
+    }
 
     // ImGui requires render before new frame
     if (application()->scene())
     {
+        BENCH("ImGui New Frame");
         imGuiNewFrame();
     }
 }

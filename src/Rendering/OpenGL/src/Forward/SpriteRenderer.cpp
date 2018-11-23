@@ -3,6 +3,7 @@
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Transform.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/MaterialCollection.hpp>
@@ -125,6 +126,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
 
 void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
+    BENCH("Rendering sprite");
     auto spriteBehaviour = static_cast<HG::Rendering::Base::Behaviours::Sprite*>(renderBehaviour);
 
     auto program = static_cast<Common::ShaderData*>(m_spriteMaterial->shader()->specificData());

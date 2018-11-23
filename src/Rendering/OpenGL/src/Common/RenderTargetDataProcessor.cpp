@@ -1,3 +1,6 @@
+// HG::Core
+#include <HG/Core/Benchmark.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderTarget.hpp>
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
@@ -62,6 +65,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
     {
         if (renderingPipeline()->needSetup(iter->second))
         {
+            BENCH("Setting up render target");
             if (!renderingPipeline()->setup(iter->second))
             {
                 // Can't init render target
@@ -71,6 +75,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
 
         auto textureExternal = static_cast<Texture2DData*>(iter->second->specificData());
 
+        BENCH("Attaching texture to framebuffer");
         externalData->Framebuffer.attach_texture(
             GL_COLOR_ATTACHMENT0 + iter->first,
             textureExternal->Texture
@@ -79,6 +84,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
 
     if (externalData->Size == renderTarget->size())
     {
+        BENCH("Setting storage to renderbuffer");
         externalData->Size = renderTarget->size();
         externalData->Renderbuffer.set_storage(
             GL_DEPTH24_STENCIL8,

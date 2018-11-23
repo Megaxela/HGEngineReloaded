@@ -1,12 +1,9 @@
-// Orbital example
-#include <Assets/Scenes/OrbitalScene.hpp>
+// Blitting example
+#include <Assets/Scenes/BlitScene.hpp>
 
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/ResourceManager.hpp>
-
-// HG::Standard
-#include <HG/Standard/FilesystemResourceAccessor.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -22,8 +19,10 @@
 #include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
 
+// HG::Standard
+#include <HG/Standard/FilesystemResourceAccessor.hpp>
+
 // ALogger
-#include <CurrentLogger.hpp>
 #include <Loggers/BasicLogger.hpp>
 
 int main(int argc, char** argv)
@@ -31,9 +30,9 @@ int main(int argc, char** argv)
     CurrentLogger::setCurrentLogger(std::make_shared<Loggers::BasicLogger>());
 
     InfoF() << "Creating application";
-    HG::Core::Application application("HGEngine Orbital Example", argc, argv);
+    HG::Core::Application application("HGEngine Blitting example", argc, argv);
 
-    // Setting resource accessor implementation
+    // Settings resource accessor implementation
     application.resourceManager()
         ->setResourceAccessor(new HG::Standard::FilesystemResourceAccessor());
 
@@ -54,11 +53,11 @@ int main(int argc, char** argv)
 
     if (!application.init())
     {
-        ErrorF() << "Can't init application.";
+        ErrorF() << "Can't init application";
         return -1;
     }
 
-    application.setScene(new OrbitalScene());
+    application.setScene(new BlitScene());
 
     return application.exec();
 }

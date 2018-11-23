@@ -3,6 +3,7 @@
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Transform.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/MeshFallbackMaterial.hpp>
@@ -89,11 +90,14 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
     }
 
+    BENCH("Drawing mesh");
+
     gl::program* program = nullptr;
 
     if (override == nullptr ||
         override->material == nullptr)
     {
+        BENCH("Preparing material");
         if (meshBehaviour->material() == nullptr ||
             meshBehaviour->material()->shader() == nullptr)
         {
@@ -132,6 +136,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     }
     else
     {
+        BENCH("Prepare override material");
         Common::ShaderData* shaderData = nullptr;
 
         if (application()->renderer()->needSetup(override->material->shader()))

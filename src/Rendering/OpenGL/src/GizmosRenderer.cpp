@@ -1,6 +1,7 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/GizmosLineMaterial.hpp>
@@ -80,6 +81,11 @@ void HG::Rendering::OpenGL::GizmosRenderer::init()
     m_linesVAO.set_attribute_format(1, 4, GL_FLOAT, false, offsetof(HG::Rendering::Base::Gizmos::LineData, beginColor));
 }
 
+HG::Core::Application *HG::Rendering::OpenGL::GizmosRenderer::application() const
+{
+    return m_application;
+}
+
 void HG::Rendering::OpenGL::GizmosRenderer::line(const HG::Rendering::Base::Gizmos::LineData &line)
 {
     m_lineData.push_back(line);
@@ -104,6 +110,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::render()
 
 void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
 {
+    BENCH("Rendering gizmos lines");
     auto camera = m_application->renderer()->activeCamera();
 
     // If there is no camera - skip rendering

@@ -1,3 +1,6 @@
+// HG::Core
+#include <HG/Core/Benchmark.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Shader.hpp>
 
@@ -70,40 +73,47 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     gl::shader vertexShader(GL_VERTEX_SHADER);
     gl::shader fragmentShader(GL_FRAGMENT_SHADER);
 
-    vertexShader.set_source(
-        "#version 420 core\n"
-        SHADER_DEFAULT_STRUCTS
-        "#define VertexShader\n" +
-        shader->shaderText()
-    );
-
-    if (!vertexShader.compile())
     {
-        Error() << "Can't compile vertex shader. Error: " << vertexShader.info_log();
-        exit(-1);
-        return false;
+        BENCH("Building vertex shader");
+        vertexShader.set_source(
+                "#version 420 core\n"
+                SHADER_DEFAULT_STRUCTS
+                "#define VertexShader\n" +
+                shader->shaderText()
+        );
+
+        if (!vertexShader.compile())
+        {
+            Error() << "Can't compile vertex shader. Error: " << vertexShader.info_log();
+            exit(-1);
+            return false;
+        }
     }
 
-    fragmentShader.set_source(
-        "#version 420 core\n"
-        SHADER_DEFAULT_STRUCTS
-        "#define FragmentShader\n" +
-        shader->shaderText()
-    );
-
-    if (!fragmentShader.compile())
     {
-        Error() << "Can't compile fragment shader. " << fragmentShader.info_log();
-        exit(-1);
-        return false;
+        BENCH("Building fragment shader");
+        fragmentShader.set_source(
+                "#version 420 core\n"
+                SHADER_DEFAULT_STRUCTS
+                "#define FragmentShader\n" +
+                shader->shaderText()
+        );
+
+        if (!fragmentShader.compile())
+        {
+            Error() << "Can't compile fragment shader. " << fragmentShader.info_log();
+            exit(-1);
+            return false;
+        }
     }
 
-    if (!externalData->Program.is_valid())
+    if (BENCH_I("Validating program"), !externalData->Program.is_valid())
     {
         Error() << "Shader is not valid.";
         return false;
     }
 
+    BENCH("Linking shaders to program");
     externalData->Program.attach_shader(vertexShader);
     externalData->Program.attach_shader(fragmentShader);
 
