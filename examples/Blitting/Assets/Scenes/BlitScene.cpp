@@ -37,6 +37,8 @@ protected:
                     "It uses 2 textures, one of them is texture atlas.\n"
                     "second one is destination. "
             );
+
+            ImGui::End();
         }
     }
 };
@@ -44,10 +46,12 @@ protected:
 void BlitScene::start()
 {
     // Loading atlas texture
+    auto surface = application()->resourceManager()
+        ->load<HG::Utils::STBImageLoader>("Assets/Textures/atlas.png");
+
     auto atlasTexture = registerResource(
         new HG::Rendering::Base::Texture(
-            application()->resourceManager()
-                ->load<HG::Utils::STBImageLoader>("Assets/Textures/atlas.png"),
+            surface,
             HG::Rendering::Base::Texture::Filtering::Nearest,
             HG::Rendering::Base::Texture::Filtering::Nearest
         )
@@ -62,6 +66,9 @@ void BlitScene::start()
         new HG::Rendering::Base::RenderTarget({1024, 1024})
     );
     targetRendertarget->setColorTexture(targetTexture);
+
+    // Wait for atlas texture
+    surface.guaranteeGet();
 
     // Preparing blitting
     auto tileSize = 256 / 16;

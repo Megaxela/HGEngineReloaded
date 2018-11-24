@@ -14,16 +14,20 @@
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 #include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
 
+// HG::Utils
+#include <HG/Utils/Surface.hpp>
+
 // ALogger
 #include <CurrentLogger.hpp>
 
 // ImGui
 #include <imgui.h>
 
+// gl
+#include <gl/auxiliary/glm_uniforms.hpp>
+
 // GLM
 #include <glm/gtc/matrix_transform.hpp>
-#include <gl/auxiliary/glm_uniforms.hpp>
-#include <HG/Utils/Surface.hpp>
 
 HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* application) :
     m_application(application),
@@ -230,7 +234,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
                 gl::draw_elements(
                     GL_TRIANGLES,
                     pcmd->ElemCount,
-                    GL_UNSIGNED_SHORT, // May cause errors after imgui update, because of propaply uint
+                    GL_UNSIGNED_SHORT, // May cause errors after imgui update, because of probably uint
                     idx_buffer_offset
                 );
 

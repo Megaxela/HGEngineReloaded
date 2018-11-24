@@ -10,15 +10,15 @@ const char* HG::Rendering::OpenGL::Materials::BlitMaterial::rawShader = R"(
 layout (location = 0) in vec2 vertex;
 layout (location = 1) in vec2 uvPixels;
 
-out vec3 texCoords;
+out vec2 texCoordinates;
 
-uniform vec2 textureSize;
+uniform ivec2 textureSize;
 uniform mat4 projection;
 
 void main()
 {
-    texCoords = uvPixels / textureSize;
-    gl_Position = projection * vec3(vertex.xy, 0);
+    texCoordinates = uvPixels / textureSize;
+    gl_Position = projection * vec4(vertex.xy, 0, 1);
 }
 
 #endif
@@ -38,9 +38,3 @@ void main()
 
 #endif
 )";
-
-void HG::Rendering::OpenGL::Materials::BlitMaterial::setTexture(HG::Rendering::Base::Texture *texture)
-{
-    set("sourceTexture", texture);
-    set("textureSize", texture->size());
-}

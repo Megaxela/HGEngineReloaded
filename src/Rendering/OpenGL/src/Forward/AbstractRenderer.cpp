@@ -53,6 +53,11 @@ void HG::Rendering::OpenGL::Forward::AbstractRenderer::setShaderUniform(gl::prog
 
     auto location = program->uniform_location(name);
 
+    if (location == -1)
+    {
+        return;
+    }
+
     switch (value.type)
     {
     case Base::MaterialValue::Type::Int:

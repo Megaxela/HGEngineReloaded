@@ -13,7 +13,5 @@ namespace HG::Rendering::OpenGL::Materials
     public:
 
         static const char* rawShader;
-
-        void setTexture(HG::Rendering::Base::Texture* texture);
     };
 }

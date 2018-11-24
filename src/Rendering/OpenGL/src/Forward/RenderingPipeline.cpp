@@ -10,6 +10,8 @@
 #include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Materials/BlitMaterial.hpp>
+#include <HG/Rendering/OpenGL/BlitRenderer.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/MaterialCollection.hpp>
@@ -29,7 +31,6 @@
 
 // ImGui
 #include <imgui.h>
-#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
@@ -38,6 +39,7 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::A
     m_cachedViewport({-1, -1}),
     m_gizmosRenderer(new HG::Rendering::OpenGL::GizmosRenderer(application)),
     m_imguiRenderer(new HG::Rendering::OpenGL::ImGuiRenderer(application)),
+    m_blitRenderer(new HG::Rendering::OpenGL::BlitRenderer(application)),
     m_renderers(),
     m_savedRenderTarget(nullptr)
 {
@@ -77,6 +79,8 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::init()
 
     m_gizmosRenderer->init();
 
+    m_blitRenderer->init();
+
     m_imguiRenderer->init();
 
     return true;
@@ -92,6 +96,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
     }
 
     m_gizmosRenderer->deinit();
+
+    m_blitRenderer->deinit();
 
     m_imguiRenderer->deinit();
 
@@ -333,19 +339,9 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base
     auto savedRenderTarget = renderTarget();
     setRenderTarget(target);
 
-    // Creating projection matrix
-    auto projection = glm::ortho(
-            0, target->size().x,
-            target->size().y, 0
-    );
-
     for (const auto& [texture, data] : blitData->blitContainer())
     {
-        m_blitMaterial->setTexture(texture);
-
-
-
-        // todo: Finish implementation
+        m_blitRenderer->render(target, texture, data);
     }
 
     setRenderTarget(savedRenderTarget);

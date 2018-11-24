@@ -21,11 +21,7 @@ namespace HG::Rendering::OpenGL
 {
     class GizmosRenderer;
     class ImGuiRenderer;
-}
-
-namespace HG::Rendering::OpenGL::Materials
-{
-    class BlitMaterial;
+    class BlitRenderer;
 }
 
 namespace HG::Rendering::OpenGL::Forward
@@ -140,6 +136,9 @@ namespace HG::Rendering::OpenGL::Forward
         // ImGui rendering object
         HG::Rendering::OpenGL::ImGuiRenderer* m_imguiRenderer;
 
+        // Blitting rendering object
+        HG::Rendering::OpenGL::BlitRenderer* m_blitRenderer;
+
         // Map with renderbehaviour renderers.
         std::unordered_map<
             std::size_t,
@@ -148,9 +147,6 @@ namespace HG::Rendering::OpenGL::Forward
 
         // Saved "current" render target
         HG::Rendering::Base::RenderTarget* m_savedRenderTarget;
-
-        // Blitting material
-        HG::Rendering::OpenGL::Materials::BlitMaterial* m_blitMaterial;
     };
 }
 

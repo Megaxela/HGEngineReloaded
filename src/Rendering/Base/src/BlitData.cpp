@@ -22,6 +22,12 @@ void HG::Rendering::Base::BlitData::blitRectangular(HG::Rendering::Base::Texture
         {pos + glm::ivec2(0, size.y), {tl.x, br.y}},
         {pos + size,                  br}
     }, {0, 1, 2, 2, 1, 3});
+//    blitMesh(texture, {
+//        {pos,                         tl},
+//        {pos + glm::ivec2(size.x, 0), {br.x, tl.y}},
+//        {pos + glm::ivec2(0, size.y), {tl.x, br.y}},
+//        {pos + size,                  br}
+//    }, {0, 2, 1, 1, 2, 3});
 }
 
 void HG::Rendering::Base::BlitData::blitMesh(HG::Rendering::Base::Texture *texture,

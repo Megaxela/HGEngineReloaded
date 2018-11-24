@@ -4,18 +4,15 @@
 #include <gl/all.hpp>
 
 // Forward declaration
-namespace HG
+namespace HG::Core
 {
-    namespace Core
-    {
-        class Application;
-    }
+    class Application;
+}
 
-    namespace Rendering::Base
-    {
-        class Material;
-        class Texture;
-    }
+namespace HG::Rendering::Base
+{
+    class Material;
+    class Texture;
 }
 
 namespace HG::Rendering::OpenGL
@@ -71,11 +68,12 @@ namespace HG::Rendering::OpenGL
 
         HG::Rendering::Base::Texture* m_fontTexture;
 
-        GLint m_uniformLocationTex = 0,
-              m_uniformLocationProjMtx = 0;
-        GLuint m_attribLocationPosition = 0,
-               m_attribLocationUV = 0,
-               m_attribLocationColor = 0;
+        GLint m_uniformLocationTex = 0;
+        GLint m_uniformLocationProjMtx = 0;
+
+        GLuint m_attribLocationPosition = 0;
+        GLuint m_attribLocationUV = 0;
+        GLuint m_attribLocationColor = 0;
     };
 }
 

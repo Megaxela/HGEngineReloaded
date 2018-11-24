@@ -18,3 +18,5 @@ target_link_libraries(HGExampleBlitting
     HGRenderingBase
     HGStandard
 )
+
+configure_file(Assets/Textures/atlas.png Assets/Textures/atlas.png COPYONLY)
