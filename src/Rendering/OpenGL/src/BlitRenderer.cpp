@@ -85,7 +85,9 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
                                                  HG::Rendering::Base::Texture *texture,
                                                  const HG::Rendering::Base::BlitData::DataContainer& container)
 {
-    application()->renderer()->pipeline()->clear(HG::Utils::Color::Green);
+
+    gl::set_polygon_face_culling_enabled(false);
+
     // Creating projection matrix
     const auto projection = glm::ortho(
         0.0f,
@@ -103,17 +105,20 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
     program->set_uniform(m_uniformLocationTextureSize, texture->size());
 
     // Creating and setting up VAO
+    gl::buffer vbo;
+    gl::buffer ebo;
+
     gl::vertex_array vao;
 
     vao.bind();
-    m_vbo.bind(GL_ARRAY_BUFFER);
+    vbo.bind(GL_ARRAY_BUFFER);
 
     // Setting up VEO attributes
     vao.set_attribute_enabled(m_attributeLocationVertices, true);
     vao.set_attribute_enabled(m_attributeLocationUV,       true);
 
-    vao.set_vertex_buffer(m_attributeLocationVertices, m_vbo, 0, sizeof(HG::Rendering::Base::BlitData::PointData));
-    vao.set_vertex_buffer(m_attributeLocationUV,       m_vbo, 0, sizeof(HG::Rendering::Base::BlitData::PointData));
+    vao.set_vertex_buffer(m_attributeLocationVertices, vbo, 0, sizeof(HG::Rendering::Base::BlitData::PointData));
+    vao.set_vertex_buffer(m_attributeLocationUV,       vbo, 0, sizeof(HG::Rendering::Base::BlitData::PointData));
 
     vao.set_attribute_format(
         m_attributeLocationVertices,
@@ -130,21 +135,20 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
         static_cast<GLuint>(offsetof(HG::Rendering::Base::BlitData::PointData, uvPixels))
     );
 
-    // Binding VBO
-    m_vbo.bind(GL_ARRAY_BUFFER);
+    vbo.bind(GL_ARRAY_BUFFER);
 
     // Loading data into VBO
-    m_vbo.set_data(
+    vbo.set_data(
         container.vertices.size() * sizeof(HG::Rendering::Base::BlitData::PointData),
         container.vertices.data(),
         GL_STREAM_DRAW
     );
 
     // Binding EBO
-    m_ebo.bind(GL_ELEMENT_ARRAY_BUFFER);
+    ebo.bind(GL_ELEMENT_ARRAY_BUFFER);
 
     // Loading data into EBO
-    m_ebo.set_data(
+    ebo.set_data(
         container.indices.size() * sizeof(uint32_t),
         container.indices.data(),
         GL_STREAM_DRAW
@@ -177,6 +181,8 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
     );
 
     // Cleaning up
-    data->Texture.unbind();
-    vao.unbind();
+//    data->Texture.unbind();
+//    vao.unbind();
+
+    gl::set_polygon_face_culling_enabled(true);
 }

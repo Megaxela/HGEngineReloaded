@@ -18,7 +18,7 @@ uniform mat4 projection;
 void main()
 {
     texCoordinates = uvPixels / textureSize;
-    gl_Position = projection * vec4(vertex.xy, 0, 1);
+    gl_Position = projection * vec4(vertex.xy, 0, 1) * vec4(1.0, -1.0, 1.0, 1.0);
 }
 
 #endif

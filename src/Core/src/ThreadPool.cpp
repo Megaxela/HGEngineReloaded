@@ -77,7 +77,7 @@ void HG::Core::ThreadPool::threadFunction(std::size_t id,
         }
         catch (std::exception& exception)
         {
-            Error() << "Thread from pool with [id=" << id << ", type=" << type << " received exception: " << exception.what();
+            Error() << "Thread from pool with [id=" << id << ", type=" << type << "] received exception: " << exception.what();
         }
     }
 
