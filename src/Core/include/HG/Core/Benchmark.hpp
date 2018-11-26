@@ -30,6 +30,8 @@ namespace HG::Core
     {
     public:
 
+        using TimeType = std::chrono::steady_clock::time_point;
+
         /**
          * @brief Class, that describes job info.
          */
@@ -41,7 +43,7 @@ namespace HG::Core
              * @param start Job start time.
              */
             JobContainer(std::string name,
-                         std::chrono::steady_clock::time_point start) :
+                         TimeType start) :
                     subjobs(0),
                     name(std::move(name)),
                     startTime(start),
@@ -53,8 +55,8 @@ namespace HG::Core
             std::size_t subjobs;
             std::string name;
 
-            std::chrono::steady_clock::time_point startTime;
-            std::chrono::steady_clock::time_point finishTime;
+            TimeType startTime;
+            TimeType finishTime;
         };
 
         class ScopeJob
@@ -127,7 +129,19 @@ namespace HG::Core
          * @brief Method for getting container with frame times.
          * @return Time of frames starts.
          */
-        std::vector<std::chrono::steady_clock::time_point> frameTimes();
+        std::vector<TimeType> frameTimes() const;
+
+        /**
+         * @brief Method for getting benchmark start
+         * time.
+         */
+        TimeType startTime() const;
+
+        /**
+         * @brief Method for getting benchmark finish
+         * time.
+         */
+        TimeType finishTime() const;
 
         /**
          * @brief Method for clearing current benchmarking
@@ -152,6 +166,12 @@ namespace HG::Core
          */
         void finish();
 
+        /**
+         * @brief Method for getting is benchmark running.
+         * @return Is running.
+         */
+        bool isRunning() const;
+
     private:
 
         struct ThreadContainer
@@ -166,9 +186,10 @@ namespace HG::Core
             ThreadContainer
         > m_timings;
 
-        std::vector<std::chrono::steady_clock::time_point> m_frameTimes;
-        std::chrono::steady_clock::time_point m_start;
-        std::chrono::steady_clock::time_point m_finish;
+        std::vector<TimeType> m_frameTimes;
+        TimeType m_start;
+        TimeType m_finish;
+        bool m_wantRunning;
         bool m_isRunning;
     };
 }

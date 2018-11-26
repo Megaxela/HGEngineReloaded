@@ -126,15 +126,50 @@ std::stack<HG::Core::Benchmark::JobContainer> HG::Core::Benchmark::getClosedJobs
     return iter->second.doneJobs;
 }
 
+HG::Core::Benchmark::TimeType HG::Core::Benchmark::startTime() const
+{
+    return m_start;
+}
+
+HG::Core::Benchmark::TimeType HG::Core::Benchmark::finishTime() const
+{
+    if (!m_isRunning)
+    {
+        return m_finish;
+    }
+
+    return std::chrono::steady_clock::now();
+}
+
 void HG::Core::Benchmark::clear()
 {
     std::unique_lock<std::shared_mutex> lock(m_timingsMutex);
 
     m_timings.clear();
+    m_start = std::chrono::steady_clock::time_point();
+    m_finish = std::chrono::steady_clock::time_point();
 }
 
 void HG::Core::Benchmark::tick()
 {
+    if (m_isRunning != m_wantRunning)
+    {
+        m_isRunning = m_wantRunning;
+
+        if (m_wantRunning)
+        {
+            m_start = std::chrono::steady_clock::now();
+        }
+        else
+        {
+            m_finish = std::chrono::steady_clock::now();
+        }
+    }
+    else if (!m_isRunning)
+    {
+        return;
+    }
+
     m_frameTimes.emplace_back(
         std::chrono::steady_clock::now()
     );
@@ -142,15 +177,20 @@ void HG::Core::Benchmark::tick()
 
 void HG::Core::Benchmark::start()
 {
-    m_isRunning = true;
+    m_wantRunning = true;
 }
 
 void HG::Core::Benchmark::finish()
 {
-    m_isRunning = false;
+    m_wantRunning = false;
 }
 
-std::vector<std::chrono::steady_clock::time_point> HG::Core::Benchmark::frameTimes()
+bool HG::Core::Benchmark::isRunning() const
+{
+    return m_isRunning;
+}
+
+std::vector<HG::Core::Benchmark::TimeType> HG::Core::Benchmark::frameTimes() const
 {
     return m_frameTimes;
 }
