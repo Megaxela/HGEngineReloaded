@@ -80,7 +80,7 @@ void BlitScene::start()
         ->load<HG::Utils::STBImageLoader>("Assets/Textures/atlas.png");
 
     auto atlasTexture = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             surface,
             HG::Rendering::Base::Texture::Filtering::Nearest,
             HG::Rendering::Base::Texture::Filtering::Nearest

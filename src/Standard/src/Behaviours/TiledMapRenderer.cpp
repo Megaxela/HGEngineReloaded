@@ -212,7 +212,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
 //        }
 
         // Making texture
-        auto texture = new HG::Rendering::Base::Texture(
+        auto texture = new (scene()->application()->resourceCache()) HG::Rendering::Base::Texture(
             scene()
                 ->application()
                 ->resourceManager()

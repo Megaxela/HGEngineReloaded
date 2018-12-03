@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp>
 
@@ -26,7 +29,9 @@ namespace HG::Rendering::Base
      * @brief Class, that describes texture
      * for rendering (in GPU / prepared for GPU).
      */
-    class Texture : public HG::Rendering::Base::RenderData
+    class Texture : public HG::Core::CachableResource<Texture>,
+                    public HG::Rendering::Base::RenderData
+
     {
     public:
 

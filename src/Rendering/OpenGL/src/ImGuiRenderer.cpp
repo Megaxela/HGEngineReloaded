@@ -273,7 +273,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
 
     io.Fonts->GetTexDataAsRGBA32(&surface->Data, &surface->Width, &surface->Height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
 
-    m_fontTexture = new HG::Rendering::Base::Texture(surface);
+    m_fontTexture = new (application()->resourceCache()) HG::Rendering::Base::Texture(surface);
 
     if (m_application->renderer()->needSetup(m_fontTexture))
     {

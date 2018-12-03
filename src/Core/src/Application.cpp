@@ -14,6 +14,7 @@
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Input.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/ResourceCache.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -31,6 +32,7 @@ HG::Core::Application::Application(std::string name, int /* argc */, char** /* a
     m_timeStatistics(new HG::Core::TimeStatistics()),
     m_countStatistics(new HG::Core::CountStatistics()),
     m_benchmark(new HG::Core::Benchmark()),
+    m_resourceCache(new HG::Core::ResourceCache()),
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
 {
@@ -234,6 +236,11 @@ HG::Core::CountStatistics *HG::Core::Application::countStatistics()
 HG::Core::Benchmark *HG::Core::Application::benchmark()
 {
     return m_benchmark;
+}
+
+HG::Core::ResourceCache *HG::Core::Application::resourceCache()
+{
+    return m_resourceCache;
 }
 
 HG::Core::ThreadPool* HG::Core::Application::threadPool()

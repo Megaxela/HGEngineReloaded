@@ -1,6 +1,7 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp>
 #include <HG/Rendering/Base/RenderSpecificData.hpp>
+#include <CurrentLogger.hpp>
 
 HG::Rendering::Base::RenderData::RenderData(std::size_t type) :
     m_data(nullptr),

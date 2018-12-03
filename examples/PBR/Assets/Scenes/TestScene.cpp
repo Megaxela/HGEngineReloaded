@@ -64,7 +64,7 @@ void TestScene::start()
 //    );
 
     auto albedo = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             application()->resourceManager()
                 ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/albedo.png"),
             HG::Rendering::Base::Texture::Filtering::Linear,
@@ -73,7 +73,7 @@ void TestScene::start()
     );
 
     auto metallic = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             application()->resourceManager()
                 ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/metallic.png"),
             HG::Rendering::Base::Texture::Filtering::Linear,
@@ -82,7 +82,7 @@ void TestScene::start()
     );
 
     auto normal = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             application()->resourceManager()
                 ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/normal.png"),
             HG::Rendering::Base::Texture::Filtering::Linear,
@@ -91,7 +91,7 @@ void TestScene::start()
     );
 
     auto roughness = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             application()->resourceManager()
                 ->load<HG::Utils::STBImageLoader>("Assets/PBR/GreasyPan/roughness.png"),
             HG::Rendering::Base::Texture::Filtering::Linear,

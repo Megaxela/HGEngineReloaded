@@ -87,14 +87,14 @@ void RenderToTextureScene::start()
 
     // Creating textures for recursion
     auto texture1 = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             {800, 800},
             HG::Rendering::Base::Texture::Format::RGBA
         )
     );
 
     auto texture2 = registerResource(
-        new HG::Rendering::Base::Texture(
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
             {800, 800},
             HG::Rendering::Base::Texture::Format::RGBA
         )

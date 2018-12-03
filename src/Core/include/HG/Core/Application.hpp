@@ -23,6 +23,7 @@ namespace HG::Core
     class CountStatistics;
     class ThreadPool;
     class Benchmark;
+    class ResourceCache;
 
     /**
      * @brief Class, that describes
@@ -135,6 +136,12 @@ namespace HG::Core
         HG::Core::ThreadPool* threadPool();
 
         /**
+         * @brief Method for getting application resource cache.
+         * @return Pointer to application resource cache.
+         */
+        HG::Core::ResourceCache* resourceCache();
+
+        /**
          * @brief Method for receiving pointer to
          * input controller/receiver. If you are
          * coding behaviour, you shall not using
@@ -214,6 +221,9 @@ namespace HG::Core
 
         // Benchmarking
         HG::Core::Benchmark* m_benchmark;
+
+        // Cache for objects
+        HG::Core::ResourceCache* m_resourceCache;
 
         // Scene has to be changed only at new frame.
         // Using caching new scene, until new frame will begin.
