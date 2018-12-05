@@ -317,7 +317,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverr
     }
 }
 
-HG::Utils::Color HG::Rendering::OpenGL::Forward::RenderingPipeline::getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture *texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data)
 {
     BENCH("Getting texture pixel");
     auto textureData = dynamic_cast<Common::Texture2DData*>(texture->specificData());
@@ -325,12 +325,15 @@ HG::Utils::Color HG::Rendering::OpenGL::Forward::RenderingPipeline::getTexturePi
     if (textureData == nullptr)
     {
         Error() << "No texture data.";
-        return HG::Utils::Color::White;
+        return;
     }
 
-    auto data = textureData->Texture.sub_image(0, pos.x, pos.y, 0, 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE);
+    auto vecData = textureData->Texture.sub_image(0, tl.x, tl.y, 0, br.x - tl.x, br.y - tl.y, 1, GL_RGBA, GL_UNSIGNED_BYTE);
 
-    return HG::Utils::Color::fromRGB(data[0], data[1], data[2]);
+    for (auto i : vecData)
+    {
+        *(data++) = i;
+    }
 }
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base::RenderTarget *target,

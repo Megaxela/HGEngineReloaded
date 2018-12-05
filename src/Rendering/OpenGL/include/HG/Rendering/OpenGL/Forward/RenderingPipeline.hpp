@@ -104,7 +104,14 @@ namespace HG::Rendering::OpenGL::Forward
          */
         void setRenderTarget(HG::Rendering::Base::RenderTarget* target) override;
 
-        Utils::Color getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos) override;
+        /**
+         * @brief Method for getting texture region data.
+         * @param texture Pointer to texture.
+         * @param tl Top left.
+         * @param br Bottom right.
+         * @param data Pointer to data. It has to be >= (br.x - tl.x) * (br.y - tl.y) * 4 (RGBA)
+         */
+        void getTextureRegion(HG::Rendering::Base::Texture *texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data) override;
 
     private:
 

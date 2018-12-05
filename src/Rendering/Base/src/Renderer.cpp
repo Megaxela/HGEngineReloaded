@@ -162,5 +162,8 @@ HG::Utils::Color HG::Rendering::Base::Renderer::getTexturePixel(HG::Rendering::B
         throw std::runtime_error("No pipeline to work with.");
     }
 
-    return m_pipeline->getTexturePixel(texture, pos);
+    uint8_t buffer[4];
+    m_pipeline->getTextureRegion(texture, pos, pos + glm::ivec2(1, 1), buffer);
+
+    return HG::Utils::Color::fromRGB(buffer[0], buffer[1], buffer[2], buffer[3]);
 }

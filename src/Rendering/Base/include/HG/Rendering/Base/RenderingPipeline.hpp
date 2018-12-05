@@ -143,9 +143,9 @@ namespace HG::Rendering::Base
          * @brief Method for getting texture pixel value.
          * @param texture Pointer to texture.
          * @param pos Pixel position.
-         * @return Pixel color.
+         * @param data Pointer to data. It has to be >= (br.x - tl.x) * (br.y - tl.y) * 4 (RGBA)
          */
-        virtual HG::Utils::Color getTexturePixel(HG::Rendering::Base::Texture* texture, glm::ivec2 pos) = 0;
+        virtual void getTextureRegion(HG::Rendering::Base::Texture *texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data) = 0;
 
     protected:
 
