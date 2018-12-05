@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.9)
 
 option(HG_BUILD_RENDERING_TESTS "Build core tests" Off)
 

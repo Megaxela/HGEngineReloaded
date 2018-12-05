@@ -1,15 +1,27 @@
-cmake_minimum_required(VERSION 3.9)
-
-# Adding libraries
-add_subdirectory(libraries)
-
+# Searching for zlib
 find_package(ZLIB REQUIRED)
 
-# Creating Utils module
-describe_module(Utils
-    "ALogger;glm;stb;rapidxml;bytearray;stdc++fs;STLRoundBuffer;nlohmann_json;assimp;${ZLIB_LIBRARIES}"
+# Setting required modules/libraries
+set(LIBRARIES
+    ALogger
+    glm
+    stb
+    rapidxml
+    bytearray
+    stdc++fs
+    STLRoundBuffer
+    nlohmann_json
+    assimp
+    ${ZLIB_LIBRARIES}
+)
+
+# Setting additional includes
+set(INCLUDE
     ${ZLIB_INCLUDE_DIRS}
 )
+
+# Creating Utils module
+describe_module(Utils "${LIBRARIES}" "${INCLUDE}")
 
 # Addeing definitions
 target_compile_definitions(HGUtils PUBLIC

@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.9)
 
 # Rendering system selection mode
 option(HGRenderingOGL_USE_GLFW "Using GLFW as OpenGL library." Off)
@@ -31,14 +30,21 @@ else()
     message(FATAL_ERROR "You must select 1 opengl providing library.")
 endif()
 
-# Including libraries
-add_subdirectory(libraries)
+# Setting required libraries
+set(LIBRARIES
+    gl
+    HGRenderingBase
+    HGCore
+    ${RENDERER_LIBRARY}
+)
+
+# Setting additional include
+set(INCLUDE
+    ${RENDERER_INCLUDE}
+)
 
 # Creating RenderingOGL module.
-describe_module(RenderingOGL
-    "gl;HGRenderingBase;HGCore;${RENDERER_LIBRARY}"
-    "${RENDERER_INCLUDE}"
-)
+describe_module(RenderingOGL "${LIBRARIES}" "${INCLUDE}")
 
 # Setting, that it's C++ code
 set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)

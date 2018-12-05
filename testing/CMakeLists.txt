@@ -1,20 +1,48 @@
+# C++ STD
+set(CMAKE_CXX_STANDARD 17)
+
+# Creating test executable
 add_executable(HGEngineTests
     ${HG_TEST_CASES}
     main.cpp
 )
 
+# Enabling ctest testing
 enable_testing()
+
+# Finding GTest
 find_package(GTest REQUIRED)
+
+# Including GTest
 include_directories(${GTEST_INCLUDE_DIRS})
 
+# Linking required libraries
 target_link_libraries(HGEngineTests
     -pthread
     ${GTEST_BOTH_LIBRARIES}
     ${HG_TEST_LIBS}
 )
 
-if (${HG_TEST_ASSETS})
+# Copying test assets
+foreach(ASSET_VARIABLE ${TEST_ASSETS_VARIABLES})
 
-    configure_file(${HG_TEST_ASSETS})
+    # Getting path to static directory
+    list(GET ${ASSET_VARIABLE} 0 STATIC_PATH)
 
-endif()
+    # Removing this path from list
+    list(REMOVE_AT ${ASSET_VARIABLE} 0)
+
+    # Getting elements
+    foreach(ASSET_FULL_PATH ${${ASSET_VARIABLE}})
+
+        # Cutting path to static directory from asset path
+        string(REPLACE ${STATIC_PATH} "" ASSET_RELATIVE_PATH ${ASSET_FULL_PATH})
+
+        message(STATUS "Copying test asset file \"${ASSET_RELATIVE_PATH}\"")
+
+        # Configuring
+        configure_file(${ASSET_FULL_PATH} ${ASSET_RELATIVE_PATH} COPYONLY)
+
+    endforeach()
+
+endforeach()

@@ -1,7 +1,14 @@
-cmake_minimum_required(VERSION 3.9)
+
+# Setting required modules/libraries
+set(LIBRARIES
+    HGUtils
+    HGRenderingBase
+    HGPhysicsBase
+    pthread
+)
+
+# Setting additional includes
+set(INCLUDE)
 
 # Creating Core module
-describe_module(Core
-    "HGUtils;HGRenderingBase;HGPhysicsBase;pthread"
-    ""
-)
+describe_module(Core "${LIBRARIES}" "${INCLUDE}")

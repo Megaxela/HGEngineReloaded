@@ -8,9 +8,8 @@ option(HG_BUILD_EXAMPLES "Build project example" Off)
 option(HG_BUILD_TESTS    "Build tests"           Off)
 
 # Clearing testing cached variables
-set(HG_TEST_CASES  "" CACHE STRING "" FORCE)
-set(HG_TEST_LIBS   "" CACHE STRING "" FORCE)
-set(HG_TEST_ASSETS "" CACHE STRING "" FORCE)
+
+clear_cached_variables()
 
 add_subdirectory(src)
 

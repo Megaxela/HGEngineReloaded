@@ -1,9 +1,13 @@
-cmake_minimum_required(VERSION 3.9)
+set(LIBRARIES
+    HGCore
+)
+
+set(INCLUDE)
 
 # Creating base physics module
 describe_module(PhysicsBase
-    "HGCore"
-    ""
+    "${LIBRARIES}"
+    "${INCLUDE}"
 )
 
 # Adding definitions if base used as dependency

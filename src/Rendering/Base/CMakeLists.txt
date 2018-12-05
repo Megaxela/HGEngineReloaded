@@ -1,16 +1,19 @@
-cmake_minimum_required(VERSION 3.9)
 
 # Setting up libraries
 set(RENDER_OPENGL On)
 
-# Including libraries
-add_subdirectory(libraries)
+# Adding required libraries
+set(LIBRARIES
+    HGCore
+    HGUtils
+    imgui
+)
+
+# Adding additional include dirs
+set(INCLUDE)
 
 # Creating RenderingBase module
-describe_module(RenderingBase
-    "HGCore;HGUtils;imgui"
-    ""
-)
+describe_module(RenderingBase "${LIBRARIES}" "${INCLUDE}")
 
 # Adding definition if added as dependency
 target_compile_definitions(HGRenderingBase PUBLIC

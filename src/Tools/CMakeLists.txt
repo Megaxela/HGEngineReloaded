@@ -1,0 +1,2 @@
+add_subdirectory(ToolsCore)
+add_subdirectory(PackageProcessor)

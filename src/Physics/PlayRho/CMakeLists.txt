@@ -1,10 +1,16 @@
-cmake_minimum_required(VERSION 3.9)
 
-# Including libraries
-add_subdirectory(libraries)
+# Setting required modules/libraries
+set(LIBRARIES
+    PlayRho
+    HGCore
+    HGRenderingBase
+)
+
+# Settind additional includes
+set(INCLUDE)
 
 # Creating PhysicsPlayRho module
-describe_module(PhysicsPlayRho "PlayRho;HGCore;HGRenderingBase")
+describe_module(PhysicsPlayRho "${LIBRARIES}" "${INCLUDE}")
 
 # Adding definition if added as dependency
 target_compile_definitions(HGPhysicsPlayRho PUBLIC
