@@ -5,5 +5,5 @@ set(LIBRARIES)
 # Setting additional includes
 set(INCLUDE)
 
-# Creating Core module
+# Creating ToolsCore module
 describe_module(ToolsCore "${LIBRARIES}" "${INCLUDE}")
