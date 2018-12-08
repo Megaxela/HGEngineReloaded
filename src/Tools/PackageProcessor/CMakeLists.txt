@@ -2,6 +2,7 @@
 # Setting required libraries/modules
 set(LIBRARIES
     HGToolsCore
+    HGPackageProcessorLibrary
 )
 
 # Setting required additional includes

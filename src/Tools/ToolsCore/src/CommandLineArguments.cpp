@@ -141,7 +141,7 @@ HG::ToolsCore::CommandLineArguments::addArgument(std::vector<std::string> namesO
     return ArgumentBuilder(keptArgument);
 }
 
-std::unordered_map<std::string, HG::ToolsCore::CommandLineArguments::ArgumentType>
+HG::ToolsCore::CommandLineArguments::ArgumentsMap
 HG::ToolsCore::CommandLineArguments::parse(int argc, char **argv)
 {
     // Collecting required elements and counting minimal
@@ -415,7 +415,7 @@ HG::ToolsCore::CommandLineArguments::parseValue(const char *value, HG::ToolsCore
     return result;
 }
 
-std::unordered_map<std::string, HG::ToolsCore::CommandLineArguments::ArgumentType>
+HG::ToolsCore::CommandLineArguments::ArgumentsMap
 HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char **arguments)
 {
     std::unordered_map<std::string, ArgumentType> result;

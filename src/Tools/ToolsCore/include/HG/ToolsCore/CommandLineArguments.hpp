@@ -24,6 +24,11 @@ namespace HG::ToolsCore
                 std::string
         >;
 
+        using ArgumentsMap = std::unordered_map<
+            std::string,
+            ArgumentType
+        >;
+
         /**
          * @brief Argument actions.
          */
@@ -193,10 +198,7 @@ namespace HG::ToolsCore
          * @param argv Pointer to arguments.
          * @return Parsing result.
          */
-        std::unordered_map<
-            std::string,
-            ArgumentType
-        > parse(int argc, char** argv);
+        ArgumentsMap parse(int argc, char** argv);
 
         /**
          * @brief Method, that will show version text to stdout.
@@ -215,10 +217,7 @@ namespace HG::ToolsCore
 
     private:
 
-        std::unordered_map<
-                std::string,
-                ArgumentType
-        > internalParsing(int numberOfArguments, char** arguments);
+        ArgumentsMap internalParsing(int numberOfArguments, char** arguments);
 
         void showArguments(const std::vector<const Argument*>& arguments);
 
