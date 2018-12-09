@@ -2,6 +2,7 @@
 #include <HG/Utils/zlib.hpp>
 #include <cstddef>
 #include <string_view>
+#include <fstream>
 #include <unitypes.h>
 
 using namespace std::literals;
@@ -105,7 +106,55 @@ TEST(Utils, ZLibInflateHuge)
     {
         ASSERT_EQ(target[i], resultSample[i % resultSample.size()]);
     }
+}
 
+TEST(Utils, ZLibInflateStreamToStream)
+{
+    std::ifstream input("zlib/stream.bin");
 
+    ASSERT_TRUE(input.is_open());
 
+    std::stringstream output;
+
+    std::size_t inflated = 0;
+    ASSERT_NO_THROW(inflated = HG::Utils::ZLib::InflateStreamToStream(input, output, 1024));
+
+    ASSERT_EQ(inflated, 19);
+    ASSERT_EQ(output.str(), "THIS IS SAMPLE TEXT");
+
+    output.str("");
+
+    ASSERT_NO_THROW(inflated = HG::Utils::ZLib::InflateStreamToStream(input, output, 1024));
+
+    ASSERT_EQ(inflated, 17);
+    ASSERT_EQ(output.str(), "SOME_ANOTHER_DATA");
+}
+
+TEST(Utils, ZLIbDeflateStreamToStream)
+{
+    uint8_t expected[] = {
+        0x78, 0xda, 0xb, 0xf6, 0xf7, 0x75, 0x55, 0x8, 0x76, 0xf4, 0xd, 0xf0, 0x71, 0x55, 0xf0, 0xf1,
+        0xf7, 0x73, 0x57, 0x8, 0x71, 0x8d, 0x8, 0x51, 0x8, 0x1e, 0x15, 0x1d, 0xdc, 0xa2, 0x0, 0x9d,
+        0x1a, 0x76, 0x3d
+    };
+
+    std::ifstream input("zlib/some_text.txt");
+
+    ASSERT_TRUE(input.is_open());
+
+    std::stringstream output;
+
+    std::size_t deflated = 0;
+    ASSERT_NO_THROW(deflated = HG::Utils::ZLib::DeflateStreamToStream(input, output, 1024));
+
+    ASSERT_EQ(deflated, 35);
+
+    auto string = output.str();
+
+    ASSERT_EQ(string.size(), 35);
+
+    for (std::size_t i = 0; i < string.size(); ++i)
+    {
+        ASSERT_EQ(static_cast<uint8_t>(string[i]), expected[i]) << i << " byte is differ";
+    }
 }

@@ -128,15 +128,11 @@ namespace HG::Tools
                 Package
             };
 
-        private:
-
             /**
              * @brief Constructor, that's used by PackageProcessor
              * at file loaded from package.
              */
-            File(std::filesystem::path path, Type type);
-
-        public:
+            File(std::filesystem::path path, Type type, std::size_t offset=0, std::size_t size=0);
 
             /**
              * @brief Method for getting type of file.
@@ -175,6 +171,8 @@ namespace HG::Tools
 
             Type m_type;
             std::filesystem::path m_path;
+            std::size_t m_compressedOffset;
+            std::size_t m_compressedSize;
 
         };
 
@@ -213,6 +211,21 @@ namespace HG::Tools
         void write(std::filesystem::path path);
 
         /**
+         * @brief Method for unpacking loaded
+         * package to filesystem. If no package was
+         * loaded - `std::runtime_error` exception
+         * will be thrown.
+         * @param path
+         */
+        void unpack(std::filesystem::path path);
+
+        /**
+         * @brief Method for unpacking one file.
+         * @param file Reference to internal file.
+         */
+        void unpack(std::filesystem::path path, const File& file);
+
+        /**
          * @brief Method for setting package root for
          * adding new files. This method call is required
          * before adding new files to package.
@@ -226,12 +239,29 @@ namespace HG::Tools
          * can be called only after
          * `PackageProcessor::setPackageRoot` call.
          * Otherwise `std::runtime_error` exception
-         * will be thrown.
+         * will be thrown. Also it can throw
+         * `std::filesystem::filesystem_error` if,
+         * any filesystem error is acquired.
          * @param path Full path to file.
          */
         void addFile(std::filesystem::path path);
 
+        /**
+         * @brief Method for getting container with
+         * files.
+         * @return Constant reference to vector with files.
+         */
+        const std::vector<File>& files() const;
+
     private:
+
+        void internalUnpack(std::ifstream& stream, std::filesystem::path destination, const File& file);
+
+        void writeFilesystemFile(std::ofstream& to, const std::filesystem::path& path, std::size_t& offset, std::size_t& size);
+
+        void writePackageFile(std::ofstream& to, std::ifstream& basePackageFile, std::size_t& offset, std::size_t& size);
+
+        uint32_t calculateStreamCRC(std::ifstream& fl);
 
         void validateCRC(std::ifstream& file, uint32_t crc);
 

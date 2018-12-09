@@ -87,6 +87,136 @@ namespace HG::Utils::ZLib
         deflateEnd(&stream);
     }
 
+    template<typename InputStream, typename OutputStream>
+    std::size_t DeflateStreamToStream(InputStream& inputStream,
+                                      OutputStream& outputStream,
+                                      std::size_t chunkSize,
+                                      CompressionLevel compression = BestCompression)
+    {
+        uint8_t inBuffer[chunkSize];
+        uint8_t outBuffer[chunkSize];
+        std::size_t totalCompressed = 0;
+
+        z_stream stream = {nullptr};
+
+        if (deflateInit(&stream, compression) != Z_OK)
+        {
+            throw std::runtime_error("Can't init ZLib deflating");
+        }
+
+        int flush;
+        do
+        {
+            auto read = inputStream.readsome(reinterpret_cast<char*>(inBuffer), chunkSize);
+
+            stream.avail_in = read;
+
+
+            flush = (read == 0) ? Z_FINISH : Z_NO_FLUSH;
+
+            stream.next_in = (Bytef*) inBuffer;
+
+            do
+            {
+                stream.avail_out = static_cast<uInt>(chunkSize);
+                stream.next_out = outBuffer;
+
+                deflate(&stream, flush);
+
+                auto numberOfBytes = chunkSize - stream.avail_out;
+
+                totalCompressed += numberOfBytes;
+                outputStream.write(reinterpret_cast<const char*>(outBuffer), numberOfBytes);
+            }
+            while (stream.avail_out == 0);
+        }
+        while (flush != Z_FINISH);
+
+        deflateEnd(&stream);
+
+        return totalCompressed;
+    }
+
+    /**
+     * @brief Method for inflating from input stream to output stream
+     * with chunks.
+     * @param inputStream Reference to input stream.
+     * @param ouputStream Reference to output stream.
+     * @param chunkSize Chunk size in bytes.
+     * @param compression Compression level.
+     * @return Inflated data size.
+     */
+    template<typename InputStream, typename OutputStream>
+    std::size_t InflateStreamToStream(InputStream& inputStream,
+                                      OutputStream& outputStream,
+                                      std::size_t chunkSize)
+    {
+        uint8_t outBuffer[chunkSize];
+        uint8_t inBuffer[chunkSize];
+        std::size_t totalDecompressed = 0;
+
+        z_stream stream;
+
+        memset(&stream, 0, sizeof(z_stream));
+
+        int result;
+
+        if ((result = inflateInit(&stream)) != Z_OK)
+        {
+            throw std::runtime_error("Can't init ZLib inflating");
+        }
+
+        do
+        {
+            auto read = inputStream.readsome(reinterpret_cast<char*>(inBuffer), chunkSize);
+
+            stream.avail_in = static_cast<uInt>(read);
+
+            if (stream.avail_in == 0)
+            {
+                break;
+            }
+
+            stream.next_in = (Bytef*) inBuffer;
+
+            do
+            {
+                stream.avail_out = static_cast<uInt>(chunkSize);
+                stream.next_out = outBuffer;
+
+                result = inflate(&stream, Z_NO_FLUSH);
+
+                if (result == Z_NEED_DICT ||
+                    result == Z_DATA_ERROR ||
+                    result == Z_MEM_ERROR)
+                {
+                    inflateEnd(&stream);
+                    throw std::runtime_error("Inflating error, wrong stream");
+                }
+
+                std::size_t numberOfBytes = chunkSize - stream.avail_out;
+
+                totalDecompressed += numberOfBytes;
+                outputStream.write(reinterpret_cast<const char*>(outBuffer), numberOfBytes);
+            }
+            while (stream.avail_out == 0);
+        } while (result != Z_STREAM_END);
+
+        auto off = -static_cast<int>(stream.avail_in);
+
+        inputStream.seekg(off, std::ios::cur);
+
+        inflateEnd(&stream);
+        if (result != Z_STREAM_END)
+        {
+            throw std::runtime_error("Unexpected stream end");
+        }
+
+        return totalDecompressed;
+    }
+
+
+
     /**
      * @brief Function for inflating compressed data.
      * @tparam ByteIn Input byte type.
