@@ -1,10 +1,16 @@
-#include <gtest/gtest.h>
+
+// HG::Standard
 #include <HG/Standard/Behaviours/TiledMap.hpp>
-#include <HG/Standard/FilesystemResourceAccessor.hpp>
+
+// HG::Core
+#include <HG/Core/FilesystemResourceAccessor.hpp>
+
+// GTest
+#include <gtest/gtest.h>
 
 TEST(Standard, TiledLoad1)
 {
-    HG::Standard::FilesystemResourceAccessor fs;
+    HG::Core::FilesystemResourceAccessor fs;
 
     HG::Standard::Behaviours::TiledMap map;
 

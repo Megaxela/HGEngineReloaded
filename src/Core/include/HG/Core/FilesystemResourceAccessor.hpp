@@ -8,7 +8,7 @@
 #include <HG/Core/ResourceAccessor.hpp> // Required for inheritance
 #include <HG/Core/Data.hpp> // Required for inheritance
 
-namespace HG::Standard
+namespace HG::Core
 {
     /**
      * @brief Class, that describes standard filesystem

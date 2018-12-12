@@ -124,6 +124,41 @@ function(describe_module MODULE_NAME DEPENDENCIES ADDITIONAL_INCLUDE)
 
 endfunction(describe_module)
 
+function(add_example)
+    cmake_parse_arguments(
+        ARGS
+        ""
+        "NAME"
+        "DEPENDENCIES"
+        ${ARGN}
+    )
+
+    project(HGExample${ARGS_NAME})
+
+    set(CMAKE_CXX_STANDARD 17)
+
+    file(GLOB_RECURSE SOURCES *.cpp)
+
+    add_executable(${PROJECT_NAME}
+        ${SOURCES}
+    )
+
+    target_include_directories(${PROJECT_NAME} PRIVATE .)
+
+    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
+
+    file(GLOB_RECURSE ASSETS *.png *.mtl *.obj *.tga)
+
+    foreach (ASSET_FULL_PATH ${ASSETS})
+        string(REPLACE ${CMAKE_CURRENT_LIST_DIR}/ "" ASSET_RELATIVE ${ASSET_FULL_PATH})
+
+        message(STATUS "Copying example asset file \"${ASSET_RELATIVE}\"")
+
+        configure_file(${ASSET_RELATIVE} ${ASSET_RELATIVE} COPYONLY)
+    endforeach()
+
+endfunction()
+
 function(clear_cached_variables)
     set(HG_TEST_CASES  "" CACHE STRING "" FORCE)
     set(HG_TEST_LIBS   "" CACHE STRING "" FORCE)
@@ -135,3 +170,63 @@ function(clear_cached_variables)
 
     set(TEST_ASSETS_VARIABLES "" CACHE LIST "" FORCE)
 endfunction(clear_cached_variables)
+
+function(pack_package)
+
+    cmake_parse_arguments(
+            ARGS # prefix of output variables
+            "" # list of names of the boolean arguments (only defined ones will be true)
+            "PATH;NAME;AUTHOR;VERSION_MAJOR;VERSION_MINOR" # list of names of mono-valued arguments
+            "" # list of names of multi-valued arguments (output variables are lists)
+            ${ARGN} # arguments of the function to parse, here we take the all original ones
+    )
+
+    # note: if it remains unparsed arguments, here, they can be found in variable PARSED_ARGS_UNPARSED_ARGUMENTS
+
+    add_custom_command(
+        OUTPUT ${ARGS_OUTPUT}
+        COMMAND $<TARGET_FILE:HGPackageProcessor>
+            --command pack
+            --path ${ARGS_PATH}
+            --output ${CMAKE_CURRENT_BINARY_DIR}/${ARGS_NAME}.hgpackage
+            --name ${ARGS_NAME}
+            --author ${ARGS_AUTHOR}
+            --major ${ARGS_VERSION_MAJOR}
+            --minor ${ARGS_VERSION_MINOR}
+
+        COMMENT "Building ${ARGS_NAME} package"
+        DEPENDS HGPackageProcessor
+    )
+
+    add_custom_target(Create${ARGS_NAME}Package
+        DEPENDS ${ARGS_OUTPUT}
+    )
+
+endfunction()
+
+function(unpack_package)
+
+    cmake_parse_arguments(
+        ARGS # prefix of output variables
+        "" # list of names of the boolean arguments
+        "NAME;OUTPUT" # list of names of mono-valued
+        "" # list of names of multi-valued arguments
+        ${ARGN}
+    )
+
+    add_custom_command(
+        OUTPUT ${ARGS_OUTPUT}
+        COMMAND $<TARGET_FILE:HGPackageProcessor>
+            --command unpack
+            --path ${CMAKE_CURRENT_BINARY_DIR}/${ARGS_NAME}.hgpackage
+            --output ${ARGS_OUTPUT}
+
+        COMMENT "Unpacking ${ARGS_PATH} package"
+        DEPENDS HGPackageProcessor Create${ARGS_NAME}Package
+    )
+
+    add_custom_target(Unpack${ARGS_NAME}Package
+        DEPENDS ${ARGS_OUTPUT}
+    )
+
+endfunction()

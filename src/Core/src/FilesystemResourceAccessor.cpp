@@ -2,34 +2,34 @@
 #include <fstream>
 
 // HG::Standard
-#include <HG/Standard/FilesystemResourceAccessor.hpp>
+#include <HG/Core/FilesystemResourceAccessor.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
 
-HG::Standard::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
+HG::Core::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
     m_data(std::move(data)),
     m_id(std::move(id))
 {
 
 }
 
-std::size_t HG::Standard::FilesystemResourceAccessor::VectorData::size() const
+std::size_t HG::Core::FilesystemResourceAccessor::VectorData::size() const
 {
     return m_data.size();
 }
 
-const std::byte *HG::Standard::FilesystemResourceAccessor::VectorData::data() const
+const std::byte *HG::Core::FilesystemResourceAccessor::VectorData::data() const
 {
     return m_data.data();
 }
 
-std::string HG::Standard::FilesystemResourceAccessor::VectorData::id() const
+std::string HG::Core::FilesystemResourceAccessor::VectorData::id() const
 {
     return m_id;
 }
 
-HG::Core::DataPtr HG::Standard::FilesystemResourceAccessor::loadRaw(const std::string &id)
+HG::Core::DataPtr HG::Core::FilesystemResourceAccessor::loadRaw(const std::string &id)
 {
     std::ifstream file(id, std::ios::binary);
 

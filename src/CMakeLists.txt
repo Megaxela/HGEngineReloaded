@@ -9,3 +9,12 @@ add_subdirectory(Rendering)
 add_subdirectory(Standard)
 add_subdirectory(Physics)
 add_subdirectory(Tools)
+
+# Build standard package
+#pack_package(
+#    NAME Standard
+#    PATH ${CMAKE_CURRENT_LIST_DIR}/Standard
+#    AUTHOR DiveBrain
+#    VERSION_MAJOR 1
+#    VERSION_MINOR 0
+#)

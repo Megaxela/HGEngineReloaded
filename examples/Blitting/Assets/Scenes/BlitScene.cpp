@@ -93,7 +93,7 @@ void BlitScene::start()
 
     // Creating target texture
     auto targetTexture = registerResource(
-        new HG::Rendering::Base::Texture({256, 256}, HG::Rendering::Base::Texture::Format::RGB)
+        new (application()->resourceCache()) HG::Rendering::Base::Texture({256, 256}, HG::Rendering::Base::Texture::Format::RGB)
     );
 
     auto targetRendertarget = registerResource(

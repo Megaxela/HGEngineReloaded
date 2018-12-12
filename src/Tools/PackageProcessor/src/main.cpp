@@ -27,12 +27,14 @@ int main(int argc, char** argv)
             void(const HG::ToolsCore::CommandLineArguments::ArgumentsMap&)
         >
     > operations = {
-        {Commands::Pack, &Operations::pack}
+        {Commands::Pack, &Operations::pack},
+        {Commands::Info, &Operations::info},
+        {Commands::Unpack, &Operations::unpack}
     };
 
     HG::ToolsCore::CommandLineArguments arguments(argv[0]);
 
-    arguments.addArgument({"-v", "--version"})
+    arguments.addArgument({"--version"})
         .help("prints utility version")
         .action(HG::ToolsCore::CommandLineArguments::Action::Version)
         .version("0.2"); // todo: Add define with version, proxied from engine build system.
@@ -43,6 +45,7 @@ int main(int argc, char** argv)
         .required(true)
         .choices({Commands::Pack, Commands::Unpack, Commands::Info})
         .destination(ArgumentsNames::Command);
+
 
     arguments.addArgument({"-p", "--path"})
         .help("path to directory with package or with package content")
@@ -87,7 +90,9 @@ int main(int argc, char** argv)
 
     try
     {
-        operations.find(std::get<std::string>(args.find(ArgumentsNames::Command)->second))->second(args);
+        auto command = std::get<std::string>(args.find(ArgumentsNames::Command)->second);
+
+        operations.find(command)->second(args);
     }
     catch (const std::invalid_argument& e)
     {

@@ -4,6 +4,7 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/FilesystemResourceAccessor.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -19,9 +20,6 @@
 #include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
 
-// HG::Standard
-#include <HG/Standard/FilesystemResourceAccessor.hpp>
-
 // ALogger
 #include <Loggers/BasicLogger.hpp>
 
@@ -34,7 +32,7 @@ int main(int argc, char** argv)
 
     // Settings resource accessor implementation
     application.resourceManager()
-        ->setResourceAccessor(new HG::Standard::FilesystemResourceAccessor());
+        ->setResourceAccessor(new HG::Core::FilesystemResourceAccessor());
 
     // Setting system controller
     application.setSystemController(new HG::Rendering::OpenGL::GLFWSystemController(&application));
