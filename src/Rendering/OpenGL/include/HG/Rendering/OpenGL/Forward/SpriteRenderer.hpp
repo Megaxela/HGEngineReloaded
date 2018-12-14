@@ -3,6 +3,9 @@
 // HG::Rendering::Base
 #include <HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp> // Required for inheritance
 
+// HG::Rendering::OpenGL
+#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
+
 namespace HG::Rendering::OpenGL::Common
 {
     class MeshData;
@@ -14,7 +17,8 @@ namespace HG::Rendering::OpenGL::Forward
      * @brief Class, that describes forward
      * sprite renderer.
      */
-    class SpriteRenderer : public AbstractRenderer
+    class SpriteRenderer : public AbstractRenderer,
+                           private HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 

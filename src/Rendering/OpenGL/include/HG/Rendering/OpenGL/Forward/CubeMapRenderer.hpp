@@ -2,6 +2,7 @@
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp> // Required for inheritance
+#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
 
 namespace HG::Rendering::Base
 {
@@ -14,7 +15,8 @@ namespace HG::Rendering::OpenGL::Forward
      * @brief Class, that describes forward cubemap
      * renderer.
      */
-    class CubeMapRenderer : public HG::Rendering::OpenGL::Forward::AbstractRenderer
+    class CubeMapRenderer : public HG::Rendering::OpenGL::Forward::AbstractRenderer,
+                            private HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 

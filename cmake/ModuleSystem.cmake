@@ -1,7 +1,15 @@
-function(describe_tool NAME DEPENDENCIES ADDITIONAL_INCLUDE)
+function(describe_tool)
+
+    cmake_parse_arguments(
+            ARGS
+            ""
+            "NAME"
+            "DEPENDENCIES;INCLUDE;DEFINITIONS"
+            ${ARGN}
+    )
 
     # Marking project
-    project(HG${NAME})
+    project(HG${ARGS_NAME})
 
     # Setting C++ standard to C++17
     set(CMAKE_CXX_STANDARD 17)
@@ -11,21 +19,24 @@ function(describe_tool NAME DEPENDENCIES ADDITIONAL_INCLUDE)
     endif()
 
     # Globbing sources and headers
-    file(GLOB_RECURSE ${MODULE_NAME}_SOURCES src/*.cpp)
-    file(GLOB_RECURSE ${MODULE_NAME}_HEADERS include/*.hpp)
+    file(GLOB_RECURSE ${ARGS_NAME}_SOURCES src/*.cpp)
+    file(GLOB_RECURSE ${ARGS_NAME}_HEADERS include/*.hpp)
 
     # Creating executable
-    add_executable(${PROJECT_NAME} ${${MODULE_NAME}_SOURCES})
+    add_executable(${PROJECT_NAME} ${${ARGS_NAME}_SOURCES})
 
     # Include headers directory
-    target_include_directories(${PROJECT_NAME} PUBLIC include ${ADDITIONAL_INCLUDE})
+    target_include_directories(${PROJECT_NAME} PUBLIC include ${ARGS_INCLUDE})
 
     # Linking libraries
-    target_link_libraries(${PROJECT_NAME} ${DEPENDENCIES})
+    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
+
+    # Definitions
+    target_compile_definitions(${PROJECT_NAME} PUBLIC ${ARGS_DEFINITIONS})
 
     if (${HG_BUILD_WARNINGS})
         target_compile_options(${PROJECT_NAME}
-                PRIVATE
+            PRIVATE
                 -ansi
                 -pedantic
                 -Wall
@@ -33,16 +44,24 @@ function(describe_tool NAME DEPENDENCIES ADDITIONAL_INCLUDE)
                 -Woverloaded-virtual
                 -Winit-self
                 -Wunreachable-code
-                )
+        )
     endif()
 
 endfunction(describe_tool)
 
 
-function(describe_module MODULE_NAME DEPENDENCIES ADDITIONAL_INCLUDE)
+function(describe_module)
+
+    cmake_parse_arguments(
+            ARGS
+            ""
+            "NAME"
+            "DEPENDENCIES;INCLUDE;DEFINITIONS"
+            ${ARGN}
+    )
 
     # Marking project
-    project(HG${MODULE_NAME})
+    project(HG${ARGS_NAME})
 
     # Setting C++ standard to C++17
     set(CMAKE_CXX_STANDARD 17)
@@ -53,10 +72,10 @@ function(describe_module MODULE_NAME DEPENDENCIES ADDITIONAL_INCLUDE)
 
     # Creating option for building tests for this module if tests even exists
     if (EXISTS ${CMAKE_CURRENT_LIST_DIR}/tests)
-        message(STATUS "Tests for ${MODULE_NAME} found.")
+        message(STATUS "Tests for ${ARGS_NAME} found.")
 
-        set(TEST_KEY "HG_BUILD_${MODULE_NAME}_TESTS")
-        option(${TEST_KEY} "Build ${MODULE_NAME} tests" Off)
+        set(TEST_KEY "HG_BUILD_${ARGS_NAME}_TESTS")
+        option(${TEST_KEY} "Build ${ARGS_NAME} tests" Off)
 
         # If required - include tests
         if (${${TEST_KEY}} OR ${HG_BUILD_ALL_TESTS})
@@ -92,17 +111,23 @@ function(describe_module MODULE_NAME DEPENDENCIES ADDITIONAL_INCLUDE)
     endif()
 
     # Globbing sources and headers
-    file(GLOB_RECURSE ${MODULE_NAME}_SOURCES src/*.cpp)
-    file(GLOB_RECURSE ${MODULE_NAME}_HEADERS include/*.hpp)
+    file(GLOB_RECURSE ${ARGS_NAME}_SOURCES src/*.cpp)
+    file(GLOB_RECURSE ${ARGS_NAME}_HEADERS include/*.hpp)
 
     # Creating static library
-    add_library(${PROJECT_NAME} STATIC ${${MODULE_NAME}_SOURCES})
+    add_library(${PROJECT_NAME} STATIC ${${ARGS_NAME}_SOURCES})
+
+    # Setting that it's cxx code
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
     # Include headers directory
-    target_include_directories(${PROJECT_NAME} PUBLIC include ${ADDITIONAL_INCLUDE})
+    target_include_directories(${PROJECT_NAME} PUBLIC include ${ARGS_INCLUDE})
 
     # Linking libraries
-    target_link_libraries(${PROJECT_NAME} ${DEPENDENCIES})
+    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
+
+    # Adding definitions
+    target_compile_definitions(${PROJECT_NAME} PUBLIC ${ARGS_DEFINITIONS})
 
     if (${HG_BUILD_WARNINGS})
         target_compile_options(${PROJECT_NAME}

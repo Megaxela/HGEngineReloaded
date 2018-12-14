@@ -280,7 +280,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setRenderTarget(HG::Rend
         }
     }
 
-    auto externalData = static_cast<Common::RenderTargetData*>(target->specificData());
+    auto externalData = target->castSpecificDataTo<Common::RenderTargetData>();
 
     externalData->Framebuffer.bind(GL_FRAMEBUFFER);
 
@@ -319,8 +319,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverr
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture *texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data)
 {
-    BENCH("Getting texture pixel");
-    auto textureData = dynamic_cast<Common::Texture2DData*>(texture->specificData());
+    BENCH("Getting texture pixel region");
+    auto textureData = texture->castSpecificDataTo<Common::Texture2DData>();
 
     if (textureData == nullptr)
     {

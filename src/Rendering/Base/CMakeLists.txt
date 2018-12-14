@@ -12,10 +12,13 @@ set(LIBRARIES
 # Adding additional include dirs
 set(INCLUDE)
 
-# Creating RenderingBase module
-describe_module(RenderingBase "${LIBRARIES}" "${INCLUDE}")
+describe_module(
+    NAME RenderingBase
+    DEPENDENCIES
+        imgui
+        HGCore
+        HGUtils
 
-# Adding definition if added as dependency
-target_compile_definitions(HGRenderingBase PUBLIC
-    HG_HAS_RENDERING_BASE
+    DEFINITIONS
+        HG_HAS_RENDERING_BASE
 )

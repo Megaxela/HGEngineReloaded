@@ -78,23 +78,9 @@ namespace HG::Rendering::OpenGL::Forward
          */
         void setApplication(HG::Core::Application* application);
 
-    protected:
-
-        /**
-         * @brief Method for applying shader uniforms in material.
-         * @param material Material.
-         */
-        void applyShaderUniforms(HG::Rendering::Base::Material* material);
-
-        void setShaderUniform(gl::program *program,
-                              const std::string &name,
-                              const HG::Rendering::Base::MaterialValue &value);
-
     private:
 
         HG::Core::Application* m_application;
-
-        GLuint m_textureNumber;
     };
 }
 

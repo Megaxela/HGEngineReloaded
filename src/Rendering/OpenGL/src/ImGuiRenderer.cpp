@@ -74,10 +74,8 @@ void HG::Rendering::OpenGL::ImGuiRenderer::init()
     m_vbo = std::move(gl::buffer());
     m_ebo = std::move(gl::buffer());
 
-    auto* program = &static_cast<Common::ShaderData*>(m_material->shader()->specificData())->Program;
+    auto* program = &m_material->shader()->castSpecificDataTo<Common::ShaderData>()->Program;
 
-    m_uniformLocationTex      = program->uniform_location("Texture");
-    m_uniformLocationProjMtx  = program->uniform_location("ProjMtx");
     m_attribLocationPosition  = program->attribute_location("Position");
     m_attribLocationUV        = program->attribute_location("UV");
     m_attribLocationColor     = program->attribute_location("Color");
@@ -130,11 +128,10 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
     const auto ortho_projection = glm::ortho(0.0f, io.DisplaySize.x, io.DisplaySize.y, 0.0f);
 
     // Getting shader program
-    auto* program = &static_cast<Common::ShaderData*>(m_material->shader()->specificData())->Program;
-
-    program->use();
-    program->set_uniform(m_uniformLocationTex, 0);
-    program->set_uniform(m_uniformLocationProjMtx, ortho_projection);
+    m_material->set("Texture", 0);
+    m_material->set("ProjMtx", ortho_projection);
+    applyMaterialUniforms(application(), m_material);
+    useMaterial(application(), m_material);
 
     // We use combined texture/sampler state. Applications using GL 3.3 may set that otherwise.
     gl::sampler::unbind(0);
@@ -214,9 +211,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
                     }
                 }
 
-                auto data = dynamic_cast<
-                    HG::Rendering::OpenGL::Common::Texture2DData*
-                >(texture->specificData());
+                auto data = texture->castSpecificDataTo<HG::Rendering::OpenGL::Common::Texture2DData>();
 
                 data->Texture.bind();
 

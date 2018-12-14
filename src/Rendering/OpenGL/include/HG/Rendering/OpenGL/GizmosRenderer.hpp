@@ -3,6 +3,9 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 
+// HG::Rendering::OpenGL
+#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Gizmos.hpp>
 
@@ -19,7 +22,7 @@ namespace HG::Rendering::OpenGL
     /**
      * @brief Class, for rendering gizmos system.
      */
-    class GizmosRenderer
+    class GizmosRenderer : private HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 

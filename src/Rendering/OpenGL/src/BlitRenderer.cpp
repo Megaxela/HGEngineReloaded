@@ -55,7 +55,7 @@ void HG::Rendering::OpenGL::BlitRenderer::init()
     m_vbo = std::move(gl::buffer());
     m_ebo = std::move(gl::buffer());
 
-    auto* program = &dynamic_cast<Common::ShaderData*>(m_material->shader()->specificData())->Program;
+    auto* program = &m_material->shader()->castSpecificDataTo<Common::ShaderData>()->Program;
 
     m_uniformLocationTexture     = program->uniform_location("sourceTexture");
     m_uniformLocationTextureSize = program->uniform_location("textureSize");
@@ -96,13 +96,11 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
         0.0f
     );
 
-    // Getting shader program
-    auto* program = &dynamic_cast<Common::ShaderData*>(m_material->shader()->specificData())->Program;
-
-    program->use();
-    program->set_uniform(m_uniformLocationTexture, 0);
-    program->set_uniform(m_uniformLocationProjection, projection);
-    program->set_uniform(m_uniformLocationTextureSize, texture->size());
+    m_material->set("projection", projection);
+    m_material->set("textureSize", texture->size());
+    m_material->set("sourceTexture", texture);
+    applyMaterialUniforms(application(), m_material);
+    useMaterial(application(), m_material);
 
     // Creating and setting up VAO
     gl::buffer vbo;
@@ -154,24 +152,14 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
         GL_STREAM_DRAW
     );
 
-    // Setting up texture if required
-    if (application()->renderer()->needSetup(texture))
-    {
-        if (!application()->renderer()->setup(texture))
-        {
-            Warning() << "Can't perform blitting, because can't setup texture.";
-            return;
-        }
-    }
-
     // Getting texture data
-    auto data = dynamic_cast<
-        HG::Rendering::OpenGL::Common::Texture2DData*
-    >(texture->specificData());
-
-    // Binding texture
-    gl::texture_2d::set_active(0);
-    data->Texture.bind();
+//    auto data = dynamic_cast<
+//        HG::Rendering::OpenGL::Common::Texture2DData*
+//    >(texture->specificData());
+//
+//    // Binding texture
+//    gl::texture_2d::set_active(0);
+//    data->Texture.bind();
 
     gl::draw_elements(
         GL_TRIANGLES,

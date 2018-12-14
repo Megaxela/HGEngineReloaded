@@ -75,7 +75,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     Common::CubeMapTextureData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = static_cast<CubeMapTextureData*>(texture->specificData())) == nullptr)
+    if ((externalData = texture->castSpecificDataTo<CubeMapTextureData>()) == nullptr)
     {
         externalData = new Common::CubeMapTextureData();
         texture->setSpecificData(externalData);
@@ -137,7 +137,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
 
 bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
-    auto externalData = static_cast<CubeMapTextureData*>(data->specificData());
+    auto externalData = data->castSpecificDataTo<CubeMapTextureData>();
 
     return externalData == nullptr ||
            externalData->LoadedSides != ((1 << 6) - 1) || // Fully loaded bitfield

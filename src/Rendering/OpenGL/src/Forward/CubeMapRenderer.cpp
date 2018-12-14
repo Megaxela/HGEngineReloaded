@@ -120,61 +120,15 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::init()
 void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
 {
     auto cubemapBehaviour = static_cast<HG::Rendering::Base::Behaviours::CubeMap*>(renderBehaviour);
-    auto cubemap = cubemapBehaviour->cubeMap();
-
-    if (cubemap == nullptr)
-    {
-        return;
-    }
-
-    if (application()->renderer()->needSetup(cubemap))
-    {
-        // If can't setup renderer - skip it
-        if (!application()->renderer()->setup(cubemap))
-        {
-            return;
-        }
-    }
-
-    auto cubemapExternalData = static_cast<Common::CubeMapTextureData*>(cubemap->specificData());
 
     BENCH("Drawing cubemap");
-    auto* program = &static_cast<Common::ShaderData*>(
-        m_skyboxMaterial
-        ->shader()
-        ->specificData()
-    )->Program;
 
-    program->use();
+    m_skyboxMaterial->set("skybox", cubemapBehaviour->cubeMap());
+    m_skyboxMaterial->set("projection", application()->renderer()->activeCamera()->projectionMatrix());
+    m_skyboxMaterial->set("view", glm::mat4(glm::mat3(application()->renderer()->activeCamera()->viewMatrix())));
 
-    GLint location;
-
-    cubemapExternalData->Texture.set_active(0);
-    cubemapExternalData->Texture.bind();
-
-    static std::string skyboxName = "skybox";
-    if ((location = program->uniform_location(skyboxName)) != -1)
-    {
-        program->set_uniform(location, 0);
-    }
-
-    static std::string projectionName = "projection";
-    if ((location = program->uniform_location(projectionName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            application()->renderer()->activeCamera()->projectionMatrix()
-        );
-    }
-
-    static std::string viewName = "view";
-    if ((location = program->uniform_location(viewName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            glm::mat4(glm::mat3(application()->renderer()->activeCamera()->viewMatrix()))
-        );
-    }
+    applyMaterialUniforms(application(), m_skyboxMaterial);
+    useMaterial(application(), m_skyboxMaterial);
 
     m_vao.bind();
 
@@ -191,10 +145,10 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base
         );
     }
 
-    application()->renderer()->setActiveCubeMap(cubemap);
+    application()->renderer()->setActiveCubeMap(cubemapBehaviour->cubeMap());
 
-    m_vao.unbind();
-    cubemapExternalData->Texture.unbind();
+    gl::vertex_array::unbind();
+    gl::cubemap_texture_array::unbind();
 }
 
 size_t HG::Rendering::OpenGL::Forward::CubeMapRenderer::getTarget()

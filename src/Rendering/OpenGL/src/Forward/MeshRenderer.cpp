@@ -76,7 +76,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::deinit()
 void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::RenderBehaviour *renderBehaviour)
 {
     auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
-    auto data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
+    auto data = meshBehaviour->castSpecificDataTo<Common::MeshData>();
     auto override = application()->renderer()->pipeline()->renderOverride();
 
     // todo: On errors, render "error" mesh instead.
@@ -87,78 +87,34 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
             return;
         }
 
-        data = static_cast<Common::MeshData*>(meshBehaviour->specificData());
+        data = meshBehaviour->castSpecificDataTo<Common::MeshData>();
     }
 
     BENCH("Drawing mesh");
 
-    gl::program* program = nullptr;
+    HG::Rendering::Base::Material* activeMaterial = nullptr;
 
     if (override == nullptr ||
         override->material == nullptr)
     {
-        BENCH("Preparing material");
         if (meshBehaviour->material() == nullptr ||
             meshBehaviour->material()->shader() == nullptr)
         {
-            program = &static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData())->Program;
-
-            program->use();
+            activeMaterial = m_meshFallbackMaterial;
         }
         else
         {
-            Common::ShaderData* shaderData = nullptr;
-
-            if (application()->renderer()->needSetup(meshBehaviour->material()->shader()))
-            {
-                if (!application()->renderer()->setup(meshBehaviour->material()->shader()))
-                {
-                    // If can't setup shader
-                    shaderData = static_cast<Common::ShaderData*>(m_meshFallbackMaterial->shader()->specificData());
-                }
-            }
-
-            if (shaderData == nullptr)
-            {
-                shaderData = static_cast<Common::ShaderData*>(meshBehaviour->material()->shader()->specificData());
-            }
-
-            program = &shaderData->Program;
-            program->use();
-
-            if (application()->renderer()->activeCubeMap())
-            {
-                meshBehaviour->material()->set("cubemap", application()->renderer()->activeCubeMap());
-            }
-
-            applyShaderUniforms(meshBehaviour->material());
+            activeMaterial = meshBehaviour->material();
         }
     }
     else
     {
-        BENCH("Prepare override material");
-        Common::ShaderData* shaderData = nullptr;
+        activeMaterial = override->material;
+    }
 
-        if (application()->renderer()->needSetup(override->material->shader()))
-        {
-            if (!application()->renderer()->setup(override->material->shader()))
-            {
-                // todo: Make decision on replace shader unavailability
-                return; // Do not apply fallback if replace enabled
-            }
-        }
-
-        shaderData = static_cast<Common::ShaderData*>(override->material->shader()->specificData());
-
-        program = &shaderData->Program;
-        program->use();
-
-        if (application()->renderer()->activeCubeMap())
-        {
-            override->material->set("cubemap", application()->renderer()->activeCubeMap());
-        }
-
-        applyShaderUniforms(override->material);
+    if (application()->renderer()->activeCubeMap())
+    {
+        activeMaterial->set("cubemap", application()->renderer()->activeCubeMap());
     }
 
     // No active camera. No rendering.
@@ -169,48 +125,39 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
 
     // Checking for VBO, VAO and EBO
 
-    GLint location;
+    activeMaterial->set(
+        "camera",
+        application()
+            ->renderer()
+            ->activeCamera()
+            ->gameObject()
+            ->transform()
+            ->globalPosition()
+    );
 
-    static std::string cameraName = "camera";
-    if ((location = program->uniform_location(cameraName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            application()
-                ->renderer()
-                ->activeCamera()
-                ->gameObject()
-                ->transform()
-                ->globalPosition()
-        );
-    }
+    activeMaterial->set(
+        "model",
+        meshBehaviour
+            ->gameObject()
+            ->transform()
+            ->localToWorldMatrix()
+    );
 
-    static std::string modelName = "model";
-    if ((location = program->uniform_location(modelName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            meshBehaviour->gameObject()->transform()->localToWorldMatrix()
-        );
-    }
+    activeMaterial->set(
+        "view",
+        application()
+            ->renderer()
+            ->activeCamera()
+            ->viewMatrix()
+    );
 
-    static std::string viewName = "view";
-    if ((location = program->uniform_location(viewName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            application()->renderer()->activeCamera()->viewMatrix()
-        );
-    }
-
-    static std::string projectionName = "projection";
-    if ((location = program->uniform_location(projectionName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            application()->renderer()->activeCamera()->projectionMatrix()
-        );
-    }
+    activeMaterial->set(
+        "projection",
+        application()
+            ->renderer()
+            ->activeCamera()
+            ->projectionMatrix()
+    );
 
     // Setting lighting uniforms
     auto& lights = HG::Rendering::Base::AbstractLight::totalLights();
@@ -234,45 +181,30 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         {
             auto castedLight = static_cast<HG::Rendering::Base::Lights::PointLight*>(light);
 
-            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].position)) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->gameObject()->transform()->globalPosition()
-                );
-            }
+            activeMaterial->set(
+                m_pointLightNames[pointLightIndex].position,
+                castedLight->gameObject()->transform()->globalPosition()
+            );
 
-            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].constant)) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->constant()
-                );
-            }
+            activeMaterial->set(
+                m_pointLightNames[pointLightIndex].constant,
+                castedLight->constant()
+            );
 
-            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].linear)) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->linear()
-                );
-            }
+            activeMaterial->set(
+                m_pointLightNames[pointLightIndex].linear,
+                castedLight->linear()
+            );
 
-            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].quadratic)) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->quadratic()
-                );
-            }
+            activeMaterial->set(
+                m_pointLightNames[pointLightIndex].quadratic,
+                castedLight->quadratic()
+            );
 
-            if ((location = program->uniform_location(m_pointLightNames[pointLightIndex].diffuse)) != -1)
-            {
-                program->set_uniform(
-                    location,
-                    castedLight->color().toRGBVector() * 300.0f
-                );
-            }
+            activeMaterial->set(
+                m_pointLightNames[pointLightIndex].diffuse,
+                castedLight->color().toRGBVector() * 300.0f
+            );
 
             ++pointLightIndex;
             break;
@@ -296,40 +228,21 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
         }
     }
 
-    // todo: Add lighting caching
-    // Setting number of point lights
-    static std::string numberOfPointLightsName = "numberOfPointLights";
-    if ((location = program->uniform_location(numberOfPointLightsName)) != -1)
-    {
-        program->set_uniform(location, pointLightIndex);
-    }
+    activeMaterial->set("numberOfPointLights", pointLightIndex);
+    activeMaterial->set("numberOfDirectionalLights", directionalLightIndex);
+    activeMaterial->set("numberOfSpotLights", spotLightIndex);
 
-    // Setting number of directional lights
-    static std::string numberOfDirectionalLightsName = "numberOfDirectionalLights";
-    if ((location = program->uniform_location(numberOfDirectionalLightsName)) != -1)
-    {
-        program->set_uniform(location, directionalLightIndex);
-    }
+    activeMaterial->set(
+        "viewPos",
+        application()->renderer()->activeCamera()
+            ->gameObject()
+            ->transform()
+            ->globalPosition()
+    );
 
-    // Setting number of spot lights
-    static std::string numberOfSpotLightsName = "numberOfSpotLights";
-    if ((location = program->uniform_location(numberOfSpotLightsName)) != -1)
-    {
-        program->set_uniform(location, spotLightIndex);
-    }
 
-    // Setting camera position to shader
-    static std::string viewPosName = "viewPos";
-    if ((location = program->uniform_location(viewPosName)) != -1)
-    {
-        program->set_uniform(
-            location,
-            application()->renderer()->activeCamera()
-                ->gameObject()
-                ->transform()
-                ->globalPosition()
-        );
-    }
+    applyMaterialUniforms(application(), activeMaterial);
+    useMaterial(application(), activeMaterial);
 
     data->VAO.bind();
 

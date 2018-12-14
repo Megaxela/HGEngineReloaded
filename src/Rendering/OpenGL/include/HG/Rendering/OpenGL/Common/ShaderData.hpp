@@ -16,5 +16,15 @@ namespace HG::Rendering::OpenGL::Common
     public:
 
         gl::program Program;
+
+        std::unordered_map<
+            std::string,
+            GLint
+        > UniformLocations;
+
+        std::unordered_map<
+            GLint,
+            std::size_t
+        > CurrentUniformValueHashes;
     };
 }

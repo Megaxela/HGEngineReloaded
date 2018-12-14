@@ -55,6 +55,9 @@ namespace HG::Rendering::Base
         void set(const std::string& name, glm::vec2 value);
         void set(const std::string& name, glm::vec3 value);
         void set(const std::string& name, glm::vec4 value);
+        void set(const std::string& name, glm::ivec2 value);
+        void set(const std::string& name, glm::ivec3 value);
+        void set(const std::string& name, glm::ivec4 value);
         void set(const std::string& name, glm::mat2 value);
         void set(const std::string& name, glm::mat3 value);
         void set(const std::string& name, glm::mat4 value);
@@ -63,20 +66,12 @@ namespace HG::Rendering::Base
 
         void erase(const std::string& name);
 
-        // todo: At C++20 change this to generator
         /**
-         * @brief Method for getting material variables
-         * begin iterator.
-         * @return Constant iterator.
+         * @brief Method for getting container with
+         * material uniform key/values.
+         * @return Constant reference.
          */
-        VariablesContainer::const_iterator begin() const;
-
-        /**
-         * @brief Method for getting material variables
-         * end iterator.
-         * @return Constant iterator.
-         */
-        VariablesContainer::const_iterator end() const;
+        const VariablesContainer& uniformVaues() const;
 
         /**
          * @brief Method for setting shader to material.

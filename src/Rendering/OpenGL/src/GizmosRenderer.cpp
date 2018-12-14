@@ -125,19 +125,10 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
         m_lineData.data()
     );
 
-    auto* program = &static_cast<Common::ShaderData*>(m_lineMaterial->shader()->specificData())->Program;
-
-    program->set_uniform(
-        program->uniform_location("projection"),
-        camera->projectionMatrix()
-    );
-
-    program->set_uniform(
-        program->uniform_location("view"),
-        camera->viewMatrix()
-    );
-
-    program->use();
+    m_lineMaterial->set("projection", camera->projectionMatrix());
+    m_lineMaterial->set("view", camera->viewMatrix());
+    applyMaterialUniforms(application(), m_lineMaterial);
+    useMaterial(application(), m_lineMaterial);
 
     m_linesVAO.bind();
 

@@ -2,10 +2,13 @@
 
 // C++ STL
 #include <cstdint>
+#include <type_traits>
+
+// HG::Rendering::Base
+#include <HG/Rendering/Base/RenderSpecificData.hpp>
 
 namespace HG::Rendering::Base
 {
-    class RenderSpecificData;
 
     /**
      * @brief Class, that describes some data,
@@ -32,6 +35,23 @@ namespace HG::Rendering::Base
          * @return Pointer to specific data.
          */
         HG::Rendering::Base::RenderSpecificData* specificData();
+
+        /**
+         * @brief Method for centralized casting abstract
+         * HG::Rendering::Base::RenderSpecificData to
+         * defined type.
+         * @tparam T Type.
+         * @return Pointer to type.
+         */
+        template<typename T>
+        T* castSpecificDataTo()
+        {
+            static_assert(
+                std::is_base_of<HG::Rendering::Base::RenderSpecificData, T>::value,
+                "Cast type has to be derived of HG::Rendering::Base::RenderSpecificData"
+            );
+            return static_cast<T*>(specificData());
+        }
 
         /**
          * @brief Method for setting specific data.

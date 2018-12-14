@@ -47,7 +47,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
     RenderTargetData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = static_cast<RenderTargetData*>(renderTarget->specificData())) == nullptr)
+    if ((externalData = renderTarget->castSpecificDataTo<RenderTargetData>()) == nullptr)
     {
         externalData = new RenderTargetData();
         renderTarget->setSpecificData(externalData);
@@ -73,7 +73,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
             }
         }
 
-        auto textureExternal = static_cast<Texture2DData*>(iter->second->specificData());
+        auto textureExternal = iter->second->castSpecificDataTo<Texture2DData>();
 
         BENCH("Attaching texture to framebuffer");
         externalData->Framebuffer.attach_texture(
@@ -105,7 +105,7 @@ std::size_t HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::getTarget(
 bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto renderTarget = static_cast<HG::Rendering::Base::RenderTarget*>(data);
-    auto renderTargetData = static_cast<HG::Rendering::OpenGL::Common::RenderTargetData*>(renderTarget->specificData());
+    auto renderTargetData = renderTarget->castSpecificDataTo<HG::Rendering::OpenGL::Common::RenderTargetData>();
 
     return  renderTargetData == nullptr ||
             renderTargetData->Size != renderTarget->size() ||

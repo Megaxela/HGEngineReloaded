@@ -59,7 +59,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     ShaderData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = static_cast<ShaderData*>(shader->specificData())) == nullptr)
+    if ((externalData = shader->castSpecificDataTo<ShaderData>()) == nullptr)
     {
         externalData = new ShaderData();
         shader->setSpecificData(externalData);
@@ -130,7 +130,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
 bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
-    auto shaderData = static_cast<ShaderData*>(data->specificData());
+    auto shaderData = data->castSpecificDataTo<ShaderData>();
 
     return  shaderData == nullptr ||
            !shaderData->Program.is_valid() ||

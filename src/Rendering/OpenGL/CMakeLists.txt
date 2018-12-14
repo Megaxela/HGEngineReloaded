@@ -30,27 +30,18 @@ else()
     message(FATAL_ERROR "You must select 1 opengl providing library.")
 endif()
 
-# Setting required libraries
-set(LIBRARIES
-    gl
-    HGRenderingBase
-    HGCore
-    ${RENDERER_LIBRARY}
-)
+describe_module(
+    NAME RenderingOGL
+    INCLUDE
+        ${RENDERER_INCLUDE}
 
-# Setting additional include
-set(INCLUDE
-    ${RENDERER_INCLUDE}
-)
+    DEPENDENCIES
+        gl
+        HGCore
+        HGRenderingBase
+        ${RENDERER_LIBRARY}
 
-# Creating RenderingOGL module.
-describe_module(RenderingOGL "${LIBRARIES}" "${INCLUDE}")
-
-# Setting, that it's C++ code
-set_target_properties(HGRenderingOGL PROPERTIES LINKER_LANGUAGE CXX)
-
-# Adding definition FFS
-target_compile_definitions(HGRenderingOGL PUBLIC
-    ${RENDERER_DEFINITION}=1
-    HG_HAS_RENDERING_OGL=1
+    DEFINITIONS
+        ${RENDERER_DEFINITION}=1
+        HG_HAS_RENERING_OGL=1
 )

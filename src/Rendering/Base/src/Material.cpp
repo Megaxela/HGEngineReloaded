@@ -129,6 +129,33 @@ void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::
     set(name, val);
 }
 
+void HG::Rendering::Base::Material::set(const std::string& name, glm::ivec2 value)
+{
+    MaterialValue val{};
+    val.type = MaterialValue::Type::IntVector2;
+    val.vector2_int = value;
+
+    set(name, val);
+}
+
+void HG::Rendering::Base::Material::set(const std::string& name, glm::ivec3 value)
+{
+    MaterialValue val{};
+    val.type = MaterialValue::Type::IntVector3;
+    val.vector3_int = value;
+
+    set(name, val);
+}
+
+void HG::Rendering::Base::Material::set(const std::string& name, glm::ivec4 value)
+{
+    MaterialValue val{};
+    val.type = MaterialValue::Type::IntVector4;
+    val.vector4_int = value;
+
+    set(name, val);
+}
+
 void HG::Rendering::Base::Material::set(const std::string& name, HG::Rendering::Base::MaterialValue value)
 {
     m_variableContainer[name] = value;
@@ -139,16 +166,9 @@ void HG::Rendering::Base::Material::erase(const std::string& name)
     m_variableContainer.erase(name);
 }
 
-HG::Rendering::Base::Material::VariablesContainer::const_iterator
-HG::Rendering::Base::Material::begin() const
+const HG::Rendering::Base::Material::VariablesContainer &HG::Rendering::Base::Material::uniformVaues() const
 {
-    return m_variableContainer.begin();
-}
-
-HG::Rendering::Base::Material::VariablesContainer::const_iterator
-HG::Rendering::Base::Material::end() const
-{
-    return m_variableContainer.end();
+    return m_variableContainer;
 }
 
 void HG::Rendering::Base::Material::setShader(HG::Rendering::Base::Shader *shader)

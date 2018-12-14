@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Rendering::OpenGL
+#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
+
 // gl
 #include <gl/all.hpp>
 
@@ -21,7 +24,7 @@ namespace HG::Rendering::OpenGL
      * @brief Class, that describes object for
      * ImGui rendering.
      */
-    class ImGuiRenderer
+    class ImGuiRenderer : public HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 
@@ -67,9 +70,6 @@ namespace HG::Rendering::OpenGL
         gl::buffer m_ebo;
 
         HG::Rendering::Base::Texture* m_fontTexture;
-
-        GLint m_uniformLocationTex = 0;
-        GLint m_uniformLocationProjMtx = 0;
 
         GLuint m_attribLocationPosition = 0;
         GLuint m_attribLocationUV = 0;

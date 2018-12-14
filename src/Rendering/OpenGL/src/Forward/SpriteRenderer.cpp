@@ -129,68 +129,14 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     BENCH("Rendering sprite");
     auto spriteBehaviour = static_cast<HG::Rendering::Base::Behaviours::Sprite*>(renderBehaviour);
 
-    auto program = static_cast<Common::ShaderData*>(m_spriteMaterial->shader()->specificData());
+    m_spriteMaterial->set("model", spriteBehaviour->gameObject()->transform()->localToWorldMatrix());
+    m_spriteMaterial->set("view", application()->renderer()->activeCamera()->viewMatrix());
+    m_spriteMaterial->set("projection", application()->renderer()->activeCamera()->projectionMatrix());
+    m_spriteMaterial->set("size", glm::vec2(spriteBehaviour->texture()->surface()->Width, spriteBehaviour->texture()->surface()->Height));
+    m_spriteMaterial->set("tex", spriteBehaviour->texture());
 
-    program->Program.use();
-
-    GLint location;
-
-    if ((location = program->Program.uniform_location("model")) != -1)
-    {
-        program->Program.set_uniform(
-            location,
-            spriteBehaviour->gameObject()->transform()->localToWorldMatrix()
-        );
-    }
-
-    if ((location = program->Program.uniform_location("view")) != -1)
-    {
-        program->Program.set_uniform(
-            location,
-            application()->renderer()->activeCamera()->viewMatrix()
-        );
-    }
-
-    if ((location = program->Program.uniform_location("projection")) != -1)
-    {
-        program->Program.set_uniform(
-            location,
-            application()->renderer()->activeCamera()->projectionMatrix()
-        );
-    }
-
-    if ((location = program->Program.uniform_location("size")) != -1)
-    {
-        program->Program.set_uniform(
-            location,
-            glm::vec2(
-                spriteBehaviour->texture()->surface()->Width,
-                spriteBehaviour->texture()->surface()->Height
-            )
-        );
-    }
-
-
-    if ((location = program->Program.uniform_location("tex")) != -1)
-    {
-        program->Program.set_uniform_1i(location, 0);
-
-        auto textureData = static_cast<Common::Texture2DData*>(spriteBehaviour->texture()->specificData());
-
-        if (application()->renderer()->needSetup(spriteBehaviour->texture()))
-        {
-            if (!application()->renderer()->setup(spriteBehaviour->texture()))
-            {
-                // FALLBACK HERE
-                return;
-            }
-
-            textureData = static_cast<Common::Texture2DData*>(spriteBehaviour->texture()->specificData());
-        }
-
-        textureData->Texture.set_active(0);
-        textureData->Texture.bind();
-    }
+    applyMaterialUniforms(application(), m_spriteMaterial);
+    useMaterial(application(), m_spriteMaterial);
 
     m_spriteData->VAO.bind();
 

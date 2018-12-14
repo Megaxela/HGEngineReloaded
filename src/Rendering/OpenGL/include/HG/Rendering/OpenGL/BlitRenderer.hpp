@@ -6,6 +6,9 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/BlitData.hpp>
 
+// HG::Rendering::OpenGL
+#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
+
 // Forward declaration
 namespace HG::Core
 {
@@ -25,7 +28,7 @@ namespace HG::Rendering::OpenGL
      * @brief Class, that describes object
      * for performing blitting.
      */
-    class BlitRenderer
+    class BlitRenderer : private HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 

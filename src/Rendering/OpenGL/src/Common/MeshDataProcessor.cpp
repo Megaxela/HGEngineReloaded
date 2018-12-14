@@ -26,7 +26,7 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
 
     Common::MeshData* data = nullptr;
 
-    if ((data = static_cast<MeshData*>(meshBehaviour->specificData())) == nullptr)
+    if ((data = meshBehaviour->castSpecificDataTo<MeshData>()) == nullptr)
     {
         data = new Common::MeshData();
         meshBehaviour->setSpecificData(data);
@@ -102,7 +102,7 @@ std::size_t HG::Rendering::OpenGL::Common::MeshDataProcessor::getTarget()
 
 bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
-    auto meshData = static_cast<MeshData*>(data->specificData());
+    auto meshData = data->castSpecificDataTo<MeshData>();
 
     return  meshData == nullptr ||
            !meshData->VAO.is_valid() ||

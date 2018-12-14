@@ -55,7 +55,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     Common::Texture2DData* externalData = nullptr;
 
     // Creating external data if not presented
-    if ((externalData = static_cast<Texture2DData*>(texture->specificData())) == nullptr)
+    if ((externalData = texture->castSpecificDataTo<Texture2DData>()) == nullptr)
     {
         externalData = new Common::Texture2DData();
         texture->setSpecificData(externalData);
@@ -167,7 +167,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
 bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto texture = static_cast<HG::Rendering::Base::Texture*>(data);
-    auto externalData = static_cast<Common::Texture2DData*>(texture->specificData());
+    auto externalData = texture->castSpecificDataTo<Common::Texture2DData>();
 
     return  externalData == nullptr ||
            !externalData->Texture.is_valid() ||
