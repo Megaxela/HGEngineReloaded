@@ -5,7 +5,4 @@ describe_module(
         HGUtils
         HGPhysicsBase
         ALogger
-
-    DEFINITIONS
-        HG_HAS_STANDARD
 )

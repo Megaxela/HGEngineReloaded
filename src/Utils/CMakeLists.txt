@@ -20,5 +20,4 @@ describe_module(
 
     DEFINITIONS
         -DGLM_ENABLE_EXPERIMENTAL
-        HG_HAS_UTILS=1
 )

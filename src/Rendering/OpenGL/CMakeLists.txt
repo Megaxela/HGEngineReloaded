@@ -43,5 +43,4 @@ describe_module(
 
     DEFINITIONS
         ${RENDERER_DEFINITION}=1
-        HG_HAS_RENERING_OGL=1
 )
