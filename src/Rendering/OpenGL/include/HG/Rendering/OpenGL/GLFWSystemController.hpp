@@ -135,6 +135,13 @@ namespace HG::Rendering::OpenGL
         static void mouseButtonCallback(GLFWwindow*, int button, int action, int);
 
         /**
+         * @brief GLFW callback for mouse wheel.
+         * @param xDelta X delta.
+         * @param yDelta Y delta.
+         */
+        static void mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta);
+
+        /**
          * @brief GLFW callback for framebuffer size changed.
          * @param width New width.
          * @param height New height.

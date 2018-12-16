@@ -310,10 +310,13 @@ namespace HG::Core
 
             /**
              * @brief Method for taking mouse position. Locally to window.
-             * @param x X position.
-             * @param y Y position.
              */
             glm::vec2 getMousePosition() const;
+
+            /**
+             * @brief Method for taking mouse wheel scroll delta.
+             */
+            glm::vec2 getMouseWheelScroll() const;
 
             /**
              * @brief Method for locking mouse cursor.
@@ -349,6 +352,13 @@ namespace HG::Core
             void setMousePosition(int x, int y);
 
             /**
+             * @brief Method for getting mouse wheel scroll delta.
+             * @param x X delta.
+             * @param y Y delta.
+             */
+            void setMouseWheelScroll(float x, float y);
+
+            /**
              * @brief Method for setting mouse button pressed state.
              * @param button Button number.
              * @param pressed Pressed state.
@@ -371,6 +381,7 @@ namespace HG::Core
             };
 
             glm::vec2 m_mousePos;
+            glm::vec2 m_mouseWheelScrollDelta;
             std::unordered_map<uint8_t, ButtonState> m_buttonStates;
 
             std::function<void(bool)> m_disabledAction;

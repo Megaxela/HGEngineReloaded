@@ -64,7 +64,7 @@ bool HG::Core::Input::Keyboard::isModifierPressed(HG::Core::Input::Keyboard::Mod
 {
     if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        if (int(modifier) > 7)
+        if ((int) modifier > 7)
         {
             Error() << "There is no modifier with code " << int(modifier) << " requested. Returning false.";
             return false;
@@ -107,7 +107,7 @@ void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Modifiers 
 {
     if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        if (int(modifier) > 7)
+        if ((int)modifier > 7)
         {
             Error() << "There is no modifier with code " << int(modifier) << " requested. Doing nothing.";
             return;
@@ -146,7 +146,10 @@ void HG::Core::Input::Keyboard::tick()
 
 HG::Core::Input::Mouse::Mouse() :
     m_mousePos(0, 0),
-    m_buttonStates()
+    m_mouseWheelScrollDelta(0, 0),
+    m_buttonStates(),
+    m_disabledAction(),
+    m_hiddenAction()
 {
 
 }
@@ -207,6 +210,11 @@ glm::vec2 HG::Core::Input::Mouse::getMousePosition() const
     return m_mousePos;
 }
 
+glm::vec2 HG::Core::Input::Mouse::getMouseWheelScroll() const
+{
+    return m_mouseWheelScrollDelta;
+}
+
 void HG::Core::Input::Mouse::setCursorDisabled(bool locked) const
 {
     if (m_disabledAction == nullptr)
@@ -245,6 +253,12 @@ void HG::Core::Input::Mouse::setMousePosition(int x, int y)
     m_mousePos.y = y;
 }
 
+void HG::Core::Input::Mouse::setMouseWheelScroll(float x, float y)
+{
+    m_mouseWheelScrollDelta.x = x;
+    m_mouseWheelScrollDelta.y = y;
+}
+
 void HG::Core::Input::Mouse::setPressedButton(uint8_t button, bool pressed)
 {
     auto iter = m_buttonStates.find(button);
@@ -273,6 +287,9 @@ void HG::Core::Input::Mouse::tick()
         state.second.justReleased = false;
         state.second.justPushed = false;
     }
+
+    m_mouseWheelScrollDelta.x = 0;
+    m_mouseWheelScrollDelta.y = 0;
 }
 
 HG::Core::Input::Gamepads::Gamepads() :

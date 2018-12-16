@@ -170,6 +170,9 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiNewFrame()
         }
     }
 
+    io.MouseWheel  = application()->input()->mouse()->getMouseWheelScroll().y;
+    io.MouseWheelH = application()->input()->mouse()->getMouseWheelScroll().x;
+
     // todo: Add gamepad navigation
 
     ImGui::NewFrame();
@@ -238,6 +241,7 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     glfwSetJoystickCallback       (          &GLFWSystemController::joystickCallback);
     glfwSetFramebufferSizeCallback(m_window, &GLFWSystemController::framebufferSizeCallback);
     glfwSetCharCallback           (m_window, &GLFWSystemController::charCallback);
+    glfwSetScrollCallback         (m_window, &GLFWSystemController::mouseWheelCallback);
 
     const_cast<HG::Core::Input::Mouse*>(
         controller->application()->input()->mouse()
@@ -681,6 +685,13 @@ void HG::Rendering::OpenGL::GLFWSystemController::mouseButtonCallback(GLFWwindow
         static_cast<uint8_t>(button),
         static_cast<bool>(action)
     );
+}
+
+void HG::Rendering::OpenGL::GLFWSystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta)
+{
+    const_cast<HG::Core::Input::Mouse*>(
+        controller->application()->input()->mouse()
+    )->setMouseWheelScroll(xDelta, yDelta);
 }
 
 void HG::Rendering::OpenGL::GLFWSystemController::handleWindowEvents()
