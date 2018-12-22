@@ -32,10 +32,12 @@ namespace HG::Core
              */
             enum class Modifiers
             {
-                  None  //< Null
-                , Shift //< Shift button.
-                , Ctrl  //< Ctrl button.
-                , Alt   //< Alt button.
+                  None          //< Null
+                , First         //< First value for iteration
+                , Shift = First //< Shift button.
+                , Ctrl          //< Ctrl button.
+                , Alt           //< Alt button.
+                , Last = Alt    //< Last value for iteration
             };
 
             /**
@@ -44,7 +46,8 @@ namespace HG::Core
             enum class Key
             {
                   None                  //< Null key
-                , ESC                   //< Keyboard Escape button
+                , First                 //< First value for iteration
+                , ESC = First           //< Keyboard Escape button
                 , F1                    //< Keyboard F1 button
                 , F2                    //< Keyboard F2 button
                 , F3                    //< Keyboard F3 button
@@ -161,7 +164,7 @@ namespace HG::Core
                 , NumAdd                //< Key pad add button
                 , NumReturn             //< Key pad return (enter) button
                 , NumEqual              //< Key pad equal button
-                , Last                  //< System value. Used for detecting number of elements in enum (-1)
+                , Last = NumEqual       //< System value. Used for detecting number of elements in enum (-1)
             };
 
             /**
