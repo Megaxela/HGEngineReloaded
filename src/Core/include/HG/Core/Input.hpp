@@ -164,7 +164,7 @@ namespace HG::Core
                 , NumAdd                //< Key pad add button
                 , NumReturn             //< Key pad return (enter) button
                 , NumEqual              //< Key pad equal button
-                , Last = NumEqual       //< System value. Used for detecting number of elements in enum (-1)
+                , Last = NumEqual       //< System value. Used for detecting number of elements in enum
             };
 
             /**

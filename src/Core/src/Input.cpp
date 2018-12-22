@@ -9,9 +9,9 @@
 #include <CurrentLogger.hpp>
 
 HG::Core::Input::Keyboard::Keyboard() :
-    m_pushed  (std::size_t(Key::Last), false),
-    m_released(std::size_t(Key::Last), false),
-    m_pressed (std::size_t(Key::Last), false),
+    m_pushed  (std::size_t(Key::Last) + 1, false),
+    m_released(std::size_t(Key::Last) + 1, false),
+    m_pressed (std::size_t(Key::Last) + 1, false),
     m_pressedModifiers(0),
     m_pressedCharacter(0)
 {

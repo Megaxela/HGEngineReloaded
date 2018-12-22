@@ -719,19 +719,20 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
                                                                 const void *)
 {
     // ignore non-significant error/warning codes
-//    if(id == 131169 ||
-//       id == 3203   ||
-//       id == 131185 ||
-//       id == 131218 ||
-//       id == 131204 ||
-//       id == 8 ||
-//       id == 22 || /* CPU mapping a bisy "streamed data" BO stalled */
-//       id == 20 || /* GTT mapping a busy "miptree" BO stalled */
-//       id == 14 || /* CPU mapping a busy "miptree" BO stalled */
-//       id == 18    /* CPU mapping a busy "streamed data" BO stalled */)
-//    {
-//        return;
-//    }
+    if(id == 131169 ||
+       id == 3203   ||
+       id == 131185 ||
+       id == 131218 ||
+       id == 131204 ||
+       id == 8 ||
+       id == 131076 || /* Usage warning */
+       id == 22 || /* CPU mapping a bisy "streamed data" BO stalled */
+       id == 20 || /* GTT mapping a busy "miptree" BO stalled */
+       id == 14 || /* CPU mapping a busy "miptree" BO stalled */
+       id == 18    /* CPU mapping a busy "streamed data" BO stalled */)
+    {
+        return;
+    }
 
     if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
     {
@@ -763,6 +764,8 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
     case GL_DEBUG_SEVERITY_LOW:          ss << "low"; break;
     default:                             ss << "unexpected"; break;
     }
+
+    ss << ", id: " << id;
 
     ss << ") message received from ";
 

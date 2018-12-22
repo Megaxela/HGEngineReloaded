@@ -34,11 +34,6 @@ namespace HG::Core
         {
             auto* obj = static_cast<CachableResource<RealResourceType>*>(ptr);
 
-            if (obj->m_cache == nullptr)
-            {
-                throw std::runtime_error("Trying to cache cachable object witout resource cache.");
-            }
-
             obj->m_cache->template cacheResource<RealResourceType>(obj);
         }
     };

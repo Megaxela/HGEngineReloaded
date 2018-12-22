@@ -13,7 +13,7 @@
 BENCH_D(application(), NAME)
 
 #define BENCH_D(APP, NAME) \
-HG::Core::Benchmark::ScopeJob __bench(APP, NAME)
+HG::Core::Benchmark::ScopeJob __bench ## __COUNTER__ (APP, NAME)
 
 #define BENCH_I(NAME) \
 HG::Core::Benchmark::ScopeJob(application(), NAME)
