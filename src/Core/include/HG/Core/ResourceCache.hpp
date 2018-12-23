@@ -72,10 +72,15 @@ namespace HG::Core
             // Otherwise - return first cached.
             auto obj = cache->second.available.begin();
 
+            auto resource = *obj;
             cache->second.available.erase(obj);
-            cache->second.used.insert(*obj);
+            cache->second.used.insert(resource);
 
-            return *obj;
+            // After this call - constructor will be called,
+            // and ResourceCache::currentCache will be nullptr again.
+            ResourceCache::currentCache = this;
+
+            return resource;
         }
 
         /**

@@ -24,3 +24,6 @@
 	path = src/Utils/libraries/json
 	url = https://github.com/nlohmann/json.git
 	branch = master
+[submodule "cmake/external/sanitizers-cmake"]
+	path = cmake/external/sanitizers-cmake
+	url = git://github.com/arsenm/sanitizers-cmake.git

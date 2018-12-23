@@ -52,6 +52,8 @@ endfunction(describe_tool)
 
 function(describe_module)
 
+    find_package(Sanitizers)
+
     cmake_parse_arguments(
             ARGS
             ""
@@ -128,6 +130,8 @@ function(describe_module)
 
     # Adding definitions
     target_compile_definitions(${PROJECT_NAME} PUBLIC ${ARGS_DEFINITIONS})
+
+    add_sanitizers(${PROJECT_NAME})
 
     if (${HG_BUILD_WARNINGS})
         target_compile_options(${PROJECT_NAME}
