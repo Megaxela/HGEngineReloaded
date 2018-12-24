@@ -155,9 +155,9 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
     vao.set_vertex_buffer(m_attribLocationUV,       m_vbo, 0, sizeof(ImDrawVert));
     vao.set_vertex_buffer(m_attribLocationColor,    m_vbo, 0, sizeof(ImDrawVert));
 
-    vao.set_attribute_format(m_attribLocationPosition, 2, GL_FLOAT,         false, static_cast<GLuint>(IM_OFFSETOF(ImDrawVert, pos)));
-    vao.set_attribute_format(m_attribLocationUV,       2, GL_FLOAT,         false, static_cast<GLuint>(IM_OFFSETOF(ImDrawVert, uv)));
-    vao.set_attribute_format(m_attribLocationColor,    4, GL_UNSIGNED_BYTE, true,  static_cast<GLuint>(IM_OFFSETOF(ImDrawVert, col)));
+    vao.set_attribute_format(m_attribLocationPosition, 2, GL_FLOAT,         false, static_cast<GLuint>(offsetof(ImDrawVert, pos)));
+    vao.set_attribute_format(m_attribLocationUV,       2, GL_FLOAT,         false, static_cast<GLuint>(offsetof(ImDrawVert, uv)));
+    vao.set_attribute_format(m_attribLocationColor,    4, GL_UNSIGNED_BYTE, true,  static_cast<GLuint>(offsetof(ImDrawVert, col)));
 
     // Draw
     for (auto commandListIndex = 0;

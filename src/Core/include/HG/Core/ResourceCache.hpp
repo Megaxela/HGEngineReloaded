@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <typeinfo>
 #include <cstring>
+#include <shared_mutex>
 
 // HG::Core
 #include <HG/Core/CachableObject.hpp>
@@ -48,13 +49,21 @@ namespace HG::Core
         void* getResource(std::size_t n)
         {
             // Searching for cache by type
-            auto cache = m_objects.find(typeid(T).hash_code());
+            decltype(m_objects)::iterator cache;
 
-            if (cache == m_objects.end())
             {
+                std::shared_lock<std::shared_mutex> lock(m_mutex);
+                cache = m_objects.find(typeid(T).hash_code());
+            }
+
+            if (std::shared_lock<std::shared_mutex>(m_mutex),
+                cache == m_objects.end())
+            {
+                std::unique_lock<std::shared_mutex> lock(m_mutex);
                 cache = m_objects.insert(std::make_pair(typeid(T).hash_code(), TypeCache())).first;
             }
 
+            std::unique_lock<std::shared_mutex> lock(cache->second.mutex);
             // If there is no available element - create new one
             if (cache->second.available.empty())
             {
@@ -92,13 +101,20 @@ namespace HG::Core
         template<typename T>
         void cacheResource(CachableObject* obj)
         {
-            auto cache = m_objects.find(typeid(T).hash_code());
+            decltype(m_objects)::iterator cache;
 
-            if (cache == m_objects.end())
+            {
+                std::shared_lock<std::shared_mutex> lock(m_mutex);
+                cache = m_objects.find(typeid(T).hash_code());
+            }
+
+            if (std::shared_lock<std::shared_mutex>(m_mutex),
+                cache == m_objects.end())
             {
                 throw std::runtime_error("Trying to cache resource, that was created in another cache.");
             }
 
+            std::unique_lock<std::shared_mutex> lock(cache->second.mutex);
             auto elem = cache->second.used.find(obj);
 
             if (elem == cache->second.used.end())
@@ -121,9 +137,15 @@ namespace HG::Core
         {
             std::unordered_set<T*> result;
 
-            auto cache = m_objects.find(typeid(T).hash_code());
+            decltype(m_objects)::const_iterator cache;
 
-            if (cache == m_objects.end())
+            {
+                std::shared_lock<std::shared_mutex> lock(m_mutex);
+                cache = m_objects.find(typeid(T).hash_code());
+            }
+
+            if (std::shared_lock<std::shared_mutex>(m_mutex),
+                cache == m_objects.end())
             {
                 return result;
             }
@@ -139,10 +161,21 @@ namespace HG::Core
     private:
         struct TypeCache
         {
+            TypeCache()
+            {}
+
+            TypeCache(const TypeCache& rhs) :
+                used(rhs.used),
+                available(rhs.available),
+                mutex()
+            {}
+
             std::unordered_set<CachableObject *> used;
             std::unordered_set<CachableObject *> available;
+            mutable std::shared_mutex mutex;
         };
 
+        mutable std::shared_mutex m_mutex;
         std::unordered_map<
                 std::size_t,
                 TypeCache

@@ -18,7 +18,8 @@ HG::Core::Benchmark::Benchmark() :
     m_timings(),
     m_start(),
     m_finish(),
-    m_isRunning(false)
+    m_isRunning(false),
+    m_wantRunning(false)
 {
 
 }
