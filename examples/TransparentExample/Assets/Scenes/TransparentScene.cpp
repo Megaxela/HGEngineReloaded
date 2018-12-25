@@ -59,14 +59,14 @@ void TransparentScene::start()
 
     // Service GO
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setName("Service")
             .addBehaviour(new HG::Rendering::Base::Behaviours::CubeMap(cubemap))
     );
 
     // Adding camera
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setName("Camera")
             .setGlobalPosition({0, 0, 0})
             .addBehaviour(new HG::Rendering::Base::Camera)
@@ -83,7 +83,7 @@ void TransparentScene::start()
         for (int z = -(amount.y / 2); z < (amount.y / 2); ++z)
         {
             addGameObject(
-                HG::Core::GameObjectBuilder()
+                HG::Core::GameObjectBuilder(application()->resourceCache())
                     .setName("Bottle #" + std::to_string(i++))
                     .setGlobalPosition({x * 3, 0, z * 3})
                     .addBehaviour(new HG::Rendering::Base::Behaviours::Mesh(

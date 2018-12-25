@@ -3,7 +3,6 @@
 
 // HG::Core
 #include <HG/Core/GameObjectBuilder.hpp>
-#include <HG/Core/GameObjectCache.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Transform.hpp>
 
@@ -45,31 +44,15 @@ HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addBehaviour(HG::Core:
     return (*this);
 }
 
-HG::Core::GameObjectBuilder::GameObjectBuilder() :
-    m_currentGameObject(nullptr)
+HG::Core::GameObjectBuilder::GameObjectBuilder(HG::Core::ResourceCache* cache) :
+    m_currentGameObject(new (cache) HG::Core::GameObject)
 {
-    pickCurrentGameObject();
-}
 
-void HG::Core::GameObjectBuilder::pickCurrentGameObject()
-{
-    if (m_currentGameObject != nullptr)
-    {
-        Debug() << "Previous builder call skipped deploy part. Clearing it.";
-        m_currentGameObject->clear();
-    }
-    else
-    {
-        m_currentGameObject = HG::Core::GameObjectCache::i().create();
-    }
 }
 
 HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGameObject(HG::Core::GameObject* ptr)
 {
-    if (m_currentGameObject != nullptr)
-    {
-        HG::Core::GameObjectCache::i().cache(m_currentGameObject);
-    }
+    delete m_currentGameObject;
 
     m_currentGameObject = ptr;
 

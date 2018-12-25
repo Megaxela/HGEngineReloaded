@@ -104,7 +104,7 @@ void OrbitalScene::start()
 
     // Placing camera
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setName("Camera")
             .setGlobalPosition({-3.0f, 2.5f, 3.0f})
             .setRotation(glm::quat(glm::vec3(0.7f, 0.6f, 0.5f))) // Euler with radians
@@ -115,7 +115,7 @@ void OrbitalScene::start()
     );
 
     // Creating biggest (Red) sphere
-    auto firstParent = HG::Core::GameObjectBuilder()
+    auto firstParent = HG::Core::GameObjectBuilder(application()->resourceCache())
         .setName("Big Red Planet")
         .setGlobalPosition({0.0f, 0.0f, 0.0f})
         .addBehaviour(
@@ -128,7 +128,7 @@ void OrbitalScene::start()
         ).deploy();
 
     // Creating smaller (Green) sphere
-    auto secondParent = HG::Core::GameObjectBuilder()
+    auto secondParent = HG::Core::GameObjectBuilder(application()->resourceCache())
         .setName("Smaller Green Planet")
         .setParent(firstParent)
         .setGlobalPosition({0.0f, 0.0f, 2.0f})
@@ -143,7 +143,7 @@ void OrbitalScene::start()
         ).deploy();
 
     // Creating smallest (Blue) sphere
-    auto thirdParent = HG::Core::GameObjectBuilder()
+    auto thirdParent = HG::Core::GameObjectBuilder(application()->resourceCache())
         .setName("Smallest Blue Planet")
         .setParent(secondParent)
         .setGlobalPosition({0.0f, 0.0f, 2.7f})

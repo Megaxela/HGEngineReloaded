@@ -93,7 +93,10 @@ void BlitScene::start()
 
     // Creating target texture
     auto targetTexture = registerResource(
-        new (application()->resourceCache()) HG::Rendering::Base::Texture({256, 256}, HG::Rendering::Base::Texture::Format::RGB)
+        new (application()->resourceCache()) HG::Rendering::Base::Texture(
+            {256, 256},
+            HG::Rendering::Base::Texture::Format::RGB
+        )
     );
 
     auto targetRendertarget = registerResource(
@@ -146,7 +149,7 @@ void BlitScene::start()
 
     // Adding camera
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setName("Camera")
             .addBehaviour(new DescriptionBehaviour(atlasTexture, targetTexture))
             .addBehaviour(new HG::Rendering::Base::Camera)
@@ -157,7 +160,7 @@ void BlitScene::start()
 
     // Creating object
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setGlobalPosition({0, 0, 0})
             .setRotation(glm::quat(glm::vec3(glm::radians(90.0f), 0.0f, 0.0f)))
             .addBehaviour(meshRenderingBehaviour)

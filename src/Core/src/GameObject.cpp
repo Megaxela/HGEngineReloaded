@@ -13,7 +13,7 @@
 
 HG::Core::GameObject::GameObject() :
     m_behaviours(),
-    m_transform(new HG::Core::Transform(this)),
+    m_transform(new (m_cache) HG::Core::Transform(this)),
     m_parentScene(nullptr),
     m_enabled(true),
     m_hidden(false)
@@ -23,7 +23,31 @@ HG::Core::GameObject::GameObject() :
 
 HG::Core::GameObject::~GameObject()
 {
-    clear();
+    m_parentScene = nullptr;
+
+    m_transform->setParent(nullptr);
+
+    // Merge, to prevent double free
+    m_behaviours.merge();
+
+    // Removing behaviours
+    for (auto& m_behaviour : m_behaviours)
+    {
+        delete m_behaviour;
+    }
+
+    m_behaviours.clear();
+
+    // Merge, to prevent double free
+    m_renderBehaviours.merge();
+
+    for (auto& m_renderBehaviour : m_renderBehaviours)
+    {
+        delete m_renderBehaviour;
+    }
+
+    m_renderBehaviours.clear();
+
     delete m_transform;
 }
 
@@ -119,34 +143,6 @@ void HG::Core::GameObject::addBehaviour(HG::Core::Behaviour* behaviour)
         break;
     }
     }
-}
-
-void HG::Core::GameObject::clear()
-{
-    m_parentScene = nullptr;
-
-    m_transform->setParent(nullptr);
-
-    // Merge, to prevent double free 
-    m_behaviours.merge();
-    
-    // Removing behaviours
-    for (auto& m_behaviour : m_behaviours)
-    {
-        delete m_behaviour;
-    }
-
-    m_behaviours.clear();
-
-    // Merge, to prevent double free
-    m_renderBehaviours.merge();
-    
-    for (auto& m_renderBehaviour : m_renderBehaviours)
-    {
-        delete m_renderBehaviour;
-    }
-
-    m_renderBehaviours.clear();
 }
 
 void HG::Core::GameObject::setName(std::string name)

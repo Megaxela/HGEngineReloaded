@@ -11,6 +11,7 @@ namespace HG::Core
     class GameObject;
     class Behaviour;
     class Transform;
+    class ResourceCache;
 
     /**
      * @brief Singleton builder
@@ -31,7 +32,7 @@ namespace HG::Core
         /**
          * @brief Constructor.
          */
-        GameObjectBuilder();
+        explicit GameObjectBuilder(HG::Core::ResourceCache* cache);
 
         // Disable copying
         GameObjectBuilder(const GameObjectBuilder&) = delete;
@@ -132,12 +133,6 @@ namespace HG::Core
         GameObjectBuilder& setParent(HG::Core::Transform* parent);
 
     private:
-
-        /**
-         * @brief Method for picking gameobject
-         * as current.
-         */
-        void pickCurrentGameObject();
 
         HG::Core::GameObject* m_currentGameObject;
     };

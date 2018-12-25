@@ -21,6 +21,10 @@ namespace HG::Core
          */
         CachableObject();
 
+        /**
+         * @brief Virtual destructor for
+         * inheritance.
+         */
         virtual ~CachableObject() = default;
 
     protected:

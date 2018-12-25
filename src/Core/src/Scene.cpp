@@ -1,6 +1,5 @@
 // HG::Core
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/GameObjectCache.hpp>
 #include <HG/Core/Scene.hpp>
 
 // HG::Rendering::Base
@@ -83,7 +82,7 @@ void HG::Core::Scene::removeGameObject(HG::Core::GameObject* gameObject)
     gameObject->setParentScene(nullptr);
     m_gameObjects.remove(gameObject);
 
-    GameObjectCache::i().cache(gameObject);
+    delete gameObject;
 }
 
 void HG::Core::Scene::addGameObject(HG::Core::GameObject* gameObject)

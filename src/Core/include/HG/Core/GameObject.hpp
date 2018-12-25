@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Utils
 #include <HG/Utils/DoubleBufferContainer.hpp>
 
@@ -26,9 +29,19 @@ namespace HG::Core
      * If it's not applicable - remove behaviours from gameobject
      * and behaviour's life owner will be changed to user.
      */
-    class GameObject
+    class GameObject : public HG::Core::CachableResource<GameObject>
     {
     public:
+
+        /**
+         * @brief Constructor.
+         */
+        GameObject();
+
+        /**
+         * @brief Destructor.
+         */
+        ~GameObject();
 
         // Disable copying (objects of this type has to be allocated in heap)
         GameObject(const GameObject&) = delete;
@@ -114,11 +127,6 @@ namespace HG::Core
          * @return Pointer to transform.
          */
         HG::Core::Transform* transform();
-
-        /**
-         * @brief Method for clearing gameobject.
-         */
-        void clear();
 
         /**
          * @brief Method for receiving
@@ -226,18 +234,6 @@ namespace HG::Core
         void setParentScene(Scene* parent);
 
     private:
-
-        friend class GameObjectCache;
-
-        /**
-         * @brief Destructor only for GameObjectBuilder.
-         */
-        ~GameObject();
-
-        /**
-         * @brief Constructor.
-         */
-        GameObject();
 
         Transform* m_transform;
 

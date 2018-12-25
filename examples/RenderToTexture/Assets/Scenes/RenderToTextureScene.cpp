@@ -125,7 +125,7 @@ void RenderToTextureScene::start()
 
     // Creating camera
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setGlobalPosition({0.0f, 0.0f, 2.5f})
             .addBehaviour(new DescriptionBehaviour(texture1, texture2))
             .addBehaviour(new HG::Rendering::Base::Camera)
@@ -135,7 +135,7 @@ void RenderToTextureScene::start()
 
     // Creating object
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setGlobalPosition({0, 0, 0})
             .setRotation(glm::quat(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f)))
             .addBehaviour(meshRenderingBehaviour)

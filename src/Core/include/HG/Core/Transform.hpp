@@ -3,6 +3,9 @@
 // C++ STL
 #include <vector>
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -16,7 +19,7 @@ namespace HG::Core
      * world coordinates transformation
      * with rotation, position and scale.
      */
-    class Transform
+    class Transform : public HG::Core::CachableResource<Transform>
     {
     public:
 
@@ -48,7 +51,7 @@ namespace HG::Core
         /**
          * @brief Destructor.
          */
-        ~Transform();
+        ~Transform() override;
 
         /**
          * @brief Method to rotate transform information

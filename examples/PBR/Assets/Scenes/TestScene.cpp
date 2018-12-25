@@ -117,7 +117,7 @@ void TestScene::start()
     meshRenderer->setMaterial(material);
 
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setName("Object")
             .addBehaviour(meshRenderer)
             .setGlobalPosition(glm::vec3(0.0f, 0.0f, 0.0f))
@@ -125,7 +125,7 @@ void TestScene::start()
     );
 
     addGameObject(
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(application()->resourceCache())
             .setName("Camera")
             .addBehaviour(new DescriptionBehaviour)
             .addBehaviour(new HG::Rendering::Base::Camera)
@@ -135,7 +135,7 @@ void TestScene::start()
             .setGlobalPosition(glm::vec3(0, 0, 3))
     );
 
-    auto lightParent = HG::Core::GameObjectBuilder()
+    auto lightParent = HG::Core::GameObjectBuilder(application()->resourceCache())
         .setName("Lights")
         .setGlobalPosition(glm::vec3(0.0f, 0.0f, 10.0))
         .deploy();
@@ -147,7 +147,7 @@ void TestScene::start()
         lightRenderer->setMesh(model->children()[0]->meshes()[0]);
 
         addGameObject(
-            HG::Core::GameObjectBuilder()
+            HG::Core::GameObjectBuilder(application()->resourceCache())
                 .setName("Light Top Right")
                 .setParent(lightParent)
                 .setLocalPosition(glm::vec3(10.0, 10.0, 0.0))
@@ -162,7 +162,7 @@ void TestScene::start()
         lightRenderer->setMesh(model->children()[0]->meshes()[0]);
 
         addGameObject(
-            HG::Core::GameObjectBuilder()
+            HG::Core::GameObjectBuilder(application()->resourceCache())
                 .setName("Light Top Left")
                 .setParent(lightParent)
                 .setLocalPosition(glm::vec3(-10.0, 10.0, 0.0))
@@ -177,7 +177,7 @@ void TestScene::start()
         lightRenderer->setMesh(model->children()[0]->meshes()[0]);
 
         addGameObject(
-            HG::Core::GameObjectBuilder()
+            HG::Core::GameObjectBuilder(application()->resourceCache())
                 .setName("Light Bot Left")
                 .setParent(lightParent)
                 .setLocalPosition(glm::vec3(-10.0, -10.0, 0.0))
@@ -192,7 +192,7 @@ void TestScene::start()
         lightRenderer->setMesh(model->children()[0]->meshes()[0]);
 
         addGameObject(
-            HG::Core::GameObjectBuilder()
+            HG::Core::GameObjectBuilder(application()->resourceCache())
                 .setName("Light Bot Right")
                 .setParent(lightParent)
                 .setLocalPosition(glm::vec3(10.0, -10.0, 0.0))

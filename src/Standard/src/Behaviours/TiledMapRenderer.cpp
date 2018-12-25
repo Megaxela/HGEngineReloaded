@@ -3,7 +3,6 @@
 
 // HG::Core
 #include <HG/Core/GameObjectBuilder.hpp>
-#include <HG/Core/GameObjectCache.hpp>
 #include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
@@ -239,7 +238,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Sta
     auto pixelScale = 0.01f;
 
     auto newParentGameObject =
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(gameObject()->scene()->application()->resourceCache())
             .setName(groupLayer->name)
             .setParent(parent)
             .deploy();
@@ -264,7 +263,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
 {
     // Creating game object
     HG::Core::GameObject* layerGameObject =
-        HG::Core::GameObjectBuilder()
+        HG::Core::GameObjectBuilder(gameObject()->scene()->application()->resourceCache())
             .setName(tileLayer->name)
             .setParent(parent);
 
