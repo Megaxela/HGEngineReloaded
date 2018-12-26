@@ -93,8 +93,10 @@ namespace HG::Rendering::Base
         /**
          * @brief Method for setting up render behaviour.
          * @param data Pointer to render behaviour.
+         * @param guarantee If true - setup processor will
+         * wait for all async calls.
          */
-        virtual bool setup(HG::Rendering::Base::RenderData* data);
+        virtual bool setup(HG::Rendering::Base::RenderData* data, bool guarantee);
 
         /**
          * @brief Method for checking is render data needs

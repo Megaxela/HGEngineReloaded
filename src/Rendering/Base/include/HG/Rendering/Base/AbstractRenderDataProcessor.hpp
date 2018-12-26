@@ -43,9 +43,11 @@ namespace HG::Rendering::Base
          * @brief Method, that will be used by pipeline
          * to setup render data.
          * @param data Pointer to render data.
+         * @param guarantee If true - processor has to wait for
+         * all async calls,
          * @return Setup success.
          */
-        virtual bool setup(HG::Rendering::Base::RenderData* data) = 0;
+        virtual bool setup(HG::Rendering::Base::RenderData* data, bool guarantee) = 0;
 
         /**
          * @brief Method for checking is render data needs

@@ -18,7 +18,8 @@ namespace
 {
     void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
                           gl::cubemap_texture_array& texture,
-                          GLuint side)
+                          GLuint side,
+                          bool guarantee)
     {
 
         // todo: Fix this `unused` variable.
@@ -65,7 +66,7 @@ namespace
     }
 }
 
-bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data)
+bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto texture = static_cast<HG::Rendering::Base::CubeMap*>(data);
 
@@ -106,7 +107,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
             BENCH("Loading side data to texture");
             if ((externalData->LoadedSides & (1 << side)) == 0)
             {
-                auto surface = texture->getSideSurface(static_cast<Base::CubeMap::Side>(side));
+                auto surface = texture->getSideSurface(static_cast<Base::CubeMap::Side>(side), guarantee);
 
                 // Surface was not ready
                 if (!surface)
@@ -115,7 +116,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
                 }
 
                 externalData->LoadedSides |= (1 << side);
-                setupCubeMapSide(surface, externalData->Texture, static_cast<GLuint>(side));
+                setupCubeMapSide(surface, externalData->Texture, static_cast<GLuint>(side), guarantee);
             }
         }
     }

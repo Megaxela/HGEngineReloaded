@@ -97,7 +97,7 @@ namespace HG::Rendering::Base
          * texture.
          * @return Surface.
          */
-        HG::Utils::SurfacePtr surface();
+        HG::Utils::SurfacePtr surface(bool guarantee=false);
 
         /**
          * @brief Method for setting surface to texture.

@@ -41,7 +41,7 @@ namespace
     }
 }
 
-bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data)
+bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto texture = dynamic_cast<HG::Rendering::Base::Texture*>(data);
 
@@ -111,7 +111,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     // Surface is removed after texture is
     // filled.
     if (externalData->Allocated &&
-        texture->surface() &&
+        texture->surface(guarantee) &&
         !externalData->Valid)
     {
         BENCH("Loading surface to texture");

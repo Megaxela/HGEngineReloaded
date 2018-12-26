@@ -74,9 +74,12 @@ namespace HG::Rendering::Base
         /**
          * @brief Method for getting side surface.
          * @param side Side.
+         * @param guarantee If true - if available -
+         * method will wait for async side loading
+         * before return.
          * @return Smart pointer to surface.
          */
-        HG::Utils::SurfacePtr getSideSurface(Side side);
+        HG::Utils::SurfacePtr getSideSurface(Side side, bool guarantee=false);
 
         /**
          * @brief Method for setting side surface.

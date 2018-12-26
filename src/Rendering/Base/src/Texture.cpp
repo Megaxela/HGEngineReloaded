@@ -69,9 +69,16 @@ glm::ivec2 HG::Rendering::Base::Texture::size()
     return m_size;
 }
 
-HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface()
+HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface(bool guarantee=false)
 {
-     return m_surface;
+    if (guarantee)
+    {
+        return m_surface.guaranteeGet();
+    }
+    else
+    {
+        return m_surface;
+    }
 }
 
 void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)

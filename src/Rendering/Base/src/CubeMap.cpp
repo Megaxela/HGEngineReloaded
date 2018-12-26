@@ -30,17 +30,34 @@ HG::Rendering::Base::CubeMap::CubeMap(HG::Utils::SurfaceFuturePtr right,
 
 }
 
-HG::Utils::SurfacePtr HG::Rendering::Base::CubeMap::getSideSurface(HG::Rendering::Base::CubeMap::Side side)
+HG::Utils::SurfacePtr HG::Rendering::Base::CubeMap::getSideSurface(HG::Rendering::Base::CubeMap::Side side,
+                                                                   bool guarantee)
 {
-    switch (side)
+    if (guarantee)
     {
-    case Right:  return m_right .get();
-    case Left:   return m_left  .get();
-    case Top:    return m_top   .get();
-    case Bottom: return m_bottom.get();
-    case Front:  return m_front .get();
-    case Back:   return m_back  .get();
-    default: break;
+        switch (side)
+        {
+        case Right:  return m_right .guaranteeGet();
+        case Left:   return m_left  .guaranteeGet();
+        case Top:    return m_top   .guaranteeGet();
+        case Bottom: return m_bottom.guaranteeGet();
+        case Front:  return m_front .guaranteeGet();
+        case Back:   return m_back  .guaranteeGet();
+        default: break;
+        }
+    }
+    else
+    {
+        switch (side)
+        {
+        case Right:  return m_right .get();
+        case Left:   return m_left  .get();
+        case Top:    return m_top   .get();
+        case Bottom: return m_bottom.get();
+        case Front:  return m_front .get();
+        case Back:   return m_back  .get();
+        default: break;
+        }
     }
 
     return nullptr;

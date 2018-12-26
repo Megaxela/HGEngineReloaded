@@ -8,7 +8,7 @@
 // HG::Utils
 #include <HG/Utils/Mesh.hpp>
 
-bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData)
+bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData, bool guarantee)
 {
     auto meshBehaviour = dynamic_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderData);
 

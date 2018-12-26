@@ -133,7 +133,7 @@ void HG::Rendering::Base::Renderer::setActiveCubeMap(HG::Rendering::Base::CubeMa
     m_activeCubemap = cubemap;
 }
 
-bool HG::Rendering::Base::Renderer::setup(HG::Rendering::Base::RenderData* data)
+bool HG::Rendering::Base::Renderer::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     if (m_pipeline == nullptr)
     {
@@ -141,7 +141,7 @@ bool HG::Rendering::Base::Renderer::setup(HG::Rendering::Base::RenderData* data)
         return false;
     }
 
-    return m_pipeline->setup(data);
+    return m_pipeline->setup(data, guarantee);
 }
 
 bool HG::Rendering::Base::Renderer::needSetup(HG::Rendering::Base::RenderData* data)

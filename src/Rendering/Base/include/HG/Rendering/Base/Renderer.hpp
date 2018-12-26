@@ -105,9 +105,13 @@ namespace HG::Rendering::Base
          * rendering pipeline. Also checks
          * availability of rendering pipeline.
          * @param data Pointer to render data.
+         * @param guarantee If true - setup processor
+         * will wait until all resources will be loaded.
+         * If method returned false with guarantee=true -
+         * some error was aquired.
          * @return Success.
          */
-        bool setup(HG::Rendering::Base::RenderData* data);
+        bool setup(HG::Rendering::Base::RenderData* data, bool guarantee);
 
         /**
          * @brief Method for checking is render data requires

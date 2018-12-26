@@ -88,7 +88,7 @@ HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() con
     return m_parentApplication;
 }
 
-bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderData* data)
+bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     BENCH("Setup of resource " + std::to_string(data->dataType()));
 
@@ -108,7 +108,7 @@ bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderDa
         return false;
     }
 
-    return processorIterator->second->setup(data);
+    return processorIterator->second->setup(data, guarantee);
 }
 
 bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::RenderData* data)

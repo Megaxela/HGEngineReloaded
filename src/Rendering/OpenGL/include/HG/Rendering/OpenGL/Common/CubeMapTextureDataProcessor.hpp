@@ -14,7 +14,7 @@ namespace HG::Rendering::OpenGL::Common
     public:
         size_t getTarget() override;
 
-        bool setup(HG::Rendering::Base::RenderData* data) override;
+        bool setup(HG::Rendering::Base::RenderData* data, bool guarantee) override;
 
         bool needSetup(HG::Rendering::Base::RenderData* data) override;
     };
