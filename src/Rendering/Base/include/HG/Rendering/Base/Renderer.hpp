@@ -111,7 +111,7 @@ namespace HG::Rendering::Base
          * some error was aquired.
          * @return Success.
          */
-        bool setup(HG::Rendering::Base::RenderData* data, bool guarantee);
+        bool setup(HG::Rendering::Base::RenderData* data, bool guarantee=false);
 
         /**
          * @brief Method for checking is render data requires

@@ -30,7 +30,7 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::App
 
     if (application->renderer()->needSetup(material->shader()))
     {
-        if (!application->renderer()->setup(material->shader()))
+        if (!application->renderer()->setup(material->shader(), true))
         {
             // If can't setup shader
             return;
@@ -50,7 +50,7 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::App
     }
 }
 
-void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG::Core::Application* application, HG::Rendering::Base::Material* material)
+void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG::Core::Application* application, HG::Rendering::Base::Material* material, bool guarantee)
 {
     uint32_t textureNumber = 0;
 
@@ -58,14 +58,17 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG:
 
     for (auto&& [uniformName, uniformValue] : material->uniformVaues())
     {
-        setShaderUniform(application, shaderData, uniformName, uniformValue, textureNumber);
+        setShaderUniform(application, shaderData, uniformName, uniformValue, textureNumber, guarantee);
     }
 }
 
 void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
         HG::Core::Application* application,
-        HG::Rendering::OpenGL::Common::ShaderData *shaderData, const std::string &name,
-        const HG::Rendering::Base::MaterialValue &value, uint32_t &textureNumber)
+        HG::Rendering::OpenGL::Common::ShaderData *shaderData,
+        const std::string &name,
+        const HG::Rendering::Base::MaterialValue &value,
+        uint32_t &textureNumber,
+        bool guarantee)
 {
     // Trying to get cached uniform location
     auto locationIter = shaderData->UniformLocations.find(name);
@@ -222,7 +225,7 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
         // Setup texture if not valid
         if (application->renderer()->needSetup(value.cubeMap))
         {
-            if (!application->renderer()->setup(value.cubeMap))
+            if (!application->renderer()->setup(value.cubeMap, guarantee))
             {
                 // FALLBACK HERE
                 return;
@@ -258,8 +261,17 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
         // Setup texture if not valid
         if (application->renderer()->needSetup(value.texture))
         {
-            if (!application->renderer()->setup(value.texture))
+            if (guarantee)
             {
+                Info() << "Loading texture with guarantee";
+            }
+
+            if (!application->renderer()->setup(value.texture, guarantee))
+            {
+                if (guarantee)
+                {
+                    Info() << "Can't load guaranteed texture";
+                }
                 // FALLBACK HERE
                 return;
             }

@@ -24,7 +24,12 @@ HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProces
 
 }
 
-bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data)
+HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::~RenderTargetDataProcessor()
+{
+    delete m_defaultData;
+}
+
+bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto renderTarget = dynamic_cast<HG::Rendering::Base::RenderTarget*>(data);
 

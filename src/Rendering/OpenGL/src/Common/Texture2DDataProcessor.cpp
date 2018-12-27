@@ -62,7 +62,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     }
 
     // Prepare storage if required
-    if (texture->size() != externalData->Size)
+    if (texture->size(guarantee) != externalData->Size)
     {
         BENCH("Preparing storage");
         externalData->Texture = std::move(gl::texture_2d());
@@ -110,8 +110,10 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     // Load surface if surface is presented.
     // Surface is removed after texture is
     // filled.
+    auto surface = texture->surface(guarantee);
+
     if (externalData->Allocated &&
-        texture->surface(guarantee) &&
+        surface &&
         !externalData->Valid)
     {
         BENCH("Loading surface to texture");
@@ -119,7 +121,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         GLuint fileFormat = GL_RGBA;
 
         // Getting type
-        switch (texture->surface()->Bpp)
+        switch (surface->Bpp)
         {
         case 1:
             fileFormat = GL_RED;
@@ -147,11 +149,11 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
             0, // Level
             0, // X offset
             0, // Y Offset
-            texture->surface()->Width,  // Width
-            texture->surface()->Height, // Height
+            surface->Width,  // Width
+            surface->Height, // Height
             fileFormat,       // Format
             GL_UNSIGNED_BYTE, // Type
-            texture->surface()->Data
+            surface->Data
         );
     }
 
@@ -159,7 +161,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
 
     return  externalData->Allocated &&
             (externalData->Valid ||
-             (texture->surface() == nullptr &&
+             (surface == nullptr &&
               !externalData->Valid));
 
 }

@@ -17,7 +17,7 @@ HG::Rendering::Base::MaterialCollection::~MaterialCollection()
 
 void HG::Rendering::Base::MaterialCollection::setup(HG::Rendering::Base::Shader* shader)
 {
-    m_renderer->setup(shader);
+    m_renderer->setup(shader, true);
 }
 
 void HG::Rendering::Base::MaterialCollection::clearCache()

@@ -117,7 +117,7 @@ namespace HG::Rendering::Base
          * @brief Method for getting texture size in pixels.
          * @return Texture size in pixels.
          */
-        glm::ivec2 size();
+        glm::ivec2 size(bool guarantee=false);
 
         /**
          * @brief Method for changing current magnification

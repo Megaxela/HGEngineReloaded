@@ -58,9 +58,9 @@ void HG::Rendering::Base::Texture::setSize(glm::ivec2 size)
     m_size = size;
 }
 
-glm::ivec2 HG::Rendering::Base::Texture::size()
+glm::ivec2 HG::Rendering::Base::Texture::size(bool guarantee)
 {
-    auto surf = m_surface.get();
+    auto surf = guarantee ? m_surface.guaranteeGet() : m_surface.get();
     if (surf)
     {
         m_size = {surf->Width, surf->Height};
@@ -69,16 +69,9 @@ glm::ivec2 HG::Rendering::Base::Texture::size()
     return m_size;
 }
 
-HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface(bool guarantee=false)
+HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface(bool guarantee)
 {
-    if (guarantee)
-    {
-        return m_surface.guaranteeGet();
-    }
-    else
-    {
-        return m_surface;
-    }
+    return guarantee ? m_surface.guaranteeGet() : m_surface.get();
 }
 
 void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)

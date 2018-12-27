@@ -44,9 +44,11 @@ namespace HG::Rendering::OpenGL::Common
         /**
          * @brief Method for applying all material values to
          * it's shader's uniforms.
+         * @param application Pointer to parent application.
          * @param material Pointer to material.
+         * @param guarantee If true - applier will wait until all async calls.
          */
-        void applyMaterialUniforms(HG::Core::Application* application, HG::Rendering::Base::Material* material);
+        void applyMaterialUniforms(HG::Core::Application* application, HG::Rendering::Base::Material* material, bool guarantee=false);
 
         /**
          * @brief Method for applying materials value to
@@ -56,12 +58,14 @@ namespace HG::Rendering::OpenGL::Common
          * @param value Value.
          * @prarm textureNumber Number of available texture.
          * If texture was used - this value will change.
+         * @param guarantee If true - applier will wait until all async calls.
          */
         void setShaderUniform(HG::Core::Application* application,
                               HG::Rendering::OpenGL::Common::ShaderData* shaderData,
                               const std::string& name,
                               const HG::Rendering::Base::MaterialValue& value,
-                              uint32_t& textureNumber);
+                              uint32_t& textureNumber,
+                              bool guarantee=false);
 
     private:
 

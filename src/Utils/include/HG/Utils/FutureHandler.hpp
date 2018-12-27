@@ -84,15 +84,11 @@ namespace HG::Utils
             {
                 if (m_future.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
                 {
-                    return m_future.get();
+                    m_predefinedValue = std::move(m_future.get());
                 }
+            }
 
-                return ResultType();
-            }
-            else
-            {
-                return m_predefinedValue;
-            }
+            return m_predefinedValue;
         }
 
         /**
@@ -102,7 +98,12 @@ namespace HG::Utils
          */
         ResultType guaranteeGet()
         {
-            return m_future.get();
+            if (m_future.valid())
+            {
+                m_predefinedValue = std::move(m_future.get());
+            }
+
+            return m_predefinedValue;
         }
 
         /**

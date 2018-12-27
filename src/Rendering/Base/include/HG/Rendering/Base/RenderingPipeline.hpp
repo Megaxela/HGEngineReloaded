@@ -96,7 +96,7 @@ namespace HG::Rendering::Base
          * @param guarantee If true - setup processor will
          * wait for all async calls.
          */
-        virtual bool setup(HG::Rendering::Base::RenderData* data, bool guarantee);
+        virtual bool setup(HG::Rendering::Base::RenderData* data, bool guarantee=false);
 
         /**
          * @brief Method for checking is render data needs
@@ -156,7 +156,7 @@ namespace HG::Rendering::Base
          * set up.
          * @param behaviour Pointer to behaviour.
          */
-        virtual bool setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour);
+        virtual bool setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour, bool guarantee);
 
         /**
          * @brief Method, that's called, when render behaviour has to be

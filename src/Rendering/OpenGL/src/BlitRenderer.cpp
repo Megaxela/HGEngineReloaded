@@ -99,7 +99,7 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
     m_material->set("projection", projection);
     m_material->set("textureSize", texture->size());
     m_material->set("sourceTexture", texture);
-    applyMaterialUniforms(application(), m_material);
+    applyMaterialUniforms(application(), m_material, true);
     useMaterial(application(), m_material);
 
     // Creating and setting up VAO
@@ -152,25 +152,13 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
         GL_STREAM_DRAW
     );
 
-    // Getting texture data
-//    auto data = dynamic_cast<
-//        HG::Rendering::OpenGL::Common::Texture2DData*
-//    >(texture->specificData());
-//
-//    // Binding texture
-//    gl::texture_2d::set_active(0);
-//    data->Texture.bind();
-
+    // Actually drawing
     gl::draw_elements(
         GL_TRIANGLES,
         static_cast<GLsizei>(container.indices.size()),
         GL_UNSIGNED_INT,
         nullptr
     );
-
-    // Cleaning up
-//    data->Texture.unbind();
-//    vao.unbind();
 
     gl::set_polygon_face_culling_enabled(true);
 }

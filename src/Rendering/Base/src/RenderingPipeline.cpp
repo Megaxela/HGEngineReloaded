@@ -95,7 +95,8 @@ bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderDa
     if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
         return setupRenderBehaviour(
-            dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data)
+            dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data),
+            guarantee
         );
     }
 
@@ -133,7 +134,7 @@ bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::Rend
     return processorIterator->second->needSetup(data);
 }
 
-bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)
+bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour, bool guarantee)
 {
     BENCH("Setup of rendering behaviour " + std::to_string(behaviour->renderBehaviourType()));
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
@@ -144,7 +145,7 @@ bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering:
         return false;
     }
 
-    return processorIterator->second->setup(behaviour);
+    return processorIterator->second->setup(behaviour, guarantee);
 }
 
 bool HG::Rendering::Base::RenderingPipeline::needSetupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour)

@@ -46,7 +46,7 @@
 "    vec3 specular;\n" \
 "};\n"
 
-bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data)
+bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto shader = dynamic_cast<HG::Rendering::Base::Shader*>(data);
 
