@@ -41,7 +41,7 @@ namespace HG::Core
         /**
          * @brief Destructor.
          */
-        ~GameObject();
+        ~GameObject() override;
 
         // Disable copying (objects of this type has to be allocated in heap)
         GameObject(const GameObject&) = delete;

@@ -7,6 +7,9 @@ add_executable(HGEngineTests
     main.cpp
 )
 
+add_sanitize_undefined(HGEngineTests)
+add_sanitize_memory(HGEngineTests)
+
 # Enabling ctest testing
 enable_testing()
 

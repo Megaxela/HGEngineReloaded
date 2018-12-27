@@ -261,17 +261,8 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
         // Setup texture if not valid
         if (application->renderer()->needSetup(value.texture))
         {
-            if (guarantee)
-            {
-                Info() << "Loading texture with guarantee";
-            }
-
             if (!application->renderer()->setup(value.texture, guarantee))
             {
-                if (guarantee)
-                {
-                    Info() << "Can't load guaranteed texture";
-                }
                 // FALLBACK HERE
                 return;
             }
