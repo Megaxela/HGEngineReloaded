@@ -61,7 +61,7 @@ steps:
 
 - script: |
     mkdir --parents cmake-build &&
-    CC=clang-6.0 CXX=clang++-6.0 cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHGRenderingOGL_USE_GLFW=On -B"cmake-build" -H"."
+    CC=clang-6.0 CXX=clang++-6.0 cmake -DHG_BUILD_TESTS=On -DHG_BUILD_ALL_TESTS=On -DHG_BUILD_EXAMPLES=On -DHGRenderingOGL_USE_GLFW=On -B"cmake-build" -H"."
 
   displayName: 'Configuration'
 

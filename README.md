@@ -2,9 +2,9 @@
 It's C++17 STL based game engine.
 
 ## Status
-|Linux CMake|Coverage|
-|-----------|--------|
-|[![Build Status](https://dev.azure.com/xelamegaxela/xelamegaxela/_apis/build/status/Megaxela.HGEngineReloaded?branchName=master)](https://dev.azure.com/xelamegaxela/xelamegaxela/_build/latest?definitionId=1?branchName=master)|None|
+|Linux CMake (Azure)|Linux CMake (Travis)|Coverage|
+|-------------------|--------------------|--------|
+|[![Build Status](https://dev.azure.com/xelamegaxela/xelamegaxela/_apis/build/status/Megaxela.HGEngineReloaded?branchName=master)](https://dev.azure.com/xelamegaxela/xelamegaxela/_build/latest?definitionId=1?branchName=master)|[![Build Status](https://travis-ci.com/Megaxela/HGEngineReloaded.svg?branch=master)](https://travis-ci.com/Megaxela/HGEngineReloaded)|None|
 
 ## Examples
 

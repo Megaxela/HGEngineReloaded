@@ -1,3 +1,4 @@
+dist: xenial
 language: cpp
 
 os:
@@ -24,23 +25,42 @@ addons:
       - libxmu-dev
       - libxi-dev
       - libgl1-mesa-dev
+      - libglu1-mesa-dev
       - libosmesa-dev
       - lcov
       - ggcov
+      - libxxf86vm-dev
+      - libxrandr-dev
+      - libxinerama-dev
+      - libxcursor-dev
+      - libglu-dev
+      - libgl-dev
 
 compiler:
   - clang
-  - gcc
+#  - gcc
+
+git:
+  submodules: false
+
+before_install:
+  - gem install coveralls-lcov
+  - git submodule update --init
 
 install:
   - | # Print some debug info
     $CXX --version
 
+  # Setting specific compilers
+  - if [ "$CXX" = "clang++" ]; then export CXX="/usr/local/clang-7.0.0/bin/clang++" CC="/usr/local/clang-7.0.0/bin/clang"; fi
+#  - if [ "$CXX" = "g++" ]; then export CXX="g++-8" CC="gcc-8"; fi
+
   - | # Prepare gtest
     cd /usr/src/gtest
-    sudo cmake CMakeLists.cpp
+    sudo cmake CMakeLists.txt
+    sudo cmake --build . -- -j4
     sudo cp *.a /usr/lib/
-    sudo mdir /usr/local/lib/gtest
+    sudo mkdir /usr/local/lib/gtest
     sudo ln -s /usr/lib/libgtest.a /usr/local/lib/gtest/libgtest.a
     sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/gtest/libgtest_main.a
     cd -
@@ -56,16 +76,14 @@ install:
     mkdir --parent dependencies/glfw-3.2.1/build
     cmake -DBUILD_SHARED_LIBS=On -Bdependencies/glfw-3.2.1/build -Hdependencies/glfw-3.2.1
     cmake --build dependencies/glfw-3.2.1/build -- -j4
-    sudo cmake --build dependencies/glfw-3.2.1/build --target install
+    sudo cmake --build dependencies/glfw-3.2.1/build --target install -- -j4
 
     make -C dependencies/glew-glew-2.1.0/auto
     cmake -Bdependencies/glew-glew-2.1.0/build_dir -Hdependencies/glew-glew-2.1.0/build/cmake
     cmake --build dependencies/glew-glew-2.1.0/build_dir -- -j4
-    sudo cmake --build dependencies/glew-glew-2.1.0/build_dir --target install
+    sudo cmake --build dependencies/glew-glew-2.1.0/build_dir --target install -- -j4
 
 script:
-  mkdir --parents cmake-build
-  cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHGRenderingOGL_USE_GLFW=On -Bcmake-build -H.
-  cd cmake-build/testing/
-  ./HGEngineTests
+  - mkdir --parents cmake-build && cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DHGRenderingOGL_USE_GLFW=On -Bcmake-build -H. && cmake --build cmake-build --target all -- -j4
+  - cd cmake-build/testing/ && ./HGEngineTests
 

@@ -9,7 +9,7 @@
 
 // GLM
 #include <glm/gtx/matrix_decompose.hpp>
-#include <glm/gtx/Transform.hpp>
+#include <glm/gtx/transform.hpp>
 
 HG::Core::Transform::Transform() :
     Transform(nullptr)
