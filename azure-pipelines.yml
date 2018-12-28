@@ -1,0 +1,26 @@
+# C/C++ with GCC
+# Build your C/C++ project with GCC using make.
+# Add steps that publish test results, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
+
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- script: apt -y install clang-6.0 cmake
+  displayName: 'Loading Dependencies'
+
+- script: mkdir --parents cmake-build
+  displayName: 'Creating Build Directory'
+
+- script: CC=clang-6.0 CXX=clang-6.0 cmake -B"cmake-build" -H"."
+  displayName: 'Configuration'
+
+- script: cmake --build . --target all
+  displayName: 'Building'
+
+- script: cd "cmake-build/testing" && ./HGEngineTests
+  displayName: 'Testing
