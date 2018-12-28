@@ -10,6 +10,9 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
+- script: git submodule update --init
+  displayName: 'Getting Submodules'
+
 - script: sudo apt -y install clang-6.0 cmake
   displayName: 'Loading Dependencies'
 
