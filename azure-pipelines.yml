@@ -31,7 +31,7 @@ steps:
 
 - script: |
     mkdir --parent "dependencies/glfw-3.2.1/build" &&
-    CC=clang-6.0 CXX=clang++-6.0 cmake -B"dependencies/glfw-3.2.1/build" -H "dependencies/glfw-3.2.1" &&
+    CC=clang-6.0 CXX=clang++-6.0 cmake -B"dependencies/glfw-3.2.1/build" -H"dependencies/glfw-3.2.1" &&
     cmake --build "dependencies/glfw-3.2.1/build" -- -j4 &&
     sudo cmake --build "dependencies/glfw-3.2.1/build" --target install
 
