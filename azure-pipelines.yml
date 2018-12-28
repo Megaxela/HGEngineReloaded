@@ -11,9 +11,29 @@ steps:
   displayName: 'Getting Submodules'
 
 - script: |
-    sudo apt -y install clang-6.0 cmake libgl1-mesa-dev libgl-dev libglu1-mesa-dev libglu-dev libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1E9377A2BA9EF27F &&
+    sudo add-apt-repository 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu xenial main' && 
+    sudo apt update &&
+    sudo apt -y install libstdc++-8-dev libgtest-dev clang-6.0 cmake libgl1-mesa-dev libgl-dev libglu1-mesa-dev libglu-dev libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev
 
   displayName: 'Installing Dependencies'
+
+- script: |
+    sudo apt -y install aptitude &&
+    aptitude search libstdc
+
+  displayName: 'List packages'
+
+- script: |
+    cd /usr/src/gtest && 
+    sudo CC=clang-6.0 CXX=clang++-6.0 cmake CMakeLists.txt &&
+    sudo cmake --build . -- -j4 &&
+    sudo cp *.a /usr/lib/ &&
+    sudo mkdir /usr/local/lib/gtest &&
+    sudo ln -s /usr/lib/libgtest.a /usr/local/lib/gtest/libgtest.a &&
+    sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/gtest/libgtest_main.a
+    
+  displayName: 'Setting up GTest'
 
 - script: |
     mkdir --parent dependencies && 
@@ -31,7 +51,7 @@ steps:
 
 - script: |
     mkdir --parent "dependencies/glfw-3.2.1/build" &&
-    CC=clang-6.0 CXX=clang++-6.0 cmake -B"dependencies/glfw-3.2.1/build" -H"dependencies/glfw-3.2.1" &&
+    CC=clang-6.0 CXX=clang++-6.0 cmake -DBUILD_SHARED_LIBS=On -B"dependencies/glfw-3.2.1/build" -H"dependencies/glfw-3.2.1" &&
     cmake --build "dependencies/glfw-3.2.1/build" -- -j4 &&
     sudo cmake --build "dependencies/glfw-3.2.1/build" --target install
 
@@ -46,21 +66,18 @@ steps:
   displayName: 'Building GLEW 2.1'
 
 - script: |
-    mkdir --parents cmake-build
-
-  displayName: 'Creating Build Directory'
-
-- script: |
+    mkdir --parents cmake-build &&
     CC=clang-6.0 CXX=clang++-6.0 cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHGRenderingOGL_USE_GLFW=On -B"cmake-build" -H"."
 
   displayName: 'Configuration'
 
 - script: |
-    cmake --build . --target all -- -j4
+    cd cmake-build &&
+    make -j4 VERBOSE=1
 
   displayName: 'Building'
 
-- script: | 
+- script: |
     cd "cmake-build/testing" && ./HGEngineTests
 
   displayName: 'Testing'
