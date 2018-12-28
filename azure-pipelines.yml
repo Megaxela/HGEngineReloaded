@@ -19,12 +19,6 @@ steps:
   displayName: 'Installing Dependencies'
 
 - script: |
-    sudo apt -y install aptitude &&
-    aptitude search libstdc
-
-  displayName: 'List packages'
-
-- script: |
     cd /usr/src/gtest && 
     sudo CC=clang-6.0 CXX=clang++-6.0 cmake CMakeLists.txt &&
     sudo cmake --build . -- -j4 &&
@@ -51,17 +45,17 @@ steps:
 
 - script: |
     mkdir --parent "dependencies/glfw-3.2.1/build" &&
-    CC=clang-6.0 CXX=clang++-6.0 cmake -DBUILD_SHARED_LIBS=On -B"dependencies/glfw-3.2.1/build" -H"dependencies/glfw-3.2.1" &&
-    cmake --build "dependencies/glfw-3.2.1/build" -- -j4 &&
-    sudo cmake --build "dependencies/glfw-3.2.1/build" --target install
+    CC=clang-6.0 CXX=clang++-6.0 cmake -DBUILD_SHARED_LIBS=On -Bdependencies/glfw-3.2.1/build -Hdependencies/glfw-3.2.1 &&
+    cmake --build dependencies/glfw-3.2.1/build -- -j4 &&
+    sudo cmake --build dependencies/glfw-3.2.1/build --target install
 
   displayName: 'Building GLFW 3.2'
 
 - script: |
     make -C dependencies/glew-glew-2.1.0/auto &&
-    CC=clang-6.0 CXX=clang++-6.0 cmake -B"dependencies/glew-glew-2.1.0/build_dir" -H"dependencies/glew-glew-2.1.0/build/cmake" &&
-    cmake --build "dependencies/glew-glew-2.1.0/build_dir" -- -j4 &&
-    sudo cmake --build "dependencies/glew-glew-2.1.0/build_dir" --target install
+    CC=clang-6.0 CXX=clang++-6.0 cmake -Bdependencies/glew-glew-2.1.0/build_dir -Hdependencies/glew-glew-2.1.0/build/cmake &&
+    cmake --build dependencies/glew-glew-2.1.0/build_dir -- -j4 &&
+    sudo cmake --build dependencies/glew-glew-2.1.0/build_dir --target install
 
   displayName: 'Building GLEW 2.1'
 

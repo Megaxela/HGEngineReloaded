@@ -1,0 +1,71 @@
+language: cpp
+
+os:
+  - linux
+
+branches:
+  only:
+    - master
+
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - build-essential
+      - cmake
+      - cmake-data
+      - libgtest-dev
+      - g++-8
+      - gcc-8
+      - xorg-dev
+      - libx11-dev
+      - libxmu-dev
+      - libxi-dev
+      - libgl1-mesa-dev
+      - libosmesa-dev
+      - lcov
+      - ggcov
+
+compiler:
+  - clang
+  - gcc
+
+install:
+  - | # Print some debug info
+    $CXX --version
+
+  - | # Prepare gtest
+    cd /usr/src/gtest
+    sudo cmake CMakeLists.cpp
+    sudo cp *.a /usr/lib/
+    sudo mdir /usr/local/lib/gtest
+    sudo ln -s /usr/lib/libgtest.a /usr/local/lib/gtest/libgtest.a
+    sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/gtest/libgtest_main.a
+    cd -
+
+  - | # Getting external GLFW and GLEW
+    mkdir --parent dependencies
+    wget https://github.com/glfw/glfw/archive/3.2.1.tar.gz -q -O dependencies/glfw.tar.gz
+    tar -xvzf dependencies/glfw.tar.gz -C dependencies/
+    wget https://github.com/nigels-com/glew/archive/glew-2.1.0.tar.gz -q -O dependencies/glew.tar.gz
+    tar -xvzf dependencies/glew.tar.gz -C dependencies/
+
+  - | # Building external GLFW and GLEW
+    mkdir --parent dependencies/glfw-3.2.1/build
+    cmake -DBUILD_SHARED_LIBS=On -Bdependencies/glfw-3.2.1/build -Hdependencies/glfw-3.2.1
+    cmake --build dependencies/glfw-3.2.1/build -- -j4
+    sudo cmake --build dependencies/glfw-3.2.1/build --target install
+
+    make -C dependencies/glew-glew-2.1.0/auto
+    cmake -Bdependencies/glew-glew-2.1.0/build_dir -Hdependencies/glew-glew-2.1.0/build/cmake
+    cmake --build dependencies/glew-glew-2.1.0/build_dir -- -j4
+    sudo cmake --build dependencies/glew-glew-2.1.0/build_dir --target install
+
+script:
+  mkdir --parents cmake-build
+  cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHGRenderingOGL_USE_GLFW=On -Bcmake-build -H.
+  cd cmake-build/testing/
+  ./HGEngineTests
+
