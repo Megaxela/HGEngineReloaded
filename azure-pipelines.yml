@@ -1,8 +1,3 @@
-# C/C++ with GCC
-# Build your C/C++ project with GCC using make.
-# Add steps that publish test results, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
-
 trigger:
 - master
 
@@ -10,20 +5,62 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-- script: git submodule update --init
+- script: |
+    git submodule update --init
+
   displayName: 'Getting Submodules'
 
-- script: sudo apt -y install clang-6.0 cmake
-  displayName: 'Loading Dependencies'
+- script: |
+    sudo apt -y install clang-6.0 cmake libgl1-mesa-dev libgl-dev libglu1-mesa-dev libglu-dev libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev
 
-- script: mkdir --parents cmake-build
+  displayName: 'Installing Dependencies'
+
+- script: |
+    mkdir --parent dependencies && 
+    wget https://github.com/glfw/glfw/archive/3.2.1.tar.gz -q -O dependencies/glfw.tar.gz && 
+    tar -xvzf dependencies/glfw.tar.gz -C dependencies/
+
+  displayName: 'Getting External GLFW 3.2'
+
+- script: |
+    mkdir --parent dependencies && 
+    wget https://github.com/nigels-com/glew/archive/glew-2.1.0.tar.gz -q -O dependencies/glew.tar.gz && 
+    tar -xvzf dependencies/glew.tar.gz -C dependencies/
+
+  displayName: 'Getting External GLEW 2.1'
+
+- script: |
+    mkdir --parent "dependencies/glfw-3.2.1/build" &&
+    CC=clang-6.0 CXX=clang++-6.0 cmake -B"dependencies/glfw-3.2.1/build" -H "dependencies/glfw-3.2.1" &&
+    cmake --build "dependencies/glfw-3.2.1/build" -- -j4 &&
+    sudo cmake --build "dependencies/glfw-3.2.1/build" --target install
+
+  displayName: 'Building GLFW 3.2'
+
+- script: |
+    make -C dependencies/glew-glew-2.1.0/auto &&
+    CC=clang-6.0 CXX=clang++-6.0 cmake -B"dependencies/glew-glew-2.1.0/build_dir" -H"dependencies/glew-glew-2.1.0/build/cmake" &&
+    cmake --build "dependencies/glew-glew-2.1.0/build_dir" -- -j4 &&
+    sudo cmake --build "dependencies/glew-glew-2.1.0/build_dir" --target install
+
+  displayName: 'Building GLEW 2.1'
+
+- script: |
+    mkdir --parents cmake-build
+
   displayName: 'Creating Build Directory'
 
-- script: CC=clang-6.0 CXX=clang-6.0 cmake -B"cmake-build" -H"."
+- script: |
+    CC=clang-6.0 CXX=clang++-6.0 cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHGRenderingOGL_USE_GLFW=On -B"cmake-build" -H"."
+
   displayName: 'Configuration'
 
-- script: cmake --build . --target all
+- script: |
+    cmake --build . --target all -- -j4
+
   displayName: 'Building'
 
-- script: cd "cmake-build/testing" && ./HGEngineTests
+- script: | 
+    cd "cmake-build/testing" && ./HGEngineTests
+
   displayName: 'Testing'
