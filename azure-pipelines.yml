@@ -10,7 +10,7 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-- script: apt -y install clang-6.0 cmake
+- script: sudo apt -y install clang-6.0 cmake
   displayName: 'Loading Dependencies'
 
 - script: mkdir --parents cmake-build
