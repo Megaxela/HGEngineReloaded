@@ -26,6 +26,18 @@ target_link_libraries(HGEngineTests
     ${HG_TEST_LIBS}
 )
 
+# Enabling test coverate if required
+if (${HG_TEST_COVERAGE})
+    message(STATUS "Enabling test coverage for HGEngineTests")
+    target_compile_options(HGEngineTests BEFORE
+        PUBLIC
+            -fprofile-arcs
+            -ftest-coverage
+    )
+
+    list(APPEND ARGS_DEPENDENCIES -lgcov)
+endif()
+
 # Copying test assets
 foreach(ASSET_VARIABLE ${TEST_ASSETS_VARIABLES})
 

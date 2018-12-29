@@ -38,7 +38,7 @@ addons:
 
 compiler:
   - clang
-#  - gcc
+  - gcc
 
 git:
   submodules: false
@@ -48,12 +48,30 @@ before_install:
   - git submodule update --init
 
 install:
-  - | # Print some debug info
-    $CXX --version
-
+  -
   # Setting specific compilers
   - if [ "$CXX" = "clang++" ]; then export CXX="/usr/local/clang-7.0.0/bin/clang++" CC="/usr/local/clang-7.0.0/bin/clang"; fi
-#  - if [ "$CXX" = "g++" ]; then export CXX="g++-8" CC="gcc-8"; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-8" CC="gcc-8"; fi
+
+  - | # Setting env values
+    export SOURCE_ROOT="${TRAVIS_BUILD_DIR}"
+    export BUILD_ROOT="${TRAVIS_BUILD_DIR}/cmake-build"
+    export BUILD_OPTIONS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DHGRenderingOGL_USE_GLFW=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
+
+  - | # Print some debug info
+    echo "Env variables:"
+    echo CXX=$CXX
+    echo HOME=$HOME
+    echo TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
+    echo SOURCE_ROOT=$SOURCE_ROOT
+    echo BUILD_ROOT=$BUILD_ROOT
+    echo
+    echo Compiler version:
+    $CXX --version
+    /usr/bin/gcov-8 --version
+
+  # Setting up test coverage
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then export BUILD_OPTIONS="$BUILD_OPTIONS -DHG_TEST_COVERAGE=On"; fi
 
   - | # Prepare gtest
     cd /usr/src/gtest
@@ -64,6 +82,15 @@ install:
     sudo ln -s /usr/lib/libgtest.a /usr/local/lib/gtest/libgtest.a
     sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/gtest/libgtest_main.a
     cd -
+
+  - | # Getting and installing lcov 1.13
+    if [ "$CXX" = "g++-8" ]
+    then
+      git clone https://github.com/linux-test-project/lcov.git
+      mkdir -p /tmp/usr
+      make -C lcov/ PREFIX=/tmp/usr install
+      /tmp/usr/bin/lcov --version
+    fi
 
   - | # Getting external GLFW and GLEW
     mkdir --parent dependencies
@@ -84,6 +111,30 @@ install:
     sudo cmake --build dependencies/glew-glew-2.1.0/build_dir --target install -- -j4
 
 script:
-  - mkdir --parents cmake-build && cmake -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DHGRenderingOGL_USE_GLFW=On -Bcmake-build -H. && cmake --build cmake-build --target all -- -j4
-  - cd cmake-build/testing/ && ./HGEngineTests
+  - mkdir --parents $BUILD_ROOT
+  - cmake $BUILD_OPTIONS -B$BUILD_ROOT -H$SOURCE_ROOT
+  - cmake --build $BUILD_ROOT --target all -- -j4
+  - cd $BUILD_ROOT/testing/ && ./HGEngineTests
 
+after_success:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then
+      export PATH=/tmp/usr/bin:$PATH
+      pwd && ls -laF . /usr/bin/gcov*
+      echo BUILD_ROOT=$BUILD_ROOT SOURCE_ROOT=$SOURCE_ROOT
+      ls -laF $BUILD_ROOT
+      lcov --version
+      pwd && ls -laF . /usr/bin/gcov*
+      cd $BUILD_ROOT && pwd
+      lcov --gcov-tool /usr/bin/gcov-8 --directory . --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      echo "Lcov exited with status $?"
+      ls -laF coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/tests/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/testing/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/libraries/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/gcc/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
+      ls -laF coverage.info
+      cd $SOURCE_ROOT && pwd
+      coveralls-lcov $BUILD_ROOT/coverage.info
+    fi
