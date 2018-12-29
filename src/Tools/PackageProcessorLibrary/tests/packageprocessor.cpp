@@ -3,6 +3,9 @@
 
 #include <fstream>
 
+// C++ STD
+#include <algorithm>
+
 // HG::PackageProcessor
 #include <HG/Tools/PackageProcessor.hpp>
 
@@ -63,6 +66,28 @@ TEST(PackageProcessorLibrary, SampleWritingReading)
 
     // Reading
     {
+        struct Data
+        {
+            std::string path;
+            std::size_t size;
+            HG::Tools::PackageProcessor::File::Type type;
+
+            bool operator==(const Data& rhs) const
+            {
+                return path == rhs.path &&
+                       size == rhs.size &&
+                       type == rhs.type;
+            }
+        };
+
+        std::vector<Data> expectedData = {
+            {"empty_root_file.txt", 8, HG::Tools::PackageProcessor::File::Type::Package},
+            {"dir1/FILE_WITH_LONG_LINES.txt", 127, HG::Tools::PackageProcessor::File::Type::Package},
+            {"dir1/dir2/small_file.txt", 1358, HG::Tools::PackageProcessor::File::Type::Package}
+        };
+
+        std::vector<Data> realData;
+
         HG::Tools::PackageProcessor packageProcessor;
 
         ASSERT_NO_THROW(packageProcessor.load(pathToPackage));
@@ -74,21 +99,24 @@ TEST(PackageProcessorLibrary, SampleWritingReading)
 
         ASSERT_EQ(packageProcessor.files().size(), 3);
 
-        ASSERT_EQ(packageProcessor.files()[0].type(), HG::Tools::PackageProcessor::File::Type::Package);
-        ASSERT_EQ(packageProcessor.files()[1].type(), HG::Tools::PackageProcessor::File::Type::Package);
-        ASSERT_EQ(packageProcessor.files()[2].type(), HG::Tools::PackageProcessor::File::Type::Package);
+        for (const auto &file : packageProcessor.files())
+        {
+            realData.push_back({
+                file.path().string(),
+                file.compressedSize(),
+                file.type()
+            });
+        }
 
-        ASSERT_EQ(packageProcessor.files()[0].path().string(), "empty_root_file.txt");
-        ASSERT_EQ(packageProcessor.files()[1].path().string(), "dir1/FILE_WITH_LONG_LINES.txt");
-        ASSERT_EQ(packageProcessor.files()[2].path().string(), "dir1/dir2/small_file.txt");
+        auto comparator = [](const Data& l, const Data& r)
+        {
+            return l.path < r.path;
+        };
 
-        ASSERT_EQ(packageProcessor.files()[0].compressedOffset(), 400);
-        ASSERT_EQ(packageProcessor.files()[1].compressedOffset(), 408);
-        ASSERT_EQ(packageProcessor.files()[2].compressedOffset(), 535);
+        std::sort(expectedData.begin(), expectedData.end(), comparator);
+        std::sort(realData.begin(), realData.end(), comparator);
 
-        ASSERT_EQ(packageProcessor.files()[0].compressedSize(), 8);
-        ASSERT_EQ(packageProcessor.files()[1].compressedSize(), 127);
-        ASSERT_EQ(packageProcessor.files()[2].compressedSize(), 1358);
+        ASSERT_EQ(expectedData, realData);
 
         ASSERT_NO_THROW(packageProcessor.unpack(targetPath / "UnpackDir"));
     }
