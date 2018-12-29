@@ -11,6 +11,7 @@ namespace HG::Utils
     /**
      * @brief Class, controlling unique elements merging.
      * Shall be used in GameObject, Scene and GameObjectController.
+     * @todo: Make ContainerType = std::set
      */
     template<
         typename T,
@@ -89,6 +90,7 @@ namespace HG::Utils
          */
         void remove(T e)
         {
+            // Dont add to removable if already added
             if ((std::find(m_added.begin(), m_added.end(), e) == m_added.end() ||
                  std::find(m_current.begin(), m_current.end(), e) == m_current.end()) &&
                 std::find(m_removable.begin(), m_removable.end(), e) != m_removable.end())
