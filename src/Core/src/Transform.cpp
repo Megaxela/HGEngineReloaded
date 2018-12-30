@@ -3,6 +3,7 @@
 
 // HG::Core
 #include <HG/Core/Transform.hpp>
+#include <HG/Core/BuildProperties.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -30,6 +31,14 @@ HG::Core::Transform::Transform(GameObject* owner) :
 
 HG::Core::Transform::~Transform()
 {
+    for (auto& child : m_children)
+    {
+        if (child->m_parent == this)
+        {
+            child->m_parent = nullptr;
+        }
+    }
+
     setParent(nullptr);
 }
 
@@ -177,6 +186,15 @@ void HG::Core::Transform::setParent(HG::Core::Transform* transform)
 
         if (m_parent != nullptr)
         {
+            if constexpr (HG::Core::BuildProperties::isDebug())
+            {
+                if (std::find(m_parent->children().begin(), m_parent->children().end(), this) ==
+                    m_parent->children().end())
+                {
+                    throw std::runtime_error("Some corruption happened");
+                }
+            }
+
             m_parent->m_children.erase(
                 std::find(
                     m_parent->m_children.begin(),

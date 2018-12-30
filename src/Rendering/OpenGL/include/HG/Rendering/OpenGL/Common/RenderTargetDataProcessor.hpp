@@ -20,11 +20,6 @@ namespace HG::Rendering::OpenGL::Common
         RenderTargetDataProcessor();
 
         /**
-         * @brief Overridden destructor.
-         */
-        ~RenderTargetDataProcessor() override;
-
-        /**
          * @brief Method for setting up render target
          * objects. Also this method performs default
          * render target setup.
@@ -37,9 +32,6 @@ namespace HG::Rendering::OpenGL::Common
 
         bool needSetup(HG::Rendering::Base::RenderData* data) override;
 
-    private:
-
-        RenderTargetData* m_defaultData;
     };
 }
 

@@ -14,19 +14,9 @@
 // ALogger
 #include <CurrentLogger.hpp>
 
-HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProcessor() :
-    m_defaultData(new RenderTargetData(
-        std::move(gl::framebuffer(0)),
-        std::move(gl::renderbuffer(0)),
-        glm::ivec2{0, 0}
-    ))
+HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProcessor()
 {
 
-}
-
-HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::~RenderTargetDataProcessor()
-{
-    delete m_defaultData;
 }
 
 bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
@@ -41,9 +31,15 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
 
     if (renderTarget->isDefault())
     {
-        if (renderTarget->specificData() != m_defaultData)
+        if (renderTarget->specificData() == nullptr)
         {
-            renderTarget->setSpecificData(m_defaultData);
+            renderTarget->setSpecificData(
+                new RenderTargetData(
+                    std::move(gl::framebuffer(0)),
+                    std::move(gl::renderbuffer(0)),
+                    glm::ivec2{0, 0}
+                )
+            );
         }
 
         return true;

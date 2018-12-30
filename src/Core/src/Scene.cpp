@@ -80,9 +80,9 @@ void HG::Core::Scene::removeGameObject(HG::Core::GameObject* gameObject)
 {
     // Removing current parent scene.
     gameObject->setParentScene(nullptr);
-    m_gameObjects.remove(gameObject);
 
     delete gameObject;
+    m_gameObjects.remove(gameObject);
 }
 
 void HG::Core::Scene::addGameObject(HG::Core::GameObject* gameObject)
