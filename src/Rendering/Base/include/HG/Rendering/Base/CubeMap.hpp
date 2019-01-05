@@ -1,7 +1,10 @@
 #pragma once
 
 // C++ STL
-#include <memory> // For IWYU
+#include <memory>
+
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp> // Required for inheritance
@@ -26,7 +29,8 @@ namespace HG::Rendering::Base
      * @brief Class, that describes cube map
      * texture for rendering (in GPU / prepared for GPU)
      */
-    class CubeMap : public HG::Rendering::Base::RenderData
+    class CubeMap : public HG::Core::CachableResource<CubeMap>,
+                    public HG::Rendering::Base::RenderData
     {
     public:
 

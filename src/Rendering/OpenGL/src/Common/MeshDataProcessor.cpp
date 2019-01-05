@@ -1,3 +1,6 @@
+// HG::Core
+#include <HG/Core/Application.hpp>
+
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/MeshData.hpp>
@@ -28,7 +31,7 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
 
     if ((data = meshBehaviour->castSpecificDataTo<MeshData>()) == nullptr)
     {
-        data = new Common::MeshData();
+        data = new (application()->resourceCache()) Common::MeshData();
         meshBehaviour->setSpecificData(data);
     }
 

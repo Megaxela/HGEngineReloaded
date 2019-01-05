@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Shader.hpp>
@@ -61,7 +62,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     // Creating external data if not presented
     if ((externalData = shader->castSpecificDataTo<ShaderData>()) == nullptr)
     {
-        externalData = new ShaderData();
+        externalData = new (application()->resourceCache()) ShaderData();
         shader->setSpecificData(externalData);
     }
 

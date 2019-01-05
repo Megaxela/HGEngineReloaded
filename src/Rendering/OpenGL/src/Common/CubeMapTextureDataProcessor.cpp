@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp>
@@ -78,7 +79,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     // Creating external data if not presented
     if ((externalData = texture->castSpecificDataTo<CubeMapTextureData>()) == nullptr)
     {
-        externalData = new Common::CubeMapTextureData();
+        externalData = new (application()->resourceCache()) Common::CubeMapTextureData();
         texture->setSpecificData(externalData);
     }
 

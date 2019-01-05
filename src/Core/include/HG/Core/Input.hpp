@@ -258,10 +258,9 @@ namespace HG::Core
             enum class Buttons
             {
                   Left   = 0 //< Left mouse button
-                , Middle = 1 //< Middle mouse button
-                , Right  = 2 //< Right mouse button
+                , Right  = 1 //< Right mouse button
+                , Middle = 2 //< Middle mouse button
                 , None       //< Null button
-
             };
 
             /**

@@ -251,10 +251,10 @@ namespace HG::Rendering::Base
         HG_PROPERTY_INITIALIZER_RAW(Near, CullType, setNear, getNear);
         HG_PROPERTY_INITIALIZER_RAW(Far,  CullType, setFar,  getFar);
 
-        HG_PROPERTY_INITIALIZER_RAW_OBJ(this, &m_orthogonalSettings,  OrthoZoom, float, OrthogonalSettings::setZoom,         OrthogonalSettings::zoom);
-        HG_PROPERTY_INITIALIZER_RAW_OBJ(this, &m_orthogonalSettings,  OrthoSize, float, OrthogonalSettings::setSize,         OrthogonalSettings::size);
+        HG_PROPERTY_INITIALIZER_RAW_OBJ(this, &m_orthogonalSettings,  OrthoZoom, float,    OrthogonalSettings::setZoom,         OrthogonalSettings::zoom);
+        HG_PROPERTY_INITIALIZER_RAW_OBJ(this, &m_orthogonalSettings,  OrthoSize, uint32_t, OrthogonalSettings::setSize,         OrthogonalSettings::size);
 
-        HG_PROPERTY_INITIALIZER_RAW_OBJ(this, &m_perspectiveSettings, Fov,       float, PerspectiveSettings::setFieldOfView, PerspectiveSettings::fieldOfView);
+        HG_PROPERTY_INITIALIZER_RAW_OBJ(this, &m_perspectiveSettings, Fov,       float,    PerspectiveSettings::setFieldOfView, PerspectiveSettings::fieldOfView);
 
         OrthogonalSettings m_orthogonalSettings;
         PerspectiveSettings m_perspectiveSettings;

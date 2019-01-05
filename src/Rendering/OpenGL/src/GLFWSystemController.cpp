@@ -661,6 +661,18 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*, 
         io.KeysDown[key] = false;
     }
 
+    if (key == GLFW_KEY_KP_ENTER)
+    {
+        if (action == GLFW_PRESS)
+        {
+            io.KeysDown[GLFW_KEY_ENTER] = true;
+        }
+        else
+        {
+            io.KeysDown[GLFW_KEY_ENTER] = false;
+        }
+    }
+
     io.KeyCtrl  = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
     io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT]   || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
     io.KeyAlt   = io.KeysDown[GLFW_KEY_LEFT_ALT]     || io.KeysDown[GLFW_KEY_RIGHT_ALT];
@@ -679,6 +691,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::charCallback(GLFWwindow *, uns
 
 void HG::Rendering::OpenGL::GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
 {
+    // No associative container, cause of GLFW buttons are equal to HGEngine's input buttons.
     const_cast<HG::Core::Input::Mouse*>(
         controller->application()->input()->mouse()
     )->setPressedButton(
@@ -811,8 +824,6 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
 
 HG::Utils::Rect HG::Rendering::OpenGL::GLFWSystemController::viewport() const
 {
-//    HG::Utils::Rect rect;
-
     auto sz = controller
         ->application()
         ->renderer()

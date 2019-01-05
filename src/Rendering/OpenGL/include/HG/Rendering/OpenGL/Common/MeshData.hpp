@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderSpecificData.hpp> // Required for inheritance
 
@@ -11,7 +14,8 @@ namespace HG::Rendering::OpenGL::Common
     /**
       * @brief External data implementation for mesh rendering behaviour
       */
-    class MeshData : public HG::Rendering::Base::RenderSpecificData
+    class MeshData : public HG::Core::CachableResource<MeshData>,
+                     public HG::Rendering::Base::RenderSpecificData
     {
     public:
 

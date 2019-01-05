@@ -14,8 +14,10 @@
 
 
 RenderToTextureBehaviour::RenderToTextureBehaviour() :
-    m_renderTarget1(new HG::Rendering::Base::RenderTarget({800, 800})),
-    m_renderTarget2(new HG::Rendering::Base::RenderTarget({800, 800})),
+    m_renderTarget1(nullptr),
+    m_renderTarget2(nullptr),
+    m_renderTexture1(nullptr),
+    m_renderTexture2(nullptr),
     m_renderBehaviour(nullptr),
     m_switch(false)
 {
@@ -35,12 +37,21 @@ void RenderToTextureBehaviour::setRenderBehaviour(HG::Rendering::Base::RenderBeh
 
 void RenderToTextureBehaviour::setTarget1(HG::Rendering::Base::Texture* texture)
 {
-    m_renderTarget1->setColorTexture(texture, 0);
+    m_renderTexture1 = texture;
 }
 
 void RenderToTextureBehaviour::setTarget2(HG::Rendering::Base::Texture* texture)
 {
-    m_renderTarget2->setColorTexture(texture, 0);
+    m_renderTexture2 = texture;
+}
+
+void RenderToTextureBehaviour::onStart()
+{
+    m_renderTarget1 = new (scene()->application()->resourceCache()) HG::Rendering::Base::RenderTarget({800, 800});
+    m_renderTarget2 = new (scene()->application()->resourceCache()) HG::Rendering::Base::RenderTarget({800, 800});
+
+    m_renderTarget1->setColorTexture(m_renderTexture1);
+    m_renderTarget2->setColorTexture(m_renderTexture2);
 }
 
 void RenderToTextureBehaviour::onUpdate()
@@ -64,9 +75,9 @@ void RenderToTextureBehaviour::onUpdate()
             "textureMap",
             m_switch
             ?
-            m_renderTarget1->colorTexture(0)
+            m_renderTexture1
             :
-            m_renderTarget2->colorTexture(0)
+            m_renderTexture2
         );
         pipeline->render(m_renderBehaviour);
     }

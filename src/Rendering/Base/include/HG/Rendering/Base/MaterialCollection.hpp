@@ -90,7 +90,7 @@ namespace HG::Rendering::Base
             }
 
             // Creating shader
-            auto newShader = new HG::Rendering::Base::Shader();
+            auto newShader = new (m_resourceManager->application()->resourceCache()) HG::Rendering::Base::Shader();
 
             if constexpr (has_raw_text<MaterialType>::value ==
                           sizeof(typename has_raw_text<MaterialType>::hasRawData))

@@ -63,7 +63,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
         ->getMaterial<Materials::SpriteMaterial>();
 
     // Initializing MeshData
-    m_spriteData = new Common::MeshData();
+    m_spriteData = new (application()->resourceCache()) Common::MeshData();
 
     // Binding vertex array
     m_spriteData->VAO.bind();

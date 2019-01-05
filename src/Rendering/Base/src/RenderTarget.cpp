@@ -1,11 +1,11 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderTarget.hpp>
 
-HG::Rendering::Base::RenderTarget::RenderTarget(glm::ivec2 size) :
+HG::Rendering::Base::RenderTarget::RenderTarget(glm::ivec2 size, bool isDefault) :
     RenderData(DataId),
     m_colorTexture(),
     m_size(size),
-    m_isDefault(false)
+    m_isDefault(isDefault)
 {
 
 }
@@ -50,13 +50,4 @@ HG::Rendering::Base::RenderTarget::colorTextureEnd()
 bool HG::Rendering::Base::RenderTarget::isDefault() const
 {
     return m_isDefault;
-}
-
-HG::Rendering::Base::RenderTarget* HG::Rendering::Base::RenderTarget::createDefault()
-{
-    auto target = new RenderTarget({0, 0});
-
-    target->m_isDefault = true;
-
-    return target;
 }

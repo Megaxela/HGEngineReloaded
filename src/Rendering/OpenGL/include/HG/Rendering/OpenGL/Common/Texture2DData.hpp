@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderSpecificData.hpp>
 
@@ -14,7 +17,8 @@ namespace HG::Rendering::OpenGL::Common
     /**
      * @brief External data implementation for textures.
      */
-    class Texture2DData : public HG::Rendering::Base::RenderSpecificData
+    class Texture2DData : public HG::Core::CachableResource<Texture2DData>,
+                          public HG::Rendering::Base::RenderSpecificData
     {
     public:
 

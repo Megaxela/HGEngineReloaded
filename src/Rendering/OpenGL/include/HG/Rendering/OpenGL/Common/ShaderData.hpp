@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderSpecificData.hpp>
 
@@ -11,7 +14,8 @@ namespace HG::Rendering::OpenGL::Common
     /**
      * @brief External data implementation for shaders.
      */
-    class ShaderData : public HG::Rendering::Base::RenderSpecificData
+    class ShaderData : public HG::Core::CachableResource<ShaderData>,
+                       public HG::Rendering::Base::RenderSpecificData
     {
     public:
 

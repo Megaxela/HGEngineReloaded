@@ -109,7 +109,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepare()
 
 void HG::Standard::Behaviours::TiledMapRenderer::onStart()
 {
-    m_mapShader = new HG::Rendering::Base::Shader;
+    m_mapShader = new (scene()->application()->resourceCache()) HG::Rendering::Base::Shader;
 
     // Preparing shader
     m_mapShader->setShaderText(

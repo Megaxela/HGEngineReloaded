@@ -41,7 +41,7 @@ void TransparentScene::start()
     // and loading cubemap textures
     // (async loading)
     auto cubemap = registerResource(
-        new HG::Rendering::Base::CubeMap(
+        new (application()->resourceCache()) HG::Rendering::Base::CubeMap (
             application()->resourceManager()
                 ->load<HG::Utils::STBImageLoader>("Assets/Cubemaps/Lake/lake2_ft.tga"),
             application()->resourceManager()

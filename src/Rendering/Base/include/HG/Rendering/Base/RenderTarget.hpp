@@ -3,6 +3,9 @@
 // C++ STL
 #include <unordered_map>
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp>
 
@@ -21,7 +24,8 @@ namespace HG::Rendering::Base
      * @brief Class, that describes target for
      * rendering.
      */
-    class RenderTarget : public HG::Rendering::Base::RenderData
+    class RenderTarget : public HG::Core::CachableResource<RenderData>,
+                         public HG::Rendering::Base::RenderData
     {
     public:
 
@@ -32,7 +36,7 @@ namespace HG::Rendering::Base
         /**
          * @brief Constructor.
          */
-        explicit RenderTarget(glm::ivec2 size);
+        explicit RenderTarget(glm::ivec2 size, bool isDefault=false);
 
         /**
          * @brief Method for setting size for this
@@ -82,16 +86,6 @@ namespace HG::Rendering::Base
         TextureContainer::iterator colorTextureEnd();
 
     private:
-
-        friend class Renderer;
-
-        /**
-         * @brief Method only for Renderer for
-         * creating default render target.
-         * It's allocated with new.
-         * @return Pointer to render target.
-         */
-        static RenderTarget* createDefault();
 
         TextureContainer m_colorTexture;
 

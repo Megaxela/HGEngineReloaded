@@ -4,6 +4,9 @@
 #include <utility>
 #include <string>
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp> // Required for inheritance
 
@@ -15,7 +18,8 @@ namespace HG::Rendering::Base
     /**
      * @brief Class, that describes shader.
      */
-    class Shader : public HG::Rendering::Base::RenderData
+    class Shader : public HG::Core::CachableResource<Shader>,
+                   public HG::Rendering::Base::RenderData
     {
     public:
 

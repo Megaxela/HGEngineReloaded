@@ -1,5 +1,8 @@
 #pragma once
 
+// HG::Core
+#include <HG/Core/CachableResource.hpp>
+
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderSpecificData.hpp> // Required for inheritance
 
@@ -14,7 +17,8 @@ namespace HG::Rendering::OpenGL::Common
     /**
      * @brief External data implementation for render target behaviour.
      */
-    class RenderTargetData : public HG::Rendering::Base::RenderSpecificData
+    class RenderTargetData : public HG::Core::CachableResource<RenderTargetData>,
+                             public HG::Rendering::Base::RenderSpecificData
     {
     public:
 

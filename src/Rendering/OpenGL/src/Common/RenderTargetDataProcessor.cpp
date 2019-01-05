@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Application.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderTarget.hpp>
@@ -34,7 +35,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
         if (renderTarget->specificData() == nullptr)
         {
             renderTarget->setSpecificData(
-                new RenderTargetData(
+                new (application()->resourceCache()) RenderTargetData(
                     std::move(gl::framebuffer(0)),
                     std::move(gl::renderbuffer(0)),
                     glm::ivec2{0, 0}
@@ -50,7 +51,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
     // Creating external data if not presented
     if ((externalData = renderTarget->castSpecificDataTo<RenderTargetData>()) == nullptr)
     {
-        externalData = new RenderTargetData();
+        externalData = new (application()->resourceCache()) RenderTargetData();
         renderTarget->setSpecificData(externalData);
     }
 

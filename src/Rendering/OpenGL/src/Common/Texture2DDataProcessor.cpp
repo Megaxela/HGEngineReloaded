@@ -1,4 +1,5 @@
 // HG::Core
+#include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
@@ -57,7 +58,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     // Creating external data if not presented
     if ((externalData = texture->castSpecificDataTo<Texture2DData>()) == nullptr)
     {
-        externalData = new Common::Texture2DData();
+        externalData = new (application()->resourceCache()) Common::Texture2DData();
         texture->setSpecificData(externalData);
     }
 

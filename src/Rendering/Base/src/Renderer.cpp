@@ -20,7 +20,7 @@ HG::Rendering::Base::Renderer::Renderer(HG::Core::Application* application) :
     m_gizmos(new HG::Rendering::Base::Gizmos()),
     m_materialCollection(new HG::Rendering::Base::MaterialCollection(application->resourceManager(), this)),
     m_activeCamera(nullptr),
-    m_defaultRenderTarget(HG::Rendering::Base::RenderTarget::createDefault()),
+    m_defaultRenderTarget(new (application->resourceCache()) HG::Rendering::Base::RenderTarget({0, 0}, true)),
     m_activeCubemap(nullptr)
 {
     Debug() << "Creating renderer.";

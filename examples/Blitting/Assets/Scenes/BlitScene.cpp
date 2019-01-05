@@ -100,7 +100,9 @@ void BlitScene::start()
     );
 
     auto targetRendertarget = registerResource(
-        new HG::Rendering::Base::RenderTarget({256, 256})
+        new (application()->resourceCache()) HG::Rendering::Base::RenderTarget(
+            {256, 256}
+        )
     );
     targetRendertarget->setColorTexture(targetTexture);
 
