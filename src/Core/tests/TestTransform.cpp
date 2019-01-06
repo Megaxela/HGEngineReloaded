@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <HG/Core/Transform.hpp>
 #include <HG/Core/ResourceCache.hpp>
+#include <algorithm>
 
 TEST(Core, TransformDefaultConstructor)
 {
