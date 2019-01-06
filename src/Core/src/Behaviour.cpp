@@ -40,6 +40,12 @@ void HG::Core::Behaviour::setEnabled(bool value)
 
 const HG::Core::Input *HG::Core::Behaviour::input() const
 {
+    if (scene() == nullptr ||
+        scene()->application() == nullptr)
+    {
+        return nullptr;
+    }
+
     return scene()->application()->input();
 }
 

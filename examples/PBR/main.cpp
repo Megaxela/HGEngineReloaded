@@ -52,7 +52,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    application.setScene(new TestScene());
+    application.setScene(new FirstScene());
 
     return application.exec();
 }

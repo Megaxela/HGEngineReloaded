@@ -50,7 +50,7 @@ protected:
     }
 };
 
-void TestScene::start()
+void FirstScene::start()
 {
     // Loading model info
     auto model = application()->resourceManager()

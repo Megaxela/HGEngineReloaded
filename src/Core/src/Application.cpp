@@ -41,6 +41,9 @@ HG::Core::Application::Application(std::string name, int /* argc */, char** /* a
 
 HG::Core::Application::~Application()
 {
+    delete m_cachedScene;
+    delete m_currentScene;
+
     delete m_timeStatistics;
     delete m_resourceManager;
     delete m_threadPool;
@@ -75,6 +78,7 @@ void HG::Core::Application::setScene(HG::Core::Scene* scene)
         throw std::runtime_error("New scene can't be nullptr.");
     }
 
+    delete m_cachedScene;
     scene->setApplication(this);
     m_cachedScene = scene;
 }

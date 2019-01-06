@@ -157,11 +157,11 @@ namespace HG::Core
          */
         void setEnabled(bool value);
 
-        virtual /**
+        /**
          * @brief Public method for calling
          * overridden update methods.
          */
-        void update();
+         virtual void update();
 
         /**
          * @brief Public method for calling
