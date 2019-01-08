@@ -44,15 +44,17 @@ HG::Core::Application::~Application()
     delete m_cachedScene;
     delete m_currentScene;
 
-    delete m_timeStatistics;
-    delete m_resourceManager;
-    delete m_threadPool;
-    delete m_input;
-    delete m_renderer;
     delete m_systemController;
     delete m_physicsController;
-    delete m_countStatistics;
+
+    delete m_renderer;
     delete m_resourceCache;
+    delete m_benchmark;
+    delete m_countStatistics;
+    delete m_timeStatistics;
+    delete m_resourceManager;
+    delete m_input;
+    delete m_threadPool;
 }
 
 

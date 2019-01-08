@@ -161,8 +161,7 @@ namespace HG::Core
     private:
         struct TypeCache
         {
-            TypeCache()
-            {}
+            TypeCache() = default;
 
             TypeCache(const TypeCache& rhs) :
                 used(rhs.used),

@@ -10,6 +10,10 @@ add_executable(HGEngineTests
     ${TESTING_CORE_SOURCES}
 )
 
+# Adding sanitizing to tests
+set(SANITIZE_UNDEFINED On)
+set(SANITIZE_MEMORY On)
+
 add_sanitize_undefined(HGEngineTests)
 add_sanitize_memory(HGEngineTests)
 
@@ -40,8 +44,6 @@ if (${HG_TEST_COVERAGE})
             -fprofile-arcs
             -ftest-coverage
     )
-
-    list(APPEND ARGS_DEPENDENCIES -lgcov)
 endif()
 
 # Copying test assets
