@@ -76,6 +76,9 @@ function(describe_module)
     # Marking project
     project(HG${ARGS_NAME})
 
+    # Adding this module to modules list
+    set(HG_MODULES ${HG_MODULES} "${PROJECT_NAME}" CACHE INTERNAL "List with modules")
+
     # Setting C++ standard to C++17
     set(CMAKE_CXX_STANDARD 17)
 
@@ -212,6 +215,7 @@ function(add_example)
 endfunction()
 
 function(clear_cached_variables)
+    set(HG_MODULES     "" CACHE STRING "" FORCE)
     set(HG_TEST_CASES  "" CACHE STRING "" FORCE)
     set(HG_TEST_LIBS   "" CACHE STRING "" FORCE)
     set(HG_TEST_ASSETS "" CACHE STRING "" FORCE)
