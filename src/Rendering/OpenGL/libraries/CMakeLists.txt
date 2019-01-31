@@ -1,1 +1,1 @@
-add_subdirectory(gl)
+add_dependency_subdirectory(PATH gl)

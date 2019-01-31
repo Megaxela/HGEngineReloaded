@@ -61,6 +61,34 @@ function(describe_tool)
 endfunction(describe_tool)
 
 
+function(add_dependency_subdirectory)
+
+    cmake_parse_arguments(
+        ARGS
+        ""
+        "PATH;TARGET"
+        ""
+        ${ARGN}
+    )
+
+    if (NOT "${ARGS_TARGET}" STREQUAL "")
+        set(RESULT_TARGET_NAME ${ARGS_TARGET})
+    else()
+        set(RESULT_TARGET_NAME ${ARGS_PATH})
+    endif()
+
+
+    message(STATUS "Adding dependency \"${RESULT_TARGET_NAME}\"")
+
+    add_subdirectory(${ARGS_PATH})
+
+    if (NOT TARGET ${RESULT_TARGET_NAME})
+        message(FATAL_ERROR "Dependency target name deduction failed for dependency \"${ARGS_PATH}\". Use TARGET argument.")
+    endif()
+
+    set(HG_MODULES_DEPENDENCIES ${HG_MODULES_DEPENDENCIES} ${RESULT_TARGET_NAME} CACHE INTERNAL "List of engine modules dependencies")
+endfunction()
+
 function(describe_module)
 
     find_package(Sanitizers)
@@ -215,10 +243,11 @@ function(add_example)
 endfunction()
 
 function(clear_cached_variables)
-    set(HG_MODULES     "" CACHE STRING "" FORCE)
-    set(HG_TEST_CASES  "" CACHE STRING "" FORCE)
-    set(HG_TEST_LIBS   "" CACHE STRING "" FORCE)
-    set(HG_TEST_ASSETS "" CACHE STRING "" FORCE)
+    set(HG_MODULES              "" CACHE STRING "" FORCE)
+    set(HG_MODULES_DEPENDENCIES "" CACHE STRING "" FORCE)
+    set(HG_TEST_CASES           "" CACHE STRING "" FORCE)
+    set(HG_TEST_LIBS            "" CACHE STRING "" FORCE)
+    set(HG_TEST_ASSETS          "" CACHE STRING "" FORCE)
 
     foreach (VARIABLE ${TEST_ASSETS_VARIABLES})
         set(${VARIABLE} "" CACHE LIST "" FORCE)
