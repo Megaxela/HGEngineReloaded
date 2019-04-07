@@ -28,12 +28,7 @@ HG::Rendering::OpenGL::Forward::CubeMapRenderer::CubeMapRenderer() :
 
 }
 
-HG::Rendering::OpenGL::Forward::CubeMapRenderer::~CubeMapRenderer()
-{
-    deinit();
-}
-
-void HG::Rendering::OpenGL::Forward::CubeMapRenderer::deinit()
+void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onDeinit()
 {
     Info() << "Deinitialializing cubemap renderer";
 
@@ -44,7 +39,7 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::deinit()
     m_skyboxMaterial = nullptr;
 }
 
-void HG::Rendering::OpenGL::Forward::CubeMapRenderer::init()
+void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onInit()
 {
     Info() << "Initialializing cubemap renderer";
 

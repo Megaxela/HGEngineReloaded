@@ -26,11 +26,6 @@ namespace HG::Rendering::OpenGL::Forward
         MeshRenderer();
 
         /**
-         * @brief Destructor.
-         */
-        ~MeshRenderer() override;
-
-        /**
          * @brief Method for performs actual mesh rendering.
          * @param renderBehaviour Render behaviour.
          */
@@ -43,17 +38,19 @@ namespace HG::Rendering::OpenGL::Forward
          */
         size_t getTarget() override;
 
+    protected:
+
         /**
          * @brief Method for initializing mesh renderer.
          * Loads material.
          */
-        void init() override;
+        void onInit() override;
 
         /**
          * @brief Method for deinitializing mesh renderer.
          * Destroys material.
          */
-        void deinit() override;
+        void onDeinit() override;
 
     private:
 

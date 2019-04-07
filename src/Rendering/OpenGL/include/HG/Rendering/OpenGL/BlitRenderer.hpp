@@ -9,12 +9,10 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
 
-// Forward declaration
-namespace HG::Core
-{
-    class Application;
-}
+// HG::Utils
+#include <HG/Utils/Interfaces/Initializable.hpp>
 
+// Forward declaration
 namespace HG::Rendering::Base
 {
     class Material;
@@ -28,7 +26,8 @@ namespace HG::Rendering::OpenGL
      * @brief Class, that describes object
      * for performing blitting.
      */
-    class BlitRenderer : private HG::Rendering::OpenGL::Common::MaterialProcessor
+    class BlitRenderer : public HG::Utils::Interfaces::Initializable,
+                         private HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 
@@ -37,21 +36,6 @@ namespace HG::Rendering::OpenGL
          * @param application Pointer to parent application.
          */
         explicit BlitRenderer(HG::Core::Application* application);
-
-        /**
-         * @brief Destructor.
-         */
-        ~BlitRenderer();
-
-        /**
-         * @brief Method for initialization blitter.
-         */
-        void init();
-
-        /**
-         * @brief Method for deinitialization blitter.
-         */
-        void deinit();
 
         /**
          * @brief Method for getting parent application.
@@ -68,6 +52,19 @@ namespace HG::Rendering::OpenGL
         void render(HG::Rendering::Base::RenderTarget *target,
                     HG::Rendering::Base::Texture *texture,
                     const HG::Rendering::Base::BlitData::DataContainer &container);
+
+
+    protected:
+
+        /**
+         * @brief Method for initialization blitter.
+         */
+        void onInit() override;
+
+        /**
+         * @brief Method for deinitialization blitter.
+         */
+        void onDeinit() override;
 
     private:
 

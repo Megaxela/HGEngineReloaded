@@ -1,13 +1,13 @@
 #pragma once
 
-// HG::Core
-#include <HG/Core/Application.hpp>
-
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Gizmos.hpp>
+
+// HG::Utils
+#include <HG/Utils/Interfaces/Initializable.hpp>
 
 // gl
 #include <gl/all.hpp>
@@ -22,7 +22,8 @@ namespace HG::Rendering::OpenGL
     /**
      * @brief Class, for rendering gizmos system.
      */
-    class GizmosRenderer : private HG::Rendering::OpenGL::Common::MaterialProcessor
+    class GizmosRenderer : public HG::Utils::Interfaces::Initializable,
+                           private HG::Rendering::OpenGL::Common::MaterialProcessor
     {
     public:
 
@@ -30,21 +31,6 @@ namespace HG::Rendering::OpenGL
          * @brief Constructor.
          */
         explicit GizmosRenderer(HG::Core::Application* application);
-
-        /**
-         * @brief Destructor.
-         */
-        ~GizmosRenderer();
-
-        /**
-         * @brief Method for initialization gizmos renderer.
-         */
-        void init();
-
-        /**
-         * @brief Method for deinitialization gizmos renderer.
-         */
-        void deinit();
 
         /**
          * @brief Method for preparing line for rendering.
@@ -74,6 +60,18 @@ namespace HG::Rendering::OpenGL
          * @return Pointer to parent application.
          */
         HG::Core::Application* application() const;
+
+    protected:
+
+        /**
+         * @brief Method for initialization gizmos renderer.
+         */
+        void onInit() override;
+
+        /**
+         * @brief Method for deinitialization gizmos renderer.
+         */
+        void onDeinit() override;
 
     private:
 

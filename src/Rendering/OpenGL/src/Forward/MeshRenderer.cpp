@@ -50,12 +50,7 @@ HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() :
     }
 }
 
-HG::Rendering::OpenGL::Forward::MeshRenderer::~MeshRenderer()
-{
-    deinit();
-}
-
-void HG::Rendering::OpenGL::Forward::MeshRenderer::init()
+void HG::Rendering::OpenGL::Forward::MeshRenderer::onInit()
 {
     Info() << "Initializing mesh renderer";
 
@@ -65,7 +60,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::init()
         ->getMaterial<Materials::MeshFallbackMaterial>();
 }
 
-void HG::Rendering::OpenGL::Forward::MeshRenderer::deinit()
+void HG::Rendering::OpenGL::Forward::MeshRenderer::onDeinit()
 {
     Info() << "Deinitializing sprite renderer";
 

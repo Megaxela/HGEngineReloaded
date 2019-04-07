@@ -28,17 +28,6 @@ namespace HG::Rendering::OpenGL::Forward
         SpriteRenderer();
 
         /**
-         * @brief Destructor.
-         */
-        ~SpriteRenderer() override;
-
-        /**
-         * @brief Method for initializing sprite renderer.
-         * This method creates buffers and materials.
-         */
-        void init() override;
-
-        /**
          * @brief Method for rendering sprite rendering behaviour.
          * @param gameObject Rendering behaviour owner.
          * @param renderBehaviour Actual rendering behaviour.
@@ -51,11 +40,19 @@ namespace HG::Rendering::OpenGL::Forward
          */
         size_t getTarget() override;
 
+    protected:
+
+        /**
+         * @brief Method for initializing sprite renderer.
+         * This method creates buffers and materials.
+         */
+        void onInit() override;
+
         /**
          * @brief Method for deinitializing sprite renderer.
          * Clears buffers and removes materials.
          */
-        void deinit() override;
+        void onDeinit() override;
 
     private:
 

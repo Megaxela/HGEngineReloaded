@@ -6,6 +6,9 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/MaterialValue.hpp>
 
+// HG::Utils
+#include <HG/Utils/Interfaces/Initializable.hpp>
+
 // gl
 #include <gl/all.hpp>
 
@@ -27,7 +30,7 @@ namespace HG::Rendering::OpenGL::Forward
      * rendering behaviours renderer for forward
      * rendering pipeline.
      */
-    class AbstractRenderer
+    class AbstractRenderer : public HG::Utils::Interfaces::Initializable
     {
     public:
 
@@ -35,21 +38,6 @@ namespace HG::Rendering::OpenGL::Forward
          * @brief Constructor.
          */
         AbstractRenderer();
-
-        /**
-         * @brief Destructor.
-         */
-        virtual ~AbstractRenderer() = default;
-
-        /**
-         * @brief Method for initializing renderer.
-         */
-        virtual void init() = 0;
-
-        /**
-         * @brief Method for deinitializing renderer.
-         */
-        virtual void deinit() = 0;
 
         /**
          * @brief Method for rendering some behaviour.
@@ -79,7 +67,6 @@ namespace HG::Rendering::OpenGL::Forward
         void setApplication(HG::Core::Application* application);
 
     private:
-
         HG::Core::Application* m_application;
     };
 }

@@ -32,12 +32,7 @@ HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* app
 
 }
 
-HG::Rendering::OpenGL::GizmosRenderer::~GizmosRenderer()
-{
-    deinit();
-}
-
-void HG::Rendering::OpenGL::GizmosRenderer::deinit()
+void HG::Rendering::OpenGL::GizmosRenderer::onDeinit()
 {
     Info() << "Deinitializing gizmos renderer";
 
@@ -51,7 +46,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::deinit()
     m_linesVBO = std::move(gl::buffer(gl::invalid_id));
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::init()
+void HG::Rendering::OpenGL::GizmosRenderer::onInit()
 {
     Info() << "Initializing gizmos renderer";
 
@@ -59,8 +54,8 @@ void HG::Rendering::OpenGL::GizmosRenderer::init()
     m_linesVBO = std::move(gl::buffer());
 
     // Preparing line shader
-    m_lineMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosLineMaterial>();
-//    m_meshMaterial = m_application->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
+    m_lineMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::GizmosLineMaterial>();
+//    m_meshMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
 
     // Preparing VAO
     m_linesVAO.bind();
@@ -111,7 +106,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::render()
 void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
 {
     BENCH("Rendering gizmos lines");
-    auto camera = m_application->renderer()->activeCamera();
+    auto camera = application()->renderer()->activeCamera();
 
     // If there is no camera - skip rendering
     if (!camera)
@@ -138,9 +133,9 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
         m_lineData.size() * 2
     );
 
-    if (m_application->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+    if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
     {
-        m_application->countStatistics()->add(
+        application()->countStatistics()->add(
             HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
             m_lineData.size() * 2
         );

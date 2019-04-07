@@ -55,6 +55,7 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
 
     delete m_gizmosRenderer;
     delete m_imguiRenderer;
+    delete m_blitRenderer;
 }
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline *HG::Rendering::OpenGL::Forward::RenderingPipeline::addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer *renderer)

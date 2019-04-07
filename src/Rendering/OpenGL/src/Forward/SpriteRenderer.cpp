@@ -37,12 +37,7 @@ HG::Rendering::OpenGL::Forward::SpriteRenderer::SpriteRenderer() :
 
 }
 
-HG::Rendering::OpenGL::Forward::SpriteRenderer::~SpriteRenderer()
-{
-    deinit();
-}
-
-void HG::Rendering::OpenGL::Forward::SpriteRenderer::deinit()
+void HG::Rendering::OpenGL::Forward::SpriteRenderer::onDeinit()
 {
     Info() << "Deinitializing sprite renderer";
 
@@ -53,7 +48,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::deinit()
     m_spriteData = nullptr;
 }
 
-void HG::Rendering::OpenGL::Forward::SpriteRenderer::init()
+void HG::Rendering::OpenGL::Forward::SpriteRenderer::onInit()
 {
     Info() << "Initializing sprite renderer";
 

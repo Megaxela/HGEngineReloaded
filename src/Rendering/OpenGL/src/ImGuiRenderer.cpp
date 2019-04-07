@@ -39,17 +39,7 @@ HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* appli
 
 }
 
-HG::Rendering::OpenGL::ImGuiRenderer::~ImGuiRenderer()
-{
-    deinit();
-}
-
-HG::Core::Application *HG::Rendering::OpenGL::ImGuiRenderer::application() const
-{
-    return m_application;
-}
-
-void HG::Rendering::OpenGL::ImGuiRenderer::deinit()
+void HG::Rendering::OpenGL::ImGuiRenderer::onDeinit()
 {
     Info() << "Deinitializing ImGui renderer";
 
@@ -62,11 +52,11 @@ void HG::Rendering::OpenGL::ImGuiRenderer::deinit()
     m_fontTexture = nullptr;
 }
 
-void HG::Rendering::OpenGL::ImGuiRenderer::init()
+void HG::Rendering::OpenGL::ImGuiRenderer::onInit()
 {
     Info() << "Initializing ImGui renderer";
 
-    m_material = m_application
+    m_material = application()
         ->renderer()
         ->materialCollection()
         ->getMaterial<Materials::ImGuiMaterial>();
@@ -81,6 +71,11 @@ void HG::Rendering::OpenGL::ImGuiRenderer::init()
     m_attribLocationColor     = program->attribute_location("Color");
 
     createFontsTexture();
+}
+
+HG::Core::Application *HG::Rendering::OpenGL::ImGuiRenderer::application() const
+{
+    return m_application;
 }
 
 void HG::Rendering::OpenGL::ImGuiRenderer::render()
@@ -203,9 +198,9 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
             {
                 auto texture = static_cast<HG::Rendering::Base::Texture*>(pcmd->TextureId);
 
-                if (m_application->renderer()->needSetup(texture))
+                if (application()->renderer()->needSetup(texture))
                 {
-                    if (!m_application->renderer()->setup(texture))
+                    if (!application()->renderer()->setup(texture))
                     {
                         continue;
                     }
@@ -235,9 +230,9 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
 
                 data->Texture.unbind();
 
-                if (m_application->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+                if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
                 {
-                    m_application->countStatistics()->add(
+                    application()->countStatistics()->add(
                         HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
                         pcmd->ElemCount
                     );
@@ -270,9 +265,9 @@ void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
 
     m_fontTexture = new (application()->resourceCache()) HG::Rendering::Base::Texture(surface);
 
-    if (m_application->renderer()->needSetup(m_fontTexture))
+    if (application()->renderer()->needSetup(m_fontTexture))
     {
-        if (m_application->renderer()->setup(m_fontTexture))
+        if (application()->renderer()->setup(m_fontTexture))
         {
             // Store our identifier
             io.Fonts->TexID = m_fontTexture;

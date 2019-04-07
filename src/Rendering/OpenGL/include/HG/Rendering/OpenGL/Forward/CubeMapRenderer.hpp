@@ -26,23 +26,6 @@ namespace HG::Rendering::OpenGL::Forward
         CubeMapRenderer();
 
         /**
-         * @brief Destructor.
-         */
-        ~CubeMapRenderer() override;
-
-        /**
-         * @brief Method for initializing
-         * cubemap renderer.
-         */
-        void init() override;
-
-        /**
-         * @brief Method for deinitialization
-         * cubemap renderer.
-         */
-        void deinit() override;
-
-        /**
          * @brief Method that performs actual cubemap rendering.
          * @param renderBehaviour Pointer to render behaviour.
          */
@@ -55,6 +38,20 @@ namespace HG::Rendering::OpenGL::Forward
          * @return
          */
         size_t getTarget() override;
+
+    protected:
+
+        /**
+         * @brief Method for initializing
+         * cubemap renderer.
+         */
+        void onInit() override;
+
+        /**
+         * @brief Method for deinitialization
+         * cubemap renderer.
+         */
+        void onDeinit() override;
 
     private:
 

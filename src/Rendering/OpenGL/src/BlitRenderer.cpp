@@ -38,16 +38,11 @@ HG::Rendering::OpenGL::BlitRenderer::BlitRenderer(HG::Core::Application *applica
 
 }
 
-HG::Rendering::OpenGL::BlitRenderer::~BlitRenderer()
-{
-    deinit();
-}
-
-void HG::Rendering::OpenGL::BlitRenderer::init()
+void HG::Rendering::OpenGL::BlitRenderer::onInit()
 {
     Info() << "Initializing blitter";
 
-    m_material = m_application
+    m_material = application()
         ->renderer()
         ->materialCollection()
         ->getMaterial<Materials::BlitMaterial>();
@@ -65,7 +60,7 @@ void HG::Rendering::OpenGL::BlitRenderer::init()
     m_attributeLocationUV       = program->attribute_location("uvPixels");
 }
 
-void HG::Rendering::OpenGL::BlitRenderer::deinit()
+void HG::Rendering::OpenGL::BlitRenderer::onDeinit()
 {
     Info() << "Deinitializing blitter";
 
