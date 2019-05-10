@@ -14,6 +14,7 @@ describe_module(
     INCLUDE
 
     DEPENDENCIES
+        gdi32
         gl
         HGCore
         HGRenderingBase

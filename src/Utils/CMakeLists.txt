@@ -12,7 +12,7 @@ describe_module(
         stb
         rapidxml
         bytearray
-        stdc++fs
+#        stdc++fs
         STLRoundBuffer
         nlohmann_json
         assimp

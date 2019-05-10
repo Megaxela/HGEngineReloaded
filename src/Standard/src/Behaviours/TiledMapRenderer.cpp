@@ -216,7 +216,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
                 ->application()
                 ->resourceManager()
                 ->load<HG::Utils::STBImageLoader>(
-                    mapPath.parent_path() / std::filesystem::path(tileset->path)
+                        (mapPath.parent_path() / std::filesystem::path(tileset->path)).string()
                 )
         );
 

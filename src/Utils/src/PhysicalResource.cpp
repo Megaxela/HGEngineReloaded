@@ -7,9 +7,25 @@
 #include <sys/sysinfo.h>
 #endif
 
+#ifdef OS_WINDOWS
+#include <windows.h>
+#include <psapi.h>
+#endif
+
 uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 {
-    FUNCTION_WINDOWS_STUB;
+#ifdef OS_WINDOWS
+    MEMORYSTATUSEX status;
+    status.dwLength = sizeof(MEMORYSTATUSEX);
+
+    if (!GlobalMemoryStatusEx(&status))
+    {
+        return 0;
+    }
+
+    return status.ullTotalPhys;
+#endif
+
 #ifdef OS_LINUX
     struct sysinfo info;
 
@@ -25,7 +41,18 @@ uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 
 uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 {
-    FUNCTION_WINDOWS_STUB;
+#ifdef OS_WINDOWS
+    MEMORYSTATUSEX status;
+    status.dwLength = sizeof(MEMORYSTATUSEX);
+
+    if (!GlobalMemoryStatusEx(&status))
+    {
+        return 0;
+    }
+
+    return status.ullAvailPhys;
+#endif
+
 #ifdef OS_LINUX
     struct sysinfo info;
 
@@ -59,7 +86,25 @@ namespace
 
 uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 {
-    FUNCTION_WINDOWS_STUB;
+#ifdef OS_WINDOWS
+
+    return 0;
+//    auto currentProcess = GetCurrentProcess();
+//
+//    if (currentProcess == nullptr)
+//    {
+//        return 0;
+//    }
+//
+//    PROCESS_MEMORY_COUNTERS counters;
+//
+//    if (!GetProcessMemoryInfo(currentProcess, &counters, sizeof(counters)))
+//    {
+//        return 0;
+//    }
+//
+//    return counters.PagefileUsage;
+#endif
 #ifdef OS_LINUX
     // todo: Replace with ifstream
     FILE* file = fopen("/proc/self/status", "r");
@@ -86,6 +131,5 @@ uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
     WarningF() << "VmRSS was not found in \"/proc/self/status\".";
     fclose(file);
     return 0;
-
 #endif
 }
