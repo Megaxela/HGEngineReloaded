@@ -228,7 +228,11 @@ function(add_example)
 
     target_include_directories(${PROJECT_NAME} PRIVATE .)
 
-    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES} -lgdi32 -lpsapi)
+    if (WIN32)
+        set(ARGS_DEPENDENCIES ${ARGS_DEPENDENCIES} -lgdi32 -lpsapi)
+    endif()
+
+    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
 
     file(GLOB_RECURSE ASSETS *.png *.mtl *.obj *.tga)
 
