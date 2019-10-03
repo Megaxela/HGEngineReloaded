@@ -1,6 +1,11 @@
 # Searching for zlib
 find_package(ZLIB REQUIRED)
 
+# Windows fix
+if (UNIX)
+    set(STD_FS_LIBRARY stdc++fs)
+endif()
+
 describe_module(
     NAME Utils
     INCLUDE
@@ -12,11 +17,11 @@ describe_module(
         stb
         rapidxml
         bytearray
-#        stdc++fs
         STLRoundBuffer
         nlohmann_json
         assimp
         ${ZLIB_LIBRARIES}
+        ${STD_FS_LIBRARY}
 
     DEFINITIONS
         -DGLM_ENABLE_EXPERIMENTAL
