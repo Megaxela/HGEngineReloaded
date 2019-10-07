@@ -5,20 +5,15 @@
 
 namespace HG::Rendering::Base::Lights
 {
+/**
+ * @brief Class, that describes directional light.
+ */
+class DirectionalLight : public AbstractLight
+{
+public:
     /**
-     * @brief Class, that describes directional light.
+     * @brief Constructor.
      */
-    class DirectionalLight : public AbstractLight
-    {
-    public:
-
-        /**
-         * @brief Constructor.
-         */
-        DirectionalLight();
-
-
-    };
-}
-
-
+    DirectionalLight();
+};
+} // namespace HG::Rendering::Base::Lights

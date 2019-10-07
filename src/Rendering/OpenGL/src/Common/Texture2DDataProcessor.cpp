@@ -6,8 +6,8 @@
 #include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 
 // HG::Utils
 #include <HG/Utils/Surface.hpp>
@@ -17,30 +17,36 @@
 
 namespace
 {
-    GLuint getFilter(HG::Rendering::Base::Texture::Filtering filter)
+GLuint getFilter(HG::Rendering::Base::Texture::Filtering filter)
+{
+    switch (filter)
     {
-        switch (filter)
-        {
-        case HG::Rendering::Base::Texture::Nearest: return GL_NEAREST;
-        case HG::Rendering::Base::Texture::Linear:  return GL_LINEAR;
-        }
-
-        return 0;
+    case HG::Rendering::Base::Texture::Nearest:
+        return GL_NEAREST;
+    case HG::Rendering::Base::Texture::Linear:
+        return GL_LINEAR;
     }
 
-    GLuint getWrapping(HG::Rendering::Base::Texture::Wrapping wrapping)
-    {
-        switch (wrapping)
-        {
-        case HG::Rendering::Base::Texture::Repeat:         return GL_REPEAT;
-        case HG::Rendering::Base::Texture::MirroredRepeat: return GL_MIRRORED_REPEAT;
-        case HG::Rendering::Base::Texture::ClampToEdge:    return GL_CLAMP_TO_EDGE;
-        case HG::Rendering::Base::Texture::ClampToBorder:  return GL_CLAMP_TO_BORDER;
-        }
-
-        return 0;
-    }
+    return 0;
 }
+
+GLuint getWrapping(HG::Rendering::Base::Texture::Wrapping wrapping)
+{
+    switch (wrapping)
+    {
+    case HG::Rendering::Base::Texture::Repeat:
+        return GL_REPEAT;
+    case HG::Rendering::Base::Texture::MirroredRepeat:
+        return GL_MIRRORED_REPEAT;
+    case HG::Rendering::Base::Texture::ClampToEdge:
+        return GL_CLAMP_TO_EDGE;
+    case HG::Rendering::Base::Texture::ClampToBorder:
+        return GL_CLAMP_TO_BORDER;
+    }
+
+    return 0;
+}
+} // namespace
 
 bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
@@ -68,12 +74,8 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         BENCH("Preparing storage");
         externalData->Texture = std::move(gl::texture_2d());
 
-        externalData->Texture.set_min_filter(
-            getFilter(texture->minificationMethod())
-        );
-        externalData->Texture.set_mag_filter(
-            getFilter(texture->magnificationMethod())
-        );
+        externalData->Texture.set_min_filter(getFilter(texture->minificationMethod()));
+        externalData->Texture.set_mag_filter(getFilter(texture->magnificationMethod()));
 
         // Setting size
         externalData->Size = texture->size();
@@ -94,11 +96,10 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         }
 
         // Setting up storage
-        externalData->Texture.set_storage(
-            1, // Levels
-            internalFormat, // Internal format
-            externalData->Size.x, // Width
-            externalData->Size.y  // Height
+        externalData->Texture.set_storage(1,                    // Levels
+                                          internalFormat,       // Internal format
+                                          externalData->Size.x, // Width
+                                          externalData->Size.y  // Height
         );
 
         // If storage was setup
@@ -113,13 +114,11 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     // filled.
     auto surface = texture->surface(guarantee);
 
-    if (externalData->Allocated &&
-        surface &&
-        !externalData->Valid)
+    if (externalData->Allocated && surface && !externalData->Valid)
     {
         BENCH("Loading surface to texture");
         externalData->Valid = true;
-        GLuint fileFormat = GL_RGBA;
+        GLuint fileFormat   = GL_RGBA;
 
         // Getting type
         switch (surface->Bpp)
@@ -146,35 +145,27 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
         }
 
         // Loading data into texture
-        externalData->Texture.set_sub_image(
-            0, // Level
-            0, // X offset
-            0, // Y Offset
-            surface->Width,  // Width
-            surface->Height, // Height
-            fileFormat,       // Format
-            GL_UNSIGNED_BYTE, // Type
-            surface->Data
-        );
+        externalData->Texture.set_sub_image(0,                // Level
+                                            0,                // X offset
+                                            0,                // Y Offset
+                                            surface->Width,   // Width
+                                            surface->Height,  // Height
+                                            fileFormat,       // Format
+                                            GL_UNSIGNED_BYTE, // Type
+                                            surface->Data);
     }
 
     externalData->Texture.unbind();
 
-    return  externalData->Allocated &&
-            (externalData->Valid ||
-             (surface == nullptr &&
-              !externalData->Valid));
-
+    return externalData->Allocated && (externalData->Valid || (surface == nullptr && !externalData->Valid));
 }
 
 bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
-    auto texture = static_cast<HG::Rendering::Base::Texture*>(data);
+    auto texture      = static_cast<HG::Rendering::Base::Texture*>(data);
     auto externalData = texture->castSpecificDataTo<Common::Texture2DData>();
 
-    return  externalData == nullptr ||
-           !externalData->Texture.is_valid() ||
-            externalData->Size != texture->size() ||
+    return externalData == nullptr || !externalData->Texture.is_valid() || externalData->Size != texture->size() ||
            !externalData->Valid;
 }
 

@@ -8,5 +8,3 @@ class OrbitalScene : public HG::Core::Scene
 public:
     void start() override;
 };
-
-

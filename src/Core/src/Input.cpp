@@ -2,20 +2,19 @@
 #include <algorithm>
 
 // HG::Core
-#include <HG/Core/Input.hpp>
 #include <HG/Core/BuildProperties.hpp>
+#include <HG/Core/Input.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
 
 HG::Core::Input::Keyboard::Keyboard() :
-    m_pushed  (std::size_t(Key::Last) + 1, false),
+    m_pushed(std::size_t(Key::Last) + 1, false),
     m_released(std::size_t(Key::Last) + 1, false),
-    m_pressed (std::size_t(Key::Last) + 1, false),
+    m_pressed(std::size_t(Key::Last) + 1, false),
     m_pressedModifiers(0),
     m_pressedCharacter(0)
 {
-
 }
 
 bool HG::Core::Input::Keyboard::isPressed(HG::Core::Input::Keyboard::Key key) const
@@ -64,7 +63,7 @@ bool HG::Core::Input::Keyboard::isModifierPressed(HG::Core::Input::Keyboard::Mod
 {
     if constexpr (HG::Core::BuildProperties::isDebug())
     {
-        if ((int) modifier > 7)
+        if ((int)modifier > 7)
         {
             Error() << "There is no modifier with code " << int(modifier) << " requested. Returning false.";
             return false;
@@ -90,16 +89,15 @@ void HG::Core::Input::Keyboard::setPressed(HG::Core::Input::Keyboard::Key key, b
         }
     }
 
-
     if (pressed)
     {
-        m_pushed[std::size_t(key)] = true;
+        m_pushed[std::size_t(key)]  = true;
         m_pressed[std::size_t(key)] = true;
     }
     else
     {
-        m_released[std::size_t(key)]= true;
-        m_pressed[std::size_t(key)] = false;
+        m_released[std::size_t(key)] = true;
+        m_pressed[std::size_t(key)]  = false;
     }
 }
 
@@ -151,7 +149,6 @@ HG::Core::Input::Mouse::Mouse() :
     m_disabledAction(),
     m_hiddenAction()
 {
-
 }
 
 bool HG::Core::Input::Mouse::isPressed(HG::Core::Input::Mouse::Buttons button) const
@@ -222,7 +219,7 @@ void HG::Core::Input::Mouse::setCursorDisabled(bool locked) const
         Error() << "Can't disable cursor, in case of unavailable action.";
         return;
     }
-        
+
     m_disabledAction(locked);
 }
 
@@ -233,7 +230,7 @@ void HG::Core::Input::Mouse::setCursorHidden(bool hidden) const
         Error() << "Can't hide cursor, in case of unavailable action.";
         return;
     }
-    
+
     m_hiddenAction(hidden);
 }
 
@@ -285,17 +282,15 @@ void HG::Core::Input::Mouse::tick()
     for (auto&& state : m_buttonStates)
     {
         state.second.justReleased = false;
-        state.second.justPushed = false;
+        state.second.justPushed   = false;
     }
 
     m_mouseWheelScrollDelta.x = 0;
     m_mouseWheelScrollDelta.y = 0;
 }
 
-HG::Core::Input::Gamepads::Gamepads() :
-    m_gamepads()
+HG::Core::Input::Gamepads::Gamepads() : m_gamepads()
 {
-
 }
 
 bool HG::Core::Input::Gamepads::isConnected() const
@@ -444,7 +439,7 @@ void HG::Core::Input::Gamepads::setIsConnectedGamepad(uint8_t gamepad, bool conn
     }
     else
     {
-        m_gamepads[gamepad] = GamepadData();
+        m_gamepads[gamepad]           = GamepadData();
         m_gamepads[gamepad].connected = connected;
     }
 }
@@ -456,7 +451,7 @@ void HG::Core::Input::Gamepads::setGamepadAxisValue(uint8_t gamepad, uint8_t axi
     if (gamepadIterator == m_gamepads.end())
     {
         m_gamepads[gamepad] = GamepadData();
-        gamepadIterator = m_gamepads.find(gamepad);
+        gamepadIterator     = m_gamepads.find(gamepad);
     }
 
     gamepadIterator->second.axises[axis] = value;
@@ -469,13 +464,13 @@ void HG::Core::Input::Gamepads::setGamepadButtonValue(uint8_t gamepad, uint8_t b
     if (gamepadIterator == m_gamepads.end())
     {
         m_gamepads[gamepad] = GamepadData();
-        gamepadIterator = m_gamepads.find(gamepad);
+        gamepadIterator     = m_gamepads.find(gamepad);
     }
 
     if (pressed)
     {
         gamepadIterator->second.buttons[button].justPushed = true;
-        gamepadIterator->second.buttons[button].pressed = true;
+        gamepadIterator->second.buttons[button].pressed    = true;
     }
     else
     {
@@ -489,16 +484,14 @@ void HG::Core::Input::Gamepads::tick()
     {
         for (auto& button : m_gamepad.second.buttons)
         {
-            button.second.justPushed = false;
+            button.second.justPushed   = false;
             button.second.justReleased = false;
         }
     }
 }
 
-HG::Core::Input::Window::Window() :
-    m_closed(false)
+HG::Core::Input::Window::Window() : m_closed(false)
 {
-
 }
 
 bool HG::Core::Input::Window::isClosed() const
@@ -511,26 +504,21 @@ void HG::Core::Input::Window::setClosed(bool closed)
     m_closed = closed;
 }
 
-HG::Core::Input::Input() :
-    m_keyboard(),
-    m_mouse(),
-    m_gamepads(),
-    m_window()
+HG::Core::Input::Input() : m_keyboard(), m_mouse(), m_gamepads(), m_window()
 {
-
 }
 
-const HG::Core::Input::Keyboard *HG::Core::Input::keyboard() const
+const HG::Core::Input::Keyboard* HG::Core::Input::keyboard() const
 {
     return &m_keyboard;
 }
 
-const HG::Core::Input::Mouse *HG::Core::Input::mouse() const
+const HG::Core::Input::Mouse* HG::Core::Input::mouse() const
 {
     return &m_mouse;
 }
 
-const HG::Core::Input::Gamepads *HG::Core::Input::gamepads() const
+const HG::Core::Input::Gamepads* HG::Core::Input::gamepads() const
 {
     return &m_gamepads;
 }

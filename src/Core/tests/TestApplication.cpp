@@ -1,11 +1,10 @@
-#include <gtest/gtest.h>
-
-#include <HG/Core/Scene.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Scene.hpp>
 #include <HG/Physics/Base/PhysicsController.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
+#include <gtest/gtest.h>
 
 enum class Actions
 {
@@ -76,17 +75,17 @@ TEST(Core, ApplicationInitial)
 {
     HG::Core::Application application(titleName);
 
-    ASSERT_NE(application.renderer(),          nullptr);
-    ASSERT_NE(application.resourceManager(),   nullptr);
-    ASSERT_NE(application.timeStatistics(),    nullptr);
-    ASSERT_NE(application.countStatistics(),   nullptr);
-    ASSERT_NE(application.threadPool(),        nullptr);
-    ASSERT_NE(application.resourceCache(),     nullptr);
-    ASSERT_NE(application.input(),             nullptr);
+    ASSERT_NE(application.renderer(), nullptr);
+    ASSERT_NE(application.resourceManager(), nullptr);
+    ASSERT_NE(application.timeStatistics(), nullptr);
+    ASSERT_NE(application.countStatistics(), nullptr);
+    ASSERT_NE(application.threadPool(), nullptr);
+    ASSERT_NE(application.resourceCache(), nullptr);
+    ASSERT_NE(application.input(), nullptr);
 
-    ASSERT_EQ(application.scene(),             nullptr);
-    ASSERT_EQ(application.title(),             titleName);
-    ASSERT_EQ(application.systemController(),  nullptr);
+    ASSERT_EQ(application.scene(), nullptr);
+    ASSERT_EQ(application.title(), titleName);
+    ASSERT_EQ(application.systemController(), nullptr);
     ASSERT_EQ(application.physicsController(), nullptr);
 }
 
@@ -113,13 +112,11 @@ TEST(Core, ApplicationSceneSwitch)
         application.performCycle();
     }
 
-    std::vector<Actions> expected = {
-        Actions::FirstSceneAllocated,
-        Actions::SecondSceneAllocated,
-        Actions::FirstSceneDeallocated,
-        Actions::SecondSceneStarted,
-        Actions::SecondSceneDeallocated
-    };
+    std::vector<Actions> expected = {Actions::FirstSceneAllocated,
+                                     Actions::SecondSceneAllocated,
+                                     Actions::FirstSceneDeallocated,
+                                     Actions::SecondSceneStarted,
+                                     Actions::SecondSceneDeallocated};
 
     ASSERT_EQ(TestActions, expected);
 }
@@ -160,10 +157,7 @@ TEST(Core, ApplicationPhysicsController)
     }
 
     std::vector<Actions> expected = {
-        Actions::PhysicsControllerAllocated,
-        Actions::PhysicsControllerTicked,
-        Actions::PhysicsControllerDeallocated
-    };
+        Actions::PhysicsControllerAllocated, Actions::PhysicsControllerTicked, Actions::PhysicsControllerDeallocated};
 
     ASSERT_EQ(TestActions, expected);
 }
@@ -171,25 +165,30 @@ TEST(Core, ApplicationPhysicsController)
 class TestPipeline : public HG::Rendering::Base::RenderingPipeline
 {
 public:
-
-    explicit TestPipeline(HG::Core::Application* application) :
-        HG::Rendering::Base::RenderingPipeline(application)
-    {}
+    explicit TestPipeline(HG::Core::Application* application) : HG::Rendering::Base::RenderingPipeline(application)
+    {
+    }
 
     void clear(HG::Utils::Color color) override
-    {}
+    {
+    }
 
     void render(const std::vector<HG::Core::GameObject*>& objects) override
-    {}
+    {
+    }
 
     bool render(HG::Rendering::Base::RenderBehaviour* behaviour) override
-    {return true;}
+    {
+        return true;
+    }
 
     void blit(HG::Rendering::Base::RenderTarget* target, HG::Rendering::Base::BlitData* blitData) override
-    {}
+    {
+    }
 
     void getTextureRegion(HG::Rendering::Base::Texture* texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data) override
-    {}
+    {
+    }
 };
 
 class TestSystemController : public HG::Rendering::Base::SystemController
@@ -225,7 +224,8 @@ public:
     }
 
     void changeTitle(std::string title) override
-    {}
+    {
+    }
 
     void closeWindow() override
     {
@@ -263,7 +263,7 @@ TEST(Core, ApplicationSystemControllerFlow)
     {
         HG::Core::Application application(titleName);
 
-        auto* pipeline = new TestPipeline(&application);
+        auto* pipeline         = new TestPipeline(&application);
         auto* systemController = new TestSystemController(&application);
 
         application.renderer()->setPipeline(pipeline);
@@ -290,7 +290,7 @@ TEST(Core, ApplicationSystemControllerFlow)
         Actions::SystemControllerInited,
         Actions::SystemControllerWindowCreated,
         Actions::SystemControllerEventsPolled,
-//        Actions::SystemControllerBuffersSwapped, // Pipeline implementation calls this
+        //        Actions::SystemControllerBuffersSwapped, // Pipeline implementation calls this
         Actions::SystemControllerDeinited,
         Actions::SystemControllerWindowClosed,
         Actions::SystemControllerDeallocated,

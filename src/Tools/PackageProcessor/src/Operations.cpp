@@ -1,10 +1,10 @@
 // C++ STL
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 // HG::PackageProcessor
-#include <Operations.hpp>
 #include <ArgumentNames.hpp>
+#include <Operations.hpp>
 
 // HG::PackageProcessingLibrary
 #include <HG/Tools/PackageProcessor.hpp>
@@ -37,24 +37,21 @@ void Operations::pack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& a
     HG::Tools::PackageProcessor packageProcessor;
 
     // Validating arguments
-    if (!args.count(ArgumentsNames::Name) ||
-        !args.count(ArgumentsNames::Author) ||
-        !args.count(ArgumentsNames::MajorVersion) ||
-        !args.count(ArgumentsNames::MinorVersion) ||
-        !args.count(ArgumentsNames::Path) ||
-        !args.count(ArgumentsNames::Output))
+    if (!args.count(ArgumentsNames::Name) || !args.count(ArgumentsNames::Author) ||
+        !args.count(ArgumentsNames::MajorVersion) || !args.count(ArgumentsNames::MinorVersion) ||
+        !args.count(ArgumentsNames::Path) || !args.count(ArgumentsNames::Output))
     {
         throw std::invalid_argument("Wrong arguments");
     }
 
     std::cout << "Packing" << std::endl;
 
-    const auto outputArg = std::get<std::string>(args.at(ArgumentsNames::Output      ));
-    const auto pathArg   = std::get<std::string>(args.at(ArgumentsNames::Path        ));
-    const auto nameArg   = std::get<std::string>(args.at(ArgumentsNames::Name        ));
-    const auto authorArg = std::get<std::string>(args.at(ArgumentsNames::Author      ));
-    const auto majorArg  = std::get<int        >(args.at(ArgumentsNames::MajorVersion));
-    const auto minorArg  = std::get<int        >(args.at(ArgumentsNames::MinorVersion));
+    const auto outputArg = std::get<std::string>(args.at(ArgumentsNames::Output));
+    const auto pathArg   = std::get<std::string>(args.at(ArgumentsNames::Path));
+    const auto nameArg   = std::get<std::string>(args.at(ArgumentsNames::Name));
+    const auto authorArg = std::get<std::string>(args.at(ArgumentsNames::Author));
+    const auto majorArg  = std::get<int>(args.at(ArgumentsNames::MajorVersion));
+    const auto minorArg  = std::get<int>(args.at(ArgumentsNames::MinorVersion));
 
     std::filesystem::path path(pathArg);
 
@@ -69,8 +66,8 @@ void Operations::pack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& a
     std::cout << "Package author: " << authorArg << std::endl;
     std::cout << "Package version: " << majorArg << '.' << minorArg << std::endl;
 
-    packageProcessor.metadata().name = std::move(nameArg);
-    packageProcessor.metadata().author = std::move(authorArg);
+    packageProcessor.metadata().name          = std::move(nameArg);
+    packageProcessor.metadata().author        = std::move(authorArg);
     packageProcessor.metadata().version.major = majorArg;
     packageProcessor.metadata().version.minor = minorArg;
 
@@ -95,15 +92,14 @@ void Operations::pack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& a
 
 void Operations::unpack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args)
 {
-    if (!args.count(ArgumentsNames::Path) ||
-        !args.count(ArgumentsNames::Output))
+    if (!args.count(ArgumentsNames::Path) || !args.count(ArgumentsNames::Output))
     {
         throw std::invalid_argument("Wrong arguments");
     }
 
     std::cout << "Unpacking" << std::endl;
 
-    auto pathArg = std::get<std::string>(args.at(ArgumentsNames::Path));
+    auto pathArg   = std::get<std::string>(args.at(ArgumentsNames::Path));
     auto outputArg = std::get<std::string>(args.at(ArgumentsNames::Output));
 
     HG::Tools::PackageProcessor packageProcessor;

@@ -1,15 +1,15 @@
 // HG::Utils
-#include <HG/Utils/Platform.hpp>
 #include <HG/Utils/PhysicalResource.hpp>
+#include <HG/Utils/Platform.hpp>
 
 // Linux
 #ifdef OS_LINUX
-#include <sys/sysinfo.h>
+#    include <sys/sysinfo.h>
 #endif
 
 #ifdef OS_WINDOWS
-#include <windows.h>
-#include <psapi.h>
+#    include <psapi.h>
+#    include <windows.h>
 #endif
 
 uint64_t HG::Utils::PhysicalResource::getTotalRAM()
@@ -68,21 +68,22 @@ uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 
 namespace
 {
-    uint64_t parseLine(char *line)
-    {
-        // This assumes that a digit will be found and the line ends in " Kb".
-        auto i = strlen(line);
-        const char *p = line;
+uint64_t parseLine(char* line)
+{
+    // This assumes that a digit will be found and the line ends in " Kb".
+    auto i        = strlen(line);
+    const char* p = line;
 
-        // Skipping all symbols, except digits
-        while (*p < '0' || *p > '9') p++;
+    // Skipping all symbols, except digits
+    while (*p < '0' || *p > '9')
+        p++;
 
-        line[i - 3] = '\0';
+    line[i - 3] = '\0';
 
-        // Parsing
-        return static_cast<uint64_t>(atoll(p));
-    }
+    // Parsing
+    return static_cast<uint64_t>(atoll(p));
 }
+} // namespace
 
 uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 {

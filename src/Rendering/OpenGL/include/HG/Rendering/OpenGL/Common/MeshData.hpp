@@ -11,18 +11,18 @@
 
 namespace HG::Rendering::OpenGL::Common
 {
-    /**
-      * @brief External data implementation for mesh rendering behaviour
-      */
-    class MeshData : public HG::Core::CachableResource<MeshData>,
-                     public HG::Rendering::Base::RenderSpecificData
-    {
-    public:
+/**
+  * @brief External data implementation for mesh rendering behaviour
+  */
+class MeshData
+    : public HG::Core::CachableResource<MeshData>
+    , public HG::Rendering::Base::RenderSpecificData
+{
+public:
+    uint32_t Count;
 
-        uint32_t Count;
-
-        gl::vertex_array VAO;
-        gl::buffer VBO;
-        gl::buffer EBO;
-    };
-}
+    gl::vertex_array VAO;
+    gl::buffer VBO;
+    gl::buffer EBO;
+};
+} // namespace HG::Rendering::OpenGL::Common

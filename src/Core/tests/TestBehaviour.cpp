@@ -1,21 +1,19 @@
-#include <gtest/gtest.h>
-
 #include <HG/Core/Behaviour.hpp>
+#include <gtest/gtest.h>
 
 class BlankBehaviour : public HG::Core::Behaviour
 {
-
 };
 
 TEST(Core, BehaviourEmpty)
 {
     BlankBehaviour blankBehaviour;
 
-    ASSERT_EQ(blankBehaviour.type(),       HG::Core::Behaviour::Type::Logic);
-    ASSERT_EQ(blankBehaviour.isEnabled(),  true);
+    ASSERT_EQ(blankBehaviour.type(), HG::Core::Behaviour::Type::Logic);
+    ASSERT_EQ(blankBehaviour.isEnabled(), true);
     ASSERT_EQ(blankBehaviour.gameObject(), nullptr);
-    ASSERT_EQ(blankBehaviour.scene(),      nullptr);
-    ASSERT_EQ(blankBehaviour.input(),      nullptr);
+    ASSERT_EQ(blankBehaviour.scene(), nullptr);
+    ASSERT_EQ(blankBehaviour.input(), nullptr);
 
     std::vector<HG::Core::Behaviour::Property> properties1;
     blankBehaviour.getProperties(properties1);
@@ -35,11 +33,11 @@ TEST(Core, BehaviourProperties)
 {
     PropertyBehaviour propertyBehaviour;
 
-    ASSERT_EQ(propertyBehaviour.type(),       HG::Core::Behaviour::Type::Logic);
-    ASSERT_EQ(propertyBehaviour.isEnabled(),  true);
+    ASSERT_EQ(propertyBehaviour.type(), HG::Core::Behaviour::Type::Logic);
+    ASSERT_EQ(propertyBehaviour.isEnabled(), true);
     ASSERT_EQ(propertyBehaviour.gameObject(), nullptr);
-    ASSERT_EQ(propertyBehaviour.scene(),      nullptr);
-    ASSERT_EQ(propertyBehaviour.input(),      nullptr);
+    ASSERT_EQ(propertyBehaviour.scene(), nullptr);
+    ASSERT_EQ(propertyBehaviour.input(), nullptr);
 
     std::vector<HG::Core::Behaviour::Property> properties1;
     propertyBehaviour.getProperties(properties1);

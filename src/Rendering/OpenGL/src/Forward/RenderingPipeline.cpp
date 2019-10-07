@@ -1,30 +1,30 @@
 // HG::Core
-#include <HG/Core/GameObject.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/GameObject.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
-#include <HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp>
-#include <HG/Rendering/OpenGL/GizmosRenderer.hpp>
-#include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
+#include <HG/Rendering/OpenGL/BlitRenderer.hpp>
 #include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
-#include <HG/Rendering/OpenGL/Materials/BlitMaterial.hpp>
-#include <HG/Rendering/OpenGL/BlitRenderer.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
+#include <HG/Rendering/OpenGL/Forward/AbstractRenderer.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/GizmosRenderer.hpp>
+#include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
+#include <HG/Rendering/OpenGL/Materials/BlitMaterial.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
-#include <HG/Rendering/Base/SystemController.hpp>
+#include <HG/Rendering/Base/BlitData.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/RenderBehaviour.hpp>
+#include <HG/Rendering/Base/RenderOverride.hpp>
 #include <HG/Rendering/Base/RenderTarget.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
-#include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/Shader.hpp>
-#include <HG/Rendering/Base/RenderOverride.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
-#include <HG/Rendering/Base/BlitData.hpp>
 
 // GLM
 #include <glm/glm.hpp>
@@ -43,7 +43,6 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::A
     m_renderers(),
     m_savedRenderTarget(nullptr)
 {
-
 }
 
 HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
@@ -58,7 +57,8 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
     delete m_blitRenderer;
 }
 
-HG::Rendering::OpenGL::Forward::RenderingPipeline *HG::Rendering::OpenGL::Forward::RenderingPipeline::addRenderer(HG::Rendering::OpenGL::Forward::AbstractRenderer *renderer)
+HG::Rendering::OpenGL::Forward::RenderingPipeline* HG::Rendering::OpenGL::Forward::RenderingPipeline::addRenderer(
+    HG::Rendering::OpenGL::Forward::AbstractRenderer* renderer)
 {
     renderer->setApplication(application());
     m_renderers[renderer->getTarget()] = renderer;
@@ -113,17 +113,9 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color c
     // Clearing main buffer
     auto colorArray = color.toRGBAVector().data;
 
-    gl::set_clear_color({
-        colorArray.data[0],
-        colorArray.data[1],
-        colorArray.data[2],
-        colorArray.data[3]
-    });
+    gl::set_clear_color({colorArray.data[0], colorArray.data[1], colorArray.data[2], colorArray.data[3]});
 
-    gl::clear(
-        GL_COLOR_BUFFER_BIT |
-        GL_DEPTH_BUFFER_BIT
-    );
+    gl::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const std::vector<HG::Core::GameObject*>& objects)
@@ -164,7 +156,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const std::vector
     application()->systemController()->swapBuffers();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const std::vector<HG::Core::GameObject*>& objects)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(
+    const std::vector<HG::Core::GameObject*>& objects)
 {
     BENCH("Proceeding gameobjects");
     m_sortedBehaviours.clear();
@@ -215,10 +208,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(const
                 else
                 {
                     // Not inverting, because Z is positive towards camera
-                    m_sortedBehaviours.insert({
-                        (cameraSpace * glm::inverse(cameraRot)).z,
-                        behaviour
-                    });
+                    m_sortedBehaviours.insert({(cameraSpace * glm::inverse(cameraRot)).z, behaviour});
                 }
             }
         }
@@ -253,10 +243,7 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Ba
 
     if (rendererIterator == m_renderers.end())
     {
-        Info()
-            << "Trying to render unknown render behaviour \""
-            << SystemTools::getTypeName(*behaviour)
-            << "\"";
+        Info() << "Trying to render unknown render behaviour \"" << SystemTools::getTypeName(*behaviour) << "\"";
         return false;
     }
 
@@ -299,15 +286,13 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::updateViewport()
 
 void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverride()
 {
-    if ((renderOverride() == nullptr ||
-         renderOverride()->mainRenderTarget == nullptr) &&
+    if ((renderOverride() == nullptr || renderOverride()->mainRenderTarget == nullptr) &&
         m_savedRenderTarget != nullptr)
     {
         setRenderTarget(m_savedRenderTarget);
         m_savedRenderTarget = nullptr;
     }
-    else if (renderOverride() &&
-             renderOverride()->mainRenderTarget)
+    else if (renderOverride() && renderOverride()->mainRenderTarget)
     {
         if (m_savedRenderTarget == nullptr)
         {
@@ -318,7 +303,10 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverr
     }
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture *texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture* texture,
+                                                                         glm::ivec2 tl,
+                                                                         glm::ivec2 br,
+                                                                         uint8_t* data)
 {
     BENCH("Getting texture pixel region");
     auto textureData = texture->castSpecificDataTo<Common::Texture2DData>();
@@ -329,7 +317,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Ren
         return;
     }
 
-    auto vecData = textureData->Texture.sub_image(0, tl.x, tl.y, 0, br.x - tl.x, br.y - tl.y, 1, GL_RGBA, GL_UNSIGNED_BYTE);
+    auto vecData =
+        textureData->Texture.sub_image(0, tl.x, tl.y, 0, br.x - tl.x, br.y - tl.y, 1, GL_RGBA, GL_UNSIGNED_BYTE);
 
     for (auto i : vecData)
     {
@@ -337,8 +326,8 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Ren
     }
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base::RenderTarget *target,
-                                                             HG::Rendering::Base::BlitData *blitData)
+void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base::RenderTarget* target,
+                                                             HG::Rendering::Base::BlitData* blitData)
 {
     auto savedRenderTarget = renderTarget();
     setRenderTarget(target);

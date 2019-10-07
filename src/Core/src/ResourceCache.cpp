@@ -1,16 +1,14 @@
 // HG::Core
-#include <HG/Core/ResourceCache.hpp>
 #include <HG/Core/CachableObject.hpp>
+#include <HG/Core/ResourceCache.hpp>
 
 // HG::Utils
 #include <CurrentLogger.hpp>
 
 thread_local HG::Core::ResourceCache* HG::Core::ResourceCache::currentCache = nullptr;
 
-HG::Core::ResourceCache::ResourceCache() :
-    m_objects()
+HG::Core::ResourceCache::ResourceCache() : m_objects()
 {
-
 }
 
 HG::Core::ResourceCache::~ResourceCache()
@@ -24,7 +22,8 @@ HG::Core::ResourceCache::~ResourceCache()
     {
         if (!cache.second.used.empty())
         {
-            Error() << "Leaked cached resources detected. " << cache.first << " hash - " << cache.second.used.size() << " leaked objects.";
+            Error() << "Leaked cached resources detected. " << cache.first << " hash - " << cache.second.used.size()
+                    << " leaked objects.";
         }
     }
 }

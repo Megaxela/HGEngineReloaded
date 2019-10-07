@@ -13,25 +13,18 @@
 // ImGUI
 #include <imgui.h>
 
-HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody() :
-    m_configuration(),
-    m_body(nullptr)
+HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody() : m_configuration(), m_body(nullptr)
 {
-
 }
 
 HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::BodyConf bodyConfiguration) :
     m_configuration(std::move(bodyConfiguration)),
     m_body(nullptr)
 {
-
 }
 
-HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::Body *body) :
-    m_configuration(),
-    m_body(body)
+HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::Body* body) : m_configuration(), m_body(body)
 {
-
 }
 
 void HG::Physics::PlayRho::Behaviours::Rigidbody::applyCurrentGameObjectTransform()
@@ -55,21 +48,10 @@ void HG::Physics::PlayRho::Behaviours::Rigidbody::onStart()
 {
     if (!m_body)
     {
-        m_body = scene()
-            ->application()
-            ->physicsController<Controller>()
-            ->world()
-            ->CreateBody(m_configuration);
+        m_body = scene()->application()->physicsController<Controller>()->world()->CreateBody(m_configuration);
 
-        m_body->CreateFixture(
-            playrho::d2::Shape{
-                playrho::d2::PolygonShapeConf{}.SetAsBox(
-                    0.03f * 14 / 2, 0.03f * 5 / 2,
-                    playrho::Length2(0, -0.2),
-                    0
-                )
-            }
-        );
+        m_body->CreateFixture(playrho::d2::Shape{
+            playrho::d2::PolygonShapeConf{}.SetAsBox(0.03f * 14 / 2, 0.03f * 5 / 2, playrho::Length2(0, -0.2), 0)});
     }
 
     applyCurrentGameObjectTransform();
@@ -83,24 +65,14 @@ void HG::Physics::PlayRho::Behaviours::Rigidbody::onUpdate()
         return;
     }
 
-    gameObject()->transform()->setGlobalPosition(
-        glm::vec3(
-            playrho::GetX(m_body->GetLocation()),
-            playrho::GetY(m_body->GetLocation()),
-            gameObject()->transform()->globalPosition().z
-        )
-    );
+    gameObject()->transform()->setGlobalPosition(glm::vec3(playrho::GetX(m_body->GetLocation()),
+                                                           playrho::GetY(m_body->GetLocation()),
+                                                           gameObject()->transform()->globalPosition().z));
 
-    gameObject()->transform()->setLocalRotation(
-        glm::quat(glm::vec3(
-            0.0f,
-            0.0f,
-            m_body->GetAngle()
-        ))
-    );
+    gameObject()->transform()->setLocalRotation(glm::quat(glm::vec3(0.0f, 0.0f, m_body->GetAngle())));
 }
 
-playrho::d2::Body *HG::Physics::PlayRho::Behaviours::Rigidbody::body() const
+playrho::d2::Body* HG::Physics::PlayRho::Behaviours::Rigidbody::body() const
 {
     return m_body;
 }

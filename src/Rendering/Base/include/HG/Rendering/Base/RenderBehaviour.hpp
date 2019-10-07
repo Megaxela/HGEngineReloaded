@@ -14,41 +14,39 @@
 
 namespace HG::Rendering::Base
 {
+/**
+ * @brief Class, that describes cross pipeline
+ * behaviour for rendering.
+ */
+class RenderBehaviour
+    : public HG::Core::Behaviour
+    , public RenderData
+{
+public:
+    static constexpr std::size_t RenderDataId = HG::Utils::StringTools::hash("RenderData::RenderBehaviour");
+
     /**
-     * @brief Class, that describes cross pipeline
-     * behaviour for rendering.
+     * @brief Constructor.
+     * @param type Derived class `typeid(*this).hash_code()` value.
      */
-    class RenderBehaviour : public HG::Core::Behaviour,
-                            public RenderData
-    {
-    public:
+    explicit RenderBehaviour(std::size_t type);
 
-        static constexpr std::size_t RenderDataId = HG::Utils::StringTools::hash("RenderData::RenderBehaviour");
+    /**
+     * @brief Method for getting behaviour type.
+     * @return Real class `typeid(T).hash_code()` value.
+     */
+    std::size_t renderBehaviourType();
 
-        /**
-         * @brief Constructor.
-         * @param type Derived class `typeid(*this).hash_code()` value.
-         */
-        explicit RenderBehaviour(std::size_t type);
+protected:
+    // Restrict to override this HG::Core::Behaviour methods
 
-        /**
-         * @brief Method for getting behaviour type.
-         * @return Real class `typeid(T).hash_code()` value.
-         */
-        std::size_t renderBehaviourType();
+    void onStart() final;
 
-    protected:
-        // Restrict to override this HG::Core::Behaviour methods
+    void onUpdate() final;
 
-        void onStart() final;
+    void onFixedUpdate() final;
 
-        void onUpdate() final;
-
-        void onFixedUpdate() final;
-
-    private:
-
-        std::size_t m_type;
-    };
-}
-
+private:
+    std::size_t m_type;
+};
+} // namespace HG::Rendering::Base

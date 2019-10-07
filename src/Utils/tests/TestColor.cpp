@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include <HG/Utils/Color.hpp>
+#include <gtest/gtest.h>
 
 TEST(Utils, ColorIdentity)
 {
@@ -7,9 +7,9 @@ TEST(Utils, ColorIdentity)
     {
         HG::Utils::Color color = HG::Utils::Color::fromRGB(i, i, i, i);
 
-        ASSERT_EQ(color.red(),   i);
+        ASSERT_EQ(color.red(), i);
         ASSERT_EQ(color.green(), i);
-        ASSERT_EQ(color.blue(),  i);
+        ASSERT_EQ(color.blue(), i);
         ASSERT_EQ(color.alpha(), i);
     }
 }

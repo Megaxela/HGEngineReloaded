@@ -9,7 +9,6 @@ HG::Rendering::Base::RenderBehaviour::RenderBehaviour(std::size_t type) :
     RenderData(RenderDataId),
     m_type(type)
 {
-
 }
 
 std::size_t HG::Rendering::Base::RenderBehaviour::renderBehaviourType()

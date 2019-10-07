@@ -2,8 +2,8 @@
 #include <HG/Core/Application.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/MeshData.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Behaviours/Mesh.hpp>
@@ -11,7 +11,8 @@
 // HG::Utils
 #include <HG/Utils/Mesh.hpp>
 
-bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData, bool guarantee)
+bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData,
+                                                             bool guarantee)
 {
     auto meshBehaviour = dynamic_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderData);
 
@@ -59,19 +60,13 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
     auto mesh = meshBehaviour->mesh();
 
     // Loading data into VBO
-    data->VBO.set_data(
-        mesh->Vertices.size() * sizeof(HG::Utils::Vertex),
-        mesh->Vertices.data()
-    );
+    data->VBO.set_data(mesh->Vertices.size() * sizeof(HG::Utils::Vertex), mesh->Vertices.data());
 
     // Binding element buffer object
     data->EBO.bind(GL_ELEMENT_ARRAY_BUFFER);
 
     // Loading data into EBO
-    data->EBO.set_data(
-        mesh->Indices.size() * sizeof(uint32_t),
-        mesh->Indices.data()
-    );
+    data->EBO.set_data(mesh->Indices.size() * sizeof(uint32_t), mesh->Indices.data());
 
     // Binding vertex buffer
     data->VAO.set_vertex_buffer(0, data->VBO, 0, sizeof(HG::Utils::Vertex));
@@ -107,9 +102,6 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::
 {
     auto meshData = data->castSpecificDataTo<MeshData>();
 
-    return  meshData == nullptr ||
-           !meshData->VAO.is_valid() ||
-           !meshData->VBO.is_valid() ||
-           !meshData->EBO.is_valid() ||
+    return meshData == nullptr || !meshData->VAO.is_valid() || !meshData->VBO.is_valid() || !meshData->EBO.is_valid() ||
            !meshData->Valid;
 }

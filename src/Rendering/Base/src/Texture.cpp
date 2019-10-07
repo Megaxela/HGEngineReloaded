@@ -14,7 +14,6 @@ HG::Rendering::Base::Texture::Texture() :
     m_size({0, 0}),
     m_internalFormat(Format::RGBA)
 {
-
 }
 
 HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr,
@@ -29,7 +28,6 @@ HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::Surfac
     m_size({0, 0}),
     m_internalFormat(Format::RGBA)
 {
-
 }
 
 HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
@@ -45,7 +43,6 @@ HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
     m_size(size),
     m_internalFormat(format)
 {
-
 }
 
 void HG::Rendering::Base::Texture::setSize(glm::ivec2 size)

@@ -1,7 +1,6 @@
 // GTest
-#include <gtest/gtest.h>
-
 #include <fstream>
+#include <gtest/gtest.h>
 
 // C++ STD
 #include <algorithm>
@@ -41,15 +40,15 @@ void recursiveAddFile(HG::Tools::PackageProcessor& packageProcessor, const std::
 
 TEST(PackageProcessorLibrary, SampleWritingReading)
 {
-    auto targetPath = std::filesystem::current_path() / "PackageResults";
+    auto targetPath    = std::filesystem::current_path() / "PackageResults";
     auto pathToPackage = targetPath / "sample_package.hgpackage";
 
     // Writing
     {
         HG::Tools::PackageProcessor packageProcessor;
 
-        packageProcessor.metadata().name = "Sample package name";
-        packageProcessor.metadata().author = "Example author";
+        packageProcessor.metadata().name          = "Sample package name";
+        packageProcessor.metadata().author        = "Example author";
         packageProcessor.metadata().version.major = 0x00112233;
         packageProcessor.metadata().version.minor = 0xAABBCCDD;
 
@@ -74,17 +73,14 @@ TEST(PackageProcessorLibrary, SampleWritingReading)
 
             bool operator==(const Data& rhs) const
             {
-                return path == rhs.path &&
-                       size == rhs.size &&
-                       type == rhs.type;
+                return path == rhs.path && size == rhs.size && type == rhs.type;
             }
         };
 
         std::vector<Data> expectedData = {
             {"empty_root_file.txt", 8, HG::Tools::PackageProcessor::File::Type::Package},
             {"dir1/FILE_WITH_LONG_LINES.txt", 127, HG::Tools::PackageProcessor::File::Type::Package},
-            {"dir1/dir2/small_file.txt", 1358, HG::Tools::PackageProcessor::File::Type::Package}
-        };
+            {"dir1/dir2/small_file.txt", 1358, HG::Tools::PackageProcessor::File::Type::Package}};
 
         std::vector<Data> realData;
 
@@ -99,19 +95,12 @@ TEST(PackageProcessorLibrary, SampleWritingReading)
 
         ASSERT_EQ(packageProcessor.files().size(), 3);
 
-        for (const auto &file : packageProcessor.files())
+        for (const auto& file : packageProcessor.files())
         {
-            realData.push_back({
-                file.path().string(),
-                file.compressedSize(),
-                file.type()
-            });
+            realData.push_back({file.path().string(), file.compressedSize(), file.type()});
         }
 
-        auto comparator = [](const Data& l, const Data& r)
-        {
-            return l.path < r.path;
-        };
+        auto comparator = [](const Data& l, const Data& r) { return l.path < r.path; };
 
         std::sort(expectedData.begin(), expectedData.end(), comparator);
         std::sort(realData.begin(), realData.end(), comparator);

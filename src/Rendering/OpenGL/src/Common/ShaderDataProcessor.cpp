@@ -1,51 +1,51 @@
 // HG::Core
-#include <HG/Core/Benchmark.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Shader.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
 
-#define SHADER_DEFAULT_STRUCTS \
-"#define MAX_POINT_LIGHTS 128\n" \
-"#define MAX_DIRECTIONAL_LIGHTS 2\n" \
-"#define MAX_SPOT_LIGHTS 32\n" \
-"struct DirectionalLight\n" \
-"{\n" \
-"    vec3 direction;\n" \
-"    vec3 ambient;\n" \
-"    vec3 diffuse;\n" \
-"    vec3 specular;\n" \
-"};\n" \
-"struct PointLight\n" \
-"{\n" \
-"    vec3 position;\n" \
-"    float linear;\n" \
-"    float constant;\n" \
-"    float quadratic;\n" \
-"    vec3 ambient;\n" \
-"    vec3 diffuse;\n" \
-"    vec3 specular;\n" \
-"};\n" \
-"struct SpotLight\n" \
-"{\n" \
-"    vec3 position;\n" \
-"    vec3 direction;\n" \
-"    float cutOff;\n" \
-"    float outerCutOff;\n" \
-"    float constant;\n" \
-"    float linear;\n" \
-"    float quadratic;\n" \
-"    vec3 ambient;\n" \
-"    vec3 diffuse;\n" \
-"    vec3 specular;\n" \
-"};\n"
+#define SHADER_DEFAULT_STRUCTS           \
+    "#define MAX_POINT_LIGHTS 128\n"     \
+    "#define MAX_DIRECTIONAL_LIGHTS 2\n" \
+    "#define MAX_SPOT_LIGHTS 32\n"       \
+    "struct DirectionalLight\n"          \
+    "{\n"                                \
+    "    vec3 direction;\n"              \
+    "    vec3 ambient;\n"                \
+    "    vec3 diffuse;\n"                \
+    "    vec3 specular;\n"               \
+    "};\n"                               \
+    "struct PointLight\n"                \
+    "{\n"                                \
+    "    vec3 position;\n"               \
+    "    float linear;\n"                \
+    "    float constant;\n"              \
+    "    float quadratic;\n"             \
+    "    vec3 ambient;\n"                \
+    "    vec3 diffuse;\n"                \
+    "    vec3 specular;\n"               \
+    "};\n"                               \
+    "struct SpotLight\n"                 \
+    "{\n"                                \
+    "    vec3 position;\n"               \
+    "    vec3 direction;\n"              \
+    "    float cutOff;\n"                \
+    "    float outerCutOff;\n"           \
+    "    float constant;\n"              \
+    "    float linear;\n"                \
+    "    float quadratic;\n"             \
+    "    vec3 ambient;\n"                \
+    "    vec3 diffuse;\n"                \
+    "    vec3 specular;\n"               \
+    "};\n"
 
 bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
@@ -76,12 +76,8 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
     {
         BENCH("Building vertex shader");
-        vertexShader.set_source(
-                "#version 420 core\n"
-                SHADER_DEFAULT_STRUCTS
-                "#define VertexShader\n" +
-                shader->shaderText()
-        );
+        vertexShader.set_source("#version 420 core\n" SHADER_DEFAULT_STRUCTS "#define VertexShader\n" +
+                                shader->shaderText());
 
         if (!vertexShader.compile())
         {
@@ -93,12 +89,8 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
     {
         BENCH("Building fragment shader");
-        fragmentShader.set_source(
-                "#version 420 core\n"
-                SHADER_DEFAULT_STRUCTS
-                "#define FragmentShader\n" +
-                shader->shaderText()
-        );
+        fragmentShader.set_source("#version 420 core\n" SHADER_DEFAULT_STRUCTS "#define FragmentShader\n" +
+                                  shader->shaderText());
 
         if (!fragmentShader.compile())
         {
@@ -133,9 +125,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::needSetup(HG::Rendering
 {
     auto shaderData = data->castSpecificDataTo<ShaderData>();
 
-    return  shaderData == nullptr ||
-           !shaderData->Program.is_valid() ||
-           !shaderData->Valid;
+    return shaderData == nullptr || !shaderData->Program.is_valid() || !shaderData->Valid;
 }
 
 std::size_t HG::Rendering::OpenGL::Common::ShaderDataProcessor::getTarget()

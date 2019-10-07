@@ -7,7 +7,6 @@ HG::Rendering::Base::RenderTarget::RenderTarget(glm::ivec2 size, bool isDefault)
     m_size(size),
     m_isDefault(isDefault)
 {
-
 }
 
 void HG::Rendering::Base::RenderTarget::setSize(glm::ivec2 size)
@@ -35,14 +34,12 @@ void HG::Rendering::Base::RenderTarget::removeColorTexture(uint32_t index)
     m_colorTexture.erase(index);
 }
 
-HG::Rendering::Base::RenderTarget::TextureContainer::iterator
-HG::Rendering::Base::RenderTarget::colorTextureBegin()
+HG::Rendering::Base::RenderTarget::TextureContainer::iterator HG::Rendering::Base::RenderTarget::colorTextureBegin()
 {
     return m_colorTexture.begin();
 }
 
-HG::Rendering::Base::RenderTarget::TextureContainer::iterator
-HG::Rendering::Base::RenderTarget::colorTextureEnd()
+HG::Rendering::Base::RenderTarget::TextureContainer::iterator HG::Rendering::Base::RenderTarget::colorTextureEnd()
 {
     return m_colorTexture.end();
 }

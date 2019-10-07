@@ -8,4 +8,3 @@ class RenderToTextureScene : public HG::Core::Scene
 public:
     void start() override;
 };
-

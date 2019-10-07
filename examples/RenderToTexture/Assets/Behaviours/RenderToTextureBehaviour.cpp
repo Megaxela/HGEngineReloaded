@@ -2,16 +2,15 @@
 #include <Assets/Behaviours/RenderToTextureBehaviour.hpp>
 
 // HG::Core
-#include <HG/Core/Scene.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Scene.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/Renderer.hpp>
-#include <HG/Rendering/Base/Material.hpp>
-#include <HG/Rendering/Base/RenderingPipeline.hpp>
-#include <HG/Rendering/Base/RenderTarget.hpp>
 #include <HG/Rendering/Base/Behaviours/Mesh.hpp>
-
+#include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
 
 RenderToTextureBehaviour::RenderToTextureBehaviour() :
     m_renderTarget1(nullptr),
@@ -21,7 +20,6 @@ RenderToTextureBehaviour::RenderToTextureBehaviour() :
     m_renderBehaviour(nullptr),
     m_switch(false)
 {
-
 }
 
 RenderToTextureBehaviour::~RenderToTextureBehaviour()
@@ -71,14 +69,7 @@ void RenderToTextureBehaviour::onUpdate()
 
         pipeline->clear(HG::Utils::Color::Red);
 
-        rb->material()->set(
-            "textureMap",
-            m_switch
-            ?
-            m_renderTexture1
-            :
-            m_renderTexture2
-        );
+        rb->material()->set("textureMap", m_switch ? m_renderTexture1 : m_renderTexture2);
         pipeline->render(m_renderBehaviour);
     }
     pipeline->setRenderTarget(previous);

@@ -1,8 +1,8 @@
 // HG::Core
-#include <HG/Core/Benchmark.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
 
-HG::Core::Benchmark::ScopeJob::ScopeJob(HG::Core::Application *application, std::string name) :
+HG::Core::Benchmark::ScopeJob::ScopeJob(HG::Core::Application* application, std::string name) :
     m_benchmark(application->benchmark())
 {
     m_benchmark->startJob(std::move(name));
@@ -21,7 +21,6 @@ HG::Core::Benchmark::Benchmark() :
     m_isRunning(false),
     m_wantRunning(false)
 {
-
 }
 
 void HG::Core::Benchmark::startJob(std::string name)
@@ -51,10 +50,7 @@ void HG::Core::Benchmark::startJob(std::string name)
     }
 
     // Getting time
-    timingsIterator->second.countingJobs.emplace(
-            std::move(name),
-            std::chrono::steady_clock::now()
-    );
+    timingsIterator->second.countingJobs.emplace(std::move(name), std::chrono::steady_clock::now());
 }
 
 void HG::Core::Benchmark::stopJob()
@@ -72,16 +68,13 @@ void HG::Core::Benchmark::stopJob()
     auto timingsIterator = m_timings.find(thisThreadId);
     m_timingsMutex.unlock_shared();
 
-    if (timingsIterator == m_timings.end() ||
-        timingsIterator->second.countingJobs.empty())
+    if (timingsIterator == m_timings.end() || timingsIterator->second.countingJobs.empty())
     {
         throw std::runtime_error("No job to stop");
     }
 
     timingsIterator->second.countingJobs.top().finishTime = time;
-    timingsIterator->second.doneJobs.emplace(
-        timingsIterator->second.countingJobs.top()
-    );
+    timingsIterator->second.doneJobs.emplace(timingsIterator->second.countingJobs.top());
     timingsIterator->second.countingJobs.pop();
 }
 
@@ -101,7 +94,7 @@ std::size_t HG::Core::Benchmark::numberOfActiveJobs()
     return timingsIterator->second.countingJobs.size();
 }
 
-void HG::Core::Benchmark::getThreadsId(std::vector<std::thread::id> &ids)
+void HG::Core::Benchmark::getThreadsId(std::vector<std::thread::id>& ids)
 {
     std::shared_lock<std::shared_mutex> lock(m_timingsMutex);
 
@@ -147,7 +140,7 @@ void HG::Core::Benchmark::clear()
     std::unique_lock<std::shared_mutex> lock(m_timingsMutex);
 
     m_timings.clear();
-    m_start = std::chrono::steady_clock::time_point();
+    m_start  = std::chrono::steady_clock::time_point();
     m_finish = std::chrono::steady_clock::time_point();
 }
 
@@ -171,9 +164,7 @@ void HG::Core::Benchmark::tick()
         return;
     }
 
-    m_frameTimes.emplace_back(
-        std::chrono::steady_clock::now()
-    );
+    m_frameTimes.emplace_back(std::chrono::steady_clock::now());
 }
 
 void HG::Core::Benchmark::start()

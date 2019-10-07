@@ -5,15 +5,14 @@
 
 namespace HG::Rendering::Base
 {
-    class RenderTarget;
-    class Texture;
-    class RenderBehaviour;
-}
+class RenderTarget;
+class Texture;
+class RenderBehaviour;
+} // namespace HG::Rendering::Base
 
 class RenderToTextureBehaviour : public HG::Core::Behaviour
 {
 public:
-
     RenderToTextureBehaviour();
 
     ~RenderToTextureBehaviour() override;
@@ -38,4 +37,3 @@ private:
 
     bool m_switch;
 };
-

@@ -1,7 +1,14 @@
-#include <gtest/gtest.h>
-#include "bytearray.hpp"
+// C++ STD
 #include <string_view>
+
+// HG::Utils
 #include <HG/Utils/base64.hpp>
+
+// ByteArray
+#include <bytearray.hpp>
+
+// GTest
+#include <gtest/gtest.h>
 
 using namespace std::literals;
 
@@ -24,10 +31,7 @@ TEST(Utils, Base64EncodeRawReturn)
 
     auto answer = "ABEiM0RVZneImaq7zN3u/w=="sv;
 
-    ASSERT_EQ(
-        answer,
-        HG::Utils::Base64::Encode(ba.container().data(), ba.container().size())
-    );
+    ASSERT_EQ(answer, HG::Utils::Base64::Encode(ba.container().data(), ba.container().size()));
 }
 
 TEST(Utils, Base64EncodeBytearray)
@@ -70,7 +74,6 @@ TEST(Utils, Base64DecodeRawReturn)
     auto ba = "00112233445566778899AABBCCDDEEFF"_ba;
 
     auto answer = "ABEiM0RVZneImaq7zN3u/w=="sv;
-
 
     ASSERT_EQ(ba.container(), HG::Utils::Base64::Decode<std::byte>(answer.data(), answer.size()));
 }
@@ -122,7 +125,7 @@ TEST(Utils, Base64DecodeStringViewReturn)
 TEST(Utils, Base64HugeTest)
 {
     // Bytes vs Encoded
-    std::vector< std::pair < bytearray<>, std::string_view > > tests = {
+    std::vector<std::pair<bytearray<>, std::string_view>> tests = {
         {"650CB55A17E17C73E5E49F32E75772F8014A2DAE"_ba, "ZQy1WhfhfHPl5J8y51dy+AFKLa4="},
         {"E6BC52DCDA8714B62739414F95701DD4F6A38499"_ba, "5rxS3NqHFLYnOUFPlXAd1PajhJk="},
         {"1444EC367097C8C92322DDF243D7AA4828934236"_ba, "FETsNnCXyMkjIt3yQ9eqSCiTQjY="},
@@ -227,8 +230,10 @@ TEST(Utils, Base64HugeTest)
 
     for (auto&& [bytes, base64] : tests)
     {
-        ASSERT_EQ(HG::Utils::Base64::Encode(bytes), base64) << "Encoding of " << std::to_string(bytes) << " is not equal to " << base64;
+        ASSERT_EQ(HG::Utils::Base64::Encode(bytes), base64)
+            << "Encoding of " << std::to_string(bytes) << " is not equal to " << base64;
 
-        ASSERT_EQ(HG::Utils::Base64::Decode<std::byte>(base64), bytes.container()) << "Decoding of " << base64 << " is not equal to " << std::to_string(bytes);
+        ASSERT_EQ(HG::Utils::Base64::Decode<std::byte>(base64), bytes.container())
+            << "Decoding of " << base64 << " is not equal to " << std::to_string(bytes);
     }
 }

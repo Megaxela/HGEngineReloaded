@@ -9,7 +9,5 @@
 class TransparentScene : public HG::Core::Scene
 {
 public:
-
     void start() override;
 };
-

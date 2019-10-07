@@ -1,18 +1,18 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 #include <HG/Rendering/OpenGL/ImGuiRenderer.hpp>
+#include <HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp>
 
 // HG::Utils
 #include <HG/Utils/Surface.hpp>
@@ -36,7 +36,6 @@ HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* appli
     m_ebo(gl::invalid_id),
     m_fontTexture(nullptr)
 {
-
 }
 
 void HG::Rendering::OpenGL::ImGuiRenderer::onDeinit()
@@ -56,24 +55,21 @@ void HG::Rendering::OpenGL::ImGuiRenderer::onInit()
 {
     Info() << "Initializing ImGui renderer";
 
-    m_material = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<Materials::ImGuiMaterial>();
+    m_material = application()->renderer()->materialCollection()->getMaterial<Materials::ImGuiMaterial>();
 
     m_vbo = std::move(gl::buffer());
     m_ebo = std::move(gl::buffer());
 
     auto* program = &m_material->shader()->castSpecificDataTo<Common::ShaderData>()->Program;
 
-    m_attribLocationPosition  = program->attribute_location("Position");
-    m_attribLocationUV        = program->attribute_location("UV");
-    m_attribLocationColor     = program->attribute_location("Color");
+    m_attribLocationPosition = program->attribute_location("Position");
+    m_attribLocationUV       = program->attribute_location("UV");
+    m_attribLocationColor    = program->attribute_location("Color");
 
     createFontsTexture();
 }
 
-HG::Core::Application *HG::Rendering::OpenGL::ImGuiRenderer::application() const
+HG::Core::Application* HG::Rendering::OpenGL::ImGuiRenderer::application() const
 {
     return m_application;
 }
@@ -95,15 +91,20 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
     draw_data->ScaleClipRects(io.DisplayFramebufferScale);
 
     // Backup GL state
-    GLint last_scissor_box[4];   glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
-    GLenum last_blend_src_rgb;   glGetIntegerv(GL_BLEND_SRC_RGB, (GLint*)&last_blend_src_rgb);
-    GLenum last_blend_dst_rgb;   glGetIntegerv(GL_BLEND_DST_RGB, (GLint*)&last_blend_dst_rgb);
-    GLenum last_blend_src_alpha; glGetIntegerv(GL_BLEND_SRC_ALPHA, (GLint*)&last_blend_src_alpha);
-    GLenum last_blend_dst_alpha; glGetIntegerv(GL_BLEND_DST_ALPHA, (GLint*)&last_blend_dst_alpha);
+    GLint last_scissor_box[4];
+    glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
+    GLenum last_blend_src_rgb;
+    glGetIntegerv(GL_BLEND_SRC_RGB, (GLint*)&last_blend_src_rgb);
+    GLenum last_blend_dst_rgb;
+    glGetIntegerv(GL_BLEND_DST_RGB, (GLint*)&last_blend_dst_rgb);
+    GLenum last_blend_src_alpha;
+    glGetIntegerv(GL_BLEND_SRC_ALPHA, (GLint*)&last_blend_src_alpha);
+    GLenum last_blend_dst_alpha;
+    glGetIntegerv(GL_BLEND_DST_ALPHA, (GLint*)&last_blend_dst_alpha);
 
-    bool last_enable_blend = gl::blending_enabled();
-    bool last_enable_cull_face = gl::polygon_face_culling_enabled();
-    bool last_enable_depth_test = gl::depth_test_enabled();
+    bool last_enable_blend        = gl::blending_enabled();
+    bool last_enable_cull_face    = gl::polygon_face_culling_enabled();
+    bool last_enable_depth_test   = gl::depth_test_enabled();
     bool last_enable_scissor_test = gl::scissor_test_enabled();
 
     // Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, polygon fill
@@ -143,49 +144,39 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
 
     // Setting up VAO attributes
     vao.set_attribute_enabled(m_attribLocationPosition, true);
-    vao.set_attribute_enabled(m_attribLocationUV,       true);
-    vao.set_attribute_enabled(m_attribLocationColor,    true);
+    vao.set_attribute_enabled(m_attribLocationUV, true);
+    vao.set_attribute_enabled(m_attribLocationColor, true);
 
     vao.set_vertex_buffer(m_attribLocationPosition, m_vbo, 0, sizeof(ImDrawVert));
-    vao.set_vertex_buffer(m_attribLocationUV,       m_vbo, 0, sizeof(ImDrawVert));
-    vao.set_vertex_buffer(m_attribLocationColor,    m_vbo, 0, sizeof(ImDrawVert));
+    vao.set_vertex_buffer(m_attribLocationUV, m_vbo, 0, sizeof(ImDrawVert));
+    vao.set_vertex_buffer(m_attribLocationColor, m_vbo, 0, sizeof(ImDrawVert));
 
-    vao.set_attribute_format(m_attribLocationPosition, 2, GL_FLOAT,         false, static_cast<GLuint>(offsetof(ImDrawVert, pos)));
-    vao.set_attribute_format(m_attribLocationUV,       2, GL_FLOAT,         false, static_cast<GLuint>(offsetof(ImDrawVert, uv)));
-    vao.set_attribute_format(m_attribLocationColor,    4, GL_UNSIGNED_BYTE, true,  static_cast<GLuint>(offsetof(ImDrawVert, col)));
+    vao.set_attribute_format(
+        m_attribLocationPosition, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(ImDrawVert, pos)));
+    vao.set_attribute_format(m_attribLocationUV, 2, GL_FLOAT, false, static_cast<GLuint>(offsetof(ImDrawVert, uv)));
+    vao.set_attribute_format(
+        m_attribLocationColor, 4, GL_UNSIGNED_BYTE, true, static_cast<GLuint>(offsetof(ImDrawVert, col)));
 
     // Draw
-    for (auto commandListIndex = 0;
-         commandListIndex < draw_data->CmdListsCount;
-         commandListIndex++)
+    for (auto commandListIndex = 0; commandListIndex < draw_data->CmdListsCount; commandListIndex++)
     {
         BENCH("Drawing ImGui command list");
-        const auto* cmd_list = draw_data->CmdLists[commandListIndex];
+        const auto* cmd_list               = draw_data->CmdLists[commandListIndex];
         const ImDrawIdx* idx_buffer_offset = nullptr;
 
         m_vbo.bind(GL_ARRAY_BUFFER);
 
         // Loading data to VBO
-        m_vbo.set_data(
-            cmd_list->VtxBuffer.Size * sizeof(ImDrawVert),
-            cmd_list->VtxBuffer.Data,
-            GL_STREAM_DRAW
-        );
+        m_vbo.set_data(cmd_list->VtxBuffer.Size * sizeof(ImDrawVert), cmd_list->VtxBuffer.Data, GL_STREAM_DRAW);
 
         // Binding element buffer object
         m_ebo.bind(GL_ELEMENT_ARRAY_BUFFER);
 
         // Loading data to EBO
-        m_ebo.set_data(
-            cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx),
-            cmd_list->IdxBuffer.Data,
-            GL_STREAM_DRAW
-        );
+        m_ebo.set_data(cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx), cmd_list->IdxBuffer.Data, GL_STREAM_DRAW);
 
         // Drawing commands
-        for (auto commandIndex = 0;
-             commandIndex < cmd_list->CmdBuffer.Size;
-             ++commandIndex)
+        for (auto commandIndex = 0; commandIndex < cmd_list->CmdBuffer.Size; ++commandIndex)
         {
             BENCH("Drawing command from list");
             const auto* pcmd = &cmd_list->CmdBuffer[commandIndex];
@@ -211,31 +202,22 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
                 data->Texture.bind();
 
                 gl::set_scissor(
-                    {
-                        static_cast<GLint>(pcmd->ClipRect.x),
-                        static_cast<GLint>(fb_height - pcmd->ClipRect.w)
-                    },
-                    {
-                        static_cast<GLsizei>(pcmd->ClipRect.z - pcmd->ClipRect.x),
-                        static_cast<GLsizei>(pcmd->ClipRect.w - pcmd->ClipRect.y)
-                    }
-                );
+                    {static_cast<GLint>(pcmd->ClipRect.x), static_cast<GLint>(fb_height - pcmd->ClipRect.w)},
+                    {static_cast<GLsizei>(pcmd->ClipRect.z - pcmd->ClipRect.x),
+                     static_cast<GLsizei>(pcmd->ClipRect.w - pcmd->ClipRect.y)});
 
-                gl::draw_elements(
-                    GL_TRIANGLES,
-                    pcmd->ElemCount,
-                    GL_UNSIGNED_SHORT, // May cause errors after imgui update, because of probably uint
-                    idx_buffer_offset
-                );
+                gl::draw_elements(GL_TRIANGLES,
+                                  pcmd->ElemCount,
+                                  GL_UNSIGNED_SHORT, // May cause errors after imgui update, because of probably uint
+                                  idx_buffer_offset);
 
                 data->Texture.unbind();
 
-                if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
+                if (application()->countStatistics()->hasCounter(
+                        HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
                 {
-                    application()->countStatistics()->add(
-                        HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
-                        pcmd->ElemCount
-                    );
+                    application()->countStatistics()->add(HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+                                                          pcmd->ElemCount);
                 }
             }
 
@@ -261,7 +243,11 @@ void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
     auto surface = std::make_shared<HG::Utils::Surface>();
     surface->Bpp = 4;
 
-    io.Fonts->GetTexDataAsRGBA32(&surface->Data, &surface->Width, &surface->Height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
+    io.Fonts->GetTexDataAsRGBA32(
+        &surface->Data,
+        &surface->Width,
+        &surface
+             ->Height); // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
 
     m_fontTexture = new (application()->resourceCache()) HG::Rendering::Base::Texture(surface);
 

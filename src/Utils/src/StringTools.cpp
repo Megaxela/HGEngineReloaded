@@ -4,14 +4,14 @@
 // HG::Utils
 #include <HG/Utils/StringTools.hpp>
 
-std::vector<std::string> HG::Utils::StringTools::split(const std::string &s, char delim)
+std::vector<std::string> HG::Utils::StringTools::split(const std::string& s, char delim)
 {
     std::vector<std::string> elems;
     split(s, delim, std::back_inserter(elems));
     return elems;
 }
 
-std::vector<std::wstring> HG::Utils::StringTools::split(const std::wstring &s, wchar_t delim)
+std::vector<std::wstring> HG::Utils::StringTools::split(const std::wstring& s, wchar_t delim)
 {
     std::vector<std::wstring> elems;
     split(s, delim, std::back_inserter(elems));
@@ -23,13 +23,11 @@ std::vector<std::wstring> HG::Utils::StringTools::smartSplit(const std::wstring&
     std::vector<std::wstring> elems;
     std::wstringstream ss;
 
-    bool isQuoted = false;
+    bool isQuoted    = false;
     bool isScreening = false;
     for (auto&& character : s)
     {
-        if (character == delim &&
-            !ss.str().empty() &&
-            !isQuoted)
+        if (character == delim && !ss.str().empty() && !isQuoted)
         {
             elems.push_back(ss.str());
             ss.str(std::wstring());
@@ -59,8 +57,7 @@ std::vector<std::wstring> HG::Utils::StringTools::smartSplit(const std::wstring&
         }
     }
 
-    if (!ss.str().empty() &&
-        !isQuoted)
+    if (!ss.str().empty() && !isQuoted)
     {
         elems.push_back(ss.str());
         ss.clear();
@@ -74,13 +71,11 @@ std::vector<std::string> HG::Utils::StringTools::smartSplit(const std::string& s
     std::vector<std::string> elems;
     std::stringstream ss;
 
-    bool isQuoted = false;
+    bool isQuoted    = false;
     bool isScreening = false;
     for (auto&& character : s)
     {
-        if (character == delim &&
-            !ss.str().empty() &&
-            !isQuoted)
+        if (character == delim && !ss.str().empty() && !isQuoted)
         {
             elems.push_back(ss.str());
             ss.str(std::string());
@@ -110,8 +105,7 @@ std::vector<std::string> HG::Utils::StringTools::smartSplit(const std::string& s
         }
     }
 
-    if (!ss.str().empty() &&
-        !isQuoted)
+    if (!ss.str().empty() && !isQuoted)
     {
         elems.push_back(ss.str());
         ss.clear();
@@ -124,12 +118,7 @@ std::string HG::Utils::StringTools::toLower(const std::string& s)
 {
     std::string copy(s);
 
-    std::transform(
-        copy.begin(),
-        copy.end(),
-        copy.begin(),
-        ::tolower
-    );
+    std::transform(copy.begin(), copy.end(), copy.begin(), ::tolower);
 
     return copy;
 }

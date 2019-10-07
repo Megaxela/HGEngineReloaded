@@ -1,20 +1,20 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::OpenGL
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/GizmosRenderer.hpp>
 #include <HG/Rendering/OpenGL/Materials/GizmosLineMaterial.hpp>
 #include <HG/Rendering/OpenGL/Materials/GizmosMeshMaterial.hpp>
-#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
-#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
-#include <HG/Rendering/OpenGL/GizmosRenderer.hpp>
 
 // HG::Rendering::Base
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/Material.hpp>
 #include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
-#include <HG/Rendering/Base/Material.hpp>
-#include <HG/Rendering/Base/Camera.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>
@@ -29,7 +29,6 @@ HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* app
     m_linesVAO(gl::invalid_id),
     m_linesVBO(gl::invalid_id)
 {
-
 }
 
 void HG::Rendering::OpenGL::GizmosRenderer::onDeinit()
@@ -55,7 +54,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::onInit()
 
     // Preparing line shader
     m_lineMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::GizmosLineMaterial>();
-//    m_meshMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
+    //    m_meshMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::GizmosMeshMaterial>();
 
     // Preparing VAO
     m_linesVAO.bind();
@@ -76,25 +75,25 @@ void HG::Rendering::OpenGL::GizmosRenderer::onInit()
     m_linesVAO.set_attribute_format(1, 4, GL_FLOAT, false, offsetof(HG::Rendering::Base::Gizmos::LineData, beginColor));
 }
 
-HG::Core::Application *HG::Rendering::OpenGL::GizmosRenderer::application() const
+HG::Core::Application* HG::Rendering::OpenGL::GizmosRenderer::application() const
 {
     return m_application;
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::line(const HG::Rendering::Base::Gizmos::LineData &line)
+void HG::Rendering::OpenGL::GizmosRenderer::line(const HG::Rendering::Base::Gizmos::LineData& line)
 {
     m_lineData.push_back(line);
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::sphere(const HG::Rendering::Base::Gizmos::SphereData &sphere)
+void HG::Rendering::OpenGL::GizmosRenderer::sphere(const HG::Rendering::Base::Gizmos::SphereData& sphere)
 {
-    (void) sphere;
+    (void)sphere;
     // todo: Add implementation
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const HG::Rendering::Base::Gizmos::HexahedronData &hexahedron)
+void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const HG::Rendering::Base::Gizmos::HexahedronData& hexahedron)
 {
-    (void) hexahedron;
+    (void)hexahedron;
     // todo: Add implementation
 }
 
@@ -115,10 +114,7 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
         return;
     }
 
-    m_linesVBO.set_data(
-        sizeof(HG::Rendering::Base::Gizmos::LineData) * m_lineData.size(),
-        m_lineData.data()
-    );
+    m_linesVBO.set_data(sizeof(HG::Rendering::Base::Gizmos::LineData) * m_lineData.size(), m_lineData.data());
 
     m_lineMaterial->set("projection", camera->projectionMatrix());
     m_lineMaterial->set("view", camera->viewMatrix());
@@ -127,18 +123,12 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
 
     m_linesVAO.bind();
 
-    gl::draw_arrays(
-        GL_LINES,
-        0,
-        m_lineData.size() * 2
-    );
+    gl::draw_arrays(GL_LINES, 0, m_lineData.size() * 2);
 
     if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
     {
-        application()->countStatistics()->add(
-            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
-            m_lineData.size() * 2
-        );
+        application()->countStatistics()->add(HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+                                              m_lineData.size() * 2);
     }
 
     m_linesVAO.unbind();

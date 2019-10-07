@@ -4,10 +4,7 @@
 // HG::Utils
 #include <HG/Utils/Model.hpp>
 
-HG::Utils::Model::Model(HG::Utils::Model* parent) :
-    m_meshes(),
-    m_parent(nullptr),
-    m_children()
+HG::Utils::Model::Model(HG::Utils::Model* parent) : m_meshes(), m_parent(nullptr), m_children()
 {
     setParent(parent);
 }
@@ -29,13 +26,7 @@ void HG::Utils::Model::setParent(HG::Utils::Model* model)
 {
     if (m_parent)
     {
-        m_parent->m_children.erase(
-            std::find(
-                m_parent->m_children.begin(),
-                m_parent->m_children.end(),
-                this
-            )
-        );
+        m_parent->m_children.erase(std::find(m_parent->m_children.begin(), m_parent->m_children.end(), this));
     }
 
     m_parent = model;

@@ -1,19 +1,18 @@
 // C++ STL
-#include <iostream>
 #include <algorithm>
 #include <cstring>
+#include <iostream>
 
 // HG::ToolsCore
 #include <HG/ToolsCore/CommandLineArguments.hpp>
 
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::ArgumentBuilder(
-        HG::ToolsCore::CommandLineArguments::Argument &arg) :
+    HG::ToolsCore::CommandLineArguments::Argument& arg) :
     m_ref(arg)
 {
-
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::action(HG::ToolsCore::CommandLineArguments::Action action)
 {
     m_ref.action = action;
@@ -21,7 +20,7 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::action(HG::ToolsCore::Comm
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::numberOfArguments(std::size_t number)
 {
     m_ref.numberOfArguments = number;
@@ -29,25 +28,25 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::numberOfArguments(std::siz
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::constantValue(
-        HG::ToolsCore::CommandLineArguments::ArgumentType argument)
+    HG::ToolsCore::CommandLineArguments::ArgumentType argument)
 {
     m_ref.constantValue = std::move(argument);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::defaultValue(
-        HG::ToolsCore::CommandLineArguments::ArgumentType value)
+    HG::ToolsCore::CommandLineArguments::ArgumentType value)
 {
     m_ref.defaultVaue = std::move(value);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::type(HG::ToolsCore::CommandLineArguments::Type type)
 {
     m_ref.type = type;
@@ -55,15 +54,15 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::type(HG::ToolsCore::Comman
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &HG::ToolsCore::CommandLineArguments::ArgumentBuilder::choices(
-        std::vector<HG::ToolsCore::CommandLineArguments::ArgumentType> choices)
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder& HG::ToolsCore::CommandLineArguments::ArgumentBuilder::choices(
+    std::vector<HG::ToolsCore::CommandLineArguments::ArgumentType> choices)
 {
     m_ref.choices = std::move(choices);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::required(bool required)
 {
     m_ref.required = required;
@@ -71,7 +70,7 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::required(bool required)
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::metavar(std::string meta)
 {
     m_ref.meta = std::move(meta);
@@ -79,7 +78,7 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::metavar(std::string meta)
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::destination(std::string name)
 {
     m_ref.destination = std::move(name);
@@ -87,7 +86,7 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::destination(std::string na
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::help(std::string help)
 {
     m_ref.help = std::move(help);
@@ -95,7 +94,7 @@ HG::ToolsCore::CommandLineArguments::ArgumentBuilder::help(std::string help)
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder &
+HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder::version(std::string version)
 {
     m_ref.version = std::move(version);
@@ -109,10 +108,7 @@ HG::ToolsCore::CommandLineArguments::CommandLineArguments(std::string name) :
     m_argumentsList()
 {
     // Adding default help argument
-    addArgument({"-h", "--help"})
-        .help("show this message and exit")
-        .action(Action::Help)
-        .numberOfArguments(0);
+    addArgument({"-h", "--help"}).help("show this message and exit").action(Action::Help).numberOfArguments(0);
 }
 
 HG::ToolsCore::CommandLineArguments::ArgumentBuilder
@@ -141,8 +137,7 @@ HG::ToolsCore::CommandLineArguments::addArgument(std::vector<std::string> namesO
     return ArgumentBuilder(keptArgument);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentsMap
-HG::ToolsCore::CommandLineArguments::parse(int argc, char **argv)
+HG::ToolsCore::CommandLineArguments::ArgumentsMap HG::ToolsCore::CommandLineArguments::parse(int argc, char** argv)
 {
     // Collecting required elements and counting minimal
     // number of arguments to proceed
@@ -235,8 +230,7 @@ void HG::ToolsCore::CommandLineArguments::showUsageLine()
             }
 
             // todo: Make this condition more convinient
-            if (val.size() > 1 &&
-                val[0] == '-' && val[1] != '-')
+            if (val.size() > 1 && val[0] == '-' && val[1] != '-')
             {
                 selected = &val;
             }
@@ -264,17 +258,13 @@ void HG::ToolsCore::CommandLineArguments::showUsageLine()
 }
 
 void HG::ToolsCore::CommandLineArguments::showArguments(
-        const std::vector<const HG::ToolsCore::CommandLineArguments::Argument *> &arguments)
+    const std::vector<const HG::ToolsCore::CommandLineArguments::Argument*>& arguments)
 {
     // Getting required number of tabs
-    std::size_t requiredNumberOfTags = (*std::max_element(
-            arguments.begin(),
-            arguments.end(),
-            [](const Argument* l, const Argument* r)
-            {
-                return l->keys.size() < r->keys.size();
-            }
-    ))->keys.size();
+    std::size_t requiredNumberOfTags =
+        (*std::max_element(arguments.begin(), arguments.end(), [](const Argument* l, const Argument* r) {
+            return l->keys.size() < r->keys.size();
+        }))->keys.size();
 
     for (const auto* argument : arguments)
     {
@@ -285,7 +275,8 @@ void HG::ToolsCore::CommandLineArguments::showArguments(
 
         std::string valueReplacer = nameFromKey(argument->keys.back());
 
-        std::transform(valueReplacer.begin(), valueReplacer.end(), valueReplacer.begin(), [](char c) {return std::toupper(c); });
+        std::transform(
+            valueReplacer.begin(), valueReplacer.end(), valueReplacer.begin(), [](char c) { return std::toupper(c); });
 
         bool isFirst = true;
         for (const auto& key : argument->keys)
@@ -338,7 +329,6 @@ void HG::ToolsCore::CommandLineArguments::showArguments(
                 }
             }
 
-
             isFirst = false;
         }
 
@@ -362,18 +352,16 @@ void HG::ToolsCore::CommandLineArguments::showArguments(
 
 void HG::ToolsCore::CommandLineArguments::showVersion()
 {
-
 }
 
 HG::ToolsCore::CommandLineArguments::ArgumentType
-HG::ToolsCore::CommandLineArguments::parseValue(const char *value, HG::ToolsCore::CommandLineArguments::Type t)
+HG::ToolsCore::CommandLineArguments::parseValue(const char* value, HG::ToolsCore::CommandLineArguments::Type t)
 {
     ArgumentType result;
 
     switch (t)
     {
-    case Type::Integer:
-    {
+    case Type::Integer: {
         try
         {
             result = std::stoi(value);
@@ -387,22 +375,17 @@ HG::ToolsCore::CommandLineArguments::parseValue(const char *value, HG::ToolsCore
 
         break;
     }
-    case Type::String:
-    {
+    case Type::String: {
         result = std::string(value);
 
         break;
     }
-    case Type::Boolean:
-    {
-        if (std::strcmp(value, "true") == 0 ||
-            std::strcmp(value, "TRUE") == 0 ||
-            std::strcmp(value, "True") == 0)
+    case Type::Boolean: {
+        if (std::strcmp(value, "true") == 0 || std::strcmp(value, "TRUE") == 0 || std::strcmp(value, "True") == 0)
         {
             result = true;
         }
-        else if (std::strcmp(value, "false") == 0 ||
-                 std::strcmp(value, "FALSE") == 0 ||
+        else if (std::strcmp(value, "false") == 0 || std::strcmp(value, "FALSE") == 0 ||
                  std::strcmp(value, "False") == 0)
         {
             result = false;
@@ -416,11 +399,11 @@ HG::ToolsCore::CommandLineArguments::parseValue(const char *value, HG::ToolsCore
 }
 
 HG::ToolsCore::CommandLineArguments::ArgumentsMap
-HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char **arguments)
+HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char** arguments)
 {
     std::unordered_map<std::string, ArgumentType> result;
 
-    Argument* arg = nullptr;
+    Argument* arg             = nullptr;
     std::size_t argumentsLeft = 0;
     for (int i = 0; i < numberOfArguments; ++i)
     {
@@ -443,7 +426,7 @@ HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char
                 exit(1);
             }
 
-            arg = iter->second;
+            arg           = iter->second;
             argumentsLeft = arg->numberOfArguments;
 
             if (argumentsLeft > 0)
@@ -499,14 +482,7 @@ HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char
     return result;
 }
 
-std::string HG::ToolsCore::CommandLineArguments::nameFromKey(const std::string &s)
+std::string HG::ToolsCore::CommandLineArguments::nameFromKey(const std::string& s)
 {
-    return std::string(
-            std::find_if(
-                    s.begin(),
-                    s.end(),
-                    [](char c){ return c != '-'; }
-            ),
-            s.end()
-    );
+    return std::string(std::find_if(s.begin(), s.end(), [](char c) { return c != '-'; }), s.end());
 }

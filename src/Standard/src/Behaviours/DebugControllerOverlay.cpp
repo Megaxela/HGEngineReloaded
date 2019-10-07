@@ -1,7 +1,7 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/Transform.hpp>
 #include <HG/Core/Scene.hpp>
+#include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Camera.hpp>
@@ -19,7 +19,6 @@
 // ImGui
 #include <imgui.h>
 #include <imgui_internal.h>
-
 
 void HG::Standard::Behaviours::DebugControllerOverlay::onUpdate()
 {
@@ -50,12 +49,10 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayMenu()
             {
                 auto behaviour = viewElement.second(gameObject());
 
-                if (ImGui::MenuItem(
-                    viewElement.first.c_str(),
-                    nullptr,
-                    behaviour ? behaviour->isEnabled() : false,
-                    behaviour != nullptr
-                ))
+                if (ImGui::MenuItem(viewElement.first.c_str(),
+                                    nullptr,
+                                    behaviour ? behaviour->isEnabled() : false,
+                                    behaviour != nullptr))
                 {
                     behaviour->setEnabled(!behaviour->isEnabled());
                 }
@@ -103,14 +100,14 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayInspectorWindow()
 void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
 {
     // Display gameobject origin
-//    auto originPosition = m_activeGameObject->transform()->globalPosition();
-//    originPosition.z = 0.5f;
-//
-//    scene()->application()->renderer()->gizmos()->circle(
-//        originPosition,
-//        {m_propertyOriginSize.x, m_propertyOriginSize.y},
-//        m_propertyOriginColor
-//    );
+    //    auto originPosition = m_activeGameObject->transform()->globalPosition();
+    //    originPosition.z = 0.5f;
+    //
+    //    scene()->application()->renderer()->gizmos()->circle(
+    //        originPosition,
+    //        {m_propertyOriginSize.x, m_propertyOriginSize.y},
+    //        m_propertyOriginColor
+    //    );
 
     m_behaviours.clear();
 
@@ -122,16 +119,15 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
         m_activeGameObject->setEnabled(gameObjectEnabled);
     }
 
-
     ImGui::Separator();
 
-    auto pos = m_activeGameObject->transform()->localPosition();
-    auto rot = glm::degrees(glm::eulerAngles(m_activeGameObject->transform()->localRotation()));
+    auto pos   = m_activeGameObject->transform()->localPosition();
+    auto rot   = glm::degrees(glm::eulerAngles(m_activeGameObject->transform()->localRotation()));
     auto scale = m_activeGameObject->transform()->localScale();
 
-    ImGui::InputFloat3("Position", reinterpret_cast<float *>(&pos));
-    ImGui::InputFloat3("Rotation", reinterpret_cast<float *>(&rot));
-    ImGui::InputFloat3("Scale",    reinterpret_cast<float *>(&scale));
+    ImGui::InputFloat3("Position", reinterpret_cast<float*>(&pos));
+    ImGui::InputFloat3("Rotation", reinterpret_cast<float*>(&rot));
+    ImGui::InputFloat3("Scale", reinterpret_cast<float*>(&scale));
 
     m_activeGameObject->transform()->setLocalPosition(pos);
     m_activeGameObject->transform()->setLocalRotation(glm::radians(rot));
@@ -176,7 +172,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(HG::Core::Transform *parent)
+void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(HG::Core::Transform* parent)
 {
     HG::Core::GameObject* newActiveGameObject = nullptr;
 
@@ -187,10 +183,8 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObject
             // Preparing flags
             auto hasChildren = !gameObject->transform()->children().empty();
 
-            auto nodeFlags =
-                (hasChildren ? 0U : ImGuiTreeNodeFlags_Leaf) |
-                ImGuiTreeNodeFlags_OpenOnArrow |
-                (gameObject == m_activeGameObject ? ImGuiTreeNodeFlags_Selected : 0);
+            auto nodeFlags = (hasChildren ? 0U : ImGuiTreeNodeFlags_Leaf) | ImGuiTreeNodeFlags_OpenOnArrow |
+                             (gameObject == m_activeGameObject ? ImGuiTreeNodeFlags_Selected : 0);
 
             bool opened = ImGui::TreeNodeEx(gameObject, nodeFlags, "%s", gameObject->name().c_str());
 
@@ -213,14 +207,14 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObject
         }
     }
 
-    if (newActiveGameObject != nullptr &&
-        newActiveGameObject != m_activeGameObject)
+    if (newActiveGameObject != nullptr && newActiveGameObject != m_activeGameObject)
     {
         m_activeGameObject = newActiveGameObject;
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(const HG::Core::Behaviour::Property& property)
+void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(
+    const HG::Core::Behaviour::Property& property)
 {
     if (property.typeInfo() == typeid(float))
     {
@@ -254,7 +248,8 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(con
 
         ImGui::Combo(property.name().c_str(), &proj, items, 2);
 
-        property.getSetter<HG::Rendering::Base::Camera::Projection>()(static_cast<HG::Rendering::Base::Camera::Projection>(proj));
+        property.getSetter<HG::Rendering::Base::Camera::Projection>()(
+            static_cast<HG::Rendering::Base::Camera::Projection>(proj));
     }
     else
     {

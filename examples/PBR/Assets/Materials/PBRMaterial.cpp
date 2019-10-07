@@ -1,4 +1,5 @@
-#include "PBRMaterial.hpp"
+// PBR example
+#include <Assets/Materials/PBRMaterial.hpp>
 
 const char* PBRMaterial::rawShader = R"(
 #ifdef VertexShader

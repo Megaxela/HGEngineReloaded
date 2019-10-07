@@ -2,12 +2,12 @@
 #include <algorithm>
 
 // HG::Core
-#include <HG/Core/Scene.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Scene.hpp>
 
 // HG::Standard
-#include <HG/Standard/Behaviours/IngameConsole.hpp>
 #include <HG/Standard/Behaviours/DebugControllerOverlay.hpp>
+#include <HG/Standard/Behaviours/IngameConsole.hpp>
 
 // HG::Utils
 #include <HG/Utils/StringTools.hpp>
@@ -18,66 +18,45 @@
 // ImGui
 #include <imgui.h>
 
-
-HG::Standard::Behaviours::IngameConsole::IngameConsole() :
-    m_logsListener(),
-    m_commands(),
-    m_linesBuffer()
+HG::Standard::Behaviours::IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
 {
     connectLoggingWatcher();
 
     Info() << "Creating ingame console";
 
-    addCommand(Command(
-        "help",
-        "Displays this text.",
-        [this](Command::Arguments) -> int
+    addCommand(Command("help", "Displays this text.", [this](Command::Arguments) -> int {
+        for (auto&& [name, command] : m_commands)
         {
-            for (auto&& [name, command] : m_commands)
+            logText(HG::Utils::Color::Gray, command.command);
+
+            auto splittedDescription = HG::Utils::StringTools::split(command.description, '\n');
+
+            for (auto&& line : splittedDescription)
             {
-                logText(HG::Utils::Color::Gray, command.command);
-
-                auto splittedDescription = HG::Utils::StringTools::split(command.description, '\n');
-
-                for (auto&& line : splittedDescription)
-                {
-                    logText(HG::Utils::Color::White, "    " + line);
-                }
+                logText(HG::Utils::Color::White, "    " + line);
             }
-
-            return 0;
         }
-    ));
 
-    addCommand(Command(
-        "clear",
-        "Clears console buffer.",
-        [this](Command::Arguments) -> int
-        {
-            m_linesBuffer.clear();
+        return 0;
+    }));
 
-            return 0;
-        }
-    ));
+    addCommand(Command("clear", "Clears console buffer.", [this](Command::Arguments) -> int {
+        m_linesBuffer.clear();
 
-    addCommand(Command(
-        "quit",
-        "Closes application.",
-        [this](Command::Arguments) -> int
-        {
-            Info() << "Closing app from console.";
-            scene()->application()->stop();
+        return 0;
+    }));
 
-            return 0;
-        }
-    ));
-    
-    addCommand(Command(
-        "cl_enableDebug",
-        "Enables or disables debug controller system.\n"
-        "Expected arguments: [0, 1]",
-        [this](Command::Arguments a) { return commandClEnableDebug(a); }
-    ));
+    addCommand(Command("quit", "Closes application.", [this](Command::Arguments) -> int {
+        Info() << "Closing app from console.";
+        scene()->application()->stop();
+
+        return 0;
+    }));
+
+    addCommand(Command("cl_enableDebug",
+                       "Enables or disables debug controller system.\n"
+                       "Expected arguments: [0, 1]",
+                       [this](Command::Arguments a) { return commandClEnableDebug(a); }));
 }
 
 HG::Standard::Behaviours::IngameConsole::~IngameConsole()
@@ -105,13 +84,10 @@ void HG::Standard::Behaviours::IngameConsole::displayConsole()
         }
 
         {
-            const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
+            const float footer_height_to_reserve =
+                ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
             ImGui::BeginChild(
-                "LogsRegion",
-                ImVec2(0, -footer_height_to_reserve),
-                false,
-                ImGuiWindowFlags_HorizontalScrollbar
-            );
+                "LogsRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 
             {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
@@ -137,14 +113,12 @@ void HG::Standard::Behaviours::IngameConsole::displayConsole()
 
         ImGui::PushItemWidth(-1);
 
-        if (ImGui::InputText(
-            "##label",
-            buffer, 1024,
-            ImGuiInputTextFlags_EnterReturnsTrue
-//            ImGuiInputTextFlags_
-//        ImGuiInputTextFlags_CallbackCompletion |
-//        ImGuiInputTextFlags_CallbackHistory
-        ) && buffer[0])
+        if (ImGui::InputText("##label", buffer, 1024, ImGuiInputTextFlags_EnterReturnsTrue
+                             //            ImGuiInputTextFlags_
+                             //        ImGuiInputTextFlags_CallbackCompletion |
+                             //        ImGuiInputTextFlags_CallbackHistory
+                             ) &&
+            buffer[0])
         {
             executeCommand(buffer);
 
@@ -175,8 +149,7 @@ void HG::Standard::Behaviours::IngameConsole::onUpdate()
 void HG::Standard::Behaviours::IngameConsole::proceedLogs()
 {
     AbstractLogger::Message msg;
-    while (m_logsListener &&
-           m_logsListener->hasMessages())
+    while (m_logsListener && m_logsListener->hasMessages())
     {
         msg = std::move(m_logsListener->popMessage());
 
@@ -198,18 +171,16 @@ void HG::Standard::Behaviours::IngameConsole::executeCommand(std::string command
     {
         auto splittedCommand = HG::Utils::StringTools::smartSplit(command, ' ');
 
-//        addCommandToHistory(std::move(command));
+        //        addCommandToHistory(std::move(command));
 
         std::vector<std::string> arguments(splittedCommand.begin() + 1, splittedCommand.end());
 
         auto commandName = HG::Utils::StringTools::toLower(splittedCommand[0]);
 
         auto commandIter = std::find_if(
-            m_commands.begin(),
-            m_commands.end(),
-            [&commandName](const std::pair<std::string, Command>& pair)
-            { return pair.first == commandName; }
-        );
+            m_commands.begin(), m_commands.end(), [&commandName](const std::pair<std::string, Command>& pair) {
+                return pair.first == commandName;
+            });
 
         if (commandIter != m_commands.end())
         {
@@ -270,7 +241,7 @@ HG::Utils::Color HG::Standard::Behaviours::IngameConsole::getLogColor(AbstractLo
 void HG::Standard::Behaviours::IngameConsole::connectLoggingWatcher()
 {
     m_logsListener = std::make_shared<LoggingWatcher>(this);
-    
+
     if (CurrentLogger::i())
     {
         CurrentLogger::i()->addLogsListener(m_logsListener);
@@ -281,19 +252,19 @@ void HG::Standard::Behaviours::IngameConsole::connectLoggingWatcher()
     }
 }
 
-HG::Standard::Behaviours::IngameConsole::LoggingWatcher::LoggingWatcher(HG::Standard::Behaviours::IngameConsole* ingameConsole) :
+HG::Standard::Behaviours::IngameConsole::LoggingWatcher::LoggingWatcher(
+    HG::Standard::Behaviours::IngameConsole* ingameConsole) :
     m_console(ingameConsole),
     m_messages()
 {
-
 }
 
 AbstractLogger::Message HG::Standard::Behaviours::IngameConsole::LoggingWatcher::popMessage()
 {
     auto element = std::move(m_messages.front());
-    
+
     m_messages.pop_front();
-    
+
     return element;
 }
 

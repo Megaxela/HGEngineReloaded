@@ -1,16 +1,16 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
+#include <HG/Core/BuildProperties.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
-#include <HG/Core/BuildProperties.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
-#include <HG/Rendering/Base/SystemController.hpp>
-#include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
 
 // HG::Utils
 #include <HG/Utils/glmex.hpp>
@@ -22,17 +22,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
 
-HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() :
-    m_zoom(1.0f),
-    m_size(1),
-    m_parentCam(nullptr)
+HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() : m_zoom(1.0f), m_size(1), m_parentCam(nullptr)
 {
-
 }
 
 HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings(
-    const HG::Rendering::Base::Camera::OrthogonalSettings& rhs
-) :
+    const HG::Rendering::Base::Camera::OrthogonalSettings& rhs) :
     OrthogonalSettings()
 {
     (*this) = rhs;
@@ -58,9 +53,8 @@ uint32_t HG::Rendering::Base::Camera::OrthogonalSettings::size() const
     return m_size;
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings& HG::Rendering::Base::Camera::OrthogonalSettings::operator=(
-    const HG::Rendering::Base::Camera::OrthogonalSettings& rhs
-)
+HG::Rendering::Base::Camera::OrthogonalSettings&
+HG::Rendering::Base::Camera::OrthogonalSettings::operator=(const HG::Rendering::Base::Camera::OrthogonalSettings& rhs)
 {
     m_zoom = rhs.m_zoom;
     m_size = rhs.m_size;
@@ -72,16 +66,12 @@ HG::Rendering::Base::Camera::OrthogonalSettings& HG::Rendering::Base::Camera::Or
     return (*this);
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings() :
-    m_fov(90),
-    m_parentCam(nullptr)
+HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings() : m_fov(90), m_parentCam(nullptr)
 {
-
 }
 
 HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings(
-    const HG::Rendering::Base::Camera::PerspectiveSettings& rhs
-) :
+    const HG::Rendering::Base::Camera::PerspectiveSettings& rhs) :
     PerspectiveSettings()
 {
     (*this) = rhs;
@@ -101,9 +91,8 @@ float HG::Rendering::Base::Camera::PerspectiveSettings::fieldOfView() const
     return m_fov;
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings& HG::Rendering::Base::Camera::PerspectiveSettings::operator=(
-    const HG::Rendering::Base::Camera::PerspectiveSettings& rhs
-)
+HG::Rendering::Base::Camera::PerspectiveSettings&
+HG::Rendering::Base::Camera::PerspectiveSettings::operator=(const HG::Rendering::Base::Camera::PerspectiveSettings& rhs)
 {
     m_fov = rhs.m_fov;
 
@@ -124,16 +113,14 @@ HG::Rendering::Base::Camera::Camera() :
     m_orthogonalSettings(),
     m_perspectiveSettings()
 {
-    m_orthogonalSettings.m_parentCam = this;
+    m_orthogonalSettings.m_parentCam  = this;
     m_perspectiveSettings.m_parentCam = this;
 }
 
 HG::Rendering::Base::Camera::~Camera()
 {
     // If active camera removed, clean value
-    if (scene() &&
-        scene()->application() &&
-        scene()->application()->renderer() &&
+    if (scene() && scene()->application() && scene()->application()->renderer() &&
         scene()->application()->renderer()->activeCamera() == this)
     {
         scene()->application()->renderer()->setActiveCamera(nullptr);
@@ -184,47 +171,36 @@ HG::Rendering::Base::Camera::Projection HG::Rendering::Base::Camera::projection(
 
 glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
 {
-    auto viewportSize = scene()
-        ->application()
-        ->renderer()
-        ->pipeline()
-        ->renderTarget()
-        ->size(); // Current render target
-    
-    if (!m_projectionMatrixChanged &&
-        m_cachedViewportSize == viewportSize)
+    auto viewportSize = scene()->application()->renderer()->pipeline()->renderTarget()->size(); // Current render target
+
+    if (!m_projectionMatrixChanged && m_cachedViewportSize == viewportSize)
     {
         return m_projectionMatrix;
     }
 
     m_cachedViewportSize = viewportSize;
-    
+
     switch (m_projection)
     {
     case Projection::Perspective:
-        m_projectionMatrix = glm::perspective(
-            glm::radians(m_perspectiveSettings.fieldOfView()),
-            (float) viewportSize.x / (float) viewportSize.y,
-            m_near,
-            m_far
-        );
+        m_projectionMatrix        = glm::perspective(glm::radians(m_perspectiveSettings.fieldOfView()),
+                                              (float)viewportSize.x / (float)viewportSize.y,
+                                              m_near,
+                                              m_far);
         m_projectionMatrixChanged = false;
         break;
-    case Projection::Orthogonal:
-    {
+    case Projection::Orthogonal: {
         auto metersPerHighestSide = 10;
 
-        auto width =  viewportSize.x / (float) std::min(viewportSize.x, viewportSize.y) * metersPerHighestSide;
-        auto height = viewportSize.y / (float) std::min(viewportSize.x, viewportSize.y) * metersPerHighestSide;
+        auto width  = viewportSize.x / (float)std::min(viewportSize.x, viewportSize.y) * metersPerHighestSide;
+        auto height = viewportSize.y / (float)std::min(viewportSize.x, viewportSize.y) * metersPerHighestSide;
 
-        m_projectionMatrix = glm::ortho(
-            (float) -(width / 2.0f)  * m_orthogonalSettings.zoom(),
-            (float)   width / 2      * m_orthogonalSettings.zoom(),
-            (float) -(height / 2.0f) * m_orthogonalSettings.zoom(),
-            (float)   height / 2     * m_orthogonalSettings.zoom(),
-            m_near,
-            m_far
-        );
+        m_projectionMatrix = glm::ortho((float)-(width / 2.0f) * m_orthogonalSettings.zoom(),
+                                        (float)width / 2 * m_orthogonalSettings.zoom(),
+                                        (float)-(height / 2.0f) * m_orthogonalSettings.zoom(),
+                                        (float)height / 2 * m_orthogonalSettings.zoom(),
+                                        m_near,
+                                        m_far);
     }
         m_projectionMatrixChanged = false;
         break;
@@ -305,7 +281,7 @@ void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point)
 
 void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
 {
-    auto position = gameObject()->transform()->localPosition();
+    auto position     = gameObject()->transform()->localPosition();
     auto resultMatrix = glm::lookAt(point, position, upVector);
 
     // Taking data back

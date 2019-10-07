@@ -5,11 +5,9 @@
 
 namespace HG::Rendering::OpenGL::Materials
 {
-    class MeshFallbackMaterial : public HG::Rendering::Base::Material
-    {
-    public:
-        static const char* rawShader;
-    };
-}
-
-
+class MeshFallbackMaterial : public HG::Rendering::Base::Material
+{
+public:
+    static const char* rawShader;
+};
+} // namespace HG::Rendering::OpenGL::Materials

@@ -1,11 +1,8 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Shader.hpp>
 
-HG::Rendering::Base::Shader::Shader() :
-    RenderData(DataId),
-    m_shaderText()
+HG::Rendering::Base::Shader::Shader() : RenderData(DataId), m_shaderText()
 {
-
 }
 
 void HG::Rendering::Base::Shader::setShaderText(std::string text)

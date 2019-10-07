@@ -3,12 +3,12 @@
 #include <HG/Core/CountStatistics.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/RenderingPipeline.hpp>
-#include <HG/Rendering/Base/MaterialCollection.hpp>
-#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/Gizmos.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
 
 // ALogger
@@ -25,22 +25,14 @@ HG::Rendering::Base::Renderer::Renderer(HG::Core::Application* application) :
 {
     Debug() << "Creating renderer.";
 
-    m_parentApplication
-        ->countStatistics()
-        ->addCounter(
-            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
-            HG::Core::CountStatistics::CounterType::LastFrame
-        );
+    m_parentApplication->countStatistics()->addCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
+                                                       HG::Core::CountStatistics::CounterType::LastFrame);
 }
 
 HG::Rendering::Base::Renderer::~Renderer()
 {
     Debug() << "Destroying renderer.";
-    m_parentApplication
-        ->countStatistics()
-        ->removeCounter(
-            HG::Core::CountStatistics::CommonCounter::NumberOfVertices
-        );
+    m_parentApplication->countStatistics()->removeCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices);
 
     delete m_pipeline;
     delete m_gizmos;
@@ -93,7 +85,7 @@ void HG::Rendering::Base::Renderer::render(const HG::Utils::DoubleBufferContaine
     m_gizmos->clear();
 }
 
-HG::Rendering::Base::Gizmos *HG::Rendering::Base::Renderer::gizmos()
+HG::Rendering::Base::Gizmos* HG::Rendering::Base::Renderer::gizmos()
 {
     return m_gizmos;
 }
@@ -108,12 +100,12 @@ HG::Rendering::Base::MaterialCollection* HG::Rendering::Base::Renderer::material
     return m_materialCollection;
 }
 
-HG::Rendering::Base::Camera *HG::Rendering::Base::Renderer::activeCamera() const
+HG::Rendering::Base::Camera* HG::Rendering::Base::Renderer::activeCamera() const
 {
     return m_activeCamera;
 }
 
-void HG::Rendering::Base::Renderer::setActiveCamera(HG::Rendering::Base::Camera *camera)
+void HG::Rendering::Base::Renderer::setActiveCamera(HG::Rendering::Base::Camera* camera)
 {
     if (camera->gameObject() == nullptr)
     {
@@ -123,12 +115,12 @@ void HG::Rendering::Base::Renderer::setActiveCamera(HG::Rendering::Base::Camera 
     m_activeCamera = camera;
 }
 
-HG::Rendering::Base::CubeMap *HG::Rendering::Base::Renderer::activeCubeMap() const
+HG::Rendering::Base::CubeMap* HG::Rendering::Base::Renderer::activeCubeMap() const
 {
     return m_activeCubemap;
 }
 
-void HG::Rendering::Base::Renderer::setActiveCubeMap(HG::Rendering::Base::CubeMap *cubemap)
+void HG::Rendering::Base::Renderer::setActiveCubeMap(HG::Rendering::Base::CubeMap* cubemap)
 {
     m_activeCubemap = cubemap;
 }
@@ -155,7 +147,7 @@ bool HG::Rendering::Base::Renderer::needSetup(HG::Rendering::Base::RenderData* d
     return m_pipeline->needSetup(data);
 }
 
-HG::Utils::Color HG::Rendering::Base::Renderer::getTexturePixel(HG::Rendering::Base::Texture *texture, glm::ivec2 pos)
+HG::Utils::Color HG::Rendering::Base::Renderer::getTexturePixel(HG::Rendering::Base::Texture* texture, glm::ivec2 pos)
 {
     if (m_pipeline == nullptr)
     {

@@ -2,8 +2,8 @@
 #include <utility>
 
 // HG::Core
-#include <HG/Core/GameObjectBuilder.hpp>
 #include <HG/Core/GameObject.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
 #include <HG/Core/Transform.hpp>
 
 // ALogger
@@ -23,14 +23,14 @@ HG::Core::GameObject* HG::Core::GameObjectBuilder::deploy()
     return result;
 }
 
-HG::Core::GameObjectBuilder &HG::Core::GameObjectBuilder::setHidden(bool hidden)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setHidden(bool hidden)
 {
     m_currentGameObject->setHidden(hidden);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder &HG::Core::GameObjectBuilder::setEnabled(bool enabled)
+HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setEnabled(bool enabled)
 {
     m_currentGameObject->setEnabled(enabled);
 
@@ -47,7 +47,6 @@ HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addBehaviour(HG::Core:
 HG::Core::GameObjectBuilder::GameObjectBuilder(HG::Core::ResourceCache* cache) :
     m_currentGameObject(new (cache) HG::Core::GameObject)
 {
-
 }
 
 HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGameObject(HG::Core::GameObject* ptr)

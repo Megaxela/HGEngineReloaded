@@ -11,7 +11,6 @@ HG::Core::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::by
     m_data(std::move(data)),
     m_id(std::move(id))
 {
-
 }
 
 std::size_t HG::Core::FilesystemResourceAccessor::VectorData::size() const
@@ -19,7 +18,7 @@ std::size_t HG::Core::FilesystemResourceAccessor::VectorData::size() const
     return m_data.size();
 }
 
-const std::byte *HG::Core::FilesystemResourceAccessor::VectorData::data() const
+const std::byte* HG::Core::FilesystemResourceAccessor::VectorData::data() const
 {
     return m_data.data();
 }
@@ -29,7 +28,7 @@ std::string HG::Core::FilesystemResourceAccessor::VectorData::id() const
     return m_id;
 }
 
-HG::Core::DataPtr HG::Core::FilesystemResourceAccessor::loadRaw(const std::string &id)
+HG::Core::DataPtr HG::Core::FilesystemResourceAccessor::loadRaw(const std::string& id)
 {
     std::ifstream file(id, std::ios::binary);
 
@@ -48,9 +47,7 @@ HG::Core::DataPtr HG::Core::FilesystemResourceAccessor::loadRaw(const std::strin
     data.resize(size);
     file.seekg(0, std::ios::beg);
 
-    file.read(reinterpret_cast<char *>(data.data()), size);
+    file.read(reinterpret_cast<char*>(data.data()), size);
 
     return std::make_shared<VectorData>(std::move(data), id);
 }
-
-

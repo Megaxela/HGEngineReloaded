@@ -11,7 +11,6 @@
 
 HG::Utils::STBImageLoader::STBImageLoader()
 {
-
 }
 
 HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std::byte* data, std::size_t size)
@@ -21,14 +20,8 @@ HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std:
     int height;
     int bpp;
 
-    auto resultData = stbi_load_from_memory(
-        reinterpret_cast<const stbi_uc*>(data),
-        static_cast<int>(size),
-        &width,
-        &height,
-        &bpp,
-        0
-    );
+    auto resultData =
+        stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(data), static_cast<int>(size), &width, &height, &bpp, 0);
 
     if (resultData == nullptr)
     {
@@ -36,17 +29,12 @@ HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std:
         return nullptr;
     }
 
-    auto surface = std::make_shared<Surface>(
-        [](uint8_t* data, int, int, int)
-        {
-            stbi_image_free(data);
-        }
-    );
+    auto surface = std::make_shared<Surface>([](uint8_t* data, int, int, int) { stbi_image_free(data); });
 
-    surface->Data = resultData;
-    surface->Width = width;
+    surface->Data   = resultData;
+    surface->Width  = width;
     surface->Height = height;
-    surface->Bpp = bpp;
+    surface->Bpp    = bpp;
 
     return surface;
 }

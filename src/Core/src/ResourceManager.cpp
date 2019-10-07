@@ -1,13 +1,10 @@
 // HG::Core
-#include <HG/Core/ResourceManager.hpp>
-#include <HG/Core/ResourceAccessor.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/ResourceAccessor.hpp>
+#include <HG/Core/ResourceManager.hpp>
 
-HG::Core::ResourceManager::ResourceManager(HG::Core::Application* parent) :
-    m_accessor(nullptr),
-    m_application(parent)
+HG::Core::ResourceManager::ResourceManager(HG::Core::Application* parent) : m_accessor(nullptr), m_application(parent)
 {
-
 }
 
 HG::Core::ResourceManager::~ResourceManager()
@@ -25,7 +22,7 @@ HG::Core::ResourceAccessor* HG::Core::ResourceManager::resourceAccessor() const
     return m_accessor;
 }
 
-HG::Core::DataPtr HG::Core::ResourceManager::loadRawFromAccessor(const std::string &id)
+HG::Core::DataPtr HG::Core::ResourceManager::loadRawFromAccessor(const std::string& id)
 {
     Info() << "Loading resource \"" << id << "\"";
 

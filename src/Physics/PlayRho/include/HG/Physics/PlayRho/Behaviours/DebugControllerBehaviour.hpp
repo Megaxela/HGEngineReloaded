@@ -5,28 +5,24 @@
 
 namespace HG::Physics::PlayRho::Behaviours
 {
+/**
+ * @brief Class, that displays debug info and controls
+ * for physics controller.
+ */
+class DebugControllerBehaviour : public HG::Core::Behaviour
+{
+public:
     /**
-     * @brief Class, that displays debug info and controls
-     * for physics controller.
+     * @brief Constructor.
      */
-    class DebugControllerBehaviour : public HG::Core::Behaviour
-    {
-    public:
+    DebugControllerBehaviour();
 
-        /**
-         * @brief Constructor.
-         */
-        DebugControllerBehaviour();
+protected:
+    void onUpdate() override;
 
-    protected:
+    void onStart() override;
 
-        void onUpdate() override;
-
-        void onStart() override;
-
-    private:
-        void tooltip(const char* text);
-    };
-}
-
-
+private:
+    void tooltip(const char* text);
+};
+} // namespace HG::Physics::PlayRho::Behaviours

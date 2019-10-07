@@ -8,4 +8,3 @@ class FirstScene : public HG::Core::Scene
 public:
     void start() override;
 };
-
