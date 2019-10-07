@@ -1,7 +1,5 @@
 // RenderToTexture
 #include <Assets/Materials/TextureMaterial.hpp>
-#include "TextureMaterial.hpp"
-
 
 const char* TextureMaterial::rawShader = R"(
 #ifdef VertexShader

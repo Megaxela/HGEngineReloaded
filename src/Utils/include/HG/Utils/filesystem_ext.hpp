@@ -5,13 +5,12 @@
 
 namespace std
 {
-    template<>
-    struct hash<std::filesystem::path>
+template <>
+struct hash<std::filesystem::path>
+{
+    std::size_t operator()(const std::filesystem::path& p) const
     {
-        std::size_t operator()(const std::filesystem::path& p) const
-        {
-            return std::hash<std::string>()(p.string());
-        }
-    };
-}
-
+        return std::hash<std::string>()(p.string());
+    }
+};
+} // namespace std

@@ -8,45 +8,42 @@
 
 namespace HG::Rendering::Base
 {
-    class Camera;
+class Camera;
 }
 
 namespace HG::Standard::Behaviours
 {
+/**
+ * @brief Standard camera fps movement. Just moving
+ * camera with mouse.
+ */
+class FPSCameraMovement : public HG::Core::Behaviour
+{
+public:
     /**
-     * @brief Standard camera fps movement. Just moving
-     * camera with mouse.
+     * @brief Default constructor.
      */
-    class FPSCameraMovement : public HG::Core::Behaviour
-    {
-    public:
+    FPSCameraMovement();
 
-        /**
-         * @brief Default constructor.
-         */
-        FPSCameraMovement();
+protected:
+    void onStart() override;
 
-    protected:
-        void onStart() override;
+    void onUpdate() override;
 
-        void onUpdate() override;
+private:
+    void handleKeyboardMovement();
 
-    private:
+    void handleMouseRotation();
 
-        void handleKeyboardMovement();
+    bool m_enabled;
+    bool m_first;
+    glm::vec2 m_lastMousePosition;
+    glm::vec3 m_front;
+    float m_yaw;
+    float m_pitch;
+    HG::Rendering::Base::Camera* m_camera;
 
-        void handleMouseRotation();
-
-        bool m_enabled;
-        bool m_first;
-        glm::vec2 m_lastMousePosition;
-        glm::vec3 m_front;
-        float m_yaw;
-        float m_pitch;
-        HG::Rendering::Base::Camera* m_camera;
-
-        HG_PROPERTY_DEFAULT(float, Sensitivity, 3.0f);
-        HG_PROPERTY_DEFAULT(float, MovementSpeed, 2.0f);
-    };
-}
-
+    HG_PROPERTY_DEFAULT(float, Sensitivity, 3.0f);
+    HG_PROPERTY_DEFAULT(float, MovementSpeed, 2.0f);
+};
+} // namespace HG::Standard::Behaviours

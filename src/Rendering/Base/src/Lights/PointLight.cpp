@@ -7,7 +7,6 @@ HG::Rendering::Base::Lights::PointLight::PointLight() :
     m_linear(2),
     m_quadratic(2)
 {
-
 }
 
 void HG::Rendering::Base::Lights::PointLight::setConstant(float value)

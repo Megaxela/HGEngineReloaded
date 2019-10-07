@@ -11,24 +11,18 @@
 
 namespace HG::Rendering::OpenGL::Common
 {
-    /**
-     * @brief External data implementation for shaders.
-     */
-    class ShaderData : public HG::Core::CachableResource<ShaderData>,
-                       public HG::Rendering::Base::RenderSpecificData
-    {
-    public:
+/**
+ * @brief External data implementation for shaders.
+ */
+class ShaderData
+    : public HG::Core::CachableResource<ShaderData>
+    , public HG::Rendering::Base::RenderSpecificData
+{
+public:
+    gl::program Program;
 
-        gl::program Program;
+    std::unordered_map<std::string, GLint> UniformLocations;
 
-        std::unordered_map<
-            std::string,
-            GLint
-        > UniformLocations;
-
-        std::unordered_map<
-            GLint,
-            std::size_t
-        > CurrentUniformValueHashes;
-    };
-}
+    std::unordered_map<GLint, std::size_t> CurrentUniformValueHashes;
+};
+} // namespace HG::Rendering::OpenGL::Common

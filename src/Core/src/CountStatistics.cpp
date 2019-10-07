@@ -1,12 +1,9 @@
 // HG::Core
 #include <HG/Core/CountStatistics.hpp>
 
-HG::Core::CountStatistics::CountStatistics() :
-    m_counters()
+HG::Core::CountStatistics::CountStatistics() : m_counters()
 {
-
 }
-
 
 HG::Core::CountStatistics::~CountStatistics()
 {
@@ -31,8 +28,12 @@ void HG::Core::CountStatistics::addCounter(int counter, HG::Core::CountStatistic
 
     switch (type)
     {
-    case CounterType::Cumulative: counterObject = new CummulativeCounter(); break;
-    case CounterType::LastFrame:  counterObject = new LastFrameCounter(); break;
+    case CounterType::Cumulative:
+        counterObject = new CummulativeCounter();
+        break;
+    case CounterType::LastFrame:
+        counterObject = new LastFrameCounter();
+        break;
     }
 
     m_counters[counter] = counterObject;
@@ -100,10 +101,8 @@ void HG::Core::CountStatistics::frameChanged()
     }
 }
 
-HG::Core::CountStatistics::AbstractCounter::AbstractCounter(HG::Core::CountStatistics::CounterType type) :
-    m_type(type)
+HG::Core::CountStatistics::AbstractCounter::AbstractCounter(HG::Core::CountStatistics::CounterType type) : m_type(type)
 {
-
 }
 
 HG::Core::CountStatistics::CounterType HG::Core::CountStatistics::AbstractCounter::type() const
@@ -113,14 +112,12 @@ HG::Core::CountStatistics::CounterType HG::Core::CountStatistics::AbstractCounte
 
 void HG::Core::CountStatistics::AbstractCounter::frameChanged()
 {
-
 }
 
 HG::Core::CountStatistics::CummulativeCounter::CummulativeCounter() :
     AbstractCounter(CounterType::Cumulative),
     m_value(0)
 {
-
 }
 
 void HG::Core::CountStatistics::CummulativeCounter::reset()
@@ -143,13 +140,12 @@ HG::Core::CountStatistics::LastFrameCounter::LastFrameCounter() :
     m_previousFrameValue(0),
     m_currentFrameValue(0)
 {
-
 }
 
 void HG::Core::CountStatistics::LastFrameCounter::frameChanged()
 {
     m_previousFrameValue = m_currentFrameValue;
-    m_currentFrameValue = 0;
+    m_currentFrameValue  = 0;
 }
 
 void HG::Core::CountStatistics::LastFrameCounter::reset()

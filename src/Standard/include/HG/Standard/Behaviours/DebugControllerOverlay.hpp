@@ -12,71 +12,54 @@
 
 namespace HG::Core
 {
-    class Transform;
-    class GameObject;
-}
+class Transform;
+class GameObject;
+} // namespace HG::Core
 
 namespace HG::Standard::Behaviours
 {
-    /**
-     * @brief Behaviour for controlling debug gameobjects
-     * control.
-     */
-    class DebugControllerOverlay : public HG::Core::Behaviour
+/**
+ * @brief Behaviour for controlling debug gameobjects
+ * control.
+ */
+class DebugControllerOverlay : public HG::Core::Behaviour
+{
+public:
+    template <typename B>
+    typename std::enable_if<std::is_base_of<HG::Core::Behaviour, B>::value, DebugControllerOverlay*>::type
+    addViewBehaviour(const std::string& name)
     {
-    public:
+        m_viewBehaviours.emplace_back(name,
+                                      [](HG::Core::GameObject* gameObject) { return gameObject->findBehaviour<B>(); });
 
-        template<typename B>
-        typename std::enable_if<
-            std::is_base_of<HG::Core::Behaviour, B>::value,
-            DebugControllerOverlay*
-        >::type addViewBehaviour(const std::string& name)
-        {
-            m_viewBehaviours.emplace_back(
-                name,
-                [](HG::Core::GameObject* gameObject)
-                {
-                    return gameObject->findBehaviour<B>();
-                }
-            );
+        return this;
+    }
 
-            return this;
-        }
+protected:
+    void onUpdate() override;
 
-    protected:
+private:
+    void displayMenu();
 
-        void onUpdate() override;
+    void displayGameObjectsWindow();
 
-    private:
+    void displayInspectorWindow();
 
-        void displayMenu();
+    void proceedParentedGameObjects(HG::Core::Transform* parent);
 
-        void displayGameObjectsWindow();
+    void proceedInspector();
 
-        void displayInspectorWindow();
+    void displayPropertyWidget(const HG::Core::Behaviour::Property& property);
 
-        void proceedParentedGameObjects(HG::Core::Transform* parent);
+    std::vector<HG::Core::GameObject*> m_gameObjects;
+    std::vector<HG::Core::Behaviour*> m_behaviours;
+    std::vector<HG::Core::Behaviour::Property> m_properties;
 
-        void proceedInspector();
+    HG::Core::GameObject* m_activeGameObject = nullptr;
 
-        void displayPropertyWidget(const HG::Core::Behaviour::Property& property);
+    std::vector<std::pair<std::string, std::function<HG::Core::Behaviour*(HG::Core::GameObject*)>>> m_viewBehaviours;
 
-        std::vector<HG::Core::GameObject*> m_gameObjects;
-        std::vector<HG::Core::Behaviour*> m_behaviours;
-        std::vector<HG::Core::Behaviour::Property> m_properties;
-
-        HG::Core::GameObject* m_activeGameObject = nullptr;
-
-        std::vector<
-            std::pair<
-                std::string,
-                std::function<HG::Core::Behaviour*(HG::Core::GameObject*)>
-            >
-        > m_viewBehaviours;
-
-        HG_PROPERTY_DEFAULT(glm::vec2, OriginSize, glm::vec2(0.3f, 0.3f));
-        HG_PROPERTY_DEFAULT(HG::Utils::Color, OriginColor, HG::Utils::Color::fromRGB(150, 180, 0));
-    };
-}
-
-
+    HG_PROPERTY_DEFAULT(glm::vec2, OriginSize, glm::vec2(0.3f, 0.3f));
+    HG_PROPERTY_DEFAULT(HG::Utils::Color, OriginColor, HG::Utils::Color::fromRGB(150, 180, 0));
+};
+} // namespace HG::Standard::Behaviours

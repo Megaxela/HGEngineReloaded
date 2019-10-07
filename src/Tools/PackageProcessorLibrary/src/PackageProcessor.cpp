@@ -1,7 +1,7 @@
 // C++ STL
 #include <fstream>
-#include <unordered_map>
 #include <iostream>
+#include <unordered_map>
 
 // HG::Tools
 #include <HG/Tools/PackageProcessor.hpp>
@@ -13,21 +13,21 @@
 #include <HG/Utils/zlib.hpp>
 
 // HG::Utils
-constexpr const uint32_t PACKAGE_MAGIC = 0xDEC0DE00;
-constexpr const std::size_t HEADER_SIZE = 32; // bytes
-constexpr const std::size_t METADATA_HEADER_SIZE = 8; // bytes
+constexpr const uint32_t PACKAGE_MAGIC             = 0xDEC0DE00;
+constexpr const std::size_t HEADER_SIZE            = 32; // bytes
+constexpr const std::size_t METADATA_HEADER_SIZE   = 8;  // bytes
 constexpr const std::size_t FILE_ENTRY_HEADER_SIZE = 32; // bytes
-constexpr const std::size_t CRC_BUFFER_SIZE = 64 * 1024;
-constexpr const std::size_t CRC_BEGIN_COUNT_POS = 8;
-constexpr const std::size_t ALIGNMENT = 16;
-constexpr const std::size_t DEFLATE_CHUNK_SIZE = CRC_BUFFER_SIZE;
-constexpr const std::size_t COPY_CHUNK_SIZE = CRC_BUFFER_SIZE;
-constexpr const std::size_t INFLATE_CHUNK_SIZE = CRC_BUFFER_SIZE;
+constexpr const std::size_t CRC_BUFFER_SIZE        = 64 * 1024;
+constexpr const std::size_t CRC_BEGIN_COUNT_POS    = 8;
+constexpr const std::size_t ALIGNMENT              = 16;
+constexpr const std::size_t DEFLATE_CHUNK_SIZE     = CRC_BUFFER_SIZE;
+constexpr const std::size_t COPY_CHUNK_SIZE        = CRC_BUFFER_SIZE;
+constexpr const std::size_t INFLATE_CHUNK_SIZE     = CRC_BUFFER_SIZE;
 
-constexpr const uint32_t PACKER_VERSION = 1;
+constexpr const uint32_t PACKER_VERSION            = 1;
 constexpr const uint32_t AMOUNT_OF_METADATA_FIELDS = 4;
 
-template<typename T>
+template <typename T>
 T align(T val, T alignment)
 {
     return alignment - (val + alignment) % alignment;
@@ -35,24 +35,20 @@ T align(T val, T alignment)
 
 namespace MetadataCodes
 {
-    constexpr const uint32_t Name   = 0x00000001;
-    constexpr const uint32_t Author = 0x00000002;
-    constexpr const uint32_t Major  = 0x00000003;
-    constexpr const uint32_t Minor  = 0x00000004;
-}
+constexpr const uint32_t Name   = 0x00000001;
+constexpr const uint32_t Author = 0x00000002;
+constexpr const uint32_t Major  = 0x00000003;
+constexpr const uint32_t Minor  = 0x00000004;
+} // namespace MetadataCodes
 
 namespace FileEntryTypes
 {
-    constexpr const uint32_t Directory = 0x00000001;
-    constexpr const uint32_t File      = 0x00000002;
-}
+constexpr const uint32_t Directory = 0x00000001;
+constexpr const uint32_t File      = 0x00000002;
+} // namespace FileEntryTypes
 
-HG::Tools::PackageProcessor::PackageProcessor() :
-    m_pathToOpenedPackage(),
-    m_metadata(),
-    m_entries()
+HG::Tools::PackageProcessor::PackageProcessor() : m_pathToOpenedPackage(), m_metadata(), m_entries()
 {
-
 }
 
 HG::Tools::PackageProcessor::Metadata& HG::Tools::PackageProcessor::metadata()
@@ -125,12 +121,8 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
     if (version > PACKER_VERSION)
     {
         clear();
-        throw std::invalid_argument(
-            "Package was packed with newer version of packer (current: " +
-            std::to_string(PACKER_VERSION) +
-            ", package: " +
-            std::to_string(version)
-        );
+        throw std::invalid_argument("Package was packed with newer version of packer (current: " +
+                                    std::to_string(PACKER_VERSION) + ", package: " + std::to_string(version));
     }
 
     // Getting number of metadata fields
@@ -216,10 +208,9 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
         std::filesystem::path path;
     };
 
-    std::unordered_map<
-        uint32_t, // ID
-        FileEntry
-    > entries;
+    std::unordered_map<uint32_t, // ID
+                       FileEntry>
+        entries;
 
     // Reading file structures fields
     for (uint32_t index = 0; index < numberOfFileFields; ++index)
@@ -347,15 +338,12 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
 
     struct WriteEntryInfo
     {
-        uint32_t id = 0;
-        bool wasWritten = false;
+        uint32_t id                     = 0;
+        bool wasWritten                 = false;
         std::size_t offsetToOffsetField = 0;
     };
 
-    std::unordered_map<
-        std::string,
-        WriteEntryInfo
-    > entries;
+    std::unordered_map<std::string, WriteEntryInfo> entries;
 
     uint32_t idCounter = 1;
 
@@ -469,7 +457,7 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     for (const auto& entry : m_entries)
     {
         // Cutting path and filename
-        auto pathToEntry = entry.path().remove_filename();
+        auto pathToEntry   = entry.path().remove_filename();
         auto entryFilename = entry.path().filename();
 
         std::filesystem::path bufferPath;
@@ -488,7 +476,6 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
             // Not checking for existing, cause of previous filler
             if (writeInfoIter->second.wasWritten)
             {
-
                 // Saving current path part as parent id
                 parentId = writeInfoIter->second.id;
                 continue;
@@ -600,7 +587,7 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
             break;
         case File::Type::Package:
             offset = entry.compressedOffset();
-            size = entry.compressedSize();
+            size   = entry.compressedSize();
             writePackageFile(file, basePackageFile, offset, size);
             break;
         }
@@ -698,7 +685,7 @@ void HG::Tools::PackageProcessor::internalUnpack(std::ifstream& stream,
                                                  const HG::Tools::PackageProcessor::File& file)
 {
     auto filename = destination.filename();
-    auto path = destination.parent_path();
+    auto path     = destination.parent_path();
 
     std::error_code ec;
 
@@ -738,7 +725,7 @@ uint32_t HG::Tools::PackageProcessor::calculateStreamCRC(std::ifstream& file)
     long read = 0;
     while ((read = file.readsome(buffer, CRC_BUFFER_SIZE)))
     {
-        calculatedCRC = crc32(calculatedCRC, (Bytef*) buffer, static_cast<uInt>(read));
+        calculatedCRC = crc32(calculatedCRC, (Bytef*)buffer, static_cast<uInt>(read));
     }
 
     file.seekg(lastCarriage);
@@ -748,7 +735,8 @@ uint32_t HG::Tools::PackageProcessor::calculateStreamCRC(std::ifstream& file)
 
 void HG::Tools::PackageProcessor::writeFilesystemFile(std::ofstream& to,
                                                       const std::filesystem::path& path,
-                                                      std::size_t& offset, std::size_t& size)
+                                                      std::size_t& offset,
+                                                      std::size_t& size)
 {
     offset = static_cast<std::size_t>(to.tellp());
 
@@ -812,8 +800,7 @@ void HG::Tools::PackageProcessor::addFile(std::filesystem::path path)
         throw std::runtime_error("`setPackageRoot` has to called before `addFile`");
     }
 
-    auto iter = std::search(path.begin(), path.end(),
-                            m_pathToPackageRoot.begin(), m_pathToPackageRoot.end());
+    auto iter = std::search(path.begin(), path.end(), m_pathToPackageRoot.begin(), m_pathToPackageRoot.end());
 
     if (iter != path.begin())
     {
@@ -825,13 +812,13 @@ void HG::Tools::PackageProcessor::addFile(std::filesystem::path path)
 
 HG::Tools::PackageProcessor::File::File(std::filesystem::path path,
                                         HG::Tools::PackageProcessor::File::Type type,
-                                        size_t offset, size_t size) :
+                                        size_t offset,
+                                        size_t size) :
     m_path(std::move(path)),
     m_type(type),
     m_compressedOffset(offset),
     m_compressedSize(size)
 {
-
 }
 
 HG::Tools::PackageProcessor::File::Type HG::Tools::PackageProcessor::File::type() const

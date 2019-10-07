@@ -7,7 +7,8 @@ class DumbLogger : public AbstractLogger
 {
 protected:
     void onNewMessage(const Message&) override
-    {}
+    {
+    }
 };
 
 int main(int argc, char** argv)

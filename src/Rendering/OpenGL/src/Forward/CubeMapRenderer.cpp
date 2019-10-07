@@ -1,31 +1,28 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
+#include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Transform.hpp>
-#include <HG/Core/CountStatistics.hpp>
-#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/Renderer.hpp>
-#include <HG/Rendering/Base/Camera.hpp>
-#include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Behaviours/CubeMap.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/CubeMap.hpp>
+#include <HG/Rendering/Base/MaterialCollection.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 // HG::Rendering::OpenGL
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
 #include <HG/Rendering/OpenGL/Materials/SkyboxMaterial.hpp>
-#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
-#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-HG::Rendering::OpenGL::Forward::CubeMapRenderer::CubeMapRenderer() :
-    m_vao(0),
-    m_vbo(0)
+HG::Rendering::OpenGL::Forward::CubeMapRenderer::CubeMapRenderer() : m_vao(0), m_vbo(0)
 {
-
 }
 
 void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onDeinit()
@@ -45,54 +42,27 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onInit()
 
     static float skyboxVertices[] = {
         // positions
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
+        1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f,
+        -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f,
 
-        -1.0f,  1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f, -1.0f,
+        -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f,
 
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
+        1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,
 
-         1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,
 
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f,
+        -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,  1.0f,
 
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
+        1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f,
+        1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
     };
 
     // Loading skybox material
-    m_skyboxMaterial = application()
-        ->renderer()
-        ->materialCollection()
-        ->getMaterial<Materials::SkyboxMaterial>();
+    m_skyboxMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::SkyboxMaterial>();
 
     // Setting up VAO/VBO
     m_vao = std::move(gl::vertex_array());
@@ -101,11 +71,7 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onInit()
     m_vao.bind();
     m_vbo.bind(GL_ARRAY_BUFFER);
 
-    m_vbo.set_data(
-        sizeof(skyboxVertices),
-        skyboxVertices,
-        GL_STATIC_DRAW
-    );
+    m_vbo.set_data(sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
 
     m_vao.set_vertex_buffer(0, m_vbo, 0, sizeof(float) * 3);
     m_vao.set_attribute_enabled(0, true);
@@ -127,17 +93,11 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base
 
     m_vao.bind();
 
-    gl::draw_arrays(
-        GL_TRIANGLES,
-        0, 36
-    );
+    gl::draw_arrays(GL_TRIANGLES, 0, 36);
 
     if (application()->countStatistics()->hasCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices))
     {
-        application()->countStatistics()->add(
-            HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
-            36
-        );
+        application()->countStatistics()->add(HG::Core::CountStatistics::CommonCounter::NumberOfVertices, 36);
     }
 
     application()->renderer()->setActiveCubeMap(cubemapBehaviour->cubeMap());

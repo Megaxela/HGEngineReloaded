@@ -11,12 +11,26 @@ steps:
   displayName: 'Getting Submodules'
 
 - script: |
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - &&
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1E9377A2BA9EF27F &&
-    sudo add-apt-repository 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu xenial main' && 
+    sudo add-apt-repository 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu xenial main' &&
+    sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' &&
     sudo apt update &&
-    sudo apt -y install libstdc++-8-dev libgtest-dev clang-6.0 cmake libgl1-mesa-dev libgl-dev libglu1-mesa-dev libglu-dev libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev
+    sudo apt -y install libstdc++-8-dev libgtest-dev clang-6.0 cmake libgl1-mesa-dev libgl-dev libglu1-mesa-dev libglu-dev libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev clang-format-9
 
   displayName: 'Installing Dependencies'
+
+- script: |
+    chmod +x ./scripts/check_relative_includes.sh &&
+    ./scripts/check_relative_includes.sh
+  displayName: 'Checking for relative includes'
+
+- script: |
+    chmod +x ./scripts/run_clang_format.sh &&
+    ./scripts/run_clang_format.sh &&
+    if [[ `git diff -- . ':(exclude)scripts/*' | wc -l` -ne 0 ]]; then git diff -- . ':(exclude)scripts/*'; exit 1; fi
+
+  displayName: 'Checking codestyle'
 
 - script: |
     cd /usr/src/gtest && 

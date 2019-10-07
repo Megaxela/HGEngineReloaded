@@ -5,13 +5,12 @@
 
 namespace HG::Rendering::OpenGL::Materials
 {
-    /**
-     * @brief Material for texture blitting.
-     */
-    class BlitMaterial : public HG::Rendering::Base::Material
-    {
-    public:
-
-        static const char* rawShader;
-    };
-}
+/**
+ * @brief Material for texture blitting.
+ */
+class BlitMaterial : public HG::Rendering::Base::Material
+{
+public:
+    static const char* rawShader;
+};
+} // namespace HG::Rendering::OpenGL::Materials

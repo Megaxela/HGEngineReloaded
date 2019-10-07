@@ -1,17 +1,12 @@
 
 // HG::Core
+#include <HG/Core/Application.hpp>
 #include <HG/Core/Behaviour.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Scene.hpp>
-#include <HG/Core/Application.hpp>
 
-HG::Core::Behaviour::Behaviour(Type t) :
-    m_type(t),
-    m_enabled(true),
-    m_parent(nullptr),
-    m_properties()
+HG::Core::Behaviour::Behaviour(Type t) : m_type(t), m_enabled(true), m_parent(nullptr), m_properties()
 {
-
 }
 
 HG::Core::Behaviour::~Behaviour()
@@ -38,10 +33,9 @@ void HG::Core::Behaviour::setEnabled(bool value)
     m_enabled = value;
 }
 
-const HG::Core::Input *HG::Core::Behaviour::input() const
+const HG::Core::Input* HG::Core::Behaviour::input() const
 {
-    if (scene() == nullptr ||
-        scene()->application() == nullptr)
+    if (scene() == nullptr || scene()->application() == nullptr)
     {
         return nullptr;
     }
@@ -61,17 +55,14 @@ void HG::Core::Behaviour::start()
 
 void HG::Core::Behaviour::onStart()
 {
-
 }
 
 void HG::Core::Behaviour::onUpdate()
 {
-
 }
 
 void HG::Core::Behaviour::onFixedUpdate()
 {
-
 }
 
 HG::Core::GameObject* HG::Core::Behaviour::gameObject() const

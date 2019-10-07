@@ -1,10 +1,10 @@
 // HG::Core
-#include <HG/Core/ResourceManager.hpp>
-#include <HG/Core/TimeStatistics.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/ThreadPool.hpp>
-#include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 
 // HG::Standard
 #include <HG/Standard/Behaviours/ServiceInformationOverlay.hpp>
@@ -25,19 +25,13 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
 
     ImGui::SetNextWindowBgAlpha(0.3f); // Transparent background
 
-    if (ImGui::Begin(
-        "Service Information",
-        nullptr,
-          ImGuiWindowFlags_NoMove
-        | ImGuiWindowFlags_NoTitleBar
-        | ImGuiWindowFlags_NoResize
-        | ImGuiWindowFlags_AlwaysAutoResize
-        | ImGuiWindowFlags_NoSavedSettings
-        | ImGuiWindowFlags_NoFocusOnAppearing
-        | ImGuiWindowFlags_NoNav
-    ))
+    if (ImGui::Begin("Service Information",
+                     nullptr,
+                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                         ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
+                         ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
     {
-        auto timeStat = scene()->application()->timeStatistics();
+        auto timeStat  = scene()->application()->timeStatistics();
         auto countStat = scene()->application()->countStatistics();
 
         auto totalRam = HG::Utils::PhysicalResource::getTotalRAM();
@@ -51,39 +45,26 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
             "------------------------\n"
             "    Frame :  %f ms\n",
             1000000.0 / timeStat->frameDeltaTime().count(),
-            timeStat->renderTime()     .count() / 1000.0f,
-            timeStat->updateTime()     .count() / 1000.0f,
-            timeStat->physicsTime()    .count() / 1000.0f,
-            timeStat->frameDeltaTime() .count() / 1000.0f
-        );
+            timeStat->renderTime().count() / 1000.0f,
+            timeStat->updateTime().count() / 1000.0f,
+            timeStat->physicsTime().count() / 1000.0f,
+            timeStat->frameDeltaTime().count() / 1000.0f);
 
         // Resources
-
-
 
         ImGui::Text(
             "RAM: %.1fMB / %.1fMB\n"
             "Used RAM: %.1fMB\n",
             (totalRam - HG::Utils::PhysicalResource::getFreeRAM()) / 1000.0f / 1000.0f,
             totalRam / 1000.0f / 1000.0f,
-            HG::Utils::PhysicalResource::getProcessRAMUsed() / 1000.0f / 1000.0f
-        );
+            HG::Utils::PhysicalResource::getProcessRAMUsed() / 1000.0f / 1000.0f);
 
-        ImGui::Text(
-            "Resource queue: %ld",
-            scene()
-                ->application()
-                ->threadPool()
-                ->numberOfJobs(HG::Core::ThreadPool::Type::FileLoadingThread)
-        );
+        ImGui::Text("Resource queue: %ld",
+                    scene()->application()->threadPool()->numberOfJobs(HG::Core::ThreadPool::Type::FileLoadingThread));
 
         // Counters
-        ImGui::Text(
-            "Vertices: %llu\n",
-            countStat->value(HG::Core::CountStatistics::CommonCounter::NumberOfVertices)
-        );
+        ImGui::Text("Vertices: %llu\n", countStat->value(HG::Core::CountStatistics::CommonCounter::NumberOfVertices));
 
         ImGui::End();
     }
-
 }

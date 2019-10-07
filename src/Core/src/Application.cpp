@@ -5,21 +5,20 @@
 #include <HG/Physics/Base/PhysicsController.hpp>
 
 // HG::Core
-#include <HG/Core/CountStatistics.hpp>
-#include <HG/Core/ResourceManager.hpp>
-#include <HG/Core/BuildProperties.hpp>
-#include <HG/Core/TimeStatistics.hpp>
 #include <HG/Core/Application.hpp>
-#include <HG/Core/ThreadPool.hpp>
-#include <HG/Core/Scene.hpp>
-#include <HG/Core/Input.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/BuildProperties.hpp>
+#include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Input.hpp>
 #include <HG/Core/ResourceCache.hpp>
+#include <HG/Core/ResourceManager.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/ThreadPool.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
-
 
 HG::Core::Application::Application(std::string name, int /* argc */, char** /* argv */) :
     m_applicationTitle(std::move(name)),
@@ -56,7 +55,6 @@ HG::Core::Application::~Application()
     delete m_input;
     delete m_threadPool;
 }
-
 
 void HG::Core::Application::setSystemController(HG::Rendering::Base::SystemController* systemController)
 {
@@ -142,8 +140,7 @@ bool HG::Core::Application::performCycle()
     m_timeStatistics->tickTimerBegin(TimeStatistics::UpdateTime);
 
     // Polling events
-    if (m_renderer->pipeline() != nullptr &&
-        systemController() != nullptr)
+    if (m_renderer->pipeline() != nullptr && systemController() != nullptr)
     {
         BENCH_D(this, "Events polling");
         systemController()->pollEvents();
@@ -213,7 +210,7 @@ void HG::Core::Application::proceedScene()
         // Deleting current scene
         delete m_currentScene;
         m_currentScene = m_cachedScene;
-        m_cachedScene = nullptr;
+        m_cachedScene  = nullptr;
 
         // Calling start method
         m_currentScene->start();
@@ -235,17 +232,17 @@ HG::Core::TimeStatistics* HG::Core::Application::timeStatistics()
     return m_timeStatistics;
 }
 
-HG::Core::CountStatistics *HG::Core::Application::countStatistics()
+HG::Core::CountStatistics* HG::Core::Application::countStatistics()
 {
     return m_countStatistics;
 }
 
-HG::Core::Benchmark *HG::Core::Application::benchmark()
+HG::Core::Benchmark* HG::Core::Application::benchmark()
 {
     return m_benchmark;
 }
 
-HG::Core::ResourceCache *HG::Core::Application::resourceCache()
+HG::Core::ResourceCache* HG::Core::Application::resourceCache()
 {
     return m_resourceCache;
 }
@@ -255,12 +252,12 @@ HG::Core::ThreadPool* HG::Core::Application::threadPool()
     return m_threadPool;
 }
 
-const HG::Core::Input *HG::Core::Application::input() const
+const HG::Core::Input* HG::Core::Application::input() const
 {
     return m_input;
 }
 
-HG::Rendering::Base::SystemController *HG::Core::Application::systemController() const
+HG::Rendering::Base::SystemController* HG::Core::Application::systemController() const
 {
     return m_systemController;
 }

@@ -4,10 +4,10 @@
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/AbstractRenderDataProcessor.hpp>
-#include <HG/Rendering/Base/RenderingPipeline.hpp>
-#include <HG/Rendering/Base/SystemController.hpp>
 #include <HG/Rendering/Base/RenderBehaviour.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -18,7 +18,6 @@ HG::Rendering::Base::RenderingPipeline::RenderingPipeline(HG::Core::Application*
     m_renderDataProcessor(),
     m_renderOverride(nullptr)
 {
-
 }
 
 HG::Rendering::Base::RenderingPipeline::~RenderingPipeline()
@@ -83,7 +82,7 @@ void HG::Rendering::Base::RenderingPipeline::deinit()
     m_parentApplication->systemController()->closeWindow();
 }
 
-HG::Core::Application *HG::Rendering::Base::RenderingPipeline::application() const
+HG::Core::Application* HG::Rendering::Base::RenderingPipeline::application() const
 {
     return m_parentApplication;
 }
@@ -94,10 +93,7 @@ bool HG::Rendering::Base::RenderingPipeline::setup(HG::Rendering::Base::RenderDa
 
     if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
-        return setupRenderBehaviour(
-            dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data),
-            guarantee
-        );
+        return setupRenderBehaviour(dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data), guarantee);
     }
 
     // Search for data processor.
@@ -117,9 +113,7 @@ bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::Rend
     BENCH("Checking is setup required for " + std::to_string(data->dataType()));
     if (data->dataType() == HG::Rendering::Base::RenderBehaviour::RenderDataId)
     {
-        return needSetupRenderBehaviour(
-            dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data)
-        );
+        return needSetupRenderBehaviour(dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(data));
     }
 
     // Search for data processor.
@@ -127,21 +121,24 @@ bool HG::Rendering::Base::RenderingPipeline::needSetup(HG::Rendering::Base::Rend
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        Error() << "Can't check is render data with type " << data->dataType() << " requires to be set up. No processor.";
+        Error() << "Can't check is render data with type " << data->dataType()
+                << " requires to be set up. No processor.";
         return false;
     }
 
     return processorIterator->second->needSetup(data);
 }
 
-bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour, bool guarantee)
+bool HG::Rendering::Base::RenderingPipeline::setupRenderBehaviour(HG::Rendering::Base::RenderBehaviour* behaviour,
+                                                                  bool guarantee)
 {
     BENCH("Setup of rendering behaviour " + std::to_string(behaviour->renderBehaviourType()));
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        Error() << "Can't setup rendering behaviour's render data with " << behaviour->renderBehaviourType() << " type. No processor.";
+        Error() << "Can't setup rendering behaviour's render data with " << behaviour->renderBehaviourType()
+                << " type. No processor.";
         return false;
     }
 
@@ -155,14 +152,16 @@ bool HG::Rendering::Base::RenderingPipeline::needSetupRenderBehaviour(HG::Render
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        Error() << "Can't check rendering behaviour's setup requirement with " << behaviour->renderBehaviourType() << " type. No processor.";
+        Error() << "Can't check rendering behaviour's setup requirement with " << behaviour->renderBehaviourType()
+                << " type. No processor.";
         return false;
     }
 
     return processorIterator->second->needSetup(behaviour);
 }
 
-HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::RenderingPipeline::addRenderDataProcessor(HG::Rendering::Base::AbstractRenderDataProcessor* processor)
+HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::RenderingPipeline::addRenderDataProcessor(
+    HG::Rendering::Base::AbstractRenderDataProcessor* processor)
 {
     processor->setRenderingPipeline(this);
     m_renderDataProcessor[processor->getTarget()] = processor;
@@ -180,12 +179,12 @@ HG::Rendering::Base::RenderTarget* HG::Rendering::Base::RenderingPipeline::rende
     return m_currentRenderTarget;
 }
 
-void HG::Rendering::Base::RenderingPipeline::setRenderOverride(HG::Rendering::Base::RenderOverride *renderOverride)
+void HG::Rendering::Base::RenderingPipeline::setRenderOverride(HG::Rendering::Base::RenderOverride* renderOverride)
 {
     m_renderOverride = renderOverride;
 }
 
-HG::Rendering::Base::RenderOverride *HG::Rendering::Base::RenderingPipeline::renderOverride() const
+HG::Rendering::Base::RenderOverride* HG::Rendering::Base::RenderingPipeline::renderOverride() const
 {
     return m_renderOverride;
 }

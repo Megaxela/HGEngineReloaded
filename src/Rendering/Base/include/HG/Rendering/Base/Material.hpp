@@ -9,95 +9,93 @@
 
 namespace HG::Rendering::Base
 {
-    class Shader;
+class Shader;
+
+/**
+ * @brief Class, that describes material.
+ * That will be used by renderer.
+ */
+class Material
+{
+public:
+    using VariablesContainer = std::unordered_map<std::string, MaterialValue>;
 
     /**
-     * @brief Class, that describes material.
-     * That will be used by renderer.
+     * @brief Constructor.
      */
-    class Material
-    {
-    public:
+    Material();
 
-        using VariablesContainer = std::unordered_map<std::string, MaterialValue>;
+    // todo: Implement move operators/constructors
+    /**
+     * @brief Copy constructor.
+     */
+    Material(const Material& rhs);
 
-        /**
-         * @brief Constructor.
-         */
-        Material();
+    /**
+     * @brief Copy operator.
+     */
+    Material& operator=(const Material& rhs);
 
-        // todo: Implement move operators/constructors
-        /**
-         * @brief Copy constructor.
-         */
-        Material(const Material& rhs);
+    /**
+     * @brief Initialization constructor.
+     * @param shader Pointer to shader.
+     */
+    explicit Material(Shader* shader);
 
-        /**
-         * @brief Copy operator.
-         */
-        Material& operator=(const Material& rhs);
+    /**
+     * @brief
+     */
+    virtual ~Material() = default;
 
-        /**
-         * @brief Initialization constructor.
-         * @param shader Pointer to shader.
-         */
-        explicit Material(Shader* shader);
+    // Different type setters
+    void set(const std::string& name, int value);
+    void set(const std::string& name, float value);
+    void set(const std::string& name, bool value);
+    void set(const std::string& name, glm::vec2 value);
+    void set(const std::string& name, glm::vec3 value);
+    void set(const std::string& name, glm::vec4 value);
+    void set(const std::string& name, glm::ivec2 value);
+    void set(const std::string& name, glm::ivec3 value);
+    void set(const std::string& name, glm::ivec4 value);
+    void set(const std::string& name, glm::mat2 value);
+    void set(const std::string& name, glm::mat3 value);
+    void set(const std::string& name, glm::mat4 value);
+    void set(const std::string& name, HG::Rendering::Base::Texture* value);
+    void set(const std::string& name, HG::Rendering::Base::CubeMap* value);
 
-        /**
-         * @brief
-         */
-        virtual ~Material() = default;
+    void erase(const std::string& name);
 
-        // Different type setters
-        void set(const std::string& name, int value);
-        void set(const std::string& name, float value);
-        void set(const std::string& name, bool value);
-        void set(const std::string& name, glm::vec2 value);
-        void set(const std::string& name, glm::vec3 value);
-        void set(const std::string& name, glm::vec4 value);
-        void set(const std::string& name, glm::ivec2 value);
-        void set(const std::string& name, glm::ivec3 value);
-        void set(const std::string& name, glm::ivec4 value);
-        void set(const std::string& name, glm::mat2 value);
-        void set(const std::string& name, glm::mat3 value);
-        void set(const std::string& name, glm::mat4 value);
-        void set(const std::string& name, HG::Rendering::Base::Texture* value);
-        void set(const std::string& name, HG::Rendering::Base::CubeMap* value);
+    /**
+     * @brief Method for getting container with
+     * material uniform key/values.
+     * @return Constant reference.
+     */
+    const VariablesContainer& uniformVaues() const;
 
-        void erase(const std::string& name);
+    /**
+     * @brief Method for setting shader to material.
+     * @param shader Pointer to shader.
+     */
+    void setShader(HG::Rendering::Base::Shader* shader);
 
-        /**
-         * @brief Method for getting container with
-         * material uniform key/values.
-         * @return Constant reference.
-         */
-        const VariablesContainer& uniformVaues() const;
+    /**
+     * @brief Method for getting material shader.
+     * @return Pointer to shader.
+     */
+    HG::Rendering::Base::Shader* shader() const;
 
-        /**
-         * @brief Method for setting shader to material.
-         * @param shader Pointer to shader.
-         */
-        void setShader(HG::Rendering::Base::Shader* shader);
+protected:
+    /**
+     * @brief Method, that's called from `set` methods
+     * after Value was formed.
+     * @param name Name.
+     * @param value Value.
+     */
+    void set(const std::string& name, MaterialValue value);
 
-        /**
-         * @brief Method for getting material shader.
-         * @return Pointer to shader.
-         */
-        HG::Rendering::Base::Shader* shader() const;
+private:
+    VariablesContainer m_variableContainer;
 
-    protected:
-        /**
-         * @brief Method, that's called from `set` methods
-         * after Value was formed.
-         * @param name Name.
-         * @param value Value.
-         */
-        void set(const std::string& name, MaterialValue value);
-
-    private:
-        VariablesContainer m_variableContainer;
-
-        HG::Rendering::Base::Shader* m_shader;
-    };
-}
-
+    HG::Rendering::Base::Shader* m_shader;
+};
+} // namespace HG::Rendering::Base

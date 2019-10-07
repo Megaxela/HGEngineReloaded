@@ -14,16 +14,16 @@
 
 namespace HG::Rendering::OpenGL::Common
 {
-    /**
-     * @brief External data implementation for textures.
-     */
-    class Texture2DData : public HG::Core::CachableResource<Texture2DData>,
-                          public HG::Rendering::Base::RenderSpecificData
-    {
-    public:
-
-        gl::texture_2d Texture = gl::texture_2d(gl::invalid_id);
-        bool Allocated = false;
-        glm::ivec2 Size = {0, 0};
-    };
-}
+/**
+ * @brief External data implementation for textures.
+ */
+class Texture2DData
+    : public HG::Core::CachableResource<Texture2DData>
+    , public HG::Rendering::Base::RenderSpecificData
+{
+public:
+    gl::texture_2d Texture = gl::texture_2d(gl::invalid_id);
+    bool Allocated         = false;
+    glm::ivec2 Size        = {0, 0};
+};
+} // namespace HG::Rendering::OpenGL::Common

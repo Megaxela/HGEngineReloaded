@@ -1,9 +1,7 @@
 #include <HG/Utils/Interfaces/Initializable.hpp>
 
-HG::Utils::Interfaces::Initializable::Initializable() :
-    m_initialized(false)
+HG::Utils::Interfaces::Initializable::Initializable() : m_initialized(false)
 {
-
 }
 
 HG::Utils::Interfaces::Initializable::~Initializable()
@@ -36,10 +34,8 @@ bool HG::Utils::Interfaces::Initializable::isInitialized() const
 
 void HG::Utils::Interfaces::Initializable::onInit()
 {
-
 }
 
 void HG::Utils::Interfaces::Initializable::onDeinit()
 {
-
 }

@@ -10,27 +10,20 @@
 // HG::ToolsCore
 #include <HG/ToolsCore/CommandLineArguments.hpp>
 
-
 namespace Commands
 {
-    // todo c++20: std::variant is no longer as shit as it was. std::string can be replaced with const char*
-    const std::string Pack = "pack";
-    const std::string Unpack = "unpack";
-    const std::string Info = "info";
-}
+// todo c++20: std::variant is no longer as shit as it was. std::string can be replaced with const char*
+const std::string Pack   = "pack";
+const std::string Unpack = "unpack";
+const std::string Info   = "info";
+} // namespace Commands
 
 int main(int argc, char** argv)
 {
-    const std::unordered_map<
-        std::string,
-        std::function<
-            void(const HG::ToolsCore::CommandLineArguments::ArgumentsMap&)
-        >
-    > operations = {
-        {Commands::Pack, &Operations::pack},
-        {Commands::Info, &Operations::info},
-        {Commands::Unpack, &Operations::unpack}
-    };
+    const std::unordered_map<std::string, std::function<void(const HG::ToolsCore::CommandLineArguments::ArgumentsMap&)>>
+        operations = {{Commands::Pack, &Operations::pack},
+                      {Commands::Info, &Operations::info},
+                      {Commands::Unpack, &Operations::unpack}};
 
     HG::ToolsCore::CommandLineArguments arguments(argv[0]);
 
@@ -45,7 +38,6 @@ int main(int argc, char** argv)
         .required(true)
         .choices({Commands::Pack, Commands::Unpack, Commands::Info})
         .destination(ArgumentsNames::Command);
-
 
     arguments.addArgument({"-p", "--path"})
         .help("path to directory with package or with package content")
@@ -70,7 +62,6 @@ int main(int argc, char** argv)
         .numberOfArguments(1)
         .required(false)
         .destination(ArgumentsNames::Name);
-
 
     arguments.addArgument({"-v", "--major"})
         .help("required for `pack` operation. describes package major version")

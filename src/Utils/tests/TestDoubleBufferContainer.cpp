@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include <HG/Utils/DoubleBufferContainer.hpp>
+#include <gtest/gtest.h>
 
 TEST(Utils, DoubleBufferContainerConstructorsDefault)
 {
@@ -33,8 +33,8 @@ TEST(Utils, DoubleBufferContainerConstructorsCopy)
     ASSERT_EQ(copied.added().size(), 2);
 }
 
-static std::size_t copied = 0;
-static std::size_t moved = 0;
+static std::size_t copied      = 0;
+static std::size_t moved       = 0;
 static std::size_t constructed = 0;
 
 static std::size_t counter = 0;
@@ -42,20 +42,17 @@ static std::size_t counter = 0;
 class SampleData
 {
 public:
-    SampleData() :
-        data(++counter)
+    SampleData() : data(++counter)
     {
         ++constructed;
     }
 
-    SampleData(const SampleData& copy) :
-        data(copy.data)
+    SampleData(const SampleData& copy) : data(copy.data)
     {
         ++copied;
     }
 
-    SampleData(SampleData&& move) noexcept :
-        data(move.data)
+    SampleData(SampleData&& move) noexcept : data(move.data)
     {
         ++moved;
     }
@@ -86,15 +83,16 @@ public:
 
 namespace std
 {
-    template<> struct hash<SampleData>
+template <>
+struct hash<SampleData>
+{
+    std::size_t operator()(const SampleData& d) const
     {
-        std::size_t operator()(const SampleData& d) const
-        {
-            return d.data;
-        }
-    };
+        return d.data;
+    }
+};
 
-}
+} // namespace std
 
 TEST(Utils, DoubleBufferContainerConstructorsMove)
 {
@@ -119,8 +117,8 @@ TEST(Utils, DoubleBufferContainerConstructorsMove)
     ASSERT_EQ(moved, 15); // todo: Too many I guess, but it's ok for now
     ASSERT_EQ(constructed, 6);
 
-    copied = 0;
-    moved = 0;
+    copied      = 0;
+    moved       = 0;
     constructed = 0;
 
     auto movedData = std::move(data);
@@ -140,9 +138,9 @@ TEST(Utils, DoubleBufferContainerConstructorsModifiersAndGetters)
     HG::Utils::DoubleBufferContainer<std::size_t> data;
 
     ASSERT_EQ(data.size(), data.current().size());
-    ASSERT_EQ(data.current().size(),   0);
+    ASSERT_EQ(data.current().size(), 0);
     ASSERT_EQ(data.removable().size(), 0);
-    ASSERT_EQ(data.added().size(),     0);
+    ASSERT_EQ(data.added().size(), 0);
 
     data.add(1);
     data.add(1);
@@ -153,42 +151,42 @@ TEST(Utils, DoubleBufferContainerConstructorsModifiersAndGetters)
 
     data.add(3);
 
-    ASSERT_EQ(data.current().size(),   0);
+    ASSERT_EQ(data.current().size(), 0);
     ASSERT_EQ(data.removable().size(), 0);
-    ASSERT_EQ(data.added().size(),     3);
+    ASSERT_EQ(data.added().size(), 3);
 
     data.remove(4);
 
-    ASSERT_EQ(data.current().size(),   0);
+    ASSERT_EQ(data.current().size(), 0);
     ASSERT_EQ(data.removable().size(), 1);
-    ASSERT_EQ(data.added().size(),     3);
+    ASSERT_EQ(data.added().size(), 3);
 
     data.remove(1);
 
-    ASSERT_EQ(data.isRemoving(1),      true);
+    ASSERT_EQ(data.isRemoving(1), true);
 
-    ASSERT_EQ(data.current().size(),   0);
+    ASSERT_EQ(data.current().size(), 0);
     ASSERT_EQ(data.removable().size(), 2);
-    ASSERT_EQ(data.added().size(),     3);
+    ASSERT_EQ(data.added().size(), 3);
 
     data.merge();
 
-    ASSERT_EQ(data.current().size(),   2);
+    ASSERT_EQ(data.current().size(), 2);
     ASSERT_EQ(data.removable().size(), 0);
-    ASSERT_EQ(data.added().size(),     0);
+    ASSERT_EQ(data.added().size(), 0);
 
     data.remove(2);
     data.add(4);
 
-    ASSERT_EQ(data.current().size(),   2);
+    ASSERT_EQ(data.current().size(), 2);
     ASSERT_EQ(data.removable().size(), 1);
-    ASSERT_EQ(data.added().size(),     1);
+    ASSERT_EQ(data.added().size(), 1);
 
     data.clearState();
 
-    ASSERT_EQ(data.current().size(),   2);
+    ASSERT_EQ(data.current().size(), 2);
     ASSERT_EQ(data.removable().size(), 0);
-    ASSERT_EQ(data.added().size(),     0);
+    ASSERT_EQ(data.added().size(), 0);
 
     ASSERT_EQ(data[0], 2);
     ASSERT_EQ(data[1], 3);
@@ -200,7 +198,7 @@ TEST(Utils, DoubleBufferContainerConstructorsModifiersAndGetters)
 
     data.clear();
 
-    ASSERT_EQ(data.current().size(),   0);
+    ASSERT_EQ(data.current().size(), 0);
     ASSERT_EQ(data.removable().size(), 0);
-    ASSERT_EQ(data.added().size(),     0);
+    ASSERT_EQ(data.added().size(), 0);
 }

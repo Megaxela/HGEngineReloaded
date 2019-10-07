@@ -5,19 +5,16 @@
 
 namespace HG::Rendering::OpenGL::Common
 {
-    /**
-     * @brief Class, that describes shader data processor.
-     */
-    class ShaderDataProcessor : public HG::Rendering::Base::AbstractRenderDataProcessor
-    {
-    public:
+/**
+ * @brief Class, that describes shader data processor.
+ */
+class ShaderDataProcessor : public HG::Rendering::Base::AbstractRenderDataProcessor
+{
+public:
+    bool setup(HG::Rendering::Base::RenderData* data, bool guarantee) override;
 
-        bool setup(HG::Rendering::Base::RenderData* data, bool guarantee) override;
+    std::size_t getTarget() override;
 
-        std::size_t getTarget() override;
-
-        bool needSetup(HG::Rendering::Base::RenderData* data) override;
-
-    };
-}
-
+    bool needSetup(HG::Rendering::Base::RenderData* data) override;
+};
+} // namespace HG::Rendering::OpenGL::Common

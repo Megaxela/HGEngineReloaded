@@ -1,10 +1,10 @@
 // HG::Core
-#include <HG/Core/Benchmark.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/CubeMap.hpp>
@@ -17,57 +17,56 @@
 
 namespace
 {
-    void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
-                          gl::cubemap_texture_array& texture,
-                          GLuint side,
-                          bool guarantee)
+void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
+                      gl::cubemap_texture_array& texture,
+                      GLuint side,
+                      bool guarantee)
+{
+    // todo: Fix this `unused` variable.
+    (void)texture;
+    GLuint fileFormat = GL_RGB;
+
+    // Getting type
+    switch (surface->Bpp)
     {
+    case 1:
+        fileFormat = GL_RED;
+        break;
 
-        // todo: Fix this `unused` variable.
-        (void) texture;
-        GLuint fileFormat = GL_RGB;
+    case 2:
+        fileFormat = GL_RG;
+        break;
 
-        // Getting type
-        switch (surface->Bpp)
-        {
-        case 1:
-            fileFormat = GL_RED;
-            break;
+    case 3:
+        fileFormat = GL_RGB;
+        break;
 
-        case 2:
-            fileFormat = GL_RG;
-            break;
+    case 4:
+        fileFormat = GL_RGBA;
+        break;
 
-        case 3:
-            fileFormat = GL_RGB;
-            break;
-
-        case 4:
-            fileFormat = GL_RGBA;
-            break;
-
-        default:
-            ErrorF() << "Can't setup texture because of unknown texture format.";
-            break;
-        }
-
-        // Loading data into texture
-        texture.set_sub_image(
-            0,                // Level
-            0,                // X offset
-            0,                // Y Offset
-            side,             // Z Offset
-            surface->Width,   // Width
-            surface->Height,  // Height
-            1,                // Depth
-            fileFormat,       // Format
-            GL_UNSIGNED_BYTE, // Type
-            surface->Data     // Actual data
-        );
+    default:
+        ErrorF() << "Can't setup texture because of unknown texture format.";
+        break;
     }
-}
 
-bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
+    // Loading data into texture
+    texture.set_sub_image(0,                // Level
+                          0,                // X offset
+                          0,                // Y Offset
+                          side,             // Z Offset
+                          surface->Width,   // Width
+                          surface->Height,  // Height
+                          1,                // Depth
+                          fileFormat,       // Format
+                          GL_UNSIGNED_BYTE, // Type
+                          surface->Data     // Actual data
+    );
+}
+} // namespace
+
+bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data,
+                                                                       bool guarantee)
 {
     auto texture = static_cast<HG::Rendering::Base::CubeMap*>(data);
 
@@ -90,19 +89,16 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
         BENCH("Creating texture storage");
         externalData->StoragePrepared = true;
 
-        externalData->Texture.set_storage(
-            1,       // Levels
-            GL_RGBA8, // Internal format
-            surf->Width,
-            surf->Height,
-            6
-        );
+        externalData->Texture.set_storage(1,        // Levels
+                                          GL_RGBA8, // Internal format
+                                          surf->Width,
+                                          surf->Height,
+                                          6);
     }
 
     if (externalData->StoragePrepared)
     {
-        for (int side = HG::Rendering::Base::CubeMap::Side::Right;
-             side < HG::Rendering::Base::CubeMap::Side::Last;
+        for (int side = HG::Rendering::Base::CubeMap::Side::Right; side < HG::Rendering::Base::CubeMap::Side::Last;
              ++side)
         {
             BENCH("Loading side data to texture");
@@ -141,10 +137,8 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::needSetup(HG::R
 {
     auto externalData = data->castSpecificDataTo<CubeMapTextureData>();
 
-    return externalData == nullptr ||
-           externalData->LoadedSides != ((1 << 6) - 1) || // Fully loaded bitfield
-           !externalData->Valid ||
-           !externalData->Texture.is_valid();
+    return externalData == nullptr || externalData->LoadedSides != ((1 << 6) - 1) || // Fully loaded bitfield
+           !externalData->Valid || !externalData->Texture.is_valid();
 }
 
 size_t HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::getTarget()

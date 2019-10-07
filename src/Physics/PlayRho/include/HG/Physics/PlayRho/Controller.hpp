@@ -7,8 +7,8 @@
 #include <HG/Physics/Base/PhysicsController.hpp> // Required for inheritance
 
 // HG::Physics::PlayRho
-#include "DebugSettings.hpp"
-#include "DebugDraw.hpp"
+#include <HG/Physics/PlayRho/DebugDraw.hpp>
+#include <HG/Physics/PlayRho/DebugSettings.hpp>
 
 // PlayRho
 #include <PlayRho/Dynamics/StepConf.hpp>
@@ -16,53 +16,49 @@
 
 namespace HG::Physics::PlayRho
 {
+/**
+ * @brief PlayRho physics controller object.
+ */
+class Controller : public HG::Physics::Base::PhysicsController
+{
+public:
     /**
-     * @brief PlayRho physics controller object.
+     * @brief Constructor.
+     * @param parent Pointer to parent application.
      */
-    class Controller : public HG::Physics::Base::PhysicsController
-    {
-    public:
+    explicit Controller(HG::Core::Application* parent);
 
-        /**
-         * @brief Constructor.
-         * @param parent Pointer to parent application.
-         */
-        explicit Controller(HG::Core::Application* parent);
+    /**
+     * @brief Method for getting playrho world.
+     * @return Pointer to world object.
+     */
+    playrho::d2::World* world();
 
-        /**
-         * @brief Method for getting playrho world.
-         * @return Pointer to world object.
-         */
-        playrho::d2::World* world();
+    /**
+     * @brief Method for ticking physics engine for some time.
+     * @param deltaTime Time in milliseconds.
+     */
+    void tick(std::chrono::microseconds deltaTime) override;
 
-        /**
-         * @brief Method for ticking physics engine for some time.
-         * @param deltaTime Time in milliseconds.
-         */
-        void tick(std::chrono::microseconds deltaTime) override;
+    /**
+     * @brief Method for getting controller settings.
+     * @return Pointer to settings.
+     */
+    DebugSettings* debugSettings();
 
-        /**
-         * @brief Method for getting controller settings.
-         * @return Pointer to settings.
-         */
-        DebugSettings* debugSettings();
+    /**
+     * @brief Method for getting step configuration.
+     * @return Pointer to step conf.
+     */
+    playrho::StepConf* stepConfiguration();
 
-        /**
-         * @brief Method for getting step configuration.
-         * @return Pointer to step conf.
-         */
-        playrho::StepConf* stepConfiguration();
+private:
+    DebugSettings m_settings;
 
-    private:
+    DebugDraw m_drawer;
 
-        DebugSettings m_settings;
+    playrho::StepConf m_stepConfiguration;
 
-        DebugDraw m_drawer;
-
-        playrho::StepConf m_stepConfiguration;
-
-        playrho::d2::World m_world;
-    };
-}
-
-
+    playrho::d2::World m_world;
+};
+} // namespace HG::Physics::PlayRho

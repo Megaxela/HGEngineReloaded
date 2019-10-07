@@ -1,9 +1,9 @@
 // HG::Core
-#include <HG/Core/GameObject.hpp>
 #include <HG/Core/Behaviour.hpp>
+#include <HG/Core/BuildProperties.hpp>
+#include <HG/Core/GameObject.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
-#include <HG/Core/BuildProperties.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderBehaviour.hpp>
@@ -18,7 +18,6 @@ HG::Core::GameObject::GameObject() :
     m_enabled(true),
     m_hidden(false)
 {
-
 }
 
 HG::Core::GameObject::~GameObject()
@@ -76,23 +75,22 @@ void HG::Core::GameObject::update()
     // Executing update on existing behaviours
     for (auto&& iter : m_behaviours)
     {
-        // Will this behaviour removed on 
+        // Will this behaviour removed on
         // next frame. If yes - behaviour
         // will be skipped, because it can
         // be already deleted. So on the next frame
         // this behaviour will be removed from container.
         // If behaviour is disabled, it shouldn't be updated.
-        if (m_behaviours.isRemoving(iter) ||
-            !iter->isEnabled())
+        if (m_behaviours.isRemoving(iter) || !iter->isEnabled())
         {
             continue;
         }
-        
+
         iter->update();
     }
 }
 
-void HG::Core::GameObject::removeBehaviour(HG::Core::Behaviour *behaviour)
+void HG::Core::GameObject::removeBehaviour(HG::Core::Behaviour* behaviour)
 {
     if constexpr (HG::Core::BuildProperties::isDebug())
     {
@@ -124,13 +122,11 @@ void HG::Core::GameObject::addBehaviour(HG::Core::Behaviour* behaviour)
 
     switch (behaviour->type())
     {
-    case Behaviour::Type::Logic:
-    {
+    case Behaviour::Type::Logic: {
         m_behaviours.add(behaviour);
         break;
     }
-    case Behaviour::Type::Render:
-    {
+    case Behaviour::Type::Render: {
         auto casted = dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(behaviour);
 
         if (!casted)

@@ -1,15 +1,14 @@
 // C++ STL
-#include <stdexcept>
 #include <algorithm>
+#include <stdexcept>
 
 // HG::Core
 #include <HG/Core/TimeStatistics.hpp>
 
-HG::Core::TimeStatistics::TimeStatistics() :
-    m_timers()
+HG::Core::TimeStatistics::TimeStatistics() : m_timers()
 {
     addTimer(Timers::FrameTime);
-    changeEstimateBuffer(Timers::FrameTime,  60);
+    changeEstimateBuffer(Timers::FrameTime, 60);
     addTimer(Timers::RenderTime);
     changeEstimateBuffer(Timers::RenderTime, 60);
     addTimer(Timers::UpdateTime);
@@ -198,7 +197,7 @@ void HG::Core::TimeStatistics::Timer::tick(std::chrono::microseconds mcs)
 void HG::Core::TimeStatistics::Timer::tickBegin()
 {
     m_timerStarted = true;
-    m_timerStart = std::chrono::steady_clock::now();
+    m_timerStart   = std::chrono::steady_clock::now();
 }
 
 std::chrono::microseconds HG::Core::TimeStatistics::Timer::tickEnd()
@@ -208,9 +207,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::Timer::tickEnd()
         throw std::runtime_error("Trying to finish timer without running timer.");
     }
 
-    auto diff = std::chrono::duration_cast<
-        std::chrono::microseconds
-    >(std::chrono::steady_clock::now() - m_timerStart);
+    auto diff = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - m_timerStart);
 
     m_timerStarted = false;
 

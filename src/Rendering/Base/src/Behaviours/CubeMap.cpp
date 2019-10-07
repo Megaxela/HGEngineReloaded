@@ -5,12 +5,10 @@ HG::Rendering::Base::Behaviours::CubeMap::CubeMap(HG::Rendering::Base::CubeMap* 
     RenderBehaviour(RenderBehaviourId),
     m_cubeMap(cubeMap)
 {
-
 }
 
 HG::Rendering::Base::Behaviours::CubeMap::~CubeMap()
 {
-
 }
 
 void HG::Rendering::Base::Behaviours::CubeMap::setCubeMap(HG::Rendering::Base::CubeMap* cubeMap)

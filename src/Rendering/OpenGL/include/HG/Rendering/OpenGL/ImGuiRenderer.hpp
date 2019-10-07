@@ -10,66 +10,62 @@
 // Forward declaration
 namespace HG::Rendering::Base
 {
-    class Material;
-    class Texture;
-}
+class Material;
+class Texture;
+} // namespace HG::Rendering::Base
 
 namespace HG::Rendering::OpenGL
 {
+/**
+ * @brief Class, that describes object for
+ * ImGui rendering.
+ */
+class ImGuiRenderer
+    : public HG::Utils::Interfaces::Initializable
+    , public HG::Rendering::OpenGL::Common::MaterialProcessor
+
+{
+public:
     /**
-     * @brief Class, that describes object for
-     * ImGui rendering.
+     * @brief Constructor.
      */
-    class ImGuiRenderer : public HG::Utils::Interfaces::Initializable,
-                          public HG::Rendering::OpenGL::Common::MaterialProcessor
+    explicit ImGuiRenderer(HG::Core::Application* application);
 
-    {
-    public:
+    /**
+     * @brief Method for rendering prepared data.
+     */
+    void render();
 
-        /**
-         * @brief Constructor.
-         */
-        explicit ImGuiRenderer(HG::Core::Application* application);
+    /**
+     * @brief Method for getting parent application.
+     * @return Pointer to parent application.
+     */
+    HG::Core::Application* application() const;
 
-        /**
-         * @brief Method for rendering prepared data.
-         */
-        void render();
+protected:
+    /**
+     * @brief Method for initialization ImGui renderer.
+     */
+    void onInit() override;
 
-        /**
-         * @brief Method for getting parent application.
-         * @return Pointer to parent application.
-         */
-        HG::Core::Application* application() const;
+    /**
+     * @brief Method for deinitiazliation ImGui renderer.
+     */
+    void onDeinit() override;
 
-    protected:
+private:
+    void createFontsTexture();
 
-        /**
-         * @brief Method for initialization ImGui renderer.
-         */
-        void onInit() override;
+    HG::Core::Application* m_application;
+    HG::Rendering::Base::Material* m_material;
 
-        /**
-         * @brief Method for deinitiazliation ImGui renderer.
-         */
-        void onDeinit() override;
+    gl::buffer m_vbo;
+    gl::buffer m_ebo;
 
-    private:
+    HG::Rendering::Base::Texture* m_fontTexture;
 
-        void createFontsTexture();
-
-        HG::Core::Application* m_application;
-        HG::Rendering::Base::Material* m_material;
-
-        gl::buffer m_vbo;
-        gl::buffer m_ebo;
-
-        HG::Rendering::Base::Texture* m_fontTexture;
-
-        GLuint m_attribLocationPosition = 0;
-        GLuint m_attribLocationUV = 0;
-        GLuint m_attribLocationColor = 0;
-    };
-}
-
-
+    GLuint m_attribLocationPosition = 0;
+    GLuint m_attribLocationUV       = 0;
+    GLuint m_attribLocationColor    = 0;
+};
+} // namespace HG::Rendering::OpenGL

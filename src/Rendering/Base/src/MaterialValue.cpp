@@ -1,5 +1,2 @@
-//
-// Created by megaxela on 9/13/18.
-//
-
-#include "HG/Rendering/Base/MaterialValue.hpp"
+// HG::Rendering::Base
+#include <HG/Rendering/Base/MaterialValue.hpp>

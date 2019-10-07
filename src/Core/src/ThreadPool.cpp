@@ -6,8 +6,7 @@
 // ALogger
 #include <CurrentLogger.hpp>
 
-HG::Core::ThreadPool::ThreadPool() :
-    m_data()
+HG::Core::ThreadPool::ThreadPool() : m_data()
 {
     auto hw = std::thread::hardware_concurrency();
 
@@ -38,8 +37,7 @@ HG::Core::ThreadPool::~ThreadPool()
     }
 }
 
-void HG::Core::ThreadPool::threadFunction(std::size_t id,
-                                          HG::Core::ThreadPool::Type type)
+void HG::Core::ThreadPool::threadFunction(std::size_t id, HG::Core::ThreadPool::Type type)
 {
     auto data = getPoolData(type);
 
@@ -56,8 +54,7 @@ void HG::Core::ThreadPool::threadFunction(std::size_t id,
         {
             std::unique_lock<std::mutex> queueLock(data->jobsMutex);
 
-            while (data->jobs.empty() &&
-                   data->running)
+            while (data->jobs.empty() && data->running)
             {
                 data->jobsNotifier.wait(queueLock);
             }
@@ -77,17 +74,17 @@ void HG::Core::ThreadPool::threadFunction(std::size_t id,
         }
         catch (std::exception& exception)
         {
-            Error() << "Thread from pool with [id=" << id << ", type=" << type << "] received exception: " << exception.what();
+            Error() << "Thread from pool with [id=" << id << ", type=" << type
+                    << "] received exception: " << exception.what();
         }
     }
 
     // Removing thread from data
-//    std::unique_lock<std::mutex> lock(data->threadsMutex);
-//    data->threads.erase(id);
+    //    std::unique_lock<std::mutex> lock(data->threadsMutex);
+    //    data->threads.erase(id);
 }
 
-void HG::Core::ThreadPool::pushInternal(std::function<void()> job,
-                                        HG::Core::ThreadPool::Type type)
+void HG::Core::ThreadPool::pushInternal(std::function<void()> job, HG::Core::ThreadPool::Type type)
 {
     auto data = getPoolData(type);
 
@@ -97,15 +94,14 @@ void HG::Core::ThreadPool::pushInternal(std::function<void()> job,
     }
 
     {
-        std::unique_lock<std::mutex> lock (data->jobsMutex);
+        std::unique_lock<std::mutex> lock(data->jobsMutex);
         data->jobs.push(std::move(job));
     }
 
     data->jobsNotifier.notify_all();
 }
 
-void HG::Core::ThreadPool::startPool(HG::Core::ThreadPool::Type type,
-                                     std::size_t numberOfThreads)
+void HG::Core::ThreadPool::startPool(HG::Core::ThreadPool::Type type, std::size_t numberOfThreads)
 {
     std::shared_ptr<PoolData> data = nullptr;
 
@@ -115,7 +111,7 @@ void HG::Core::ThreadPool::startPool(HG::Core::ThreadPool::Type type,
 
         if (iter == m_data.end())
         {
-            data = std::make_shared<PoolData>();
+            data         = std::make_shared<PoolData>();
             m_data[type] = data;
         }
         else
@@ -136,12 +132,7 @@ void HG::Core::ThreadPool::startPool(HG::Core::ThreadPool::Type type,
     for (std::size_t i = 0; i < numberOfThreads; ++i)
     {
         std::unique_lock<std::mutex> lock(data->threadsMutex);
-        data->threads[data->nextId] = std::thread(
-            &ThreadPool::threadFunction,
-            this,
-            std::size_t(data->nextId),
-            type
-        );
+        data->threads[data->nextId] = std::thread(&ThreadPool::threadFunction, this, std::size_t(data->nextId), type);
 
         data->nextId++;
     }

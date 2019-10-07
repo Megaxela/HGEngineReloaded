@@ -2,17 +2,16 @@
 
 namespace HG::Core::BuildProperties
 {
-    /**
-     * @brief Constexpr function for checking is
-     * debug build enabled.
-     */
-    constexpr bool isDebug()
-    {
+/**
+ * @brief Constexpr function for checking is
+ * debug build enabled.
+ */
+constexpr bool isDebug()
+{
 #ifdef NDEBUG
-        return false;
+    return false;
 #else
-        return true;
+    return true;
 #endif
-    }
-};
-
+}
+}; // namespace HG::Core::BuildProperties

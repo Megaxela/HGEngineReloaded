@@ -9,25 +9,23 @@
 
 namespace HG::Utils
 {
-    class Mesh;
+class Mesh;
 }
 
 namespace HG::Rendering::OpenGL::Common
 {
-    class MeshData;
+class MeshData;
 
-    /**
-     * @brief Class, that describes mesh data processor.
-     */
-    class MeshDataProcessor : public HG::Rendering::Base::AbstractRenderDataProcessor
-    {
-    public:
+/**
+ * @brief Class, that describes mesh data processor.
+ */
+class MeshDataProcessor : public HG::Rendering::Base::AbstractRenderDataProcessor
+{
+public:
+    bool setup(HG::Rendering::Base::RenderData* data, bool guarantee) override;
 
-        bool setup(HG::Rendering::Base::RenderData* data, bool guarantee) override;
+    std::size_t getTarget() override;
 
-        std::size_t getTarget() override;
-
-        bool needSetup(HG::Rendering::Base::RenderData* data) override;
-    };
-}
-
+    bool needSetup(HG::Rendering::Base::RenderData* data) override;
+};
+} // namespace HG::Rendering::OpenGL::Common

@@ -7,7 +7,6 @@ HG::Rendering::Base::MaterialCollection::MaterialCollection(HG::Core::ResourceMa
     m_resourceManager(resourceManager),
     m_renderer(pipeline)
 {
-
 }
 
 HG::Rendering::Base::MaterialCollection::~MaterialCollection()

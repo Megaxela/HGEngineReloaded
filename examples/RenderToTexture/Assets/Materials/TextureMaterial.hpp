@@ -10,4 +10,3 @@ public:
 
     void setTexture(HG::Rendering::Base::Texture* texture);
 };
-

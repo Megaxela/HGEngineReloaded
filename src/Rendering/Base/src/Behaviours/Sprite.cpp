@@ -2,12 +2,8 @@
 #include <HG/Rendering/Base/Behaviours/Sprite.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
 
-HG::Rendering::Base::Behaviours::Sprite::Sprite() :
-    RenderBehaviour(RenderBehaviourId),
-    m_texture(nullptr),
-    m_clipping()
+HG::Rendering::Base::Behaviours::Sprite::Sprite() : RenderBehaviour(RenderBehaviourId), m_texture(nullptr), m_clipping()
 {
-
 }
 
 HG::Rendering::Base::Behaviours::Sprite::Sprite(HG::Rendering::Base::Texture* texture) :
@@ -20,7 +16,6 @@ HG::Rendering::Base::Behaviours::Sprite::Sprite(HG::Rendering::Base::Texture* te
 
 HG::Rendering::Base::Behaviours::Sprite::~Sprite()
 {
-
 }
 
 void HG::Rendering::Base::Behaviours::Sprite::setTexture(HG::Rendering::Base::Texture* texture)
@@ -49,7 +44,7 @@ HG::Rendering::Base::Texture* HG::Rendering::Base::Behaviours::Sprite::texture()
     return m_texture;
 }
 
-void HG::Rendering::Base::Behaviours::Sprite::setClipping(const HG::Utils::Rect &rect)
+void HG::Rendering::Base::Behaviours::Sprite::setClipping(const HG::Utils::Rect& rect)
 {
     m_clipping = rect;
 }

@@ -1,9 +1,9 @@
 // HG::Core
-#include <HG/Core/TimeStatistics.hpp>
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Scene.hpp>
 #include <HG/Core/Input.hpp>
+#include <HG/Core/Scene.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 #include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
@@ -27,7 +27,6 @@ HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
     m_pitch(0),
     m_camera(nullptr)
 {
-
 }
 
 void HG::Standard::Behaviours::FPSCameraMovement::onStart()
@@ -47,9 +46,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
         return;
     }
 
-    if (input()->keyboard()->isPushed(
-        HG::Core::Input::Keyboard::Key::R
-    ))
+    if (input()->keyboard()->isPushed(HG::Core::Input::Keyboard::Key::R))
     {
         m_enabled = !m_enabled;
 
@@ -58,17 +55,15 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
             m_lastMousePosition = input()->mouse()->getMousePosition();
         }
 
-//        input()->mouse()->setCursorHidden  (m_enabled);
+        //        input()->mouse()->setCursorHidden  (m_enabled);
         input()->mouse()->setCursorDisabled(m_enabled);
     }
 
-    if (input()->keyboard()->isPushed(
-        HG::Core::Input::Keyboard::Key::ESC
-    ))
+    if (input()->keyboard()->isPushed(HG::Core::Input::Keyboard::Key::ESC))
     {
         m_enabled = false;
 
-        input()->mouse()->setCursorHidden  (false);
+        input()->mouse()->setCursorHidden(false);
         input()->mouse()->setCursorDisabled(false);
     }
 
@@ -83,8 +78,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
 void HG::Standard::Behaviours::FPSCameraMovement::handleMouseRotation()
 {
     // Frame sens
-    float frameSensitivity =
-        m_propertySensitivity / 10;
+    float frameSensitivity = m_propertySensitivity / 10;
 
     // Mouse
     auto mousePosition = input()->mouse()->getMousePosition();
@@ -108,19 +102,14 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleMouseRotation()
     m_front.x = std::cos(glm::radians(m_yaw)) * std::cos(glm::radians(m_pitch));
     m_front.y = std::sin(glm::radians(m_pitch));
     m_front.z = std::sin(glm::radians(m_yaw)) * std::cos(glm::radians(m_pitch));
-    m_front = glm::normalize(m_front);
+    m_front   = glm::normalize(m_front);
 
-    m_camera->lookAt(
-        m_camera->gameObject()->transform()->localPosition() + m_front
-    );
+    m_camera->lookAt(m_camera->gameObject()->transform()->localPosition() + m_front);
 }
 
 void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
 {
-    auto dt = scene()
-                  ->application()
-                  ->timeStatistics()
-                  ->lastFrameDeltaTime().count() / 1000000.0;
+    auto dt = scene()->application()->timeStatistics()->lastFrameDeltaTime().count() / 1000000.0;
 
     auto input = scene()->application()->input()->keyboard();
 
@@ -170,8 +159,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
         }
     }
 
-    gameObject()->transform()->setGlobalPosition(
-        gameObject()->transform()->globalPosition() +
-            inputDirection * m_camera->gameObject()->transform()->globalRotation()
-    );
+    gameObject()->transform()->setGlobalPosition(gameObject()->transform()->globalPosition() +
+                                                 inputDirection *
+                                                     m_camera->gameObject()->transform()->globalRotation());
 }

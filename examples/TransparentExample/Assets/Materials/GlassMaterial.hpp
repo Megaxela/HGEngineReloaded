@@ -9,8 +9,5 @@
 class GlassMaterial : public HG::Rendering::Base::Material
 {
 public:
-
     static const char* rawShader;
-
 };
-

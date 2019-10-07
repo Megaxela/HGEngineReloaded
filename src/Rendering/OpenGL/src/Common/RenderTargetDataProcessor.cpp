@@ -1,6 +1,6 @@
 // HG::Core
-#include <HG/Core/Benchmark.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderTarget.hpp>
@@ -8,8 +8,8 @@
 #include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
+#include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
 // ALogger
@@ -17,10 +17,10 @@
 
 HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProcessor()
 {
-
 }
 
-bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
+bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data,
+                                                                     bool guarantee)
 {
     auto renderTarget = dynamic_cast<HG::Rendering::Base::RenderTarget*>(data);
 
@@ -34,13 +34,8 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
     {
         if (renderTarget->specificData() == nullptr)
         {
-            renderTarget->setSpecificData(
-                new (application()->resourceCache()) RenderTargetData(
-                    std::move(gl::framebuffer(0)),
-                    std::move(gl::renderbuffer(0)),
-                    glm::ivec2{0, 0}
-                )
-            );
+            renderTarget->setSpecificData(new (application()->resourceCache()) RenderTargetData(
+                std::move(gl::framebuffer(0)), std::move(gl::renderbuffer(0)), glm::ivec2{0, 0}));
         }
 
         return true;
@@ -60,10 +55,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
         externalData->Framebuffer = std::move(gl::framebuffer());
     }
 
-    for (auto iter = renderTarget->colorTextureBegin(),
-              end  = renderTarget->colorTextureEnd();
-         iter != end;
-         ++iter)
+    for (auto iter = renderTarget->colorTextureBegin(), end = renderTarget->colorTextureEnd(); iter != end; ++iter)
     {
         if (renderingPipeline()->needSetup(iter->second))
         {
@@ -78,20 +70,14 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
         auto textureExternal = iter->second->castSpecificDataTo<Texture2DData>();
 
         BENCH("Attaching texture to framebuffer");
-        externalData->Framebuffer.attach_texture(
-            GL_COLOR_ATTACHMENT0 + iter->first,
-            textureExternal->Texture
-        );
+        externalData->Framebuffer.attach_texture(GL_COLOR_ATTACHMENT0 + iter->first, textureExternal->Texture);
     }
 
     if (externalData->Size == renderTarget->size())
     {
         BENCH("Setting storage to renderbuffer");
         externalData->Size = renderTarget->size();
-        externalData->Renderbuffer.set_storage(
-            GL_DEPTH24_STENCIL8,
-            externalData->Size.x, externalData->Size.y
-        );
+        externalData->Renderbuffer.set_storage(GL_DEPTH24_STENCIL8, externalData->Size.x, externalData->Size.y);
     }
 
     externalData->Valid = true;
@@ -106,12 +92,10 @@ std::size_t HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::getTarget(
 
 bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
-    auto renderTarget = static_cast<HG::Rendering::Base::RenderTarget*>(data);
+    auto renderTarget     = static_cast<HG::Rendering::Base::RenderTarget*>(data);
     auto renderTargetData = renderTarget->castSpecificDataTo<HG::Rendering::OpenGL::Common::RenderTargetData>();
 
-    return  renderTargetData == nullptr ||
-            renderTargetData->Size != renderTarget->size() ||
+    return renderTargetData == nullptr || renderTargetData->Size != renderTarget->size() ||
            !renderTargetData->Framebuffer.is_valid() ||
-            renderTargetData->Framebuffer.status() == GL_FRAMEBUFFER_COMPLETE ||
-           !renderTargetData->Valid;
+           renderTargetData->Framebuffer.status() == GL_FRAMEBUFFER_COMPLETE || !renderTargetData->Valid;
 }

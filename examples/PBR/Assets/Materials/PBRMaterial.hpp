@@ -5,13 +5,12 @@
 
 namespace HG::Rendering::Base
 {
-    class Texture;
+class Texture;
 }
 
 class PBRMaterial : public HG::Rendering::Base::Material
 {
 public:
-
     static const char* rawShader;
 
     void setAlbedoMap(HG::Rendering::Base::Texture* texture);
@@ -26,4 +25,3 @@ public:
 
     void setHeightMap(HG::Rendering::Base::Texture* texture);
 };
-

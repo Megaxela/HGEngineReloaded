@@ -2,28 +2,28 @@
 #include <HG/Core/Application.hpp>
 
 // HG::Rendering::Base
-#include <HG/Rendering/Base/Renderer.hpp>
-#include <HG/Rendering/Base/Texture.hpp>
 #include <HG/Rendering/Base/CubeMap.hpp>
 #include <HG/Rendering/Base/Material.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Shader.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
-#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
-#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
-#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
 #include <HG/Core/Application.hpp>
+#include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
+#include <HG/Rendering/OpenGL/Common/MaterialProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
 
 HG::Rendering::OpenGL::Common::MaterialProcessor::MaterialProcessor()
 {
-
 }
 
-void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::Application* application, HG::Rendering::Base::Material* material)
+void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::Application* application,
+                                                                   HG::Rendering::Base::Material* material)
 {
     // todo: Replace static with global rendering state
     static gl::program* current = nullptr;
@@ -37,10 +37,7 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::App
         }
     }
 
-    auto* matProgram =
-        &material
-            ->shader()
-            ->castSpecificDataTo<Common::ShaderData>()->Program;
+    auto* matProgram = &material->shader()->castSpecificDataTo<Common::ShaderData>()->Program;
 
     if (current != matProgram)
     {
@@ -50,7 +47,9 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::App
     }
 }
 
-void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG::Core::Application* application, HG::Rendering::Base::Material* material, bool guarantee)
+void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG::Core::Application* application,
+                                                                             HG::Rendering::Base::Material* material,
+                                                                             bool guarantee)
 {
     uint32_t textureNumber = 0;
 
@@ -63,12 +62,12 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG:
 }
 
 void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
-        HG::Core::Application* application,
-        HG::Rendering::OpenGL::Common::ShaderData *shaderData,
-        const std::string &name,
-        const HG::Rendering::Base::MaterialValue &value,
-        uint32_t &textureNumber,
-        bool guarantee)
+    HG::Core::Application* application,
+    HG::Rendering::OpenGL::Common::ShaderData* shaderData,
+    const std::string& name,
+    const HG::Rendering::Base::MaterialValue& value,
+    uint32_t& textureNumber,
+    bool guarantee)
 {
     // Trying to get cached uniform location
     auto locationIter = shaderData->UniformLocations.find(name);
@@ -133,80 +132,43 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
     switch (value.type)
     {
     case Base::MaterialValue::Type::Int:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.integer
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.integer);
         break;
     case Base::MaterialValue::Type::Float:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.floating
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.floating);
         break;
     case Base::MaterialValue::Type::Boolean:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.boolean
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.boolean);
         break;
     case Base::MaterialValue::Type::Vector2:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.vector2
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.vector2);
         break;
     case Base::MaterialValue::Type::Vector3:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.vector3
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.vector3);
         break;
     case Base::MaterialValue::Type::Vector4:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.vector4
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.vector4);
         break;
     case Base::MaterialValue::Type::IntVector2:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.vector2_int
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.vector2_int);
         break;
     case Base::MaterialValue::Type::IntVector3:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.vector3_int
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.vector3_int);
         break;
     case Base::MaterialValue::Type::IntVector4:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.vector4_int
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.vector4_int);
         break;
     case Base::MaterialValue::Type::Matrix2x2:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.mat2x2
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.mat2x2);
         break;
     case Base::MaterialValue::Type::Matrix3x3:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.mat3x3
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.mat3x3);
         break;
     case Base::MaterialValue::Type::Matrix4x4:
-        shaderData->Program.set_uniform(
-            locationIter->second,
-            value.mat4x4
-        );
+        shaderData->Program.set_uniform(locationIter->second, value.mat4x4);
         break;
 
-    case Base::MaterialValue::Type::CubeMap:
-    {
+    case Base::MaterialValue::Type::CubeMap: {
         if (value.cubeMap == nullptr)
         {
             return;
@@ -215,10 +177,7 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
         // todo: If any errors on texture, render fallback texture.
         // Setting texture unit
 
-        shaderData->Program.set_uniform_1i(
-            locationIter->second,
-            textureNumber
-        );
+        shaderData->Program.set_uniform_1i(locationIter->second, textureNumber);
 
         auto cubemapData = value.cubeMap->castSpecificDataTo<Common::CubeMapTextureData>();
 
@@ -241,9 +200,8 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
 
         break;
     }
-    case Base::MaterialValue::Type::Texture:
-    {
-        if  (value.texture == nullptr)
+    case Base::MaterialValue::Type::Texture: {
+        if (value.texture == nullptr)
         {
             return;
         }
@@ -251,10 +209,7 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
         // todo: If any errors on texture, render fallback texture.
         // Setting texture unit
 
-        shaderData->Program.set_uniform_1i(
-            locationIter->second,
-            textureNumber
-        );
+        shaderData->Program.set_uniform_1i(locationIter->second, textureNumber);
 
         auto textureData = value.texture->castSpecificDataTo<Common::Texture2DData>();
 

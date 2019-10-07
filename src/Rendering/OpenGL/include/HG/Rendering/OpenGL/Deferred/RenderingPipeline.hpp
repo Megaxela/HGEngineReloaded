@@ -4,13 +4,9 @@
 
 namespace HG::Rendering::OpenGL::Deferred
 {
-    class RenderingPipeline : public HG::Rendering::Base::RenderingPipeline
-    {
-    public:
-
-    private:
-
-
-    };
-}
-
+class RenderingPipeline : public HG::Rendering::Base::RenderingPipeline
+{
+public:
+private:
+};
+} // namespace HG::Rendering::OpenGL::Deferred

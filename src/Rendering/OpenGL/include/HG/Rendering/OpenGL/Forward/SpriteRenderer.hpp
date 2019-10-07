@@ -8,60 +8,56 @@
 
 namespace HG::Rendering::OpenGL::Common
 {
-    class MeshData;
+class MeshData;
 }
 
 namespace HG::Rendering::OpenGL::Forward
 {
+/**
+ * @brief Class, that describes forward
+ * sprite renderer.
+ */
+class SpriteRenderer
+    : public AbstractRenderer
+    , private HG::Rendering::OpenGL::Common::MaterialProcessor
+{
+public:
     /**
-     * @brief Class, that describes forward
-     * sprite renderer.
+     * @brief Constructor.
      */
-    class SpriteRenderer : public AbstractRenderer,
-                           private HG::Rendering::OpenGL::Common::MaterialProcessor
-    {
-    public:
+    SpriteRenderer();
 
-        /**
-         * @brief Constructor.
-         */
-        SpriteRenderer();
+    /**
+     * @brief Method for rendering sprite rendering behaviour.
+     * @param gameObject Rendering behaviour owner.
+     * @param renderBehaviour Actual rendering behaviour.
+     */
+    void render(HG::Rendering::Base::RenderBehaviour* renderBehaviour) override;
 
-        /**
-         * @brief Method for rendering sprite rendering behaviour.
-         * @param gameObject Rendering behaviour owner.
-         * @param renderBehaviour Actual rendering behaviour.
-         */
-        void render(HG::Rendering::Base::RenderBehaviour *renderBehaviour) override;
+    /**
+     * @brief What render behaviours can proceed this
+     * renderer. (HG::Rendering::Base::Behaviours::Sprite)
+     */
+    size_t getTarget() override;
 
-        /**
-         * @brief What render behaviours can proceed this
-         * renderer. (HG::Rendering::Base::Behaviours::Sprite)
-         */
-        size_t getTarget() override;
+protected:
+    /**
+     * @brief Method for initializing sprite renderer.
+     * This method creates buffers and materials.
+     */
+    void onInit() override;
 
-    protected:
+    /**
+     * @brief Method for deinitializing sprite renderer.
+     * Clears buffers and removes materials.
+     */
+    void onDeinit() override;
 
-        /**
-         * @brief Method for initializing sprite renderer.
-         * This method creates buffers and materials.
-         */
-        void onInit() override;
+private:
+    // Shader for sprite rendering
+    HG::Rendering::Base::Material* m_spriteMaterial;
 
-        /**
-         * @brief Method for deinitializing sprite renderer.
-         * Clears buffers and removes materials.
-         */
-        void onDeinit() override;
-
-    private:
-
-        // Shader for sprite rendering
-        HG::Rendering::Base::Material* m_spriteMaterial;
-
-        // Sprite mesh
-        Common::MeshData* m_spriteData;
-    };
-}
-
-
+    // Sprite mesh
+    Common::MeshData* m_spriteData;
+};
+} // namespace HG::Rendering::OpenGL::Forward

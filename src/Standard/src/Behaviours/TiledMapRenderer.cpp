@@ -2,27 +2,26 @@
 #include <filesystem>
 
 // HG::Core
-#include <HG/Core/GameObjectBuilder.hpp>
-#include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Transform.hpp>
+#include <HG/Core/GameObjectBuilder.hpp>
+#include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Scene.hpp>
+#include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Behaviours/Mesh.hpp>
-#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Material.hpp>
-#include <HG/Rendering/Base/Texture.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/Shader.hpp>
+#include <HG/Rendering/Base/Texture.hpp>
 
 // HG::Standard
 #include <HG/Standard/Behaviours/TiledMapRenderer.hpp>
 
 // HG::Utils
-#include <HG/Utils/Mesh.hpp>
 #include <HG/Utils/Loaders/STBImageLoader.hpp>
-
+#include <HG/Utils/Mesh.hpp>
 
 HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
     m_map(nullptr),
@@ -32,10 +31,9 @@ HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
     m_metersPerPixel(0.01f),
     m_layerZOffset(0.01f)
 {
-
 }
 
-HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behaviours::TiledMap *map) :
+HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behaviours::TiledMap* map) :
     m_map(map),
     m_layers(),
     m_mapShader(nullptr),
@@ -43,7 +41,6 @@ HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behav
     m_metersPerPixel(0.01f),
     m_layerZOffset(0.01f)
 {
-
 }
 
 HG::Standard::Behaviours::TiledMapRenderer::~TiledMapRenderer()
@@ -71,7 +68,7 @@ float HG::Standard::Behaviours::TiledMapRenderer::metersPerPixel() const
     return m_metersPerPixel;
 }
 
-HG::Standard::Behaviours::TiledMap *HG::Standard::Behaviours::TiledMapRenderer::map() const
+HG::Standard::Behaviours::TiledMap* HG::Standard::Behaviours::TiledMapRenderer::map() const
 {
     return m_map;
 }
@@ -157,8 +154,7 @@ void main()
     }
 }
 #endif
-)"
-    );
+)");
 
     // todo: Apply validation
     scene()->application()->renderer()->setup(m_mapShader);
@@ -169,22 +165,16 @@ void main()
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareLayer(const HG::Standard::Behaviours::TiledMap::Layer *layer,
-                                                               HG::Core::GameObject *parent)
+void HG::Standard::Behaviours::TiledMapRenderer::prepareLayer(const HG::Standard::Behaviours::TiledMap::Layer* layer,
+                                                              HG::Core::GameObject* parent)
 {
     switch (layer->type)
     {
     case TiledMap::Layer::Type::Tile:
-        prepareTileLayer(
-            dynamic_cast<const TiledMap::TileLayer *>(layer),
-            parent
-        );
+        prepareTileLayer(dynamic_cast<const TiledMap::TileLayer*>(layer), parent);
         break;
     case TiledMap::Layer::Type::Group:
-        prepareGroupLayer(
-            dynamic_cast<const TiledMap::Group *>(layer),
-            parent
-        );
+        prepareGroupLayer(dynamic_cast<const TiledMap::Group*>(layer), parent);
         break;
     case TiledMap::Layer::Type::Object: // fall through
     case TiledMap::Layer::Type::Image:
@@ -203,51 +193,43 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
 
         // Trying to load texture
 
-//        if (tilesetData == nullptr)
-//        {
-//            // todo: Add usage of replace texture
-//            Error() << "Can't load tileset \"" << tileset->name << "\" texture at \"" << tileset->path << "\".";
-//            m_tilesets[tileset->path] = nullptr;
-//        }
+        //        if (tilesetData == nullptr)
+        //        {
+        //            // todo: Add usage of replace texture
+        //            Error() << "Can't load tileset \"" << tileset->name << "\" texture at \"" << tileset->path << "\".";
+        //            m_tilesets[tileset->path] = nullptr;
+        //        }
 
         // Making texture
-        auto texture = new (scene()->application()->resourceCache()) HG::Rendering::Base::Texture(
-            scene()
-                ->application()
-                ->resourceManager()
-                ->load<HG::Utils::STBImageLoader>(
-                        (mapPath.parent_path() / std::filesystem::path(tileset->path)).string()
-                )
-        );
+        auto texture = new (scene()->application()->resourceCache())
+            HG::Rendering::Base::Texture(scene()->application()->resourceManager()->load<HG::Utils::STBImageLoader>(
+                (mapPath.parent_path() / std::filesystem::path(tileset->path)).string()));
 
         // todo: Add validation, when it will appear at `setup` method.
-        scene()
-            ->application()
-            ->renderer()
-            ->setup(texture);
+        scene()->application()->renderer()->setup(texture);
 
         m_tilesets[tileset->path] = texture;
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Standard::Behaviours::TiledMap::Group *groupLayer,
-                                                                    HG::Core::GameObject *parent)
+void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(
+    const HG::Standard::Behaviours::TiledMap::Group* groupLayer,
+    HG::Core::GameObject* parent)
 {
     // Creating game object
 
     auto pixelScale = 0.01f;
 
-    auto newParentGameObject =
-        HG::Core::GameObjectBuilder(gameObject()->scene()->application()->resourceCache())
-            .setName(groupLayer->name)
-            .setParent(parent)
-            .deploy();
+    auto newParentGameObject = HG::Core::GameObjectBuilder(gameObject()->scene()->application()->resourceCache())
+                                   .setName(groupLayer->name)
+                                   .setParent(parent)
+                                   .deploy();
 
     scene()->addGameObject(newParentGameObject);
 
     auto pos = newParentGameObject->transform()->localPosition();
 
-    pos.x =  groupLayer->offset.x * pixelScale;
+    pos.x = groupLayer->offset.x * pixelScale;
     pos.y = -groupLayer->offset.y * pixelScale;
 
     newParentGameObject->transform()->setLocalPosition(pos);
@@ -258,8 +240,9 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(const HG::Sta
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Standard::Behaviours::TiledMap::TileLayer *tileLayer,
-                                                                  HG::Core::GameObject *parent)
+void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(
+    const HG::Standard::Behaviours::TiledMap::TileLayer* tileLayer,
+    HG::Core::GameObject* parent)
 {
     // Creating game object
     HG::Core::GameObject* layerGameObject =
@@ -271,31 +254,24 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
 
     auto pos = layerGameObject->transform()->localPosition();
 
-    pos.x =  tileLayer->offset.x * m_metersPerPixel;
+    pos.x = tileLayer->offset.x * m_metersPerPixel;
     pos.y = -tileLayer->offset.y * m_metersPerPixel;
-    pos.z =  m_layerZOffsetCummulative;
+    pos.z = m_layerZOffsetCummulative;
 
     // todo: Add configuration
     m_layerZOffsetCummulative += m_layerZOffset;
 
     layerGameObject->transform()->setLocalPosition(pos);
 
-    std::unordered_map<
-        HG::Rendering::Base::Texture*,
-        HG::Utils::MeshPtr
-    > rendererMeshInfo;
+    std::unordered_map<HG::Rendering::Base::Texture*, HG::Utils::MeshPtr> rendererMeshInfo;
 
     glm::ivec2 tilePointer = {-1, 0}; // Initial position
 
-    glm::vec2 worldMapTileSize = {
-        m_map->properties().tileSize.x * m_metersPerPixel,
-        m_map->properties().tileSize.y * m_metersPerPixel
-    };
+    glm::vec2 worldMapTileSize = {m_map->properties().tileSize.x * m_metersPerPixel,
+                                  m_map->properties().tileSize.y * m_metersPerPixel};
 
-    glm::vec2 worldLayerSize = {
-        m_map->properties().size.x * worldMapTileSize.x,
-        m_map->properties().size.y * worldMapTileSize.y
-    };
+    glm::vec2 worldLayerSize = {m_map->properties().size.x * worldMapTileSize.x,
+                                m_map->properties().size.y * worldMapTileSize.y};
 
     // todo: Add configuration
     constexpr float tileOverlay = 0.0002f;
@@ -317,19 +293,15 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
         }
 
         // Getting invert/rotate mask
-        auto decodedTile =
-            HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(tile);
+        auto decodedTile = HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(tile);
 
         // Getting required tileset
-        auto tilesetIter = std::find_if(
-            m_map->tilesets().begin(),
-            m_map->tilesets().end(),
-            [decodedTile](HG::Standard::Behaviours::TiledMap::Tileset* tileset) -> bool
-            {
-                return decodedTile.actualTile >= tileset->firstGID &&
-                       decodedTile.actualTile <  tileset->firstGID + tileset->tileCount;
-            }
-        );
+        auto tilesetIter = std::find_if(m_map->tilesets().begin(),
+                                        m_map->tilesets().end(),
+                                        [decodedTile](HG::Standard::Behaviours::TiledMap::Tileset* tileset) -> bool {
+                                            return decodedTile.actualTile >= tileset->firstGID &&
+                                                   decodedTile.actualTile < tileset->firstGID + tileset->tileCount;
+                                        });
 
         // If tileset was not found
         if (tilesetIter == m_map->tilesets().end())
@@ -340,46 +312,31 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
         // Calculating tile position at tileset
         auto index = decodedTile.actualTile - (*tilesetIter)->firstGID;
 
-        glm::ivec2 tileIndex = {
-            index % (*tilesetIter)->columns,
-            index / (*tilesetIter)->columns
-        };
+        glm::ivec2 tileIndex = {index % (*tilesetIter)->columns, index / (*tilesetIter)->columns};
 
-        glm::vec2 spacingUV = {
-            float((*tilesetIter)->spacing) / (*tilesetIter)->imageSize.x,
-            float((*tilesetIter)->spacing) / (*tilesetIter)->imageSize.y
-        };
+        glm::vec2 spacingUV = {float((*tilesetIter)->spacing) / (*tilesetIter)->imageSize.x,
+                               float((*tilesetIter)->spacing) / (*tilesetIter)->imageSize.y};
 
-        glm::vec2 tileUV = {
-            1.0f / (*tilesetIter)->imageSize.x * (*tilesetIter)->tileSize.x,
-            1.0f / (*tilesetIter)->imageSize.y * (*tilesetIter)->tileSize.y
-        };
+        glm::vec2 tileUV = {1.0f / (*tilesetIter)->imageSize.x * (*tilesetIter)->tileSize.x,
+                            1.0f / (*tilesetIter)->imageSize.y * (*tilesetIter)->tileSize.y};
 
-        glm::vec2 topLeftUV = {
-             tileIndex.x      * tileUV.x + spacingUV.x * tileIndex.x,
-             tileIndex.y      * tileUV.y + spacingUV.y * tileIndex.y
-        };
+        glm::vec2 topLeftUV = {tileIndex.x * tileUV.x + spacingUV.x * tileIndex.x,
+                               tileIndex.y * tileUV.y + spacingUV.y * tileIndex.y};
 
-        glm::vec2 topRightUV = {
-            (tileIndex.x + 1) * tileUV.x + spacingUV.x * tileIndex.x,
-             tileIndex.y      * tileUV.y + spacingUV.y * tileIndex.y
-        };
+        glm::vec2 topRightUV = {(tileIndex.x + 1) * tileUV.x + spacingUV.x * tileIndex.x,
+                                tileIndex.y * tileUV.y + spacingUV.y * tileIndex.y};
 
-        glm::vec2 botLeftUV = {
-             tileIndex.x      * tileUV.x + spacingUV.x * tileIndex.x,
-            (tileIndex.y + 1) * tileUV.y + spacingUV.y * tileIndex.y
-        };
+        glm::vec2 botLeftUV = {tileIndex.x * tileUV.x + spacingUV.x * tileIndex.x,
+                               (tileIndex.y + 1) * tileUV.y + spacingUV.y * tileIndex.y};
 
-        glm::vec2 botRightUV = {
-            (tileIndex.x + 1) * tileUV.x + spacingUV.x * tileIndex.x,
-            (tileIndex.y + 1) * tileUV.y + spacingUV.y * tileIndex.y
-        };
+        glm::vec2 botRightUV = {(tileIndex.x + 1) * tileUV.x + spacingUV.x * tileIndex.x,
+                                (tileIndex.y + 1) * tileUV.y + spacingUV.y * tileIndex.y};
 
         // todo: Add flipping implementation
 
         if (decodedTile.verticallyFlipped)
         {
-            std::swap(topLeftUV .y, botLeftUV .y);
+            std::swap(topLeftUV.y, botLeftUV.y);
             std::swap(topRightUV.y, botRightUV.y);
         }
 
@@ -411,61 +368,47 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(const HG::Stan
         // If mesh was not found - create it.
         if (meshIter == rendererMeshInfo.end())
         {
-            meshIter = rendererMeshInfo.insert_or_assign(
-                textureIter->second,
-                std::make_shared<HG::Utils::Mesh>()
-            ).first;
+            meshIter =
+                rendererMeshInfo.insert_or_assign(textureIter->second, std::make_shared<HG::Utils::Mesh>()).first;
         }
 
         /*
          * (*tilesetIter)->tileSize.x
          * (*tilesetIter)->tileSize.y
          */
-        glm::vec2 worldTilesetTileSize = {
-            (*tilesetIter)->tileSize.x * m_metersPerPixel,
-            (*tilesetIter)->tileSize.y * m_metersPerPixel
-        };
+        glm::vec2 worldTilesetTileSize = {(*tilesetIter)->tileSize.x * m_metersPerPixel,
+                                          (*tilesetIter)->tileSize.y * m_metersPerPixel};
 
         // Getting tile position
         // Top left
         meshIter->second->Vertices.push_back(
-            {{
-                 -(worldLayerSize.x / 2) + ( worldMapTileSize.x *  tilePointer.x                              ) - tileOverlay,
-                  (worldLayerSize.y / 2) - ( worldMapTileSize.y * (tilePointer.y + 1) ) + worldTilesetTileSize.y + tileOverlay,
-                 0
-             },
-             {topLeftUV.x, topLeftUV.y}}
-        );
+            {{-(worldLayerSize.x / 2) + (worldMapTileSize.x * tilePointer.x) - tileOverlay,
+              (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1)) + worldTilesetTileSize.y +
+                  tileOverlay,
+              0},
+             {topLeftUV.x, topLeftUV.y}});
 
         // Bottom left
         meshIter->second->Vertices.push_back(
-            {{
-                -(worldLayerSize.x / 2) + (worldMapTileSize.x *  tilePointer.x    )                             - tileOverlay,
-                 (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1)                           ) - tileOverlay,
-                 0
-             },
-             {botLeftUV.x, botLeftUV.y}}
-        );
+            {{-(worldLayerSize.x / 2) + (worldMapTileSize.x * tilePointer.x) - tileOverlay,
+              (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1)) - tileOverlay,
+              0},
+             {botLeftUV.x, botLeftUV.y}});
 
         // Top right
         meshIter->second->Vertices.push_back(
-            {{
-                -(worldLayerSize.x / 2) + (worldMapTileSize.x *  tilePointer.x     ) + worldTilesetTileSize.x + tileOverlay,
-                 (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1)) + worldTilesetTileSize.y + tileOverlay,
-                0
-            },
-            {topRightUV.x, topRightUV.y}}
-        );
+            {{-(worldLayerSize.x / 2) + (worldMapTileSize.x * tilePointer.x) + worldTilesetTileSize.x + tileOverlay,
+              (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1)) + worldTilesetTileSize.y +
+                  tileOverlay,
+              0},
+             {topRightUV.x, topRightUV.y}});
 
         // Bottom right
         meshIter->second->Vertices.push_back(
-            {{
-                -(worldLayerSize.x / 2) + (worldMapTileSize.x *  tilePointer.x     ) + worldTilesetTileSize.x + tileOverlay,
-                 (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1))                          - tileOverlay,
-                0
-             },
-             {botRightUV.x, botRightUV.y}}
-        );
+            {{-(worldLayerSize.x / 2) + (worldMapTileSize.x * tilePointer.x) + worldTilesetTileSize.x + tileOverlay,
+              (worldLayerSize.y / 2) - (worldMapTileSize.y * (tilePointer.y + 1)) - tileOverlay,
+              0},
+             {botRightUV.x, botRightUV.y}});
 
         uint32_t firstIndex = 0;
 

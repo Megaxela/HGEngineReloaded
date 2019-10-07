@@ -3,22 +3,22 @@
 
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/FilesystemResourceAccessor.hpp>
+#include <HG/Core/ResourceManager.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
 
 // HG::Rendering::OpenGL
-#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
-#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
-#include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
-#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
-#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
-#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/MeshDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
+#include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
+#include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
+#include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
+#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
 
 // ALogger
 #include <CurrentLogger.hpp>
@@ -32,8 +32,7 @@ int main(int argc, char** argv)
     HG::Core::Application application("HGEngine Orbital Example", argc, argv);
 
     // Setting resource accessor implementation
-    application.resourceManager()
-        ->setResourceAccessor(new HG::Core::FilesystemResourceAccessor());
+    application.resourceManager()->setResourceAccessor(new HG::Core::FilesystemResourceAccessor());
 
     // Setting system controller
     application.setSystemController(new HG::Rendering::OpenGL::GLFWSystemController(&application));

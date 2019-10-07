@@ -27,7 +27,7 @@ void main()
 #endif
 )";
 
-void PlainMaterial::setColor(const HG::Utils::Color &color)
+void PlainMaterial::setColor(const HG::Utils::Color& color)
 {
     set("color", color.toRGBVector());
 }

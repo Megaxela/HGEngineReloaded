@@ -2,8 +2,8 @@
 #include <charconv>
 
 // HG::Core
-#include <HG/Core/ResourceAccessor.hpp>
 #include <HG/Core/Data.hpp>
+#include <HG/Core/ResourceAccessor.hpp>
 
 // HG::Standard
 #include <HG/Standard/Behaviours/TiledMap.hpp>
@@ -18,17 +18,13 @@
 // ALogger
 #include <CurrentLogger.hpp>
 
-namespace {
-    const char* SUPPORTED_VERSION = "1.1.6";
+namespace
+{
+const char* SUPPORTED_VERSION = "1.1.6";
 }
 
-HG::Standard::Behaviours::TiledMap::TiledMap() :
-    m_properties(),
-    m_tilesets(),
-    m_animatedTiles(),
-    m_root()
+HG::Standard::Behaviours::TiledMap::TiledMap() : m_properties(), m_tilesets(), m_animatedTiles(), m_root()
 {
-
 }
 
 HG::Standard::Behaviours::TiledMap::~TiledMap()
@@ -36,12 +32,12 @@ HG::Standard::Behaviours::TiledMap::~TiledMap()
     clear();
 }
 
-const std::vector<HG::Standard::Behaviours::TiledMap::Tileset *> &HG::Standard::Behaviours::TiledMap::tilesets() const
+const std::vector<HG::Standard::Behaviours::TiledMap::Tileset*>& HG::Standard::Behaviours::TiledMap::tilesets() const
 {
     return m_tilesets;
 }
 
-const HG::Standard::Behaviours::TiledMap::Group *HG::Standard::Behaviours::TiledMap::rootGroup() const
+const HG::Standard::Behaviours::TiledMap::Group* HG::Standard::Behaviours::TiledMap::rootGroup() const
 {
     return &m_root;
 }
@@ -52,8 +48,7 @@ bool HG::Standard::Behaviours::TiledMap::loadMap(HG::Core::DataPtr data)
     rapidxml::xml_document<> doc{};
 
     // RapidXML requires data copy to edit it
-    std::string copy(reinterpret_cast<const char*>(data->data()),
-                     data->size());
+    std::string copy(reinterpret_cast<const char*>(data->data()), data->size());
 
     // 0 - no flags
     doc.parse<0>(const_cast<char*>(copy.c_str()));
@@ -87,7 +82,8 @@ bool HG::Standard::Behaviours::TiledMap::loadMap(HG::Core::DataPtr data)
 
     if (m_properties.tiledVersion != SUPPORTED_VERSION)
     {
-        Warning() << "Tiled map parser supports " << SUPPORTED_VERSION << " tiled maps, trying to load " << m_properties.tiledVersion;
+        Warning() << "Tiled map parser supports " << SUPPORTED_VERSION << " tiled maps, trying to load "
+                  << m_properties.tiledVersion;
     }
 
     if (!(attribute = mapNode->first_attribute("orientation")))
@@ -167,12 +163,12 @@ void HG::Standard::Behaviours::TiledMap::clear()
     m_properties = MapProperties();
 }
 
-const HG::Standard::Behaviours::TiledMap::MapProperties &HG::Standard::Behaviours::TiledMap::properties() const
+const HG::Standard::Behaviours::TiledMap::MapProperties& HG::Standard::Behaviours::TiledMap::properties() const
 {
     return m_properties;
 }
 
-const HG::Standard::Behaviours::TiledMap::AnimatedTiles &HG::Standard::Behaviours::TiledMap::animatedTiles() const
+const HG::Standard::Behaviours::TiledMap::AnimatedTiles& HG::Standard::Behaviours::TiledMap::animatedTiles() const
 {
     return m_animatedTiles;
 }
@@ -186,8 +182,7 @@ void HG::Standard::Behaviours::TiledMap::clearGroup(HG::Standard::Behaviours::Ti
         case Layer::Type::Group:
             clearGroup(static_cast<Group*>(layer));
             break;
-        case Layer::Type::Object:
-        {
+        case Layer::Type::Object: {
             auto objectLayer = static_cast<ObjectLayer*>(layer);
 
             for (auto&& object : objectLayer->objects)
@@ -197,10 +192,11 @@ void HG::Standard::Behaviours::TiledMap::clearGroup(HG::Standard::Behaviours::Ti
 
             break;
         }
-        case Layer::Type::Tile:break;
-        case Layer::Type::Image:break;
+        case Layer::Type::Tile:
+            break;
+        case Layer::Type::Image:
+            break;
         }
-
 
         delete layer;
     }
@@ -208,7 +204,9 @@ void HG::Standard::Behaviours::TiledMap::clearGroup(HG::Standard::Behaviours::Ti
     grp->layers.clear();
 }
 
-bool HG::Standard::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* root, Group* target, bool proceedLikeLayer)
+bool HG::Standard::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* root,
+                                                         Group* target,
+                                                         bool proceedLikeLayer)
 {
     if (proceedLikeLayer)
     {
@@ -277,7 +275,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedRootNode(rapidxml::xml_node<>* r
 
 bool HG::Standard::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node)
 {
-    auto *image = node->first_node("image");
+    auto* image = node->first_node("image");
 
     // If <image> tag does not exists
     if (!image)
@@ -285,9 +283,9 @@ bool HG::Standard::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node
         return false;
     }
 
-    auto *tileset = new Tileset();
+    auto* tileset = new Tileset();
 
-    rapidxml::xml_attribute<> *attribute = nullptr;
+    rapidxml::xml_attribute<>* attribute = nullptr;
 
     { // First gID
         if (!(attribute = node->first_attribute("firstgid")))
@@ -392,9 +390,7 @@ bool HG::Standard::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node
         tileset->imageSize.y = std::atoi(attribute->value());
     }
 
-    for (auto tileNode = node->first_node("tile");
-         tileNode;
-         tileNode = tileNode->next_sibling("tile"))
+    for (auto tileNode = node->first_node("tile"); tileNode; tileNode = tileNode->next_sibling("tile"))
     {
         proceedTileNode(tileNode);
     }
@@ -404,9 +400,9 @@ bool HG::Standard::Behaviours::TiledMap::parseTileset(rapidxml::xml_node<>* node
     return true;
 }
 
-bool HG::Standard::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *node)
+bool HG::Standard::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<>* node)
 {
-    rapidxml::xml_attribute<> *attribute = nullptr;
+    rapidxml::xml_attribute<>* attribute = nullptr;
 
     uint32_t id = 0;
 
@@ -424,9 +420,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *n
         }
     }
 
-    for (auto childNode = node->first_node();
-         childNode;
-         childNode = childNode->next_sibling())
+    for (auto childNode = node->first_node(); childNode; childNode = childNode->next_sibling())
     {
         std::string_view sv(childNode->name(), childNode->name_size());
 
@@ -442,15 +436,13 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileNode(rapidxml::xml_node<> *n
     return true;
 }
 
-bool HG::Standard::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<> *node, uint32_t tileId)
+bool HG::Standard::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<>* node, uint32_t tileId)
 {
     TileAnimation animation;
 
     rapidxml::xml_attribute<>* attribute = nullptr;
 
-    for (auto frameNode = node->first_node("frame");
-         frameNode;
-         frameNode = frameNode->next_sibling("frame"))
+    for (auto frameNode = node->first_node("frame"); frameNode; frameNode = frameNode->next_sibling("frame"))
     {
         TileAnimation::Frame frame;
 
@@ -477,7 +469,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedAnimation(rapidxml::xml_node<> *
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_node<>* node,
-                                                                 HG::Standard::Behaviours::TiledMap::Group* target)
+                                                                HG::Standard::Behaviours::TiledMap::Group* target)
 {
     auto* objectGroup = new ObjectLayer();
 
@@ -493,16 +485,11 @@ bool HG::Standard::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_no
     // Color
     if ((attribute = node->first_attribute("color")))
     {
-        objectGroup->color = HG::Utils::Color::fromHex(
-            attribute->value(),
-            attribute->value_size()
-        );
+        objectGroup->color = HG::Utils::Color::fromHex(attribute->value(), attribute->value_size());
     }
 
     // Iterating through objects
-    for (auto* objectNode = node->first_node("object");
-         objectNode;
-         objectNode = objectNode->next_sibling())
+    for (auto* objectNode = node->first_node("object"); objectNode; objectNode = objectNode->next_sibling())
     {
         if (!proceedObjectNode(objectNode, objectGroup))
         {
@@ -517,7 +504,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedObjectGroupNode(rapidxml::xml_no
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedObjectNode(rapidxml::xml_node<>* node,
-                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* target)
+                                                           HG::Standard::Behaviours::TiledMap::ObjectLayer* target)
 {
     // Detecting type
 
@@ -554,13 +541,10 @@ bool HG::Standard::Behaviours::TiledMap::proceedObjectNode(rapidxml::xml_node<>*
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>* node,
-                                                            HG::Standard::Behaviours::TiledMap::Properties& properties)
+                                                           HG::Standard::Behaviours::TiledMap::Properties& properties)
 {
-    for (auto propertyNode = node->first_node("property");
-         propertyNode;
-         propertyNode = propertyNode->next_sibling())
+    for (auto propertyNode = node->first_node("property"); propertyNode; propertyNode = propertyNode->next_sibling())
     {
-
         auto* valueAttribute = propertyNode->first_attribute("value");
 
         if (!valueAttribute)
@@ -607,7 +591,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>*
         }
         else if (type == "float")
         {
-            properties.emplace_back(name, (float) std::atof(value.c_str()));
+            properties.emplace_back(name, (float)std::atof(value.c_str()));
         }
         else
         {
@@ -619,9 +603,9 @@ bool HG::Standard::Behaviours::TiledMap::proceedProperties(rapidxml::xml_node<>*
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>* node,
-                                                           HG::Standard::Behaviours::TiledMap::Layer* layer)
+                                                          HG::Standard::Behaviours::TiledMap::Layer* layer)
 {
-    rapidxml::xml_node<>* childNode = nullptr;
+    rapidxml::xml_node<>* childNode           = nullptr;
     rapidxml::xml_attribute<>* childAttribute = nullptr;
 
     if ((childNode = node->first_node("properties")))
@@ -638,7 +622,6 @@ bool HG::Standard::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>* 
     }
 
     layer->name = std::string(childAttribute->value(), childAttribute->value_size());
-
 
     if ((childAttribute = node->first_attribute("offsetx")))
     {
@@ -658,10 +641,11 @@ bool HG::Standard::Behaviours::TiledMap::proceedBaseLayer(rapidxml::xml_node<>* 
     return true;
 }
 
-bool HG::Standard::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>* node,
-                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer::Object* object)
+bool HG::Standard::Behaviours::TiledMap::proceedBaseObject(
+    rapidxml::xml_node<>* node,
+    HG::Standard::Behaviours::TiledMap::ObjectLayer::Object* object)
 {
-    rapidxml::xml_node<>* childNode = nullptr;
+    rapidxml::xml_node<>* childNode           = nullptr;
     rapidxml::xml_attribute<>* childAttribute = nullptr;
 
     if ((childNode = node->first_node("properties")))
@@ -715,7 +699,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedBaseObject(rapidxml::xml_node<>*
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_node<>* node,
-                                                                 HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
+                                                                HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto* rectangle = new ObjectLayer::Rectangle();
 
@@ -749,7 +733,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedRectangleObject(rapidxml::xml_no
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedPointObject(rapidxml::xml_node<>* node,
-                                                             HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
+                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto point = new ObjectLayer::Point();
 
@@ -765,7 +749,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedPointObject(rapidxml::xml_node<>
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_node<>* node,
-                                                               HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
+                                                              HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto ellipse = new ObjectLayer::Ellipse();
 
@@ -801,55 +785,52 @@ bool HG::Standard::Behaviours::TiledMap::proceedEllipseObject(rapidxml::xml_node
 // todo: Remove this implementation if compiler will implement `std::from_chars` for floating.
 namespace std
 {
-    // Super stupid implementation, just to fit to API
-    from_chars_result from_chars(const char* begin, const char* end, float& f)
+// Super stupid implementation, just to fit to API
+from_chars_result from_chars(const char* begin, const char* end, float& f)
+{
+    from_chars_result error;
+
+    error.ec = static_cast<errc>(0);
+
+    f = std::atof(begin);
+
+    auto iter = begin;
+
+    if (*begin == '-' || *begin == '+')
     {
-        from_chars_result error;
+        ++iter;
+    }
 
-        error.ec = static_cast<errc>(0);
+    bool pointFound = false;
 
-        f = std::atof(begin);
-
-        auto iter = begin;
-
-        if (*begin == '-' ||
-            *begin == '+')
-        {
-            ++iter;
-        }
-
-        bool pointFound = false;
-
-        for (; iter < end; ++iter)
-        {
-            error.ptr = iter;
-
-            if (!isdigit(*iter) &&
-                ((*iter) != '.' ||
-                 pointFound))
-            {
-                break;
-            }
-
-            if ((*iter) == '.')
-            {
-                pointFound = true;
-            }
-        }
-
+    for (; iter < end; ++iter)
+    {
         error.ptr = iter;
 
-        return error;
+        if (!isdigit(*iter) && ((*iter) != '.' || pointFound))
+        {
+            break;
+        }
+
+        if ((*iter) == '.')
+        {
+            pointFound = true;
+        }
     }
+
+    error.ptr = iter;
+
+    return error;
 }
+} // namespace std
 
 bool HG::Standard::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node<>* node,
-                                                               HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
+                                                              HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto polygon = new ObjectLayer::Polygon();
 
     rapidxml::xml_attribute<>* childAttribute = nullptr;
-    rapidxml::xml_node<>* childNode = nullptr;
+    rapidxml::xml_node<>* childNode           = nullptr;
 
     if (!proceedBaseObject(node, polygon))
     {
@@ -870,9 +851,9 @@ bool HG::Standard::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node
     }
 
     // Points has format "0,0 1,1 2,2 3,3 4,4"
-    auto pointsLength = childAttribute->value_size();
+    auto pointsLength       = childAttribute->value_size();
     const auto* pointsBegin = childAttribute->value();
-    const auto* pointsEnd = childAttribute->value() + pointsLength;
+    const auto* pointsEnd   = childAttribute->value() + pointsLength;
 
     while (pointsBegin != pointsEnd)
     {
@@ -880,7 +861,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node
 
         auto convResult = std::from_chars(pointsBegin, pointsEnd, point.x);
 
-        if ((int) convResult.ec != 0)
+        if ((int)convResult.ec != 0)
         {
             delete polygon;
             return false;
@@ -899,7 +880,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node
 
         convResult = std::from_chars(pointsBegin, pointsEnd, point.y);
 
-        if ((int) convResult.ec != 0)
+        if ((int)convResult.ec != 0)
         {
             delete polygon;
             return false;
@@ -928,7 +909,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedPolygonObject(rapidxml::xml_node
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedTileObject(rapidxml::xml_node<>* node,
-                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
+                                                           HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto tile = new ObjectLayer::Tile();
 
@@ -975,11 +956,11 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileObject(rapidxml::xml_node<>*
 }
 
 bool HG::Standard::Behaviours::TiledMap::proceedTextObject(rapidxml::xml_node<>* node,
-                                                            HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
+                                                           HG::Standard::Behaviours::TiledMap::ObjectLayer* layer)
 {
     auto text = new ObjectLayer::Text();
 
-    rapidxml::xml_node<>* textNode = nullptr;
+    rapidxml::xml_node<>* textNode       = nullptr;
     rapidxml::xml_attribute<>* attribute = nullptr;
 
     if (!proceedBaseObject(node, text))
@@ -1104,7 +1085,7 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* 
 {
     auto tileLayer = new TileLayer();
 
-    rapidxml::xml_node<>* childNode = nullptr;
+    rapidxml::xml_node<>* childNode           = nullptr;
     rapidxml::xml_attribute<>* childAttribute = nullptr;
 
     if (!proceedBaseLayer(node, tileLayer))
@@ -1155,11 +1136,10 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* 
 
     // Truncate whitespaces
     auto dataValue = childNode->value();
-    auto dataSize = childNode->value_size();
+    auto dataSize  = childNode->value_size();
 
     // Begin
-    while (*dataValue && dataSize &&
-           (*dataValue == ' ' || *dataValue == '\n'))
+    while (*dataValue && dataSize && (*dataValue == ' ' || *dataValue == '\n'))
     {
         ++dataValue;
         --dataSize;
@@ -1168,18 +1148,13 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* 
     // End
     auto iter = dataValue + dataSize - 1;
 
-    while (iter > dataValue &&
-           (*dataValue == ' ' || *dataValue == '\n'))
+    while (iter > dataValue && (*dataValue == ' ' || *dataValue == '\n'))
     {
         --dataSize;
         --iter;
     }
 
-    if (!performTileLayerDecoding(dataValue,
-                                  dataSize,
-                                  encoding,
-                                  compression,
-                                  tileLayer->tiles))
+    if (!performTileLayerDecoding(dataValue, dataSize, encoding, compression, tileLayer->tiles))
     {
         delete tileLayer;
         return false;
@@ -1190,10 +1165,11 @@ bool HG::Standard::Behaviours::TiledMap::proceedTileLayer(rapidxml::xml_node<>* 
     return true;
 }
 
-bool HG::Standard::Behaviours::TiledMap::performTileLayerDecoding(const char *data, std::size_t dataSize,
-                                                                   std::string_view encoding,
-                                                                   std::string_view compression,
-                                                                   std::vector<uint32_t> &result)
+bool HG::Standard::Behaviours::TiledMap::performTileLayerDecoding(const char* data,
+                                                                  std::size_t dataSize,
+                                                                  std::string_view encoding,
+                                                                  std::string_view compression,
+                                                                  std::vector<uint32_t>& result)
 {
     if (encoding == "base64")
     {
@@ -1216,7 +1192,7 @@ bool HG::Standard::Behaviours::TiledMap::performTileLayerDecoding(const char *da
             return false;
         }
 
-        auto castedData = (uint32_t*) decoded.data();
+        auto castedData = (uint32_t*)decoded.data();
 
         for (std::size_t i = 0; i < decoded.size() / 4; ++i)
         {
@@ -1231,19 +1207,21 @@ bool HG::Standard::Behaviours::TiledMap::performTileLayerDecoding(const char *da
     return true;
 }
 
-bool HG::Standard::Behaviours::TiledMap::proceedCSVTileData(const char *data, std::size_t dataSize,
-                                                             std::vector<uint32_t> &result)
+bool HG::Standard::Behaviours::TiledMap::proceedCSVTileData(const char* data,
+                                                            std::size_t dataSize,
+                                                            std::vector<uint32_t>& result)
 {
-    (void) data;
-    (void) dataSize;
-    (void) result;
+    (void)data;
+    (void)dataSize;
+    (void)result;
 
     // todo: Add CSV support
     Warning() << "CSV does not supported yet.";
     return false;
 }
 
-HG::Standard::Behaviours::TiledMap::TileLayer::DecodedTile HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(uint32_t tile)
+HG::Standard::Behaviours::TiledMap::TileLayer::DecodedTile
+HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(uint32_t tile)
 {
     constexpr uint32_t IS_HORIZONTALLY_FLIPPED = 0x80000000;
     constexpr uint32_t IS_VERTICALLY_FLIPPED   = 0x40000000;
@@ -1259,9 +1237,7 @@ HG::Standard::Behaviours::TiledMap::TileLayer::DecodedTile HG::Standard::Behavio
     decoded.horizontallyFlipped = static_cast<bool>(tile & IS_HORIZONTALLY_FLIPPED);
     decoded.verticallyFlipped   = static_cast<bool>(tile & IS_VERTICALLY_FLIPPED);
     decoded.diagonallyFlipped   = static_cast<bool>(tile & IS_DIAGONALLY_FLIPPED);
-    decoded.actualTile          = tile & ~(IS_HORIZONTALLY_FLIPPED |
-                                           IS_VERTICALLY_FLIPPED |
-                                           IS_DIAGONALLY_FLIPPED);
+    decoded.actualTile          = tile & ~(IS_HORIZONTALLY_FLIPPED | IS_VERTICALLY_FLIPPED | IS_DIAGONALLY_FLIPPED);
 
     return decoded;
 }

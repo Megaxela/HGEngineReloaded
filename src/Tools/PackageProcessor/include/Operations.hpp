@@ -4,11 +4,9 @@
 
 namespace Operations
 {
-    void pack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args);
+void pack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args);
 
-    void unpack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args);
+void unpack(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args);
 
-    void info(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args);
-};
-
-
+void info(const HG::ToolsCore::CommandLineArguments::ArgumentsMap& args);
+}; // namespace Operations
