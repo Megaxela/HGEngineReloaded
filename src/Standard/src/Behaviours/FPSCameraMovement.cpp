@@ -24,8 +24,7 @@ HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
     m_lastMousePosition(),
     m_front(glm::vec3(0.0f, 0.0f, 1.0f)),
     m_yaw(90),
-    m_pitch(0),
-    m_camera(nullptr)
+    m_pitch(0), m_camera(nullptr)
 {
 }
 
