@@ -35,7 +35,6 @@ addons:
       - libxcursor-dev
       - libglu-dev
       - libgl-dev
-      - clang-format-9
 
 compiler:
   - clang
@@ -45,6 +44,9 @@ git:
   submodules: false
 
 before_install:
+  - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+  - sudo apt update
+  - sudo apt install -y clang-format-9
   - gem install coveralls-lcov
   - git submodule update --init
 

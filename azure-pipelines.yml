@@ -21,10 +21,12 @@ steps:
   displayName: 'Installing Dependencies'
 
 - script: |
+    chmod +x ./scripts/check_relative_includes.sh &&
     ./scripts/check_relative_includes.sh
   displayName: 'Checking for relative includes'
 
 - script: |
+    chmod +x ./scripts/run_clang_format.sh &&
     ./scripts/run_clang_format.sh &&
     git diff | wc -l
 
