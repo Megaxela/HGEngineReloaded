@@ -35,6 +35,7 @@ addons:
       - libxcursor-dev
       - libglu-dev
       - libgl-dev
+      - clang-format-9
 
 compiler:
   - clang
@@ -48,7 +49,7 @@ before_install:
   - git submodule update --init
 
 install:
-  -
+
   # Setting specific compilers
   - if [ "$CXX" = "clang++" ]; then export CXX="/usr/local/clang-7.0.0/bin/clang++" CC="/usr/local/clang-7.0.0/bin/clang"; fi
   - if [ "$CXX" = "g++" ]; then export CXX="g++-8" CC="gcc-8"; fi
