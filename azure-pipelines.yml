@@ -28,7 +28,7 @@ steps:
 - script: |
     chmod +x ./scripts/run_clang_format.sh &&
     ./scripts/run_clang_format.sh &&
-    git diff | tail -n 100
+    git diff -- . ':(exclude)scripts/*' | tail -n 100
 
   displayName: 'Checking codestyle'
 
