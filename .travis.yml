@@ -62,7 +62,7 @@ install:
   - |
     chmod +x ./scripts/run_clang_format.sh
     ./scripts/run_clang_format.sh
-    if [[ `git diff -- . ':(exclude)scripts/*' | wc -l` -ne 0 ]]; then echo `git diff -- . ':(exclude)scripts/*'`; exit 1; fi
+    if [[ `git diff -- . ':(exclude)scripts/*' | wc -l` -ne 0 ]]; then git diff -- . ':(exclude)scripts/*'; exit 1; fi
 
   # Setting specific compilers
   - if [ "$CXX" = "clang++" ]; then export CXX="/usr/local/clang-7.0.0/bin/clang++" CC="/usr/local/clang-7.0.0/bin/clang"; fi

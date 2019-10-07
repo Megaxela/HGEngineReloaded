@@ -16,7 +16,6 @@
 #include <CurrentLogger.hpp>
 
 // GLM
-#include "CurrentLogger.hpp"
 #include <glm/glm.hpp>
 
 HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
