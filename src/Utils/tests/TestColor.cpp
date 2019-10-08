@@ -41,7 +41,7 @@ struct ColorChannels
 TEST(Utils, ColorFromHexWithSharp)
 {
     std::unordered_map<std::string, ColorChannels> samples = {
-        {"#AABBCCDD", {170, 187, 204, 221}},
+        {"#AABBCCDD", {187, 204, 221, 170}},
         {"#00000000", {0, 0, 0, 0}},
         {"#FFFFFFFF", {255, 255, 255, 255}},
     };
@@ -60,7 +60,7 @@ TEST(Utils, ColorFromHexWithSharp)
 TEST(Utils, ColorFromHexWithoutSharp)
 {
     std::unordered_map<std::string, ColorChannels> samples = {
-        {"AABBCCDD", {170, 187, 204, 221}},
+        {"AABBCCDD", {187, 204, 221, 170}},
         {"00000000", {0, 0, 0, 0}},
         {"FFFFFFFF", {255, 255, 255, 255}},
     };
@@ -123,7 +123,7 @@ TEST(Utils, ColorBrighten)
     ASSERT_FLOAT_EQ(new_color.redF(), 0.4f);
     ASSERT_FLOAT_EQ(new_color.greenF(), 0.8f);
     ASSERT_FLOAT_EQ(new_color.blueF(), 1.0f); // clamped
-    ASSERT_FLOAT_EQ(new_color.alpha(), 0.8f); // unchanged
+    ASSERT_FLOAT_EQ(new_color.alphaF(), 0.8f); // unchanged
 }
 
 TEST(Utils, ColorToString)
