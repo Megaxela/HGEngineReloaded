@@ -9,12 +9,12 @@ HG::Utils::Rect::Rect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h)
 {
 }
 
-bool HG::Utils::Rect::operator==(const HG::Utils::Rect& rhs)
+bool HG::Utils::Rect::operator==(const HG::Utils::Rect& rhs) const
 {
     return x == rhs.x && y == rhs.y && w == rhs.w && h == rhs.h;
 }
 
-bool HG::Utils::Rect::operator!=(const HG::Utils::Rect& rhs)
+bool HG::Utils::Rect::operator!=(const HG::Utils::Rect& rhs) const
 {
     return x != rhs.x || y != rhs.y || w != rhs.w || h != rhs.h;
 }
