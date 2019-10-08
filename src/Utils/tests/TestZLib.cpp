@@ -1,8 +1,13 @@
-#include <HG/Utils/zlib.hpp>
+// C++ STD
 #include <cstddef>
 #include <fstream>
-#include <gtest/gtest.h>
 #include <string_view>
+
+// HG::Utils
+#include <HG/Utils/zlib.hpp>
+
+// GTest
+#include <gtest/gtest.h>
 
 using namespace std::literals;
 
@@ -85,7 +90,7 @@ TEST(Utils, ZLibInflateHuge)
 
 TEST(Utils, ZLibInflateStreamToStream)
 {
-    std::ifstream input("zlib/stream.bin");
+    std::ifstream input("zlib/stream.bin", std::ios::binary);
 
     ASSERT_TRUE(input.is_open());
 
@@ -105,13 +110,13 @@ TEST(Utils, ZLibInflateStreamToStream)
     ASSERT_EQ(output.str(), "SOME_ANOTHER_DATA");
 }
 
-TEST(Utils, ZLIbDeflateStreamToStream)
+TEST(Utils, ZLibDeflateStreamToStream)
 {
     uint8_t expected[] = {0x78, 0xda, 0xb,  0xf6, 0xf7, 0x75, 0x55, 0x8,  0x76, 0xf4, 0xd, 0xf0,
                           0x71, 0x55, 0xf0, 0xf1, 0xf7, 0x73, 0x57, 0x8,  0x71, 0x8d, 0x8, 0x51,
                           0x8,  0x1e, 0x15, 0x1d, 0xdc, 0xa2, 0x0,  0x9d, 0x1a, 0x76, 0x3d};
 
-    std::ifstream input("zlib/some_text.txt");
+    std::ifstream input("zlib/some_text.txt", std::ios::binary);
 
     ASSERT_TRUE(input.is_open());
 
@@ -130,4 +135,18 @@ TEST(Utils, ZLIbDeflateStreamToStream)
     {
         ASSERT_EQ(static_cast<uint8_t>(string[i]), expected[i]) << i << " byte is differ";
     }
+}
+
+TEST(Utils, ZLibDeflateError)
+{
+    std::vector<uint8_t> result;
+    ASSERT_THROW(HG::Utils::ZLib::Deflate(static_cast<uint8_t*>(nullptr), 0, result, static_cast<HG::Utils::ZLib::CompressionLevel>(-2)), std::runtime_error);
+}
+
+TEST(Utils, ZLibDeflateStreamToStreamError)
+{
+    std::ifstream input("zlib/some_text.txt", std::ios::binary);
+    std::stringstream output;
+
+    ASSERT_THROW(HG::Utils::ZLib::DeflateStreamToStream(input, output, 1024, static_cast<HG::Utils::ZLib::CompressionLevel>(-2)), std::runtime_error);
 }
