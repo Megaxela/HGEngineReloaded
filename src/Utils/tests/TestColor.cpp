@@ -1,3 +1,6 @@
+// C++ STD
+#include <unordered_map>
+
 // HG::Utils
 #include <HG/Utils/Color.hpp>
 
