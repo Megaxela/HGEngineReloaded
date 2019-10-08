@@ -31,9 +31,7 @@ TEST(Utils, StringToolsSplitHappyPath)
     HG::Utils::StringTools::split(someText, ' ', std::back_inserter(result));
 
     ASSERT_EQ(result.size(), 6);
-    ASSERT_EQ(result, std::vector<std::string>({
-                                                       "some", "text", "to", "split", "on", "spaces"
-                                               }));
+    ASSERT_EQ(result, std::vector<std::string>({"some", "text", "to", "split", "on", "spaces"}));
 }
 
 TEST(Utils, StringToolsSplitTrailing)
@@ -44,20 +42,15 @@ TEST(Utils, StringToolsSplitTrailing)
     HG::Utils::StringTools::split(someText, '|', std::back_inserter(result));
 
     ASSERT_EQ(result.size(), 4);
-    ASSERT_EQ(result, std::vector<std::string>({
-                                                       "", "some", "text", ""
-                                               }));
+    ASSERT_EQ(result, std::vector<std::string>({"", "some", "text", ""}));
 }
-
 
 TEST(Utils, StringToolsSplitSimple)
 {
     std::string someText = "simple text for test";
-    auto splitted = HG::Utils::StringTools::split(someText, ' ');
+    auto splitted        = HG::Utils::StringTools::split(someText, ' ');
 
-    ASSERT_EQ(splitted, std::vector<std::string>({
-                                                         "simple", "text", "for", "test"
-                                                 }));
+    ASSERT_EQ(splitted, std::vector<std::string>({"simple", "text", "for", "test"}));
 }
 
 TEST(Utils, StringToolsSplitHappyPathWide)
@@ -68,9 +61,7 @@ TEST(Utils, StringToolsSplitHappyPathWide)
     HG::Utils::StringTools::split(someText, ' ', std::back_inserter(result));
 
     ASSERT_EQ(result.size(), 6);
-    ASSERT_EQ(result, std::vector<std::wstring>({
-                                                       L"some", L"text", L"to", L"split", L"on", L"spaces"
-                                               }));
+    ASSERT_EQ(result, std::vector<std::wstring>({L"some", L"text", L"to", L"split", L"on", L"spaces"}));
 }
 
 TEST(Utils, StringToolsSplitTrailingWide)
@@ -81,25 +72,21 @@ TEST(Utils, StringToolsSplitTrailingWide)
     HG::Utils::StringTools::split(someText, '|', std::back_inserter(result));
 
     ASSERT_EQ(result.size(), 4);
-    ASSERT_EQ(result, std::vector<std::wstring>({
-                                                       L"", L"some", L"text", L""
-                                               }));
+    ASSERT_EQ(result, std::vector<std::wstring>({L"", L"some", L"text", L""}));
 }
 
 TEST(Utils, StringToolsSplitSimpleWide)
 {
     std::wstring someText = L"simple text for test";
-    auto splitted = HG::Utils::StringTools::split(someText, L' ');
+    auto splitted         = HG::Utils::StringTools::split(someText, L' ');
 
-    ASSERT_EQ(splitted, std::vector<std::wstring>({
-                                                         L"simple", L"text", L"for", L"test"
-                                                 }));
+    ASSERT_EQ(splitted, std::vector<std::wstring>({L"simple", L"text", L"for", L"test"}));
 }
 
 TEST(Utils, StringToolsEndsWithHappyPath)
 {
-    std::string source = "some_text_with_ending";
-    std::string trueEnding = "with_ending";
+    std::string source      = "some_text_with_ending";
+    std::string trueEnding  = "with_ending";
     std::string falseEnding = "without_ending";
 
     ASSERT_TRUE(HG::Utils::StringTools::endsWith(source, trueEnding));
@@ -116,8 +103,8 @@ TEST(Utils, StringToolsEndsWithSizeMismatch)
 
 TEST(Utils, StringToolsEndsWithHappyPathWide)
 {
-    std::wstring source = L"some_text_with_ending";
-    std::wstring trueEnding = L"with_ending";
+    std::wstring source      = L"some_text_with_ending";
+    std::wstring trueEnding  = L"with_ending";
     std::wstring falseEnding = L"without_ending";
 
     ASSERT_TRUE(HG::Utils::StringTools::endsWith(source, trueEnding));
@@ -138,9 +125,7 @@ TEST(Utils, StringToolsSmartSplitHappyPath)
 
     auto result = HG::Utils::StringTools::smartSplit(source, ' ');
 
-    ASSERT_EQ(result, std::vector<std::string>({
-                                                       "SOME", "COOL TEXT"
-                                               }));
+    ASSERT_EQ(result, std::vector<std::string>({"SOME", "COOL TEXT"}));
 }
 
 TEST(Utils, StringToolsSmartSplitScreening)
@@ -148,9 +133,7 @@ TEST(Utils, StringToolsSmartSplitScreening)
     std::string source = R"(SOME \"COOL TEXT\")";
 
     auto result = HG::Utils::StringTools::smartSplit(source, ' ');
-    ASSERT_EQ(result, std::vector<std::string>({
-                                                       "SOME", "\"COOL", "TEXT\""
-                                               }));
+    ASSERT_EQ(result, std::vector<std::string>({"SOME", "\"COOL", "TEXT\""}));
 }
 
 TEST(Utils, StringToolsSmartSplitHappyPathWide)
@@ -159,9 +142,7 @@ TEST(Utils, StringToolsSmartSplitHappyPathWide)
 
     auto result = HG::Utils::StringTools::smartSplit(source, L' ');
 
-    ASSERT_EQ(result, std::vector<std::wstring>({
-                                                       L"SOME", L"COOL TEXT"
-                                               }));
+    ASSERT_EQ(result, std::vector<std::wstring>({L"SOME", L"COOL TEXT"}));
 }
 
 TEST(Utils, StringToolsSmartSplitScreeningWide)
@@ -169,18 +150,12 @@ TEST(Utils, StringToolsSmartSplitScreeningWide)
     std::wstring source = LR"(SOME \"COOL TEXT\")";
 
     auto result = HG::Utils::StringTools::smartSplit(source, ' ');
-    ASSERT_EQ(result, std::vector<std::wstring>({
-                                                       L"SOME", L"\"COOL", L"TEXT\""
-                                               }));
+    ASSERT_EQ(result, std::vector<std::wstring>({L"SOME", L"\"COOL", L"TEXT\""}));
 }
 
 TEST(Utils, StringToolsJoinHappyPath)
 {
-    std::vector<std::string> some_vector = {
-            "test_1",
-            "test_2",
-            "test_3"
-    };
+    std::vector<std::string> some_vector = {"test_1", "test_2", "test_3"};
 
     auto result = HG::Utils::StringTools::join(some_vector, ", ");
 
@@ -198,11 +173,7 @@ TEST(Utils, StringToolsJoinEmpty)
 
 TEST(Utils, StringToolsJoinHappyPathWide)
 {
-    std::vector<std::wstring> some_vector = {
-            L"test_1",
-            L"test_2",
-            L"test_3"
-    };
+    std::vector<std::wstring> some_vector = {L"test_1", L"test_2", L"test_3"};
 
     auto result = HG::Utils::StringTools::join(some_vector, L", ");
 
@@ -217,4 +188,3 @@ TEST(Utils, StringToolsJoinEmptyWide)
 
     ASSERT_EQ(result, L"");
 }
-

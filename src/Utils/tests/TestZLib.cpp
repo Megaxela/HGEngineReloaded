@@ -140,7 +140,9 @@ TEST(Utils, ZLibDeflateStreamToStream)
 TEST(Utils, ZLibDeflateError)
 {
     std::vector<uint8_t> result;
-    ASSERT_THROW(HG::Utils::ZLib::Deflate(static_cast<uint8_t*>(nullptr), 0, result, static_cast<HG::Utils::ZLib::CompressionLevel>(-2)), std::runtime_error);
+    ASSERT_THROW(HG::Utils::ZLib::Deflate(
+                     static_cast<uint8_t*>(nullptr), 0, result, static_cast<HG::Utils::ZLib::CompressionLevel>(-2)),
+                 std::runtime_error);
 }
 
 TEST(Utils, ZLibDeflateStreamToStreamError)
@@ -148,5 +150,7 @@ TEST(Utils, ZLibDeflateStreamToStreamError)
     std::ifstream input("zlib/some_text.txt", std::ios::binary);
     std::stringstream output;
 
-    ASSERT_THROW(HG::Utils::ZLib::DeflateStreamToStream(input, output, 1024, static_cast<HG::Utils::ZLib::CompressionLevel>(-2)), std::runtime_error);
+    ASSERT_THROW(
+        HG::Utils::ZLib::DeflateStreamToStream(input, output, 1024, static_cast<HG::Utils::ZLib::CompressionLevel>(-2)),
+        std::runtime_error);
 }

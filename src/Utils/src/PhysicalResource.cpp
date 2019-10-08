@@ -8,8 +8,8 @@
 #endif
 
 #ifdef OS_WINDOWS
-#    include <windows.h>
 #    include <psapi.h>
+#    include <windows.h>
 #endif
 
 uint64_t HG::Utils::PhysicalResource::getTotalRAM()

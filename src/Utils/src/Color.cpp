@@ -197,12 +197,10 @@ glm::vec4 HG::Utils::Color::toRGBAVector() const
 
 HG::Utils::Color HG::Utils::Color::brighten(const HG::Utils::Color& color, float factor)
 {
-    return Color(
-            clamp(color.m_r * factor, 0.0f, 1.0f),
-            clamp(color.m_g * factor, 0.0f, 1.0f),
-            clamp(color.m_b * factor, 0.0f, 1.0f),
-            color.m_a
-    );
+    return Color(clamp(color.m_r * factor, 0.0f, 1.0f),
+                 clamp(color.m_g * factor, 0.0f, 1.0f),
+                 clamp(color.m_b * factor, 0.0f, 1.0f),
+                 color.m_a);
 }
 
 bool HG::Utils::Color::operator==(const HG::Utils::Color& rhs) const

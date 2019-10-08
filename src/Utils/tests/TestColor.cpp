@@ -57,9 +57,9 @@ TEST(Utils, ColorFromHexWithSharp)
 TEST(Utils, ColorFromHexWithoutSharp)
 {
     std::unordered_map<std::string, ColorChannels> samples = {
-            {"AABBCCDD", {170, 187, 204, 221}},
-            {"00000000", {0, 0, 0, 0}},
-            {"FFFFFFFF", {255, 255, 255, 255}},
+        {"AABBCCDD", {170, 187, 204, 221}},
+        {"00000000", {0, 0, 0, 0}},
+        {"FFFFFFFF", {255, 255, 255, 255}},
     };
 
     for (const auto& [hexString, channels] : samples)
