@@ -122,7 +122,7 @@ TEST(Utils, ColorBrighten)
 
     ASSERT_FLOAT_EQ(new_color.redF(), 0.4f);
     ASSERT_FLOAT_EQ(new_color.greenF(), 0.8f);
-    ASSERT_FLOAT_EQ(new_color.blueF(), 1.0f); // clamped
+    ASSERT_FLOAT_EQ(new_color.blueF(), 1.0f);  // clamped
     ASSERT_FLOAT_EQ(new_color.alphaF(), 0.8f); // unchanged
 }
 
