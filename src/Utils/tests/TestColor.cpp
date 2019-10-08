@@ -44,6 +44,8 @@ TEST(Utils, ColorFromHexWithSharp)
         {"#AABBCCDD", {187, 204, 221, 170}},
         {"#00000000", {0, 0, 0, 0}},
         {"#FFFFFFFF", {255, 255, 255, 255}},
+        {"#PPPPPPPP", {0, 0, 0, 255}},
+        {"#2", {0, 0, 0, 255}},
     };
 
     for (const auto& [hexString, channels] : samples)
@@ -63,6 +65,8 @@ TEST(Utils, ColorFromHexWithoutSharp)
         {"AABBCCDD", {187, 204, 221, 170}},
         {"00000000", {0, 0, 0, 0}},
         {"FFFFFFFF", {255, 255, 255, 255}},
+        {"PPPPPPPP", {0, 0, 0, 255}},
+        {"2", {0, 0, 0, 255}},
     };
 
     for (const auto& [hexString, channels] : samples)

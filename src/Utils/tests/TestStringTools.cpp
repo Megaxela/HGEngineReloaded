@@ -188,3 +188,12 @@ TEST(Utils, StringToolsJoinEmptyWide)
 
     ASSERT_EQ(result, L"");
 }
+
+TEST(Utils, StringToolsToLower)
+{
+    std::string higher = "SOMEHUGE!@#$%^&*()";
+
+    auto result = HG::Utils::StringTools::toLower(higher);
+
+    ASSERT_EQ(result, "somehuge!@#$%^&*()");
+}

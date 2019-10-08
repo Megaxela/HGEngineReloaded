@@ -33,3 +33,11 @@ TEST(Utils, RectComparing)
     ASSERT_EQ(rect1, rect2);
     ASSERT_NE(rect1, rect3);
 }
+
+TEST(Utils, RectToString)
+{
+    std::stringstream ss;
+    ss << HG::Utils::Rect(1, 2, 3, 4);
+
+    ASSERT_FALSE(ss.str().empty());
+}
