@@ -36,6 +36,7 @@ addons:
       - libglu-dev
       - libgl-dev
       - libperlio-gzip-perl
+      - libjson-perl
 
 compiler:
   - clang
