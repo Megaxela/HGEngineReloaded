@@ -10,10 +10,12 @@
 struct Object
 {
     Object() : data(0)
-    {}
+    {
+    }
 
     Object(int data) : data(data)
-    {}
+    {
+    }
 
     int getData()
     {
@@ -23,20 +25,17 @@ struct Object
     int data;
 };
 
-template<typename T>
+template <typename T>
 std::shared_future<Object*> getSharedFuture(T sleep_for, Object* result_value)
 {
     auto promise = std::make_shared<std::promise<Object*>>();
     std::shared_future<Object*> future(promise->get_future());
 
-    std::thread thread(
-            [promise, sleep_for, result_value]()
-            {
-                std::this_thread::sleep_for(sleep_for);
+    std::thread thread([promise, sleep_for, result_value]() {
+        std::this_thread::sleep_for(sleep_for);
 
-                promise->set_value(result_value);
-            }
-    );
+        promise->set_value(result_value);
+    });
 
     thread.detach();
 
@@ -46,10 +45,7 @@ std::shared_future<Object*> getSharedFuture(T sleep_for, Object* result_value)
 TEST(Utils, FutureHandler)
 {
     Object expected = 0xDEAD;
-    HG::Utils::FutureHandler futureHandler(getSharedFuture(
-            std::chrono::seconds(1),
-            &expected
-    ));
+    HG::Utils::FutureHandler futureHandler(getSharedFuture(std::chrono::seconds(1), &expected));
 
     HG::Utils::FutureHandler copy = futureHandler;
 
