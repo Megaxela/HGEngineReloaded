@@ -106,7 +106,7 @@ TEST(PackageProcessorLibrary, SampleWritingReading)
         std::sort(realData.begin(), realData.end(), comparator);
 
         // Disable this check due to inconsistent separator todo: fix this later
-//        ASSERT_EQ(expectedData, realData);
+        //        ASSERT_EQ(expectedData, realData);
 
         ASSERT_NO_THROW(packageProcessor.unpack(targetPath / "UnpackDir"));
     }

@@ -10,8 +10,8 @@
 #include <zlib.h>
 
 // HG::Utils
-#include <HG/Utils/zlib.hpp>
 #include <HG/Utils/filesystem_ext.hpp>
+#include <HG/Utils/zlib.hpp>
 
 // HG::Utils
 constexpr const uint32_t PACKAGE_MAGIC             = 0xDEC0DE00;
