@@ -34,9 +34,9 @@ public:
      * @param rhs Right hand structure.
      * @return Is structs equal.
      */
-    bool operator==(const Rect& rhs);
+    bool operator==(const Rect& rhs) const;
 
-    bool operator!=(const Rect& rhs);
+    bool operator!=(const Rect& rhs) const;
 
     int x;
     int y;

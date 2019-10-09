@@ -81,6 +81,8 @@ public:
     {
         if (m_future.valid())
         {
+            // We need future status as soon as possible
+            // so just wait no time
             if (m_future.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
             {
                 m_predefinedValue = std::move(m_future.get());

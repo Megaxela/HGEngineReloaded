@@ -1,4 +1,7 @@
+// HG::Utils
 #include <HG/Utils/DoubleBufferContainer.hpp>
+
+// GTest
 #include <gtest/gtest.h>
 
 TEST(Utils, DoubleBufferContainerConstructorsDefault)
@@ -170,6 +173,7 @@ TEST(Utils, DoubleBufferContainerConstructorsModifiersAndGetters)
     ASSERT_EQ(data.added().size(), 3);
 
     data.merge();
+    data.add(2);
 
     ASSERT_EQ(data.current().size(), 2);
     ASSERT_EQ(data.removable().size(), 0);
@@ -199,6 +203,38 @@ TEST(Utils, DoubleBufferContainerConstructorsModifiersAndGetters)
     data.clear();
 
     ASSERT_EQ(data.current().size(), 0);
+    ASSERT_EQ(data.removable().size(), 0);
+    ASSERT_EQ(data.added().size(), 0);
+}
+
+TEST(Utils, DoubleBufferContainerOutOfRangeIndex)
+{
+#ifndef NDEBUG
+    HG::Utils::DoubleBufferContainer<std::size_t> data;
+
+    ASSERT_THROW(data[12], std::out_of_range);
+#endif
+}
+
+TEST(Utils, DoubleBufferContainerMultipleRemoving)
+{
+    HG::Utils::DoubleBufferContainer<std::size_t> data;
+
+    data.add(1);
+    data.add(2);
+    data.add(3);
+    data.add(4);
+    ASSERT_EQ(data.added().size(), 4);
+
+    data.merge();
+
+    data.remove(1);
+    ASSERT_NO_THROW(data.remove(1));
+    ASSERT_EQ(data.removable().size(), 1);
+
+    data.merge();
+
+    ASSERT_EQ(data.current().size(), 3);
     ASSERT_EQ(data.removable().size(), 0);
     ASSERT_EQ(data.added().size(), 0);
 }

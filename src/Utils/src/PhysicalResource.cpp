@@ -8,8 +8,9 @@
 #endif
 
 #ifdef OS_WINDOWS
-#    include <psapi.h>
 #    include <windows.h>
+// windows.h must be before psapi, cause of #defines inside (ty microsoft)
+#    include <psapi.h>
 #endif
 
 uint64_t HG::Utils::PhysicalResource::getTotalRAM()
