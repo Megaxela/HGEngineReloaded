@@ -29,7 +29,7 @@ function(describe_tool)
     target_include_directories(${PROJECT_NAME} PUBLIC include ${ARGS_INCLUDE})
 
     # Linking libraries
-    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
+    target_link_libraries(${PROJECT_NAME} -static ${ARGS_DEPENDENCIES})
 
     # Definitions
     target_compile_definitions(${PROJECT_NAME} PUBLIC ${ARGS_DEFINITIONS})
@@ -180,7 +180,7 @@ function(describe_module)
     endif()
 
     # Linking libraries
-    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
+    target_link_libraries(${PROJECT_NAME} -static ${ARGS_DEPENDENCIES})
 
     # Adding definitions
     target_compile_definitions(${PROJECT_NAME} PUBLIC ${ARGS_DEFINITIONS})
@@ -232,7 +232,7 @@ function(add_example)
         set(ARGS_DEPENDENCIES ${ARGS_DEPENDENCIES} -lgdi32 -lpsapi)
     endif()
 
-    target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
+    target_link_libraries(${PROJECT_NAME} -static ${ARGS_DEPENDENCIES})
 
     file(GLOB_RECURSE ASSETS *.png *.mtl *.obj *.tga)
 

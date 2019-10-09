@@ -11,6 +11,7 @@
 
 // HG::Utils
 #include <HG/Utils/zlib.hpp>
+#include <HG/Utils/filesystem_ext.hpp>
 
 // HG::Utils
 constexpr const uint32_t PACKAGE_MAGIC             = 0xDEC0DE00;
@@ -70,7 +71,7 @@ void HG::Tools::PackageProcessor::clear()
 void HG::Tools::PackageProcessor::load(std::filesystem::path path)
 {
     // Opening file
-    std::ifstream file(path, std::ios::binary);
+    std::ifstream file(path.string(), std::ios::binary);
 
     if (!file.is_open())
     {
@@ -306,7 +307,7 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
 
 void HG::Tools::PackageProcessor::write(std::filesystem::path path)
 {
-    std::ofstream file(path, std::ios::binary);
+    std::ofstream file(path.string(), std::ios::binary);
 
     if (!file.is_open())
     {
@@ -343,7 +344,7 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
         std::size_t offsetToOffsetField = 0;
     };
 
-    std::unordered_map<std::string, WriteEntryInfo> entries;
+    std::unordered_map<std::filesystem::path, WriteEntryInfo> entries;
 
     uint32_t idCounter = 1;
 
@@ -612,7 +613,7 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
 
     file.close();
 
-    basePackageFile.open(path, std::ios::binary);
+    basePackageFile.open(path.string(), std::ios::binary);
 
     if (!basePackageFile.is_open())
     {
@@ -625,7 +626,7 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
 
     basePackageFile.close();
 
-    file.open(path, std::ios::binary | std::ios::in | std::ios::out | std::ios::ate);
+    file.open(path.string(), std::ios::binary | std::ios::in | std::ios::out | std::ios::ate);
 
     auto fileEnd = file.tellp();
 
@@ -650,7 +651,7 @@ void HG::Tools::PackageProcessor::unpack(std::filesystem::path path)
         throw std::runtime_error("Package is not opened");
     }
 
-    std::ifstream file(m_pathToOpenedPackage, std::ios::binary);
+    std::ifstream file(m_pathToOpenedPackage.string(), std::ios::binary);
 
     if (!file.is_open())
     {
@@ -670,7 +671,7 @@ void HG::Tools::PackageProcessor::unpack(std::filesystem::path path, const HG::T
         throw std::runtime_error("Package is not opened");
     }
 
-    std::ifstream inputFile(m_pathToOpenedPackage, std::ios::binary);
+    std::ifstream inputFile(m_pathToOpenedPackage.string(), std::ios::binary);
 
     if (!inputFile.is_open())
     {
@@ -691,7 +692,7 @@ void HG::Tools::PackageProcessor::internalUnpack(std::ifstream& stream,
 
     std::filesystem::create_directories(path, ec);
 
-    std::ofstream output(destination, std::ios::binary);
+    std::ofstream output(destination.string(), std::ios::binary);
 
     if (!output.is_open())
     {
@@ -740,7 +741,7 @@ void HG::Tools::PackageProcessor::writeFilesystemFile(std::ofstream& to,
 {
     offset = static_cast<std::size_t>(to.tellp());
 
-    std::ifstream file(path);
+    std::ifstream file(path.string());
 
     if (!file.is_open())
     {
@@ -757,7 +758,7 @@ void HG::Tools::PackageProcessor::writePackageFile(std::ofstream& to,
 {
     if (!basePackageFile.is_open())
     {
-        basePackageFile.open(m_pathToOpenedPackage, std::ios::binary);
+        basePackageFile.open(m_pathToOpenedPackage.string(), std::ios::binary);
 
         if (!basePackageFile.is_open())
         {
