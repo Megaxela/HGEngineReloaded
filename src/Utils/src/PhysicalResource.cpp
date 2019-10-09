@@ -9,7 +9,7 @@
 
 #ifdef OS_WINDOWS
 #    include <windows.h>
-// hotfix
+// windows.h must be before psapi, cause of #defines inside (ty microsoft)
 #    include <psapi.h>
 #endif
 

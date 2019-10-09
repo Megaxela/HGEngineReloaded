@@ -1,4 +1,7 @@
+// HG::Utils
 #include <HG/Utils/DoubleBufferContainer.hpp>
+
+// GTest
 #include <gtest/gtest.h>
 
 TEST(Utils, DoubleBufferContainerConstructorsDefault)
