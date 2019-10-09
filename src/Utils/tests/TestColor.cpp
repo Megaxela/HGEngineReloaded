@@ -104,9 +104,9 @@ TEST(Utils, ColorFloatValues)
 {
     auto color = HG::Utils::Color(0.0f, 0.3f, 0.8f, 1.0f);
 
-        ASSERT_EQ(color.red(), i);
-        ASSERT_EQ(color.green(), i);
-        ASSERT_EQ(color.blue(), i);
-        ASSERT_EQ(color.alpha(), i);
-    }
+    ASSERT_EQ(color.red(), i);
+    ASSERT_EQ(color.green(), i);
+    ASSERT_EQ(color.blue(), i);
+    ASSERT_EQ(color.alpha(), i);
+}
 }
