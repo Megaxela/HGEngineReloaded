@@ -104,9 +104,38 @@ TEST(Utils, ColorFloatValues)
 {
     auto color = HG::Utils::Color(0.0f, 0.3f, 0.8f, 1.0f);
 
-    ASSERT_EQ(color.red(), i);
-    ASSERT_EQ(color.green(), i);
-    ASSERT_EQ(color.blue(), i);
-    ASSERT_EQ(color.alpha(), i);
+    ASSERT_FLOAT_EQ(color.redF(), 0.0f);
+    ASSERT_FLOAT_EQ(color.greenF(), 0.3f);
+    ASSERT_FLOAT_EQ(color.blueF(), 0.8f);
+    ASSERT_FLOAT_EQ(color.alphaF(), 1.0f);
 }
+
+TEST(Utils, ColorToVector)
+{
+    auto color = HG::Utils::Color(0.0f, 0.3f, 0.8f, 1.0f);
+
+    ASSERT_EQ(color.toRGBVector(), glm::vec3(0.0f, 0.3f, 0.8f));
+    ASSERT_EQ(color.toRGBAVector(), glm::vec4(0.0f, 0.3f, 0.8f, 1.0f));
+}
+
+TEST(Utils, ColorBrighten)
+{
+    auto color = HG::Utils::Color(0.2f, 0.4f, 0.8f, 0.8f);
+
+    auto new_color = HG::Utils::Color::brighten(color, 2);
+
+    ASSERT_FLOAT_EQ(new_color.redF(), 0.4f);
+    ASSERT_FLOAT_EQ(new_color.greenF(), 0.8f);
+    ASSERT_FLOAT_EQ(new_color.blueF(), 1.0f);  // clamped
+    ASSERT_FLOAT_EQ(new_color.alphaF(), 0.8f); // unchanged
+}
+
+TEST(Utils, ColorToString)
+{
+    auto color = HG::Utils::Color();
+
+    std::stringstream ss;
+    ss << color;
+
+    ASSERT_FALSE(ss.str().empty());
 }
