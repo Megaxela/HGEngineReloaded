@@ -35,6 +35,8 @@ addons:
       - libxcursor-dev
       - libglu-dev
       - libgl-dev
+      - libperlio-gzip-perl
+      - libjson-perl
 
 compiler:
   - clang
@@ -134,14 +136,14 @@ after_success:
       lcov --version
       pwd && ls -laF . /usr/bin/gcov*
       cd $BUILD_ROOT && pwd
-      lcov --gcov-tool /usr/bin/gcov-8 --directory . --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --directory . --base-directory $SOURCE_ROOT --capture --output-file coverage.info
       echo "Lcov exited with status $?"
       ls -laF coverage.info
-      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/tests/*' -o coverage.info
-      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/testing/*' -o coverage.info
-      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/libraries/*' -o coverage.info
-      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/gcc/*' -o coverage.info
-      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove coverage.info '*/tests/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove coverage.info '*/testing/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove coverage.info '*/libraries/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove coverage.info '*/gcc/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove coverage.info '/usr/include/*' -o coverage.info
       ls -laF coverage.info
       cd $SOURCE_ROOT && pwd
       coveralls-lcov $BUILD_ROOT/coverage.info

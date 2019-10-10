@@ -38,6 +38,11 @@ void split(const std::string& s, char delim, Out result)
     {
         *(result++) = item;
     }
+
+    if (!s.empty() && s.back() == delim)
+    {
+        *(result++) = std::string();
+    }
 }
 
 std::vector<std::string> split(const std::string& s, char delim);
@@ -52,6 +57,11 @@ void split(const std::wstring& s, wchar_t delim, Out result)
     while (std::getline(ss, item, delim))
     {
         *(result++) = item;
+    }
+
+    if (!s.empty() && s.back() == delim)
+    {
+        *(result++) = std::wstring();
     }
 }
 
@@ -79,8 +89,30 @@ bool startsWith(const T& lhs, const T& begin)
 
 std::vector<std::wstring> split(const std::wstring& s, wchar_t delim);
 
+/**
+ * @brief Function for splitting wide string by delimiter with
+ * escape sequences support.
+ * Example:
+ * @code
+ *   auto result = smartSplit("SOME \"COOL STRING\");
+ *   > result = {"SOME", "COOL STRING"};
+ * @param s Quoted/Screened string.
+ * @param delim Delimeter.
+ * @return Vector of tokens.
+ */
 std::vector<std::wstring> smartSplit(const std::wstring& s, wchar_t delim);
 
+/**
+ * @brief Function for splitting string by delimiter with
+ * escape sequences support.
+ * Example:
+ * @code
+ *   auto result = smartSplit("SOME \"COOL STRING\");
+ *   > result = {"SOME", "COOL STRING"};
+ * @param s Quoted/Screened string.
+ * @param delim Delimeter.
+ * @return Vector of tokens.
+ */
 std::vector<std::string> smartSplit(const std::string& s, char delim);
 
 std::string toLower(const std::string& s);
@@ -88,6 +120,11 @@ std::string toLower(const std::string& s);
 template <typename T>
 typename T::value_type join(T arr, typename T::value_type delim)
 {
+    if (arr.empty())
+    {
+        return typename T::value_type();
+    }
+
     std::basic_stringstream<typename T::value_type::value_type> ss;
 
     size_t s = 0;
