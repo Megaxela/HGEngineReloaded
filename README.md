@@ -87,16 +87,17 @@ Project uses `cmake` based build system. Sample build process:
 1. Start building: `cmake --build . --target all`
 
 ### Engine configure arguments
- |      Variable Name     |Possible Values|Default|Description                                      |
- |------------------------|---------------|-------|-------------------------------------------------|
- | `HG_BUILD_EXAMPLES`    |   `On`/`Off`  | `Off` | Build provided examples or not                  |
- | `HG_BUILD_TESTS`       |   `On`/`Off`  | `Off` | Enables tests discover and assets configuration |
- | `HG_TEST_COVERAGE`     |   `On`/`Off`  | `Off` | Enables compile options for coverage check      |
- | `HG_BUILD_WARNINGS`    |   `On`/`Off`  | `Off` | Enables huge amount of warnings for build       |
- | `HG_BUILD_Core_TESTS`  |   `On`/`Off`  | `Off` | Enables Core module tests                       |
- | `HG_BUILD_Tools_TESTS` |   `On`/`Off`  | `Off` | Enables Tools module tests                      |
- | `HG_BUILD_Utils_TESTS` |   `On`/`Off`  | `Off` | Enables Utils module tests                      |
- | `HG_BUILD_ALL_TESTS`   |   `On`/`Off`  | `Off` | Enables all modules tests                       |
+ |      Variable Name      |Possible Values|Default|Description                                      |
+ |-------------------------|---------------|-------|-------------------------------------------------|
+ | `HG_BUILD_EXAMPLES`     |   `On`/`Off`  | `Off` | Build provided examples or not                  |
+ | `HG_BUILD_TESTS`        |   `On`/`Off`  | `Off` | Enables tests discover and assets configuration |
+ | `HG_TEST_COVERAGE`      |   `On`/`Off`  | `Off` | Enables compile options for coverage check      |
+ | `HG_BUILD_WARNINGS`     |   `On`/`Off`  | `Off` | Enables huge amount of warnings for build       |
+ | `HG_BUILD_Core_TESTS`   |   `On`/`Off`  | `Off` | Enables Core module tests                       |
+ | `HG_BUILD_Tools_TESTS`  |   `On`/`Off`  | `Off` | Enables Tools module tests                      |
+ | `HG_BUILD_Utils_TESTS`  |   `On`/`Off`  | `Off` | Enables Utils module tests                      |
+ | `HG_BUILD_ALL_TESTS`    |   `On`/`Off`  | `Off` | Enables all modules tests                       |
+ | `HG_STD_STATIC_LINKAGE` |   `On`/`Off`  | `Off` | Enables static C++ STD library linkage          |
 
 ## Libraries required in system
 1. `glew` - Engine requires 2.1.0 version if OpenGL support required.
