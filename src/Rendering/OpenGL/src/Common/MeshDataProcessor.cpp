@@ -36,17 +36,17 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
         meshBehaviour->setSpecificData(data);
     }
 
-    if (!data->VAO.is_valid())
+    if (data->VAO.id() == gl::invalid_id)
     {
         data->VAO = std::move(gl::vertex_array());
     }
 
-    if (!data->VBO.is_valid())
+    if (data->VBO.id() == gl::invalid_id)
     {
         data->VBO = std::move(gl::buffer());
     }
 
-    if (!data->EBO.is_valid())
+    if (data->EBO.id() == gl::invalid_id)
     {
         data->EBO = std::move(gl::buffer());
     }
@@ -102,6 +102,6 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::
 {
     auto meshData = data->castSpecificDataTo<MeshData>();
 
-    return meshData == nullptr || !meshData->VAO.is_valid() || !meshData->VBO.is_valid() || !meshData->EBO.is_valid() ||
-           !meshData->Valid;
+    return meshData == nullptr || meshData->VAO.id() == gl::invalid_id || meshData->VBO.id() == gl::invalid_id ||
+           meshData->EBO.id() == gl::invalid_id || !meshData->Valid;
 }

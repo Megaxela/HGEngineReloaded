@@ -66,7 +66,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
         shader->setSpecificData(externalData);
     }
 
-    if (!externalData->Program.is_valid())
+    if (externalData->Program.id() == gl::invalid_id)
     {
         externalData->Program = std::move(gl::program());
     }
@@ -125,7 +125,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::needSetup(HG::Rendering
 {
     auto shaderData = data->castSpecificDataTo<ShaderData>();
 
-    return shaderData == nullptr || !shaderData->Program.is_valid() || !shaderData->Valid;
+    return shaderData == nullptr || shaderData->Program.id() == gl::invalid_id || !shaderData->Valid;
 }
 
 std::size_t HG::Rendering::OpenGL::Common::ShaderDataProcessor::getTarget()

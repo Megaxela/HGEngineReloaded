@@ -165,8 +165,8 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Render
     auto texture      = static_cast<HG::Rendering::Base::Texture*>(data);
     auto externalData = texture->castSpecificDataTo<Common::Texture2DData>();
 
-    return externalData == nullptr || !externalData->Texture.is_valid() || externalData->Size != texture->size() ||
-           !externalData->Valid;
+    return externalData == nullptr || externalData->Texture.id() == gl::invalid_id ||
+           externalData->Size != texture->size() || !externalData->Valid;
 }
 
 size_t HG::Rendering::OpenGL::Common::Texture2DDataProcessor::getTarget()
