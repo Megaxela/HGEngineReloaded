@@ -50,7 +50,7 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
         renderTarget->setSpecificData(externalData);
     }
 
-    if (!externalData->Framebuffer.is_valid())
+    if (externalData->Framebuffer.id() == gl::invalid_id)
     {
         externalData->Framebuffer = std::move(gl::framebuffer());
     }
@@ -96,6 +96,6 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::needSetup(HG::Ren
     auto renderTargetData = renderTarget->castSpecificDataTo<HG::Rendering::OpenGL::Common::RenderTargetData>();
 
     return renderTargetData == nullptr || renderTargetData->Size != renderTarget->size() ||
-           !renderTargetData->Framebuffer.is_valid() ||
+           renderTargetData->Framebuffer.id() == gl::invalid_id ||
            renderTargetData->Framebuffer.status() == GL_FRAMEBUFFER_COMPLETE || !renderTargetData->Valid;
 }

@@ -138,7 +138,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::needSetup(HG::R
     auto externalData = data->castSpecificDataTo<CubeMapTextureData>();
 
     return externalData == nullptr || externalData->LoadedSides != ((1 << 6) - 1) || // Fully loaded bitfield
-           !externalData->Valid || !externalData->Texture.is_valid();
+           !externalData->Valid || externalData->Texture.id() == gl::invalid_id;
 }
 
 size_t HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::getTarget()
