@@ -28,6 +28,11 @@ function(describe_tool)
     # Include headers directory
     target_include_directories(${PROJECT_NAME} PUBLIC include ${ARGS_INCLUDE})
 
+    # Modifying DEPS if static linkage required
+    IF (${HG_STD_STATIC_LINKAGE})
+        set(ARGS_DEPENDENCIES -static ${ARGS_DEPENDENCIES})
+    endif()
+
     # Linking libraries
     target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
 
@@ -179,6 +184,11 @@ function(describe_module)
         list(APPEND ARGS_DEPENDENCIES -lgcov)
     endif()
 
+    # Modifying DEPS if static linkage required
+    IF (${HG_STD_STATIC_LINKAGE})
+        set(ARGS_DEPENDENCIES -static ${ARGS_DEPENDENCIES})
+    endif()
+
     # Linking libraries
     target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
 
@@ -230,6 +240,11 @@ function(add_example)
 
     if (WIN32)
         set(ARGS_DEPENDENCIES ${ARGS_DEPENDENCIES} -lgdi32 -lpsapi)
+    endif()
+
+    # Modifying DEPS if static linkage required
+    IF (${HG_STD_STATIC_LINKAGE})
+        set(ARGS_DEPENDENCIES -static ${ARGS_DEPENDENCIES})
     endif()
 
     target_link_libraries(${PROJECT_NAME} ${ARGS_DEPENDENCIES})
