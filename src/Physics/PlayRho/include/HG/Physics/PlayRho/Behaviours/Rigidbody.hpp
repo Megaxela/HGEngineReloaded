@@ -36,7 +36,7 @@ public:
      * @brief Method for getting playrho body object.
      * @return Pointer to body object.
      */
-    playrho::d2::Body* body() const;
+    [[nodiscard]] playrho::d2::Body* body() const;
 
 protected:
     void onStart() override;

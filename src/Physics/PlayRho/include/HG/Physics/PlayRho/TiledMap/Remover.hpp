@@ -1,7 +1,12 @@
 #pragma once
 
-#include <CurrentLogger.hpp>
+// HG::Core
+#include <HG/Core/Logging.hpp>
+
+// HG::Physics::Base
 #include <HG/Physics/Base/PhysicsController.hpp>
+
+// PlayRho
 #include <PlayRho/PlayRho.hpp>
 
 namespace HG::Physics::PlayRho::TiledMap
@@ -18,7 +23,7 @@ static void Remover(void* value, HG::Physics::Base::PhysicsController* physicsCo
 
     if (controller == nullptr)
     {
-        ErrorF() << "Can't remove body after physics controller change.";
+        HGErrorF() << "Can't remove body after physics controller change.";
         return;
     }
 

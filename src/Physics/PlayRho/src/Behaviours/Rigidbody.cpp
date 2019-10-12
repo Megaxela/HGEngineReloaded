@@ -2,32 +2,35 @@
 #include <utility>
 
 // HG::Physics::PlayRho
-#include <Behaviours/Rigidbody.hpp>
-#include <Controller.hpp>
+#include <HG/Physics/PlayRho/Behaviours/Rigidbody.hpp>
+#include <HG/Physics/PlayRho/Controller.hpp>
 
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/Scene.hpp>
 
 // ImGUI
 #include <imgui.h>
 
-HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody() : m_configuration(), m_body(nullptr)
+namespace HG::Physics::PlayRho
+{
+Behaviours::Rigidbody::Rigidbody() : m_configuration(), m_body(nullptr)
 {
 }
 
-HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::BodyConf bodyConfiguration) :
+Behaviours::Rigidbody::Rigidbody(playrho::d2::BodyConf bodyConfiguration) :
     m_configuration(std::move(bodyConfiguration)),
     m_body(nullptr)
 {
 }
 
-HG::Physics::PlayRho::Behaviours::Rigidbody::Rigidbody(playrho::d2::Body* body) : m_configuration(), m_body(body)
+Behaviours::Rigidbody::Rigidbody(playrho::d2::Body* body) : m_configuration(), m_body(body)
 {
 }
 
-void HG::Physics::PlayRho::Behaviours::Rigidbody::applyCurrentGameObjectTransform()
+void Behaviours::Rigidbody::applyCurrentGameObjectTransform()
 {
     if (!gameObject() || !m_body)
     {
@@ -44,7 +47,7 @@ void HG::Physics::PlayRho::Behaviours::Rigidbody::applyCurrentGameObjectTransfor
     m_body->SetTransform(vector, 0);
 }
 
-void HG::Physics::PlayRho::Behaviours::Rigidbody::onStart()
+void Behaviours::Rigidbody::onStart()
 {
     if (!m_body)
     {
@@ -57,11 +60,11 @@ void HG::Physics::PlayRho::Behaviours::Rigidbody::onStart()
     applyCurrentGameObjectTransform();
 }
 
-void HG::Physics::PlayRho::Behaviours::Rigidbody::onUpdate()
+void Behaviours::Rigidbody::onUpdate()
 {
     if (!m_body)
     {
-        Error() << "Can't update rigidbody without actual body.";
+        HGError() << "Can't update rigidbody without actual body.";
         return;
     }
 
@@ -72,7 +75,8 @@ void HG::Physics::PlayRho::Behaviours::Rigidbody::onUpdate()
     gameObject()->transform()->setLocalRotation(glm::quat(glm::vec3(0.0f, 0.0f, m_body->GetAngle())));
 }
 
-playrho::d2::Body* HG::Physics::PlayRho::Behaviours::Rigidbody::body() const
+playrho::d2::Body* Behaviours::Rigidbody::body() const
 {
     return m_body;
 }
+} // namespace HG::Physics::PlayRho
