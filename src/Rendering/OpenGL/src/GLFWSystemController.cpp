@@ -5,7 +5,6 @@
 #    include <HG/Core/Application.hpp>
 #    include <HG/Core/Benchmark.hpp>
 #    include <HG/Core/Input.hpp>
-#    include <HG/Core/Logging.hpp>
 #    include <HG/Core/TimeStatistics.hpp>
 
 // HG::Rendering::Base
@@ -15,6 +14,9 @@
 
 // HG::Rendering::OpenGL
 #    include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
+
+// HG::Utils
+#    include <HG/Utils/Logging.hpp>
 
 // GLM
 #    include <gl/all.hpp>

@@ -1,6 +1,6 @@
-
 // HG::Utils
 #include <HG/Utils/Loaders/AssimpLoader.hpp>
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Mesh.hpp>
 #include <HG/Utils/Model.hpp>
 
@@ -8,13 +8,6 @@
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
-
-// ALogger
-#include <CurrentLogger.hpp>
-
-HG::Utils::AssimpLoader::AssimpLoader()
-{
-}
 
 namespace
 {
@@ -94,7 +87,13 @@ void proceedNode(aiNode* node, const aiScene* scene, HG::Utils::Model* target)
 }
 } // namespace
 
-HG::Utils::AssimpLoader::ResultType HG::Utils::AssimpLoader::load(const std::byte* data, std::size_t size)
+namespace HG::Utils
+{
+AssimpLoader::AssimpLoader()
+{
+}
+
+AssimpLoader::ResultType AssimpLoader::load(const std::byte* data, std::size_t size)
 {
     Assimp::Importer importer;
 
@@ -106,7 +105,7 @@ HG::Utils::AssimpLoader::ResultType HG::Utils::AssimpLoader::load(const std::byt
 
     if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
     {
-        Error() << "Can't load model. Error: " << importer.GetErrorString();
+        HGError() << "Can't load model. Error: " << importer.GetErrorString();
         return nullptr;
     }
 
@@ -117,3 +116,4 @@ HG::Utils::AssimpLoader::ResultType HG::Utils::AssimpLoader::load(const std::byt
 
     return rootModel;
 }
+} // namespace HG::Utils

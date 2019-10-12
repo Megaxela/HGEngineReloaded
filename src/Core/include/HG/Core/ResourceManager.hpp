@@ -8,9 +8,6 @@
 // HG::Utils
 #include <HG/Utils/FutureHandler.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
 // C++ STL
 #include <functional>
 #include <future>

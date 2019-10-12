@@ -71,12 +71,12 @@ typename std::enable_if<sizeof(Byte) == 1>::type Encode(const Byte* source, std:
     std::size_t i = 0;
     std::size_t j = 0;
 
-    uint8_t char_array_3[3];
-    uint8_t char_array_4[4];
+    std::uint8_t char_array_3[3];
+    std::uint8_t char_array_4[4];
 
     while (sourceSize--)
     {
-        char_array_3[i++] = static_cast<uint8_t>(*(source++));
+        char_array_3[i++] = static_cast<std::uint8_t>(*(source++));
 
         if (i == 3)
         {
@@ -121,7 +121,7 @@ typename std::enable_if<sizeof(Byte) == 1>::type Encode(const Byte* source, std:
 /**
  * @brief Function for encoding some sequence of bytes
  * to base64.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @param source Pointer to raw byte array.
  * @param sourceSize Size of raw byte array.
  * @return Encoded byte array to base64 string.
@@ -138,7 +138,7 @@ typename std::enable_if<sizeof(Byte) == 1, std::string>::type Encode(const Byte*
 
 /**
  * @brief Function for encoding bytearray to base64.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @tparam Allocator Bytearray allocator type.
  * @param processor Byte array processor.
  * @param result String target.
@@ -152,7 +152,7 @@ typename std::enable_if<sizeof(Byte) == 1>::type Encode(const bytearray_processo
 
 /**
  * @brief Function for encoding bytearray to base64.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @tparam Allocator Bytearray allocator type.
  * @param processor Byte array processor.
  * @return Base64 encoded string.
@@ -182,8 +182,8 @@ typename std::enable_if<sizeof(InByte) == 1 && sizeof(OutByte) == 1>::type Decod
     std::size_t j              = 0;
     std::string::size_type in_ = 0;
 
-    uint8_t char_array_3[3];
-    uint8_t char_array_4[4];
+    std::uint8_t char_array_3[3];
+    std::uint8_t char_array_4[4];
 
     while (in_size-- && (base64[in_] != '=') && is_base64(base64[in_]))
     {
@@ -255,7 +255,7 @@ Decode(const InByte* base64, std::size_t in_size)
 /**
  * @brief Function for decoding base64 encoded byte array
  * to some target.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @param base64 Base64 encoded string.
  * @param target Target.
  */
@@ -268,7 +268,7 @@ typename std::enable_if<sizeof(Byte) == 1>::type Decode(const std::string& base6
 /**
  * @brief Function for decoding base64 encoded byte array
  * to some target.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @param base64 Base64 encoded string.
  * @return Decoded vector.
  */
@@ -285,7 +285,7 @@ typename std::enable_if<sizeof(Byte) == 1, std::vector<Byte>>::type Decode(const
 /**
  * @brief Function for decoding base64 encoded byte array
  * to some target.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @param base64 Base64 encoded string.
  * @param target Target.
  */
@@ -298,7 +298,7 @@ typename std::enable_if<sizeof(Byte) == 1>::type Decode(const std::string_view& 
 /**
  * @brief Function for decoding base64 encoded byte array
  * to some target.
- * @tparam Byte Byte type. It can be `int8_t`, `uint8_t`, `std::byte`.
+ * @tparam Byte Byte type. It can be `int8_t`, `std::uint8_t`, `std::byte`.
  * @param base64 Base64 encoded string.
  * @return Decoded base64 byte array.
  */

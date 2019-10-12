@@ -1,15 +1,17 @@
 // C++ STL
 #include <utility>
 
+// HG::Core
+#include <HG/Core/Application.hpp>
+#include <HG/Core/GameObject.hpp>
+#include <HG/Core/Scene.hpp>
+
 // HG::Physics::PlayRho
 #include <HG/Physics/PlayRho/Behaviours/Rigidbody.hpp>
 #include <HG/Physics/PlayRho/Controller.hpp>
 
-// HG::Core
-#include <HG/Core/Application.hpp>
-#include <HG/Core/GameObject.hpp>
-#include <HG/Core/Logging.hpp>
-#include <HG/Core/Scene.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // ImGUI
 #include <imgui.h>

@@ -185,7 +185,7 @@ public:
      * @param i Number of element.
      * @return References element instance.
      */
-    T& operator[](int i)
+    [[nodiscard]] T& operator[](int i)
     {
 #ifndef NDEBUG
         if (i < 0 || i >= size())
@@ -202,7 +202,7 @@ public:
      * @param i Number of element.
      * @return Copy of element instance.
      */
-    T operator[](int i) const
+    [[nodiscard]] T operator[](int i) const
     {
 #ifndef NDEBUG
         if (i < 0 || i >= size())
@@ -214,37 +214,37 @@ public:
         return m_current[i];
     }
 
-    size_type size() const
+    [[nodiscard]] size_type size() const
     {
         return m_current.size();
     }
 
-    const container& removable() const
+    [[nodiscard]] const container& removable() const
     {
         return m_removable;
     }
 
-    container& removable()
+    [[nodiscard]] container& removable()
     {
         return m_removable;
     }
 
-    const container& added() const
+    [[nodiscard]] const container& added() const
     {
         return m_added;
     }
 
-    container& added()
+    [[nodiscard]] container& added()
     {
         return m_added;
     }
 
-    const container& current() const
+    [[nodiscard]] const container& current() const
     {
         return m_current;
     }
 
-    container& current()
+    [[nodiscard]] container& current()
     {
         return m_current;
     }

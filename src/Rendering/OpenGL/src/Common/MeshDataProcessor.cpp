@@ -1,6 +1,5 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/MeshData.hpp>
@@ -10,6 +9,7 @@
 #include <HG/Rendering/Base/Behaviours/Mesh.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Mesh.hpp>
 
 namespace HG::Rendering::OpenGL::Common

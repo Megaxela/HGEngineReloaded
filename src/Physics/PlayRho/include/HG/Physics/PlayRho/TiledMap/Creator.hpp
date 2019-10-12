@@ -1,9 +1,7 @@
 #pragma once
 
-// HG::Core
-#include <HG/Core/Logging.hpp>
-
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Rect.hpp>
 
 // HG::Physics::Base

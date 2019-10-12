@@ -1,11 +1,11 @@
 // C++ STL
 #include <fstream>
 
-// HG::Core
-#include <HG/Core/Logging.hpp>
-
 // HG::Standard
 #include <HG/Core/FilesystemResourceAccessor.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Core
 {

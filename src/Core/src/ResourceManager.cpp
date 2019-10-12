@@ -1,8 +1,10 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceAccessor.hpp>
 #include <HG/Core/ResourceManager.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Core
 {

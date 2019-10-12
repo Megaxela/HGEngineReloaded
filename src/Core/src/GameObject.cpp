@@ -2,12 +2,14 @@
 #include <HG/Core/Behaviour.hpp>
 #include <HG/Core/BuildProperties.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderBehaviour.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Core
 {

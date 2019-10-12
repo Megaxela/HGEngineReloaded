@@ -1,9 +1,11 @@
 // HG::Core
 #include <HG/Core/BuildProperties.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Lights/AbstractLight.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Rendering::Base
 {

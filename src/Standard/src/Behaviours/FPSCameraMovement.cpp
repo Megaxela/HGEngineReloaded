@@ -2,7 +2,6 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Input.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/TimeStatistics.hpp>
 #include <HG/Core/Transform.hpp>
@@ -12,6 +11,9 @@
 
 // HG::Standard
 #include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // GLM
 #include <glm/glm.hpp>

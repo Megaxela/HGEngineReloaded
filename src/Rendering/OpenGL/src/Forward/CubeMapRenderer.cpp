@@ -3,7 +3,6 @@
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
@@ -18,6 +17,9 @@
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
 #include <HG/Rendering/OpenGL/Materials/SkyboxMaterial.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>

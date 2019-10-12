@@ -1,6 +1,5 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Material.hpp>
@@ -15,6 +14,9 @@
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 #include <HG/Rendering/OpenGL/Materials/BlitMaterial.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>

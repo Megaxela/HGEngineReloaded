@@ -1,6 +1,8 @@
 // HG::Core
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/ThreadPool.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Core
 {

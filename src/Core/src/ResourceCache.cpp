@@ -1,7 +1,9 @@
 // HG::Core
 #include <HG/Core/CachableObject.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceCache.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Core
 {

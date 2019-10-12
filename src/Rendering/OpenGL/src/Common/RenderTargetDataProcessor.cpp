@@ -1,7 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderTarget.hpp>
@@ -12,6 +11,9 @@
 #include <HG/Rendering/OpenGL/Common/RenderTargetData.hpp>
 #include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Rendering::OpenGL::Common
 {

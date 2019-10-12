@@ -9,7 +9,7 @@
 #include <SystemTools.h>
 
 #define HGDebug()                                      \
-    Loggers::Stream(HG::Core::Logging::userLogger(),   \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),  \
                     AbstractLogger::ErrorClass::Debug, \
                     __FILENAME__,                      \
                     __LINE__,                          \
@@ -17,7 +17,7 @@
                     SystemTools::getTypeName(*this),   \
                     __FUNCTION__)
 #define HGInfo()                                      \
-    Loggers::Stream(HG::Core::Logging::userLogger(),  \
+    Loggers::Stream(HG::Utils::Logging::userLogger(), \
                     AbstractLogger::ErrorClass::Info, \
                     __FILENAME__,                     \
                     __LINE__,                         \
@@ -25,7 +25,7 @@
                     SystemTools::getTypeName(*this),  \
                     __FUNCTION__)
 #define HGWarning()                                      \
-    Loggers::Stream(HG::Core::Logging::userLogger(),     \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),    \
                     AbstractLogger::ErrorClass::Warning, \
                     __FILENAME__,                        \
                     __LINE__,                            \
@@ -33,7 +33,7 @@
                     SystemTools::getTypeName(*this),     \
                     __FUNCTION__)
 #define HGError()                                      \
-    Loggers::Stream(HG::Core::Logging::userLogger(),   \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),  \
                     AbstractLogger::ErrorClass::Error, \
                     __FILENAME__,                      \
                     __LINE__,                          \
@@ -42,7 +42,7 @@
                     __FUNCTION__)
 
 #define HGDebugF()                                     \
-    Loggers::Stream(HG::Core::Logging::userLogger(),   \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),  \
                     AbstractLogger::ErrorClass::Debug, \
                     __FILENAME__,                      \
                     __LINE__,                          \
@@ -50,7 +50,7 @@
                     std::string(),                     \
                     __FUNCTION__)
 #define HGInfoF()                                     \
-    Loggers::Stream(HG::Core::Logging::userLogger(),  \
+    Loggers::Stream(HG::Utils::Logging::userLogger(), \
                     AbstractLogger::ErrorClass::Info, \
                     __FILENAME__,                     \
                     __LINE__,                         \
@@ -58,7 +58,7 @@
                     std::string(),                    \
                     __FUNCTION__)
 #define HGWarningF()                                     \
-    Loggers::Stream(HG::Core::Logging::userLogger(),     \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),    \
                     AbstractLogger::ErrorClass::Warning, \
                     __FILENAME__,                        \
                     __LINE__,                            \
@@ -66,7 +66,7 @@
                     std::string(),                       \
                     __FUNCTION__)
 #define HGErrorF()                                     \
-    Loggers::Stream(HG::Core::Logging::userLogger(),   \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),  \
                     AbstractLogger::ErrorClass::Error, \
                     __FILENAME__,                      \
                     __LINE__,                          \
@@ -75,7 +75,7 @@
                     __FUNCTION__)
 
 #define HGDebugEx(CLASSNAME)                           \
-    Loggers::Stream(HG::Core::Logging::userLogger(),   \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),  \
                     AbstractLogger::ErrorClass::Debug, \
                     __FILENAME__,                      \
                     __LINE__,                          \
@@ -83,7 +83,7 @@
                     CLASSNAME,                         \
                     __FUNCTION__)
 #define HGInfoEx(CLASSNAME)                           \
-    Loggers::Stream(HG::Core::Logging::userLogger(),  \
+    Loggers::Stream(HG::Utils::Logging::userLogger(), \
                     AbstractLogger::ErrorClass::Info, \
                     __FILENAME__,                     \
                     __LINE__,                         \
@@ -91,7 +91,7 @@
                     CLASSNAME,                        \
                     __FUNCTION__)
 #define HGWarningEx(CLASSNAME)                           \
-    Loggers::Stream(HG::Core::Logging::userLogger(),     \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),    \
                     AbstractLogger::ErrorClass::Warning, \
                     __FILENAME__,                        \
                     __LINE__,                            \
@@ -99,7 +99,7 @@
                     CLASSNAME,                           \
                     __FUNCTION__)
 #define HGErrorEx(CLASSNAME)                           \
-    Loggers::Stream(HG::Core::Logging::userLogger(),   \
+    Loggers::Stream(HG::Utils::Logging::userLogger(),  \
                     AbstractLogger::ErrorClass::Error, \
                     __FILENAME__,                      \
                     __LINE__,                          \
@@ -107,7 +107,7 @@
                     CLASSNAME,                         \
                     __FUNCTION__)
 
-namespace HG::Core
+namespace HG::Utils
 {
 /**
  * @brief Class, that describes user logging system.
@@ -121,5 +121,10 @@ public:
      * @return Pointer to user logger.
      */
     static LoggerPtr userLogger();
+
+    static void overrideUserLogger(LoggerPtr logger);
+
+private:
+    static LoggerPtr m_override;
 };
-} // namespace HG::Core
+} // namespace HG::Utils

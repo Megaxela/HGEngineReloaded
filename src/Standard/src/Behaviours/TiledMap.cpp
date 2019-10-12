@@ -3,13 +3,13 @@
 
 // HG::Core
 #include <HG/Core/Data.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceAccessor.hpp>
 
 // HG::Standard
 #include <HG/Standard/Behaviours/TiledMap.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/base64.hpp>
 #include <HG/Utils/zlib.hpp>
 

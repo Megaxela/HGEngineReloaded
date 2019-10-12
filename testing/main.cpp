@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-// ALogger
-#include <CurrentLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 class DumbLogger : public AbstractLogger
 {
@@ -14,7 +14,7 @@ protected:
 int main(int argc, char** argv)
 {
     // Disable current logger warning
-    CurrentLogger::setCurrentLogger(std::make_shared<DumbLogger>());
+    HG::Utils::Logging::overrideUserLogger(std::make_shared<DumbLogger>());
 
     testing::InitGoogleTest(&argc, argv);
 

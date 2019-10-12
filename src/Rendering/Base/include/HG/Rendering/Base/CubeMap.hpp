@@ -5,13 +5,13 @@
 
 // HG::Core
 #include <HG/Core/CachableResource.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp> // Required for inheritance
 
 // HG::Utils
 #include <HG/Utils/FutureHandler.hpp>
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/StringTools.hpp>
 
 namespace HG::Utils

@@ -3,7 +3,6 @@
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/Transform.hpp>
 
 // HG::Rendering::OpenGL
@@ -25,6 +24,7 @@
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Mesh.hpp>
 
 // GLM

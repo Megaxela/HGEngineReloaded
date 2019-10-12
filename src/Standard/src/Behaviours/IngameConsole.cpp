@@ -3,7 +3,6 @@
 
 // HG::Core
 #include <HG/Core/Application.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/Scene.hpp>
 
 // HG::Standard
@@ -11,6 +10,7 @@
 #include <HG/Standard/Behaviours/IngameConsole.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/StringTools.hpp>
 
 // ImGui
@@ -61,9 +61,9 @@ IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
 
 IngameConsole::~IngameConsole()
 {
-    if (m_logsListener && HG::Core::Logging::userLogger())
+    if (m_logsListener && HG::Utils::Logging::userLogger())
     {
-        HG::Core::Logging::userLogger()->removeLogsListener(m_logsListener);
+        HG::Utils::Logging::userLogger()->removeLogsListener(m_logsListener);
     }
 }
 
@@ -242,9 +242,9 @@ void IngameConsole::connectLoggingWatcher()
 {
     m_logsListener = std::make_shared<LoggingWatcher>(this);
 
-    if (HG::Core::Logging::userLogger())
+    if (HG::Utils::Logging::userLogger())
     {
-        HG::Core::Logging::userLogger()->addLogsListener(m_logsListener);
+        HG::Utils::Logging::userLogger()->addLogsListener(m_logsListener);
     }
     else
     {

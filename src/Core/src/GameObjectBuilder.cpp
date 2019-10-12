@@ -6,9 +6,6 @@
 #include <HG/Core/GameObjectBuilder.hpp>
 #include <HG/Core/Transform.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
 namespace HG::Core
 {
 GameObjectBuilder::operator GameObject*()

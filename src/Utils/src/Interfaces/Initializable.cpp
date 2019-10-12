@@ -1,15 +1,18 @@
+// HG::Utils
 #include <HG/Utils/Interfaces/Initializable.hpp>
 
-HG::Utils::Interfaces::Initializable::Initializable() : m_initialized(false)
+namespace HG::Utils::Interfaces
+{
+Initializable::Initializable() : m_initialized(false)
 {
 }
 
-HG::Utils::Interfaces::Initializable::~Initializable()
+Initializable::~Initializable()
 {
     deinit();
 }
 
-void HG::Utils::Interfaces::Initializable::init()
+void Initializable::init()
 {
     if (!m_initialized)
     {
@@ -18,7 +21,7 @@ void HG::Utils::Interfaces::Initializable::init()
     }
 }
 
-void HG::Utils::Interfaces::Initializable::deinit()
+void Initializable::deinit()
 {
     if (m_initialized)
     {
@@ -27,15 +30,16 @@ void HG::Utils::Interfaces::Initializable::deinit()
     }
 }
 
-bool HG::Utils::Interfaces::Initializable::isInitialized() const
+bool Initializable::isInitialized() const
 {
     return m_initialized;
 }
 
-void HG::Utils::Interfaces::Initializable::onInit()
+void Initializable::onInit()
 {
 }
 
-void HG::Utils::Interfaces::Initializable::onDeinit()
+void Initializable::onDeinit()
 {
 }
+} // namespace HG::Utils::Interfaces

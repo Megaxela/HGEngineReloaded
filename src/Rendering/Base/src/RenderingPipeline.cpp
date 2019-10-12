@@ -1,7 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/AbstractRenderDataProcessor.hpp>
@@ -9,6 +8,9 @@
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Rendering::Base
 {

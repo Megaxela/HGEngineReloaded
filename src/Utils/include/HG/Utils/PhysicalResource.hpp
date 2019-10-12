@@ -10,19 +10,19 @@ namespace HG::Utils::PhysicalResource
  * RAM.
  * @return Total RAM in bytes.
  */
-uint64_t getTotalRAM();
+std::uint64_t getTotalRAM();
 
 /**
  * @brief Method for getting total system
  * free RAM.
  * @return Total free RAM in bytes.
  */
-uint64_t getFreeRAM();
+std::uint64_t getFreeRAM();
 
 /**
  * @brief Method for getting RAM used by
  * this process.
  * @return Used RAM in bytes.
  */
-uint64_t getProcessRAMUsed();
+std::uint64_t getProcessRAMUsed();
 } // namespace HG::Utils::PhysicalResource

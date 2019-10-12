@@ -5,7 +5,6 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/GameObjectBuilder.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
@@ -22,6 +21,7 @@
 
 // HG::Utils
 #include <HG/Utils/Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Mesh.hpp>
 
 namespace HG::Standard::Behaviours

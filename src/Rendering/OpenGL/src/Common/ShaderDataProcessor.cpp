@@ -1,7 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Shader.hpp>
@@ -9,6 +8,9 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 #define SHADER_DEFAULT_STRUCTS           \
     "#define MAX_POINT_LIGHTS 128\n"     \

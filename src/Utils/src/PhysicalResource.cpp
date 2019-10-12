@@ -13,7 +13,28 @@
 #    include <psapi.h>
 #endif
 
-uint64_t HG::Utils::PhysicalResource::getTotalRAM()
+namespace
+{
+std::uint64_t parseLine(char* line)
+{
+    // This assumes that a digit will be found and the line ends in " Kb".
+    auto i        = strlen(line);
+    const char* p = line;
+
+    // Skipping all symbols, except digits
+    while (*p < '0' || *p > '9')
+        p++;
+
+    line[i - 3] = '\0';
+
+    // Parsing
+    return static_cast<uint64_t>(atoll(p));
+}
+} // namespace
+
+namespace HG::Utils
+{
+std::uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 {
 #ifdef OS_WINDOWS
     MEMORYSTATUSEX status;
@@ -67,26 +88,7 @@ uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 #endif
 }
 
-namespace
-{
-uint64_t parseLine(char* line)
-{
-    // This assumes that a digit will be found and the line ends in " Kb".
-    auto i        = strlen(line);
-    const char* p = line;
-
-    // Skipping all symbols, except digits
-    while (*p < '0' || *p > '9')
-        p++;
-
-    line[i - 3] = '\0';
-
-    // Parsing
-    return static_cast<uint64_t>(atoll(p));
-}
-} // namespace
-
-uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
+std::uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 {
 #ifdef OS_WINDOWS
 
@@ -135,3 +137,4 @@ uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
     return 0;
 #endif
 }
+} // namespace HG::Utils

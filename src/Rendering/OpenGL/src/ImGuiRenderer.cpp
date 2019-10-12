@@ -2,7 +2,6 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/MaterialCollection.hpp>
@@ -16,6 +15,7 @@
 #include <HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Surface.hpp>
 
 // ImGui

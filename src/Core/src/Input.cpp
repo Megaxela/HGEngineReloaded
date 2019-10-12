@@ -4,7 +4,9 @@
 // HG::Core
 #include <HG/Core/BuildProperties.hpp>
 #include <HG/Core/Input.hpp>
-#include <HG/Core/Logging.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 namespace HG::Core
 {

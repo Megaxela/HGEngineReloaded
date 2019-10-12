@@ -1,11 +1,13 @@
 // HG::Utils
 #include <HG/Utils/Mesh.hpp>
 
-HG::Utils::Mesh::Mesh() : Vertices(), Indices()
+namespace HG::Utils
+{
+Mesh::Mesh() : Vertices(), Indices()
 {
 }
 
-void HG::Utils::Mesh::calculateTangentBitangentVectors()
+void Mesh::calculateTangentBitangentVectors()
 {
     glm::vec3 tangent;
     glm::vec3 bitangent;
@@ -24,7 +26,7 @@ void HG::Utils::Mesh::calculateTangentBitangentVectors()
     glm::vec2 deltaUV2;
 
     // Iterating over indicies
-    for (size_t indexIndex = 0; indexIndex < Indices.size(); indexIndex += 3)
+    for (std::size_t indexIndex = 0; indexIndex < Indices.size(); indexIndex += 3)
     {
         assert(indexIndex + 3 <= Indices.size());
 
@@ -62,3 +64,4 @@ void HG::Utils::Mesh::calculateTangentBitangentVectors()
         Vertices[Indices[indexIndex + 2]].bitangent = bitangent;
     }
 }
+} // namespace HG::Utils

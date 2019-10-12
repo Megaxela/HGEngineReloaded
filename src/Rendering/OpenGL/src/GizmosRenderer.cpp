@@ -2,7 +2,6 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
@@ -16,6 +15,9 @@
 #include <HG/Rendering/Base/Material.hpp>
 #include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>

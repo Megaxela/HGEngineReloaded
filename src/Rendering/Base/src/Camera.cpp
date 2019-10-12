@@ -2,7 +2,6 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/BuildProperties.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Logging.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
 
@@ -14,6 +13,7 @@
 #include <HG/Rendering/Base/SystemController.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/glmex.hpp>
 
 // GLM

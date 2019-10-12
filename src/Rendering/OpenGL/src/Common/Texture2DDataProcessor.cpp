@@ -1,7 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Texture.hpp>
@@ -11,6 +10,7 @@
 #include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Surface.hpp>
 
 namespace

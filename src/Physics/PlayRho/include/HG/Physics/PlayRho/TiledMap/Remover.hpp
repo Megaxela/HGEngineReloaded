@@ -1,10 +1,10 @@
 #pragma once
 
-// HG::Core
-#include <HG/Core/Logging.hpp>
-
 // HG::Physics::Base
 #include <HG/Physics/Base/PhysicsController.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // PlayRho
 #include <PlayRho/PlayRho.hpp>

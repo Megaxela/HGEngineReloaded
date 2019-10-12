@@ -1,7 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
@@ -11,6 +10,7 @@
 #include <HG/Rendering/Base/CubeMap.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Surface.hpp>
 
 // gl

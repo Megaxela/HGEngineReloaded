@@ -1,7 +1,6 @@
 // HG::Core
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/BlitRenderer.hpp>
@@ -26,6 +25,9 @@
 #include <HG/Rendering/Base/Shader.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
+
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // GLM
 #include <glm/glm.hpp>
@@ -201,7 +203,7 @@ void RenderingPipeline::proceedGameObjects(const std::vector<HG::Core::GameObjec
                 {
                     if (cubemapBehaviour)
                     {
-                        Warning() << "Several cubemap behaviours are available at the same time.";
+                        HGWarning() << "Several cubemap behaviours are available at the same time.";
                     }
 
                     cubemapBehaviour = behaviour;
@@ -244,7 +246,7 @@ bool RenderingPipeline::render(HG::Rendering::Base::RenderBehaviour* behaviour)
 
     if (rendererIterator == m_renderers.end())
     {
-        Info() << "Trying to render unknown render behaviour \"" << SystemTools::getTypeName(*behaviour) << "\"";
+        HGInfo() << "Trying to render unknown render behaviour \"" << SystemTools::getTypeName(*behaviour) << "\"";
         return false;
     }
 

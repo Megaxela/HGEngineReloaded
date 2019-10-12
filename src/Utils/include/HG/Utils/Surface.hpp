@@ -16,10 +16,10 @@ namespace HG::Utils
 class Surface
 {
 public:
-    using FreeFunction = void (*)(uint8_t*, int, int, int);
+    using FreeFunction = void (*)(std::uint8_t*, int, int, int);
 
     // Properties
-    uint8_t* Data;
+    std::uint8_t* Data;
     int Width;
     int Height;
     int Bpp;
