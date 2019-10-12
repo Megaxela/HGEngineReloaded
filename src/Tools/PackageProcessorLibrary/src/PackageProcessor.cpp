@@ -14,7 +14,7 @@
 #include <HG/Utils/zlib.hpp>
 
 // HG::Utils
-constexpr const uint32_t PACKAGE_MAGIC             = 0xDEC0DE00;
+constexpr const std::uint32_t PACKAGE_MAGIC        = 0xDEC0DE00;
 constexpr const std::size_t HEADER_SIZE            = 32; // bytes
 constexpr const std::size_t METADATA_HEADER_SIZE   = 8;  // bytes
 constexpr const std::size_t FILE_ENTRY_HEADER_SIZE = 32; // bytes
@@ -25,8 +25,8 @@ constexpr const std::size_t DEFLATE_CHUNK_SIZE     = CRC_BUFFER_SIZE;
 constexpr const std::size_t COPY_CHUNK_SIZE        = CRC_BUFFER_SIZE;
 constexpr const std::size_t INFLATE_CHUNK_SIZE     = CRC_BUFFER_SIZE;
 
-constexpr const uint32_t PACKER_VERSION            = 1;
-constexpr const uint32_t AMOUNT_OF_METADATA_FIELDS = 4;
+constexpr const std::uint32_t PACKER_VERSION            = 1;
+constexpr const std::uint32_t AMOUNT_OF_METADATA_FIELDS = 4;
 
 template <typename T>
 T align(T val, T alignment)
@@ -36,28 +36,30 @@ T align(T val, T alignment)
 
 namespace MetadataCodes
 {
-constexpr const uint32_t Name   = 0x00000001;
-constexpr const uint32_t Author = 0x00000002;
-constexpr const uint32_t Major  = 0x00000003;
-constexpr const uint32_t Minor  = 0x00000004;
+constexpr const std::uint32_t Name   = 0x00000001;
+constexpr const std::uint32_t Author = 0x00000002;
+constexpr const std::uint32_t Major  = 0x00000003;
+constexpr const std::uint32_t Minor  = 0x00000004;
 } // namespace MetadataCodes
 
 namespace FileEntryTypes
 {
-constexpr const uint32_t Directory = 0x00000001;
-constexpr const uint32_t File      = 0x00000002;
+constexpr const std::uint32_t Directory = 0x00000001;
+constexpr const std::uint32_t File      = 0x00000002;
 } // namespace FileEntryTypes
 
-HG::Tools::PackageProcessor::PackageProcessor() : m_pathToOpenedPackage(), m_metadata(), m_entries()
+namespace HG::Tools
+{
+PackageProcessor::PackageProcessor() : m_pathToOpenedPackage(), m_metadata(), m_entries()
 {
 }
 
-HG::Tools::PackageProcessor::Metadata& HG::Tools::PackageProcessor::metadata()
+PackageProcessor::Metadata& PackageProcessor::metadata()
 {
     return m_metadata;
 }
 
-void HG::Tools::PackageProcessor::clear()
+void PackageProcessor::clear()
 {
     m_pathToOpenedPackage.clear();
     m_pathToPackageRoot.clear();
@@ -68,7 +70,7 @@ void HG::Tools::PackageProcessor::clear()
     m_entries.clear();
 }
 
-void HG::Tools::PackageProcessor::load(std::filesystem::path path)
+void PackageProcessor::load(std::filesystem::path path)
 {
     // Opening file
     std::ifstream file(path.string(), std::ios::binary);
@@ -97,7 +99,7 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
     std::size_t pointer = 0;
 
     // Validating
-    if (buffer.read<uint32_t>(pointer, endianness::big) != PACKAGE_MAGIC)
+    if (buffer.read<std::uint32_t>(pointer, endianness::big) != PACKAGE_MAGIC)
     {
         clear();
         throw std::invalid_argument(std::string("Package has wrong magic bytes"));
@@ -105,18 +107,18 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
     pointer += 4;
 
     // Saving crc32 for future use
-    auto crc32 = buffer.read<uint32_t>(pointer, endianness::big);
+    auto crc32 = buffer.read<std::uint32_t>(pointer, endianness::big);
     pointer += 4;
 
     // Perform validating here
     validateCRC(file, crc32);
 
     // Getting total file size
-    auto fileSize = buffer.read<uint64_t>(pointer, endianness::big);
+    auto fileSize = buffer.read<std::uint64_t>(pointer, endianness::big);
     pointer += 8;
 
     // Getting version of packer
-    auto version = buffer.read<uint32_t>(pointer, endianness::big);
+    auto version = buffer.read<std::uint32_t>(pointer, endianness::big);
     pointer += 4;
 
     if (version > PACKER_VERSION)
@@ -127,11 +129,11 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
     }
 
     // Getting number of metadata fields
-    auto numberOfMetadataFields = buffer.read<uint32_t>(pointer, endianness::big);
+    auto numberOfMetadataFields = buffer.read<std::uint32_t>(pointer, endianness::big);
     pointer += 4;
 
     // Getting number of file fields
-    auto numberOfFileFields = buffer.read<uint32_t>(pointer, endianness::big);
+    auto numberOfFileFields = buffer.read<std::uint32_t>(pointer, endianness::big);
     pointer += 4;
 
     // Skip 4 reserved bytes
@@ -139,7 +141,7 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
 
     // Reading metadata fields
     // todo c++20: replace with view
-    for (uint32_t index = 0; index < numberOfMetadataFields; ++index)
+    for (std::uint32_t index = 0; index < numberOfMetadataFields; ++index)
     {
         // Zeroing pointer, because of rewriting buffer
         pointer = 0;
@@ -156,11 +158,11 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
         }
 
         // Reading field type
-        auto type = buffer.read<uint32_t>(pointer, endianness::big);
+        auto type = buffer.read<std::uint32_t>(pointer, endianness::big);
         pointer += 4;
 
         // Reading value length
-        auto valueLength = buffer.read<uint32_t>(pointer, endianness::big);
+        auto valueLength = buffer.read<std::uint32_t>(pointer, endianness::big);
         pointer += 4;
 
         // Reading metadata value to buffer
@@ -186,10 +188,10 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
             std::memcpy(m_metadata.author.data(), buffer.container().data(), valueLength);
             break;
         case MetadataCodes::Major:
-            m_metadata.version.major = buffer.read<uint32_t>(0, endianness::big);
+            m_metadata.version.major = buffer.read<std::uint32_t>(0, endianness::big);
             break;
         case MetadataCodes::Minor:
-            m_metadata.version.minor = buffer.read<uint32_t>(0, endianness::big);
+            m_metadata.version.minor = buffer.read<std::uint32_t>(0, endianness::big);
             break;
         default:
             // Just skip unknown metadata headers
@@ -209,12 +211,12 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
         std::filesystem::path path;
     };
 
-    std::unordered_map<uint32_t, // ID
+    std::unordered_map<std::uint32_t, // ID
                        FileEntry>
         entries;
 
     // Reading file structures fields
-    for (uint32_t index = 0; index < numberOfFileFields; ++index)
+    for (std::uint32_t index = 0; index < numberOfFileFields; ++index)
     {
         pointer = 0;
 
@@ -230,28 +232,28 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
         }
 
         // Reading type
-        auto type = buffer.read<uint8_t>(pointer, endianness::big);
+        auto type = buffer.read<std::uint8_t>(pointer, endianness::big);
         pointer += 1;
 
         // Skipping 3 reserved bytes
         pointer += 3;
 
         // Reading entry ID
-        auto id = buffer.read<uint32_t>(pointer, endianness::big);
+        auto id = buffer.read<std::uint32_t>(pointer, endianness::big);
         pointer += 4;
 
         // Reading parent ID
-        auto parentId = buffer.read<uint32_t>(pointer, endianness::big);
+        auto parentId = buffer.read<std::uint32_t>(pointer, endianness::big);
         pointer += 4;
 
         // Name length
-        auto nameLength = buffer.read<uint32_t>(pointer, endianness::big);
+        auto nameLength = buffer.read<std::uint32_t>(pointer, endianness::big);
         pointer += 4;
 
-        auto dataOffset = buffer.read<uint64_t>(pointer, endianness::big);
+        auto dataOffset = buffer.read<std::uint64_t>(pointer, endianness::big);
         pointer += 8;
 
-        auto dataSize = buffer.read<uint64_t>(pointer, endianness::big);
+        auto dataSize = buffer.read<std::uint64_t>(pointer, endianness::big);
         pointer += 8;
 
         // Reading name
@@ -305,7 +307,7 @@ void HG::Tools::PackageProcessor::load(std::filesystem::path path)
     }
 }
 
-void HG::Tools::PackageProcessor::write(std::filesystem::path path)
+void PackageProcessor::write(std::filesystem::path path)
 {
     std::ofstream file(path.string(), std::ios::binary);
 
@@ -323,30 +325,30 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     buffer.reserve(HEADER_SIZE);
 
     // Pushing magic
-    buffer.push_back<uint32_t>(PACKAGE_MAGIC, endianness::big);
+    buffer.push_back<std::uint32_t>(PACKAGE_MAGIC, endianness::big);
 
     // Pushing dummy crc32
-    buffer.push_back<uint32_t>(0, endianness::big);
+    buffer.push_back<std::uint32_t>(0, endianness::big);
 
     // Pushing dummy result file size
-    buffer.push_back<uint64_t>(0, endianness::big);
+    buffer.push_back<std::uint64_t>(0, endianness::big);
 
     // Pushing packer version
-    buffer.push_back<uint32_t>(PACKER_VERSION, endianness::big);
+    buffer.push_back<std::uint32_t>(PACKER_VERSION, endianness::big);
 
     // Pushing amount of metadata fields
-    buffer.push_back<uint32_t>(AMOUNT_OF_METADATA_FIELDS, endianness::big);
+    buffer.push_back<std::uint32_t>(AMOUNT_OF_METADATA_FIELDS, endianness::big);
 
     struct WriteEntryInfo
     {
-        uint32_t id                     = 0;
+        std::uint32_t id                = 0;
         bool wasWritten                 = false;
         std::size_t offsetToOffsetField = 0;
     };
 
     std::unordered_map<std::filesystem::path, WriteEntryInfo> entries;
 
-    uint32_t idCounter = 1;
+    std::uint32_t idCounter = 1;
 
     // Counting amount of file entries
     for (const auto& entry : m_entries)
@@ -368,10 +370,10 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     }
 
     // Pushing amount of file entries fields
-    buffer.push_back<uint32_t>(static_cast<uint32_t>(entries.size()), endianness::big);
+    buffer.push_back<std::uint32_t>(static_cast<std::uint32_t>(entries.size()), endianness::big);
 
     // Pushing empty reserved field
-    buffer.push_back<uint32_t>(0, endianness::big);
+    buffer.push_back<std::uint32_t>(0, endianness::big);
 
     assert(buffer.size() == HEADER_SIZE);
 
@@ -383,16 +385,16 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     buffer.clear();
 
     // Pushing type
-    buffer.push_back<uint32_t>(MetadataCodes::Name, endianness::big);
+    buffer.push_back<std::uint32_t>(MetadataCodes::Name, endianness::big);
 
     // Pushing value length
-    buffer.push_back<uint32_t>(static_cast<uint32_t>(m_metadata.name.size()), endianness::big);
+    buffer.push_back<std::uint32_t>(static_cast<std::uint32_t>(m_metadata.name.size()), endianness::big);
 
     // Pushing actual name
     buffer.push_back_multiple(m_metadata.name.begin(), m_metadata.name.end());
 
     // Pushing 16 bytes alignment
-    buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+    buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
     // Write metadata to file
     file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
@@ -401,16 +403,16 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     buffer.clear();
 
     // Pushing type
-    buffer.push_back<uint32_t>(MetadataCodes::Author, endianness::big);
+    buffer.push_back<std::uint32_t>(MetadataCodes::Author, endianness::big);
 
     // Pushing value length
-    buffer.push_back<uint32_t>(static_cast<uint32_t>(m_metadata.author.size()), endianness::big);
+    buffer.push_back<std::uint32_t>(static_cast<std::uint32_t>(m_metadata.author.size()), endianness::big);
 
     // Pushing actual name
     buffer.push_back_multiple(m_metadata.author.begin(), m_metadata.author.end());
 
     // Pushing 16 bytes alignment
-    buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+    buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
     // Write metadata to file
     file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
@@ -419,37 +421,37 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     buffer.clear();
 
     // Pushing type
-    buffer.push_back<uint32_t>(MetadataCodes::Major, endianness::big);
+    buffer.push_back<std::uint32_t>(MetadataCodes::Major, endianness::big);
 
     // Pushing value length
-    buffer.push_back<uint32_t>(4, endianness::big);
+    buffer.push_back<std::uint32_t>(4, endianness::big);
 
     // Pushing actual name
-    buffer.push_back<uint32_t>(m_metadata.version.major, endianness::big);
+    buffer.push_back<std::uint32_t>(m_metadata.version.major, endianness::big);
 
     // Pushing 16 bytes alignment
-    buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+    buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
     // Write metadata to file
     file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
 
     // Pushing 16 bytes alignment
-    buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+    buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
     // Writing name metadata
     buffer.clear();
 
     // Pushing type
-    buffer.push_back<uint32_t>(MetadataCodes::Minor, endianness::big);
+    buffer.push_back<std::uint32_t>(MetadataCodes::Minor, endianness::big);
 
     // Pushing value length
-    buffer.push_back<uint32_t>(4, endianness::big);
+    buffer.push_back<std::uint32_t>(4, endianness::big);
 
     // Pushing actual name
-    buffer.push_back<uint32_t>(m_metadata.version.minor, endianness::big);
+    buffer.push_back<std::uint32_t>(m_metadata.version.minor, endianness::big);
 
     // Pushing 16 bytes alignment
-    buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+    buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
     // Write metadata to file
     file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
@@ -462,7 +464,7 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
         auto entryFilename = entry.path().filename();
 
         std::filesystem::path bufferPath;
-        uint32_t parentId = 0;
+        std::uint32_t parentId = 0;
         for (const auto& pathPart : pathToEntry)
         {
             if (pathPart.empty())
@@ -486,32 +488,32 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
             buffer.clear();
 
             // Pushing type
-            buffer.push_back<uint8_t>(FileEntryTypes::Directory, endianness::big);
+            buffer.push_back<std::uint8_t>(FileEntryTypes::Directory, endianness::big);
 
             // Pushing 3 reserved bytes
-            buffer.push_back_multiple<uint8_t>(0, 3, endianness::big);
+            buffer.push_back_multiple<std::uint8_t>(0, 3, endianness::big);
 
             // Pushing ID
-            buffer.push_back<uint32_t>(writeInfoIter->second.id, endianness::big);
+            buffer.push_back<std::uint32_t>(writeInfoIter->second.id, endianness::big);
 
             // Pushing parent ID
-            buffer.push_back<uint32_t>(parentId, endianness::big);
+            buffer.push_back<std::uint32_t>(parentId, endianness::big);
 
             // Pushing name size
-            buffer.push_back<uint32_t>(static_cast<uint32_t>(pathPart.string().size()), endianness::big);
+            buffer.push_back<std::uint32_t>(static_cast<std::uint32_t>(pathPart.string().size()), endianness::big);
 
             // Pushing dummy data offset
-            buffer.push_back<uint64_t>(0, endianness::big);
+            buffer.push_back<std::uint64_t>(0, endianness::big);
 
             // Pushing dummy compressed data size
-            buffer.push_back<uint64_t>(0, endianness::big);
+            buffer.push_back<std::uint64_t>(0, endianness::big);
 
             // Pushing name
             auto pathString = pathPart.string();
             buffer.push_back_multiple(pathString.begin(), pathString.end());
 
             // Pushing alignment
-            buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+            buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
             // Writing file entry to file
             file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
@@ -539,34 +541,34 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
         buffer.clear();
 
         // Pushing type
-        buffer.push_back<uint8_t>(FileEntryTypes::File, endianness::big);
+        buffer.push_back<std::uint8_t>(FileEntryTypes::File, endianness::big);
 
         // Pushing 3 reserved bytes
-        buffer.push_back_multiple<uint8_t>(0, 3, endianness::big);
+        buffer.push_back_multiple<std::uint8_t>(0, 3, endianness::big);
 
         // Pushing ID
-        buffer.push_back<uint32_t>(writeInfoIter->second.id, endianness::big);
+        buffer.push_back<std::uint32_t>(writeInfoIter->second.id, endianness::big);
 
         // Pushing parent ID
-        buffer.push_back<uint32_t>(parentId);
+        buffer.push_back<std::uint32_t>(parentId);
 
         // Pushing name length
-        buffer.push_back<uint32_t>(static_cast<uint32_t>(entryFilename.string().size()), endianness::big);
+        buffer.push_back<std::uint32_t>(static_cast<std::uint32_t>(entryFilename.string().size()), endianness::big);
 
         writeInfoIter->second.offsetToOffsetField = std::size_t(file.tellp()) + FILE_ENTRY_HEADER_SIZE / 2;
 
         // Pushing dummy data offset
-        buffer.push_back<uint64_t>(0, endianness::big);
+        buffer.push_back<std::uint64_t>(0, endianness::big);
 
         // Pushing dummy data size
-        buffer.push_back<uint64_t>(0, endianness::big);
+        buffer.push_back<std::uint64_t>(0, endianness::big);
 
         // Pushing name
         auto filenameString = entryFilename.string();
         buffer.push_back_multiple(filenameString.begin(), filenameString.end());
 
         // Pushing alignment
-        buffer.push_back_multiple<uint8_t>(0, align(buffer.size(), ALIGNMENT));
+        buffer.push_back_multiple<std::uint8_t>(0, align(buffer.size(), ALIGNMENT));
 
         // Writing file entry to file
         file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
@@ -601,8 +603,8 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
 
         // Rewriting offset/size data
         buffer.clear();
-        buffer.push_back<uint64_t>(offset, endianness::big);
-        buffer.push_back<uint64_t>(size, endianness::big);
+        buffer.push_back<std::uint64_t>(offset, endianness::big);
+        buffer.push_back<std::uint64_t>(size, endianness::big);
 
         file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
 
@@ -637,14 +639,14 @@ void HG::Tools::PackageProcessor::write(std::filesystem::path path)
     }
 
     buffer.clear();
-    buffer.push_back<uint32_t>(crc, endianness::big);
+    buffer.push_back<std::uint32_t>(crc, endianness::big);
 
     file.seekp(4);
     file.write(reinterpret_cast<const char*>(buffer.container().data()), buffer.size());
     file.seekp(fileEnd);
 }
 
-void HG::Tools::PackageProcessor::unpack(std::filesystem::path path)
+void PackageProcessor::unpack(std::filesystem::path path)
 {
     if (m_pathToOpenedPackage.empty())
     {
@@ -664,7 +666,7 @@ void HG::Tools::PackageProcessor::unpack(std::filesystem::path path)
     }
 }
 
-void HG::Tools::PackageProcessor::unpack(std::filesystem::path path, const HG::Tools::PackageProcessor::File& file)
+void PackageProcessor::unpack(std::filesystem::path path, const PackageProcessor::File& file)
 {
     if (m_pathToOpenedPackage.empty())
     {
@@ -681,9 +683,9 @@ void HG::Tools::PackageProcessor::unpack(std::filesystem::path path, const HG::T
     internalUnpack(inputFile, std::move(path), file);
 }
 
-void HG::Tools::PackageProcessor::internalUnpack(std::ifstream& stream,
-                                                 std::filesystem::path destination,
-                                                 const HG::Tools::PackageProcessor::File& file)
+void PackageProcessor::internalUnpack(std::ifstream& stream,
+                                      std::filesystem::path destination,
+                                      const PackageProcessor::File& file)
 {
     auto filename = destination.filename();
     auto path     = destination.parent_path();
@@ -704,7 +706,7 @@ void HG::Tools::PackageProcessor::internalUnpack(std::ifstream& stream,
     HG::Utils::ZLib::InflateStreamToStream(stream, output, INFLATE_CHUNK_SIZE);
 }
 
-void HG::Tools::PackageProcessor::validateCRC(std::ifstream& file, uint32_t crc)
+void PackageProcessor::validateCRC(std::ifstream& file, std::uint32_t crc)
 {
     // Validating
     if (crc != calculateStreamCRC(file))
@@ -713,7 +715,7 @@ void HG::Tools::PackageProcessor::validateCRC(std::ifstream& file, uint32_t crc)
     }
 }
 
-uint32_t HG::Tools::PackageProcessor::calculateStreamCRC(std::ifstream& file)
+std::uint32_t PackageProcessor::calculateStreamCRC(std::ifstream& file)
 {
     // Read whole file with huge chunks. Then return carriage
     auto calculatedCRC = crc32(0L, nullptr, 0);
@@ -731,13 +733,13 @@ uint32_t HG::Tools::PackageProcessor::calculateStreamCRC(std::ifstream& file)
 
     file.seekg(lastCarriage);
 
-    return static_cast<uint32_t>(calculatedCRC);
+    return static_cast<std::uint32_t>(calculatedCRC);
 }
 
-void HG::Tools::PackageProcessor::writeFilesystemFile(std::ofstream& to,
-                                                      const std::filesystem::path& path,
-                                                      std::size_t& offset,
-                                                      std::size_t& size)
+void PackageProcessor::writeFilesystemFile(std::ofstream& to,
+                                           const std::filesystem::path& path,
+                                           std::size_t& offset,
+                                           std::size_t& size)
 {
     offset = static_cast<std::size_t>(to.tellp());
 
@@ -751,10 +753,10 @@ void HG::Tools::PackageProcessor::writeFilesystemFile(std::ofstream& to,
     size = HG::Utils::ZLib::DeflateStreamToStream(file, to, DEFLATE_CHUNK_SIZE);
 }
 
-void HG::Tools::PackageProcessor::writePackageFile(std::ofstream& to,
-                                                   std::ifstream& basePackageFile,
-                                                   std::size_t& offset,
-                                                   std::size_t& size)
+void PackageProcessor::writePackageFile(std::ofstream& to,
+                                        std::ifstream& basePackageFile,
+                                        std::size_t& offset,
+                                        std::size_t& size)
 {
     if (!basePackageFile.is_open())
     {
@@ -789,12 +791,12 @@ void HG::Tools::PackageProcessor::writePackageFile(std::ofstream& to,
     }
 }
 
-void HG::Tools::PackageProcessor::setPackageRoot(std::filesystem::path path)
+void PackageProcessor::setPackageRoot(std::filesystem::path path)
 {
     m_pathToPackageRoot = std::move(path);
 }
 
-void HG::Tools::PackageProcessor::addFile(std::filesystem::path path)
+void PackageProcessor::addFile(std::filesystem::path path)
 {
     if (m_pathToPackageRoot.empty())
     {
@@ -811,10 +813,10 @@ void HG::Tools::PackageProcessor::addFile(std::filesystem::path path)
     m_entries.emplace_back(std::filesystem::relative(path, m_pathToPackageRoot), File::Type::Filesystem);
 }
 
-HG::Tools::PackageProcessor::File::File(std::filesystem::path path,
-                                        HG::Tools::PackageProcessor::File::Type type,
-                                        size_t offset,
-                                        size_t size) :
+PackageProcessor::File::File(std::filesystem::path path,
+                             PackageProcessor::File::Type type,
+                             size_t offset,
+                             size_t size) :
     m_path(std::move(path)),
     m_type(type),
     m_compressedOffset(offset),
@@ -822,27 +824,28 @@ HG::Tools::PackageProcessor::File::File(std::filesystem::path path,
 {
 }
 
-HG::Tools::PackageProcessor::File::Type HG::Tools::PackageProcessor::File::type() const
+PackageProcessor::File::Type PackageProcessor::File::type() const
 {
     return m_type;
 }
 
-std::filesystem::path HG::Tools::PackageProcessor::File::path() const
+std::filesystem::path PackageProcessor::File::path() const
 {
     return m_path;
 }
 
-std::size_t HG::Tools::PackageProcessor::File::compressedOffset() const
+std::size_t PackageProcessor::File::compressedOffset() const
 {
     return m_compressedOffset;
 }
 
-std::size_t HG::Tools::PackageProcessor::File::compressedSize() const
+std::size_t PackageProcessor::File::compressedSize() const
 {
     return m_compressedSize;
 }
 
-const std::vector<HG::Tools::PackageProcessor::File>& HG::Tools::PackageProcessor::files() const
+const std::vector<PackageProcessor::File>& PackageProcessor::files() const
 {
     return m_entries;
 }
+} // namespace HG::Tools

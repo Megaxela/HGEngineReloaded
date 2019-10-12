@@ -5,6 +5,7 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/GameObjectBuilder.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
@@ -23,7 +24,9 @@
 #include <HG/Utils/Loaders/STBImageLoader.hpp>
 #include <HG/Utils/Mesh.hpp>
 
-HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
+namespace HG::Standard::Behaviours
+{
+TiledMapRenderer::TiledMapRenderer() :
     m_map(nullptr),
     m_layers(),
     m_mapShader(nullptr),
@@ -33,7 +36,7 @@ HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer() :
 {
 }
 
-HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behaviours::TiledMap* map) :
+TiledMapRenderer::TiledMapRenderer(TiledMap* map) :
     m_map(map),
     m_layers(),
     m_mapShader(nullptr),
@@ -43,37 +46,37 @@ HG::Standard::Behaviours::TiledMapRenderer::TiledMapRenderer(HG::Standard::Behav
 {
 }
 
-HG::Standard::Behaviours::TiledMapRenderer::~TiledMapRenderer()
+TiledMapRenderer::~TiledMapRenderer()
 {
     delete m_mapShader;
 }
 
-float HG::Standard::Behaviours::TiledMapRenderer::tiledLayersZOffset() const
+float TiledMapRenderer::tiledLayersZOffset() const
 {
     return m_layerZOffset;
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::setTiledLayerZOffset(float offset)
+void TiledMapRenderer::setTiledLayerZOffset(float offset)
 {
     m_layerZOffset = offset;
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::setMetersPerPixel(float value)
+void TiledMapRenderer::setMetersPerPixel(float value)
 {
     m_metersPerPixel = value;
 }
 
-float HG::Standard::Behaviours::TiledMapRenderer::metersPerPixel() const
+float TiledMapRenderer::metersPerPixel() const
 {
     return m_metersPerPixel;
 }
 
-HG::Standard::Behaviours::TiledMap* HG::Standard::Behaviours::TiledMapRenderer::map() const
+TiledMap* TiledMapRenderer::map() const
 {
     return m_map;
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepare()
+void TiledMapRenderer::prepare()
 {
     // Clearing gameobjects
     for (auto&& gameObject : m_layers)
@@ -104,7 +107,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepare()
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::onStart()
+void TiledMapRenderer::onStart()
 {
     m_mapShader = new (scene()->application()->resourceCache()) HG::Rendering::Base::Shader;
 
@@ -165,8 +168,7 @@ void main()
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareLayer(const HG::Standard::Behaviours::TiledMap::Layer* layer,
-                                                              HG::Core::GameObject* parent)
+void TiledMapRenderer::prepareLayer(const TiledMap::Layer* layer, HG::Core::GameObject* parent)
 {
     switch (layer->type)
     {
@@ -182,7 +184,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareLayer(const HG::Standard
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
+void TiledMapRenderer::prepareTilesets()
 {
     const auto& tilesets = m_map->tilesets();
 
@@ -196,7 +198,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
         //        if (tilesetData == nullptr)
         //        {
         //            // todo: Add usage of replace texture
-        //            Error() << "Can't load tileset \"" << tileset->name << "\" texture at \"" << tileset->path << "\".";
+        //            HGError() << "Can't load tileset \"" << tileset->name << "\" texture at \"" << tileset->path << "\".";
         //            m_tilesets[tileset->path] = nullptr;
         //        }
 
@@ -212,9 +214,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTilesets()
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(
-    const HG::Standard::Behaviours::TiledMap::Group* groupLayer,
-    HG::Core::GameObject* parent)
+void TiledMapRenderer::prepareGroupLayer(const TiledMap::Group* groupLayer, HG::Core::GameObject* parent)
 {
     // Creating game object
 
@@ -240,9 +240,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareGroupLayer(
     }
 }
 
-void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(
-    const HG::Standard::Behaviours::TiledMap::TileLayer* tileLayer,
-    HG::Core::GameObject* parent)
+void TiledMapRenderer::prepareTileLayer(const TiledMap::TileLayer* tileLayer, HG::Core::GameObject* parent)
 {
     // Creating game object
     HG::Core::GameObject* layerGameObject =
@@ -293,20 +291,19 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(
         }
 
         // Getting invert/rotate mask
-        auto decodedTile = HG::Standard::Behaviours::TiledMap::TileLayer::decodeTile(tile);
+        auto decodedTile = TiledMap::TileLayer::decodeTile(tile);
 
         // Getting required tileset
-        auto tilesetIter = std::find_if(m_map->tilesets().begin(),
-                                        m_map->tilesets().end(),
-                                        [decodedTile](HG::Standard::Behaviours::TiledMap::Tileset* tileset) -> bool {
-                                            return decodedTile.actualTile >= tileset->firstGID &&
-                                                   decodedTile.actualTile < tileset->firstGID + tileset->tileCount;
-                                        });
+        auto tilesetIter = std::find_if(
+            m_map->tilesets().begin(), m_map->tilesets().end(), [decodedTile](TiledMap::Tileset* tileset) -> bool {
+                return decodedTile.actualTile >= tileset->firstGID &&
+                       decodedTile.actualTile < tileset->firstGID + tileset->tileCount;
+            });
 
         // If tileset was not found
         if (tilesetIter == m_map->tilesets().end())
         {
-            Error() << "Tileset for GID " << decodedTile.actualTile << " was not found.";
+            HGError() << "Tileset for GID " << decodedTile.actualTile << " was not found.";
         }
 
         // Calculating tile position at tileset
@@ -358,7 +355,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(
         {
             // Texture was not found. Log and skip this.
             // todo: Get advantage of fallback texture.
-            Error() << "Can't find texture for tileset \"" << (*tilesetIter)->name << "\".";
+            HGError() << "Can't find texture for tileset \"" << (*tilesetIter)->name << "\".";
             continue;
         }
 
@@ -410,7 +407,7 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(
               0},
              {botRightUV.x, botRightUV.y}});
 
-        uint32_t firstIndex = 0;
+        std::uint32_t firstIndex = 0;
 
         if (!meshIter->second->Indices.empty())
         {
@@ -443,3 +440,4 @@ void HG::Standard::Behaviours::TiledMapRenderer::prepareTileLayer(
         layerGameObject->addBehaviour(meshRenderer);
     }
 }
+} // namespace HG::Standard::Behaviours

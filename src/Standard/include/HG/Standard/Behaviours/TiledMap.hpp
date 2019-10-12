@@ -114,12 +114,12 @@ public:
      */
     struct Tileset
     {
-        uint32_t firstGID;
+        std::uint32_t firstGID;
         std::string name;
         glm::ivec2 tileSize;
-        uint32_t spacing;
-        uint32_t tileCount;
-        uint32_t columns;
+        std::uint32_t spacing;
+        std::uint32_t tileCount;
+        std::uint32_t columns;
 
         glm::ivec2 imageSize;
 
@@ -181,7 +181,7 @@ public:
             bool horizontallyFlipped = false;
             bool verticallyFlipped   = false;
             bool diagonallyFlipped   = false;
-            uint32_t actualTile      = 0;
+            std::uint32_t actualTile = 0;
         };
 
         /**
@@ -189,10 +189,10 @@ public:
          * @param tile Encoded tile info.
          * @return Decoded tile.
          */
-        static DecodedTile decodeTile(uint32_t tile);
+        static DecodedTile decodeTile(std::uint32_t tile);
 
         glm::ivec2 size;
-        std::vector<uint32_t> tiles;
+        std::vector<std::uint32_t> tiles;
     };
 
     /**
@@ -223,7 +223,7 @@ public:
             virtual ~Object() = default;
 
             Type objectType;
-            uint32_t id;
+            std::uint32_t id;
             std::string name;
             std::string type;
             glm::vec2 position;
@@ -340,7 +340,7 @@ public:
             {
             }
 
-            uint32_t gid; // Unwrapped
+            std::uint32_t gid; // Unwrapped
             glm::ivec2 size;
             float rotation; // Clockwise in degrees
         };
@@ -384,7 +384,7 @@ public:
             {
             }
 
-            uint32_t tile;
+            std::uint32_t tile;
             std::chrono::milliseconds duration;
         };
 
@@ -392,7 +392,7 @@ public:
     };
 
     // <TileID,
-    using AnimatedTiles = std::unordered_map<uint32_t, TileAnimation>;
+    using AnimatedTiles = std::unordered_map<std::uint32_t, TileAnimation>;
 
     /**
      * @brief Default constructor.
@@ -488,17 +488,17 @@ private:
     bool proceedTileNode(rapidxml::xml_node<>* node);
 
     // todo: Add commentary
-    bool proceedAnimation(rapidxml::xml_node<>* node, uint32_t tileId);
+    bool proceedAnimation(rapidxml::xml_node<>* node, std::uint32_t tileId);
 
     // todo: Add commentary
     bool performTileLayerDecoding(const char* data,
                                   std::size_t dataSize,
                                   std::string_view encoding,
                                   std::string_view compression,
-                                  std::vector<uint32_t>& result);
+                                  std::vector<std::uint32_t>& result);
 
     // todo: Add commentary
-    bool proceedCSVTileData(const char* data, std::size_t dataSize, std::vector<uint32_t>& result);
+    bool proceedCSVTileData(const char* data, std::size_t dataSize, std::vector<std::uint32_t>& result);
 
     MapProperties m_properties;
 

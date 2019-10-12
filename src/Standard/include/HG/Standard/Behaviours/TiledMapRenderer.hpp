@@ -59,20 +59,20 @@ public:
      * Defulat: 0.01 meter (1 cm)
      * @return Meters per pixel.
      */
-    float metersPerPixel() const;
+    [[nodiscard]] float metersPerPixel() const;
 
     /**
      * @brief Method for getting associated tiled map.
      * @return Pointer to map.
      */
-    TiledMap* map() const;
+    [[nodiscard]] TiledMap* map() const;
 
     /**
      * @brief Method for getting tiled layer offset.
      * Default: 0.01 meter.
      * @return Offset.
      */
-    float tiledLayersZOffset() const;
+    [[nodiscard]] float tiledLayersZOffset() const;
 
     /**
      * @brief Method for setting layer offset.
