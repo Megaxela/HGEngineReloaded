@@ -98,7 +98,7 @@ public:
      * @param e Element.
      * @return Is it's removing now?
      */
-    bool isRemoving(T e)
+    [[nodiscard]] bool isRemoving(T e) const
     {
         return std::find(m_removable.begin(), m_removable.end(), e) != m_removable.end();
     }

@@ -38,13 +38,13 @@ public:
      * method `changeEstimateBuffer` with `FrameTime` timer.
      * @return Frame delta time in microseconds.
      */
-    std::chrono::microseconds frameDeltaTime();
+    [[nodiscard]] std::chrono::microseconds frameDeltaTime() const;
 
     /**
      * @brief Method for getting last frame render time.
      * @return Last frame time in microseconds.
      */
-    std::chrono::microseconds lastFrameDeltaTime();
+    [[nodiscard]] std::chrono::microseconds lastFrameDeltaTime() const;
 
     /**
      * @brief Method for getting estimage physics time
@@ -53,7 +53,7 @@ public:
      * `changeEstimateBuffer` with `PhysicsTime` timer.
      * @return Estimate physics time in microseconds.
      */
-    std::chrono::microseconds physicsTime();
+    [[nodiscard]] std::chrono::microseconds physicsTime() const;
 
     /**
      * @brief Method for getting estimate render time
@@ -62,13 +62,13 @@ public:
      * `changeEstimateBuffer` with `RenderTime` timer.
      * @return Estimate render time in microseconds.
      */
-    std::chrono::microseconds renderTime();
+    [[nodiscard]] std::chrono::microseconds renderTime() const;
 
     /**
      * @brief Method for getting last frame render time.
      * @return Last frame render time.
      */
-    std::chrono::microseconds lastFrameRenderTime();
+    [[nodiscard]] std::chrono::microseconds lastFrameRenderTime() const;
 
     /**
      * @brief Method for getting estimate update (logic) time
@@ -77,14 +77,14 @@ public:
      * `changeEstimateBuffer` with `UpdateTime` timer.
      * @return Estimate update (logic) time in microseconds.
      */
-    std::chrono::microseconds updateTime();
+    [[nodiscard]] std::chrono::microseconds updateTime() const;
 
     /**
      * @brief Method for getting last frame update (logic) time
      * in microseconds.
      * @return Last frame update (logic) time in microseconds.
      */
-    std::chrono::microseconds lastFrameUpdateTime();
+    [[nodiscard]] std::chrono::microseconds lastFrameUpdateTime() const;
 
     /**
      * @brief Method for changing estimate buffer size.
@@ -151,7 +151,7 @@ public:
      * @param timer Timer id.
      * @return Time in microseconds.
      */
-    std::chrono::microseconds getTimerEstimate(int timer) const;
+    [[nodiscard]] std::chrono::microseconds getTimerEstimate(int timer) const;
 
     /**
      * @brief Method for getting timer last frame value.
@@ -160,7 +160,7 @@ public:
      * timer with specified id.
      * @return Time in microseconds.
      */
-    std::chrono::microseconds getTimerLastFrame(int timer) const;
+    [[nodiscard]] std::chrono::microseconds getTimerLastFrame(int timer) const;
 
     /**
      * @brief Method for adding new timer.
@@ -183,7 +183,7 @@ public:
      * specified ID presented.
      * @param timer Timer id.
      */
-    bool hasTimer(int timer) const;
+    [[nodiscard]] bool hasTimer(int timer) const;
 
 private:
     /**
@@ -225,13 +225,13 @@ private:
          * @brief Method for getting estimated time.
          * @return Estimated time in microseconds.
          */
-        std::chrono::microseconds estimateTime() const;
+        [[nodiscard]] std::chrono::microseconds estimateTime() const;
 
         /**
          * @brief Method for getting last frame.
          * @return Last frame time in microseconds.
          */
-        std::chrono::microseconds lastFrameTime() const;
+        [[nodiscard]] std::chrono::microseconds lastFrameTime() const;
 
         /**
          * @brief Method for changing estimate buffer size.
@@ -249,7 +249,7 @@ private:
          * @brief Method for getting timer started state.
          * @return Was timer started.
          */
-        bool isTimerStarted() const;
+        [[nodiscard]] bool isTimerStarted() const;
 
     private:
         // Buffer is always 1 more byte than

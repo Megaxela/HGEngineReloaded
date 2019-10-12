@@ -1,7 +1,11 @@
 #pragma once
 
+// C++ STL
+#include <cstring>
+
 // ALogger
 #include <Loggers/AbstractLogger.hpp>
+#include <Stream.hpp>
 #include <SystemTools.h>
 
 #define HGDebug()                                      \

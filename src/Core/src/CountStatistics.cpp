@@ -1,11 +1,13 @@
 // HG::Core
 #include <HG/Core/CountStatistics.hpp>
 
-HG::Core::CountStatistics::CountStatistics() : m_counters()
+namespace HG::Core
+{
+CountStatistics::CountStatistics() : m_counters()
 {
 }
 
-HG::Core::CountStatistics::~CountStatistics()
+CountStatistics::~CountStatistics()
 {
     for (auto&& [id, counter] : m_counters)
     {
@@ -15,7 +17,7 @@ HG::Core::CountStatistics::~CountStatistics()
     m_counters.clear();
 }
 
-void HG::Core::CountStatistics::addCounter(int counter, HG::Core::CountStatistics::CounterType type)
+void CountStatistics::addCounter(int counter, CountStatistics::CounterType type)
 {
     auto iterator = m_counters.find(counter);
 
@@ -39,7 +41,7 @@ void HG::Core::CountStatistics::addCounter(int counter, HG::Core::CountStatistic
     m_counters[counter] = counterObject;
 }
 
-void HG::Core::CountStatistics::removeCounter(int counter)
+void CountStatistics::removeCounter(int counter)
 {
     auto iterator = m_counters.find(counter);
 
@@ -52,12 +54,12 @@ void HG::Core::CountStatistics::removeCounter(int counter)
     m_counters.erase(counter);
 }
 
-bool HG::Core::CountStatistics::hasCounter(int counter) const
+bool CountStatistics::hasCounter(int counter) const
 {
     return m_counters.find(counter) != m_counters.end();
 }
 
-HG::Core::CountStatistics::ValueType HG::Core::CountStatistics::value(int counter) const
+CountStatistics::ValueType CountStatistics::value(int counter) const
 {
     auto iterator = m_counters.find(counter);
 
@@ -69,7 +71,7 @@ HG::Core::CountStatistics::ValueType HG::Core::CountStatistics::value(int counte
     return iterator->second->value();
 }
 
-void HG::Core::CountStatistics::add(int counter, HG::Core::CountStatistics::ValueType value)
+void CountStatistics::add(int counter, CountStatistics::ValueType value)
 {
     auto iterator = m_counters.find(counter);
 
@@ -81,7 +83,7 @@ void HG::Core::CountStatistics::add(int counter, HG::Core::CountStatistics::Valu
     return iterator->second->add(value);
 }
 
-void HG::Core::CountStatistics::reset(int counter)
+void CountStatistics::reset(int counter)
 {
     auto iterator = m_counters.find(counter);
 
@@ -93,7 +95,7 @@ void HG::Core::CountStatistics::reset(int counter)
     return iterator->second->reset();
 }
 
-void HG::Core::CountStatistics::frameChanged()
+void CountStatistics::frameChanged()
 {
     for (auto&& [id, counter] : m_counters)
     {
@@ -101,64 +103,65 @@ void HG::Core::CountStatistics::frameChanged()
     }
 }
 
-HG::Core::CountStatistics::AbstractCounter::AbstractCounter(HG::Core::CountStatistics::CounterType type) : m_type(type)
+CountStatistics::AbstractCounter::AbstractCounter(CountStatistics::CounterType type) : m_type(type)
 {
 }
 
-HG::Core::CountStatistics::CounterType HG::Core::CountStatistics::AbstractCounter::type() const
+CountStatistics::CounterType CountStatistics::AbstractCounter::type() const
 {
     return m_type;
 }
 
-void HG::Core::CountStatistics::AbstractCounter::frameChanged()
+void CountStatistics::AbstractCounter::frameChanged()
 {
 }
 
-HG::Core::CountStatistics::CummulativeCounter::CummulativeCounter() :
+CountStatistics::CummulativeCounter::CummulativeCounter() :
     AbstractCounter(CounterType::Cumulative),
     m_value(0)
 {
 }
 
-void HG::Core::CountStatistics::CummulativeCounter::reset()
+void CountStatistics::CummulativeCounter::reset()
 {
     m_value = 0;
 }
 
-void HG::Core::CountStatistics::CummulativeCounter::add(HG::Core::CountStatistics::ValueType value)
+void CountStatistics::CummulativeCounter::add(CountStatistics::ValueType value)
 {
     m_value += value;
 }
 
-HG::Core::CountStatistics::ValueType HG::Core::CountStatistics::CummulativeCounter::value() const
+CountStatistics::ValueType CountStatistics::CummulativeCounter::value() const
 {
     return m_value;
 }
 
-HG::Core::CountStatistics::LastFrameCounter::LastFrameCounter() :
+CountStatistics::LastFrameCounter::LastFrameCounter() :
     AbstractCounter(CounterType::LastFrame),
     m_previousFrameValue(0),
     m_currentFrameValue(0)
 {
 }
 
-void HG::Core::CountStatistics::LastFrameCounter::frameChanged()
+void CountStatistics::LastFrameCounter::frameChanged()
 {
     m_previousFrameValue = m_currentFrameValue;
     m_currentFrameValue  = 0;
 }
 
-void HG::Core::CountStatistics::LastFrameCounter::reset()
+void CountStatistics::LastFrameCounter::reset()
 {
     m_previousFrameValue = 0;
 }
 
-void HG::Core::CountStatistics::LastFrameCounter::add(HG::Core::CountStatistics::ValueType value)
+void CountStatistics::LastFrameCounter::add(CountStatistics::ValueType value)
 {
     m_currentFrameValue += value;
 }
 
-HG::Core::CountStatistics::ValueType HG::Core::CountStatistics::LastFrameCounter::value() const
+CountStatistics::ValueType CountStatistics::LastFrameCounter::value() const
 {
     return m_previousFrameValue;
+}
 }

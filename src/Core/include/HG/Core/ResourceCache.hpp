@@ -44,7 +44,7 @@ public:
      * @todo Figure out what to do with multiple objects.
      * @return Pointer to memory for objects.
      */
-    template <typename T>
+    template <typename T> [[nodiscard]]
     void* getResource(std::size_t n)
     {
         // Searching for cache by type
@@ -129,7 +129,7 @@ public:
      * @tparam T Type of resources to find.
      * @return Unordered set of elements.
      */
-    template <typename T>
+    template <typename T> [[nodiscard]]
     std::unordered_set<T*> getUsedResources() const
     {
         std::unordered_set<T*> result;

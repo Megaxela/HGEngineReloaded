@@ -20,25 +20,27 @@
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
 
-HG::Core::Application::Application(std::string name, int /* argc */, char** /* argv */) :
+namespace HG::Core
+{
+Application::Application(std::string name, int /* argc */, char** /* argv */) :
     m_applicationTitle(std::move(name)),
     m_renderer(nullptr),
     m_systemController(nullptr),
     m_physicsController(nullptr),
-    m_threadPool(new HG::Core::ThreadPool()),
-    m_input(new HG::Core::Input()),
-    m_resourceManager(new HG::Core::ResourceManager(this)),
-    m_timeStatistics(new HG::Core::TimeStatistics()),
-    m_countStatistics(new HG::Core::CountStatistics()),
-    m_benchmark(new HG::Core::Benchmark()),
-    m_resourceCache(new HG::Core::ResourceCache()),
+    m_threadPool(new ThreadPool()),
+    m_input(new Input()),
+    m_resourceManager(new ResourceManager(this)),
+    m_timeStatistics(new TimeStatistics()),
+    m_countStatistics(new CountStatistics()),
+    m_benchmark(new Benchmark()),
+    m_resourceCache(new ResourceCache()),
     m_currentScene(nullptr),
     m_cachedScene(nullptr)
 {
     m_renderer = new HG::Rendering::Base::Renderer(this);
 }
 
-HG::Core::Application::~Application()
+Application::~Application()
 {
     delete m_cachedScene;
     delete m_currentScene;
@@ -56,22 +58,22 @@ HG::Core::Application::~Application()
     delete m_threadPool;
 }
 
-void HG::Core::Application::setSystemController(HG::Rendering::Base::SystemController* systemController)
+void Application::setSystemController(HG::Rendering::Base::SystemController* systemController)
 {
     m_systemController = systemController;
 }
 
-void HG::Core::Application::setPhysicsController(HG::Physics::Base::PhysicsController* physicsController)
+void Application::setPhysicsController(HG::Physics::Base::PhysicsController* physicsController)
 {
     m_physicsController = physicsController;
 }
 
-HG::Physics::Base::PhysicsController* HG::Core::Application::physicsController()
+HG::Physics::Base::PhysicsController* Application::physicsController() const
 {
     return m_physicsController;
 }
 
-void HG::Core::Application::setScene(HG::Core::Scene* scene)
+void Application::setScene(Scene* scene)
 {
     if (scene == nullptr)
     {
@@ -83,7 +85,7 @@ void HG::Core::Application::setScene(HG::Core::Scene* scene)
     m_cachedScene = scene;
 }
 
-HG::Core::Scene* HG::Core::Application::scene() const
+Scene* Application::scene() const
 {
     if (m_cachedScene != nullptr)
     {
@@ -93,27 +95,27 @@ HG::Core::Scene* HG::Core::Application::scene() const
     return m_currentScene;
 }
 
-void HG::Core::Application::stop()
+void Application::stop()
 {
     const_cast<Input::Window*>(m_input->window())->setClosed(true);
 }
 
-bool HG::Core::Application::init()
+bool Application::init()
 {
     return m_renderer->init();
 }
 
-void HG::Core::Application::deinit()
+void Application::deinit()
 {
     m_renderer->deinit();
 }
 
-std::string HG::Core::Application::title() const
+std::string Application::title() const
 {
     return m_applicationTitle;
 }
 
-bool HG::Core::Application::performCycle()
+bool Application::performCycle()
 {
     // Saving last deltatime
     auto dt = m_timeStatistics->tickTimerAtomic(TimeStatistics::FrameTime);
@@ -182,7 +184,7 @@ bool HG::Core::Application::performCycle()
     return true;
 }
 
-int HG::Core::Application::exec()
+int Application::exec()
 {
     // Preparing deltaTime calculation
 
@@ -202,7 +204,7 @@ int HG::Core::Application::exec()
     return 0;
 }
 
-void HG::Core::Application::proceedScene()
+void Application::proceedScene()
 {
     BENCH_D(this, "Scene processing");
     if (m_cachedScene != nullptr)
@@ -217,47 +219,48 @@ void HG::Core::Application::proceedScene()
     }
 }
 
-HG::Rendering::Base::Renderer* HG::Core::Application::renderer()
+HG::Rendering::Base::Renderer* Application::renderer() const
 {
     return m_renderer;
 }
 
-HG::Core::ResourceManager* HG::Core::Application::resourceManager()
+ResourceManager* Application::resourceManager() const
 {
     return m_resourceManager;
 }
 
-HG::Core::TimeStatistics* HG::Core::Application::timeStatistics()
+TimeStatistics* Application::timeStatistics() const
 {
     return m_timeStatistics;
 }
 
-HG::Core::CountStatistics* HG::Core::Application::countStatistics()
+CountStatistics* Application::countStatistics() const
 {
     return m_countStatistics;
 }
 
-HG::Core::Benchmark* HG::Core::Application::benchmark()
+Benchmark* Application::benchmark() const
 {
     return m_benchmark;
 }
 
-HG::Core::ResourceCache* HG::Core::Application::resourceCache()
+ResourceCache* Application::resourceCache() const
 {
     return m_resourceCache;
 }
 
-HG::Core::ThreadPool* HG::Core::Application::threadPool()
+ThreadPool* Application::threadPool() const
 {
     return m_threadPool;
 }
 
-const HG::Core::Input* HG::Core::Application::input() const
+const Input* Application::input() const
 {
     return m_input;
 }
 
-HG::Rendering::Base::SystemController* HG::Core::Application::systemController() const
+HG::Rendering::Base::SystemController* Application::systemController() const
 {
     return m_systemController;
+}
 }

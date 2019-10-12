@@ -111,7 +111,7 @@ public:
      * @return Number of jobs. If there is no such
      * pool - 0.
      */
-    std::size_t numberOfJobs(Type type) const;
+    [[nodiscard]] std::size_t numberOfJobs(Type type) const;
 
 private:
     struct PoolData

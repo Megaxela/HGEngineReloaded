@@ -69,7 +69,7 @@ public:
      * specified ID presented.
      * @param counter Counter id.
      */
-    bool hasCounter(int counter) const;
+    [[nodiscard]] bool hasCounter(int counter) const;
 
     /**
      * @brief Method for getting counter value.
@@ -77,7 +77,7 @@ public:
      * counter with specified id in debug mode.
      * @param counter Counter id.
      */
-    ValueType value(int counter) const;
+    [[nodiscard]] ValueType value(int counter) const;
 
     /**
      * @brief Method for adding value to counter.
@@ -127,7 +127,7 @@ private:
         /**
          * @brief Method for getting counter type.
          */
-        CounterType type() const;
+        [[nodiscard]] CounterType type() const;
 
         /**
          * @brief Method, that's called by CountStatistics
@@ -151,7 +151,7 @@ private:
          * @brief Method for getting counter value.
          * @return Current counter value.
          */
-        virtual ValueType value() const = 0;
+        [[nodiscard]] virtual ValueType value() const = 0;
 
     private:
         CounterType m_type;
@@ -184,7 +184,7 @@ private:
         /**
          * @brief Method, that returns counter value.
          */
-        ValueType value() const override;
+        [[nodiscard]] ValueType value() const override;
 
     private:
         ValueType m_value;
@@ -224,7 +224,7 @@ private:
          * @brief Method for getting last frame
          * value.
          */
-        ValueType value() const override;
+        [[nodiscard]] ValueType value() const override;
 
     private:
         ValueType m_previousFrameValue;

@@ -34,19 +34,19 @@ public:
          * @brief Method for getting amount of data
          * in bytes.
          */
-        std::size_t size() const override;
+        [[nodiscard]] std::size_t size() const override;
 
         /**
          * @brief Method for getting pointer to data.
          * @return Pointer to array of bytes.
          */
-        const std::byte* data() const override;
+        [[nodiscard]] const std::byte* data() const override;
 
         /**
          * @brief Method for getting data id.
          * @return ID.
          */
-        std::string id() const override;
+        [[nodiscard]] std::string id() const override;
 
     private:
         std::vector<std::byte> m_data;

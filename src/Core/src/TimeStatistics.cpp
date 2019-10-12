@@ -5,7 +5,9 @@
 // HG::Core
 #include <HG/Core/TimeStatistics.hpp>
 
-HG::Core::TimeStatistics::TimeStatistics() : m_timers()
+namespace HG::Core
+{
+TimeStatistics::TimeStatistics() : m_timers()
 {
     addTimer(Timers::FrameTime);
     changeEstimateBuffer(Timers::FrameTime, 60);
@@ -17,42 +19,42 @@ HG::Core::TimeStatistics::TimeStatistics() : m_timers()
     changeEstimateBuffer(Timers::PhysicsTime, 60);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::frameDeltaTime()
+std::chrono::microseconds TimeStatistics::frameDeltaTime() const
 {
     return getTimerEstimate(FrameTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::lastFrameDeltaTime()
+std::chrono::microseconds TimeStatistics::lastFrameDeltaTime() const
 {
     return getTimerLastFrame(FrameTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::physicsTime()
+std::chrono::microseconds TimeStatistics::physicsTime() const
 {
     return getTimerEstimate(PhysicsTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::renderTime()
+std::chrono::microseconds TimeStatistics::renderTime() const
 {
     return getTimerEstimate(RenderTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::lastFrameRenderTime()
+std::chrono::microseconds TimeStatistics::lastFrameRenderTime() const
 {
     return getTimerLastFrame(RenderTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::updateTime()
+std::chrono::microseconds TimeStatistics::updateTime() const
 {
     return getTimerEstimate(UpdateTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::lastFrameUpdateTime()
+std::chrono::microseconds TimeStatistics::lastFrameUpdateTime() const
 {
     return getTimerLastFrame(UpdateTime);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::getTimerEstimate(int timer) const
+std::chrono::microseconds TimeStatistics::getTimerEstimate(int timer) const
 {
     auto iterator = m_timers.find(timer);
 
@@ -64,7 +66,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::getTimerEstimate(int timer) 
     return iterator->second.estimateTime();
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::getTimerLastFrame(int timer) const
+std::chrono::microseconds TimeStatistics::getTimerLastFrame(int timer) const
 {
     auto iterator = m_timers.find(timer);
 
@@ -76,7 +78,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::getTimerLastFrame(int timer)
     return iterator->second.lastFrameTime();
 }
 
-void HG::Core::TimeStatistics::changeEstimateBuffer(int timer, std::size_t numberOfFrames)
+void TimeStatistics::changeEstimateBuffer(int timer, std::size_t numberOfFrames)
 {
     auto iterator = m_timers.find(timer);
 
@@ -88,7 +90,7 @@ void HG::Core::TimeStatistics::changeEstimateBuffer(int timer, std::size_t numbe
     iterator->second.changeEstimateBuffer(numberOfFrames);
 }
 
-void HG::Core::TimeStatistics::tickTimer(int timer, std::chrono::microseconds microseconds)
+void TimeStatistics::tickTimer(int timer, std::chrono::microseconds microseconds)
 {
     auto iterator = m_timers.find(timer);
 
@@ -100,7 +102,7 @@ void HG::Core::TimeStatistics::tickTimer(int timer, std::chrono::microseconds mi
     iterator->second.tick(microseconds);
 }
 
-void HG::Core::TimeStatistics::tickTimerBegin(int timer)
+void TimeStatistics::tickTimerBegin(int timer)
 {
     auto iterator = m_timers.find(timer);
 
@@ -112,7 +114,7 @@ void HG::Core::TimeStatistics::tickTimerBegin(int timer)
     iterator->second.tickBegin();
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::tickTimerEnd(int timer)
+std::chrono::microseconds TimeStatistics::tickTimerEnd(int timer)
 {
     auto iterator = m_timers.find(timer);
 
@@ -124,7 +126,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::tickTimerEnd(int timer)
     return iterator->second.tickEnd();
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::tickTimerAtomic(int timer)
+std::chrono::microseconds TimeStatistics::tickTimerAtomic(int timer)
 {
     auto iterator = m_timers.find(timer);
 
@@ -145,7 +147,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::tickTimerAtomic(int timer)
     return time;
 }
 
-void HG::Core::TimeStatistics::addTimer(int timer)
+void TimeStatistics::addTimer(int timer)
 {
     auto iterator = m_timers.find(timer);
 
@@ -157,7 +159,7 @@ void HG::Core::TimeStatistics::addTimer(int timer)
     m_timers[timer] = Timer();
 }
 
-void HG::Core::TimeStatistics::removeTimer(int timer)
+void TimeStatistics::removeTimer(int timer)
 {
     auto iterator = m_timers.find(timer);
 
@@ -169,12 +171,12 @@ void HG::Core::TimeStatistics::removeTimer(int timer)
     m_timers.erase(iterator);
 }
 
-bool HG::Core::TimeStatistics::hasTimer(int timer) const
+bool TimeStatistics::hasTimer(int timer) const
 {
     return m_timers.find(timer) != m_timers.end();
 }
 
-HG::Core::TimeStatistics::Timer::Timer() :
+TimeStatistics::Timer::Timer() :
     m_buffer(),
     m_insertPosition(0),
     m_bufferSize(0),
@@ -184,7 +186,7 @@ HG::Core::TimeStatistics::Timer::Timer() :
     changeEstimateBuffer(30);
 }
 
-void HG::Core::TimeStatistics::Timer::tick(std::chrono::microseconds mcs)
+void TimeStatistics::Timer::tick(std::chrono::microseconds mcs)
 {
     m_buffer[m_insertPosition++] = mcs;
 
@@ -194,13 +196,13 @@ void HG::Core::TimeStatistics::Timer::tick(std::chrono::microseconds mcs)
     }
 }
 
-void HG::Core::TimeStatistics::Timer::tickBegin()
+void TimeStatistics::Timer::tickBegin()
 {
     m_timerStarted = true;
     m_timerStart   = std::chrono::steady_clock::now();
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::Timer::tickEnd()
+std::chrono::microseconds TimeStatistics::Timer::tickEnd()
 {
     if (!m_timerStarted)
     {
@@ -216,9 +218,9 @@ std::chrono::microseconds HG::Core::TimeStatistics::Timer::tickEnd()
     return diff;
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::Timer::estimateTime() const
+std::chrono::microseconds TimeStatistics::Timer::estimateTime() const
 {
-    int64_t currentEstimate = 0;
+    std::int64_t currentEstimate = 0;
 
     for (std::size_t i = 0; i < m_bufferSize; ++i)
     {
@@ -228,7 +230,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::Timer::estimateTime() const
     return std::chrono::microseconds(currentEstimate);
 }
 
-std::chrono::microseconds HG::Core::TimeStatistics::Timer::lastFrameTime() const
+std::chrono::microseconds TimeStatistics::Timer::lastFrameTime() const
 {
     if (m_insertPosition == 0)
     {
@@ -238,7 +240,7 @@ std::chrono::microseconds HG::Core::TimeStatistics::Timer::lastFrameTime() const
     return m_buffer[m_insertPosition - 1];
 }
 
-void HG::Core::TimeStatistics::Timer::changeEstimateBuffer(std::size_t count)
+void TimeStatistics::Timer::changeEstimateBuffer(std::size_t count)
 {
     // todo: implement documentation behaviour
     if (count > m_buffer.size())
@@ -249,7 +251,8 @@ void HG::Core::TimeStatistics::Timer::changeEstimateBuffer(std::size_t count)
     m_bufferSize = count;
 }
 
-bool HG::Core::TimeStatistics::Timer::isTimerStarted() const
+bool TimeStatistics::Timer::isTimerStarted() const
 {
     return m_timerStarted;
+}
 }

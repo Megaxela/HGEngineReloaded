@@ -18,19 +18,19 @@ public:
      * size.
      * @return Size in bytes.
      */
-    virtual std::size_t size() const = 0;
+    [[nodiscard]] virtual std::size_t size() const = 0;
 
     /**
      * @brief Method for getting data.
      * @return Data.
      */
-    virtual const std::byte* data() const = 0;
+    [[nodiscard]] virtual const std::byte* data() const = 0;
 
     /**
      * @brief Method for getting data id.
      * @return ID.
      */
-    virtual std::string id() const = 0;
+    [[nodiscard]] virtual std::string id() const = 0;
 };
 
 using DataPtr = std::shared_ptr<Data>;

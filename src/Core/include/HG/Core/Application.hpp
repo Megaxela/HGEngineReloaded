@@ -60,7 +60,7 @@ public:
      * @brief Method for getting current or cached scene.
      * @return Current or cached scene.
      */
-    HG::Core::Scene* scene() const;
+    [[nodiscard]] HG::Core::Scene* scene() const;
 
     /**
      * @brief Method for stopping main
@@ -98,47 +98,47 @@ public:
      * application renderer.
      * @return Pointer to renderer.
      */
-    HG::Rendering::Base::Renderer* renderer();
+    [[nodiscard]] HG::Rendering::Base::Renderer* renderer() const;
 
     /**
      * @brief Method for getting pointer to application
      * resource manager.
      * @return Pointer to resource manager.
      */
-    HG::Core::ResourceManager* resourceManager();
+    [[nodiscard]] HG::Core::ResourceManager* resourceManager() const;
 
     /**
      * @brief Method for getting object for time
      * calculations.
      * @return Pointer to time statistics object.
      */
-    HG::Core::TimeStatistics* timeStatistics();
+    [[nodiscard]] HG::Core::TimeStatistics* timeStatistics() const;
 
     /**
      * @brief Method for getting object for
      * counting statistics.
      * @return Pointer to count statistics object.
      */
-    HG::Core::CountStatistics* countStatistics();
+    [[nodiscard]] HG::Core::CountStatistics* countStatistics() const;
 
     /**
      * @brief Method for getting object
      * for benchmarking.
      * @return Pointer to benchmark.
      */
-    HG::Core::Benchmark* benchmark();
+    [[nodiscard]] HG::Core::Benchmark* benchmark() const;
 
     /**
      * @brief Method for getting application thread pool.
      * @return Pointer to application thread pool.
      */
-    HG::Core::ThreadPool* threadPool();
+    [[nodiscard]] HG::Core::ThreadPool* threadPool() const;
 
     /**
      * @brief Method for getting application resource cache.
      * @return Pointer to application resource cache.
      */
-    HG::Core::ResourceCache* resourceCache();
+    [[nodiscard]] HG::Core::ResourceCache* resourceCache() const;
 
     /**
      * @brief Method for receiving pointer to
@@ -147,14 +147,14 @@ public:
      * `const_cast` with this pointer.
      * @return
      */
-    const HG::Core::Input* input() const;
+    [[nodiscard]] const HG::Core::Input* input() const;
 
     /**
      * @brief Method for getting initial application
      * title.
      * @return
      */
-    std::string title() const;
+    [[nodiscard]] std::string title() const;
 
     /**
      * @brief Method for setting system controller.
@@ -172,14 +172,14 @@ public:
      * derived from `HG::Physics::Base::PhysicsController`.
      * @return Pointer to physics controller.
      */
-    HG::Physics::Base::PhysicsController* physicsController();
+    [[nodiscard]] HG::Physics::Base::PhysicsController* physicsController() const;
 
     /**
      * @brief Method for getting system controller.
      * @return Pointer to system controller or
      * `nullptr` if there is no such.
      */
-    HG::Rendering::Base::SystemController* systemController() const;
+    [[nodiscard]] HG::Rendering::Base::SystemController* systemController() const;
 
 protected:
     /**

@@ -299,35 +299,35 @@ public:
          * @param key Key enum value.
          * @return Pressed state.
          */
-        bool isPressed(Key key) const;
+        [[nodiscard]] bool isPressed(Key key) const;
 
         /**
          * @brief Method to get is keyboard key was just pushed.
          * @param key Key enum value.
          * @return Is just pushed.
          */
-        bool isPushed(Key key) const;
+        [[nodiscard]] bool isPushed(Key key) const;
 
         /**
          * @brief Method to get is keyboard key was just released.
          * @param key Key enum value.
          * @return
          */
-        bool isReleased(Key key) const;
+        [[nodiscard]] bool isReleased(Key key) const;
 
         /**
          * @brief Method to get is keyboard mofifier is pressed.
          * @param modifier Modifier value.
          * @return Pressed state.
          */
-        bool isModifierPressed(Modifiers modifier) const;
+        [[nodiscard]] bool isModifierPressed(Modifiers modifier) const;
 
         /**
          * Method to get pressed character. If there was no
          * pressed character function will return 0.
          * @return Character codepoint or 0.
          */
-        uint32_t pressedCharacter() const;
+        [[nodiscard]] std::uint32_t pressedCharacter() const;
 
         // Control method from now
 
@@ -349,7 +349,7 @@ public:
          * @bried Method for setting entered character.
          * @param codepoint Character code point.
          */
-        void setCharacterEntered(uint32_t codepoint);
+        void setCharacterEntered(std::uint32_t codepoint);
 
         /**
         * @brief Method for notifying input controller
@@ -361,8 +361,8 @@ public:
         std::vector<bool> m_pushed;
         std::vector<bool> m_released;
         std::vector<bool> m_pressed;
-        uint8_t m_pressedModifiers; // Bitfield
-        uint32_t m_pressedCharacter;
+        std::uint8_t m_pressedModifiers; // Bitfield
+        std::uint32_t m_pressedCharacter;
     };
 
     /**
@@ -396,52 +396,52 @@ public:
          * @param button Button enum.
          * @return Is pressed.
          */
-        bool isPressed(Buttons button) const;
+        [[nodiscard]] bool isPressed(Buttons button) const;
 
         /**
          * @brief Method for checking is mouse button pressed.
          * @param button Button number.
          * @return Is pressed.
          */
-        bool isPressed(uint8_t button) const;
+        [[nodiscard]] bool isPressed(std::uint8_t button) const;
 
         /**
          * @brief Method for checking is mouse button just pushed.
          * @param button Button enum.
          * @return Is just pushed.
          */
-        bool isPushed(Buttons button) const;
+        [[nodiscard]] bool isPushed(Buttons button) const;
 
         /**
          * @brief Method for checking is mouse button just pushed.
          * @param button Button number.
          * @return Is just pushed.
          */
-        bool isPushed(uint8_t button) const;
+        [[nodiscard]] bool isPushed(std::uint8_t button) const;
 
         /**
          * @brief Method for checking is mouse button just released.
          * @param button Button enum.
          * @return Is just released.
          */
-        bool isReleased(Buttons button) const;
+        [[nodiscard]] bool isReleased(Buttons button) const;
 
         /**
          * @brief Method for checking is mouse button just released.
          * @param button Button number.
          * @return Is just released.
          */
-        bool isReleased(uint8_t button) const;
+        [[nodiscard]] bool isReleased(std::uint8_t button) const;
 
         /**
          * @brief Method for taking mouse position. Locally to window.
          */
-        glm::vec2 getMousePosition() const;
+        [[nodiscard]] glm::vec2 getMousePosition() const;
 
         /**
          * @brief Method for taking mouse wheel scroll delta.
          */
-        glm::vec2 getMouseWheelScroll() const;
+        [[nodiscard]] glm::vec2 getMouseWheelScroll() const;
 
         /**
          * @brief Method for locking mouse cursor.
@@ -488,7 +488,7 @@ public:
          * @param button Button number.
          * @param pressed Pressed state.
          */
-        void setPressedButton(uint8_t button, bool pressed);
+        void setPressedButton(std::uint8_t button, bool pressed);
 
         /**
         * @brief Method for notifying input controller
@@ -506,7 +506,7 @@ public:
 
         glm::vec2 m_mousePos;
         glm::vec2 m_mouseWheelScrollDelta;
-        std::unordered_map<uint8_t, ButtonState> m_buttonStates;
+        std::unordered_map<std::uint8_t, ButtonState> m_buttonStates;
 
         std::function<void(bool)> m_disabledAction;
         std::function<void(bool)> m_hiddenAction;
@@ -563,14 +563,14 @@ public:
          * gamepad is connected to host.
          * @return Is any gamepad connected.
          */
-        bool isConnected() const;
+        [[nodiscard]] bool isConnected() const;
 
         /**
          * @brief Method for getting number of connected
          * gamepads.
          * @return Number of gamepads.
          */
-        uint8_t numberOfGamepadsConnected() const;
+        [[nodiscard]] std::uint8_t numberOfGamepadsConnected() const;
 
         /**
          * @brief Method for getting is one of XBox
@@ -580,7 +580,7 @@ public:
          * @param button XBoxButtons enum value.
          * @return Is button in pressed state.
          */
-        bool isButtonPressed(uint8_t gamepad, XBoxButtons button) const;
+        [[nodiscard]] bool isButtonPressed(std::uint8_t gamepad, XBoxButtons button) const;
 
         /**
          * @brief Method for getting is one of
@@ -589,7 +589,7 @@ public:
          * @param button Button number.
          * @return Is button in pressed state.
          */
-        bool isButtonPressed(uint8_t gamepad, uint8_t button) const;
+        [[nodiscard]] bool isButtonPressed(std::uint8_t gamepad, std::uint8_t button) const;
 
         /**
          * @brief Method to get is gamepad button pushed.
@@ -597,7 +597,7 @@ public:
          * @param button XBoxButtons enum value.
          * @return Button pushed state.
          */
-        bool isButtonPushed(uint8_t gamepad, XBoxButtons button) const;
+        [[nodiscard]] bool isButtonPushed(std::uint8_t gamepad, XBoxButtons button) const;
 
         /**
          * @brief Method to get is gamepad button pushed.
@@ -605,7 +605,7 @@ public:
          * @param button Gamepad button index.
          * @return Button pushed state.
          */
-        bool isButtonPushed(uint8_t gamepad, uint8_t button) const;
+        [[nodiscard]] bool isButtonPushed(std::uint8_t gamepad, std::uint8_t button) const;
 
         /**
          * @brief Method to get is gamepad button released.
@@ -613,7 +613,7 @@ public:
          * @param button XBoxButtons enum value.
          * @return Button released state.
          */
-        bool isButtonReleased(uint8_t gamepad, XBoxButtons button) const;
+        [[nodiscard]] bool isButtonReleased(std::uint8_t gamepad, XBoxButtons button) const;
 
         /**
          * @brief Method to get is gamepad button released.
@@ -621,14 +621,14 @@ public:
          * @param button Gamepad button index.
          * @return Button released state.
          */
-        bool isButtonReleased(uint8_t gamepad, uint8_t button) const;
+        [[nodiscard]] bool isButtonReleased(std::uint8_t gamepad, std::uint8_t button) const;
 
         /**
          * @brief Method to get number of buttons in gamepad.
          * @param gamepad Gamepad index.
          * @return Number of buttons.
          */
-        uint8_t numberOfButtons(uint8_t gamepad) const;
+        [[nodiscard]] std::uint8_t numberOfButtons(std::uint8_t gamepad) const;
 
         /**
          * @brief Method to get gamepad axis value.
@@ -636,7 +636,7 @@ public:
          * @param axis XBoxAxises enum value.
          * @return Vector2 axis value.
          */
-        float axisValue(uint8_t gamepad, XBoxAxises axis) const;
+        [[nodiscard]] float axisValue(std::uint8_t gamepad, XBoxAxises axis) const;
 
         /**
          * @brief Method to get gamepad axis value.
@@ -644,7 +644,7 @@ public:
          * @param axisIndex Axis index.
          * @return Vector2 axis value.
          */
-        float axisValue(uint8_t gamepad, uint8_t axisIndex) const;
+        [[nodiscard]] float axisValue(std::uint8_t gamepad, std::uint8_t axisIndex) const;
 
         // Control method from now
 
@@ -653,7 +653,7 @@ public:
          * @param gamepad Gamepad index.
          * @param connected Connected state.
          */
-        void setIsConnectedGamepad(uint8_t gamepad, bool connected);
+        void setIsConnectedGamepad(std::uint8_t gamepad, bool connected);
 
         /**
          * @brief Method for setting gamepad axis value.
@@ -661,7 +661,7 @@ public:
          * @param axis Gamepad axis index.
          * @param value Axis value.
          */
-        void setGamepadAxisValue(uint8_t gamepad, uint8_t axis, float value);
+        void setGamepadAxisValue(std::uint8_t gamepad, std::uint8_t axis, float value);
 
         /**
          * @brief Method for setting gamepad button value.
@@ -669,7 +669,7 @@ public:
          * @param button Button index.
          * @param pressed Button value.
          */
-        void setGamepadButtonValue(uint8_t gamepad, uint8_t button, bool pressed);
+        void setGamepadButtonValue(std::uint8_t gamepad, std::uint8_t button, bool pressed);
 
         /**
         * @brief Method for notifying input controller
@@ -702,14 +702,14 @@ public:
             }
 
             bool connected;
-            std::unordered_map<uint8_t, ButtonState> buttons;
-            std::unordered_map<uint8_t, float> axises;
-            uint8_t numberOfButtons;
-            uint8_t numberOfAxises;
-            uint8_t numberOfAnalogs;
+            std::unordered_map<std::uint8_t, ButtonState> buttons;
+            std::unordered_map<std::uint8_t, float> axises;
+            std::uint8_t numberOfButtons;
+            std::uint8_t numberOfAxises;
+            std::uint8_t numberOfAnalogs;
         };
 
-        std::unordered_map<uint8_t, GamepadData> m_gamepads;
+        std::unordered_map<std::uint8_t, GamepadData> m_gamepads;
     };
 
     /**
@@ -728,7 +728,7 @@ public:
          * @brief Method for checking is window closed.
          * @return Is window closed requested.
          */
-        bool isClosed() const;
+        [[nodiscard]] bool isClosed() const;
 
         // Control method from now
 
@@ -753,28 +753,28 @@ public:
      * keyboard.
      * @return Pointer to keyboard object.
      */
-    const Keyboard* keyboard() const;
+    [[nodiscard]] const Keyboard* keyboard() const;
 
     /**
      * @brief Method for getting pointer to
      * mouse.
      * @return Pointer to mouse object.
      */
-    const Mouse* mouse() const;
+    [[nodiscard]] const Mouse* mouse() const;
 
     /**
      * @brief Method for getting pointer to
      * gamepads info.
      * @return Pointer to gamepads object.
      */
-    const Gamepads* gamepads() const;
+    [[nodiscard]] const Gamepads* gamepads() const;
 
     /**
      * @brief Method for getting pointer
      * to window info.
      * @return Pointer to window input info.
      */
-    const Window* window() const;
+    [[nodiscard]] const Window* window() const;
 
     /**
      * @brief Method for notifying input controllers

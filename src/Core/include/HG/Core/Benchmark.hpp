@@ -96,7 +96,7 @@ public:
      * thread stack size.
      * @return Jobs stack size.
      */
-    std::size_t numberOfActiveJobs();
+    [[nodiscard]] std::size_t numberOfActiveJobs() const;
 
     /**
      * @brief Method for getting thread ids
@@ -116,7 +116,7 @@ public:
      * @return Copy of stack.
      */
     // todo: Optimize with atomic pointer switching
-    std::stack<JobContainer> getClosedJobs(std::thread::id id);
+    [[nodiscard]] std::stack<JobContainer> getClosedJobs(std::thread::id id) const;
 
     /**
      * @brief Method for getting container with frame times.
@@ -163,7 +163,7 @@ public:
      * @brief Method for getting is benchmark running.
      * @return Is running.
      */
-    bool isRunning() const;
+    [[nodiscard]] bool isRunning() const;
 
 private:
     struct ThreadContainer
@@ -172,7 +172,7 @@ private:
         std::stack<JobContainer> doneJobs;
     };
 
-    std::shared_mutex m_timingsMutex;
+    mutable std::shared_mutex m_timingsMutex;
     std::unordered_map<std::thread::id, ThreadContainer> m_timings;
 
     std::vector<TimeType> m_frameTimes;

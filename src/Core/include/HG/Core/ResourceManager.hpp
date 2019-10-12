@@ -48,14 +48,14 @@ public:
      * @brief Method for getting parent application.
      * @return Pointer to parent application.
      */
-    HG::Core::Application* application();
+    [[nodiscard]] HG::Core::Application* application() const;
 
     /**
      * @brief Method for getting resource accessor for
      * low level resources loading.
      * @return Pointer to resource accessor.
      */
-    HG::Core::ResourceAccessor* resourceAccessor() const;
+    [[nodiscard]] HG::Core::ResourceAccessor* resourceAccessor() const;
 
     /**
      * @brief Method for setting resource accessor for

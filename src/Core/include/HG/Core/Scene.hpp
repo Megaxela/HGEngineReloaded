@@ -59,7 +59,7 @@ public:
      * instance.
      * @return Pointer to application.
      */
-    HG::Core::Application* application() const;
+    [[nodiscard]] HG::Core::Application* application() const;
 
     /**
      * @brief Method, that's called every frame.
@@ -99,20 +99,20 @@ public:
      * @return Pointer to found game object or nullptr if
      * game object was not found.
      */
-    HG::Core::GameObject* findGameObject(const std::string& name);
+    [[nodiscard]] HG::Core::GameObject* findGameObject(const std::string& name) const;
 
     /**
      * @brief Method for searching several objects by name.
      * @param name Game Object name.
      * @param container Container for results.
      */
-    void findGameObjects(const std::string& name, std::vector<HG::Core::GameObject*>& container);
+    void findGameObjects(const std::string& name, std::vector<HG::Core::GameObject*>& container) const;
 
     /**
      * @brief Method for getting all active gameobjects.
      * @param container Container object.
      */
-    void getGameObjects(std::vector<GameObject*>& container);
+    void getGameObjects(std::vector<GameObject*>& container) const;
 
     /**
      * @brief Method for registrating resource

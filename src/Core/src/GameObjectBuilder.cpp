@@ -9,12 +9,14 @@
 // ALogger
 #include <CurrentLogger.hpp>
 
-HG::Core::GameObjectBuilder::operator GameObject*()
+namespace HG::Core
+{
+GameObjectBuilder::operator GameObject*()
 {
     return deploy();
 }
 
-HG::Core::GameObject* HG::Core::GameObjectBuilder::deploy()
+GameObject* GameObjectBuilder::deploy()
 {
     auto result = m_currentGameObject;
 
@@ -23,33 +25,33 @@ HG::Core::GameObject* HG::Core::GameObjectBuilder::deploy()
     return result;
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setHidden(bool hidden)
+GameObjectBuilder& GameObjectBuilder::setHidden(bool hidden)
 {
     m_currentGameObject->setHidden(hidden);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setEnabled(bool enabled)
+GameObjectBuilder& GameObjectBuilder::setEnabled(bool enabled)
 {
     m_currentGameObject->setEnabled(enabled);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::addBehaviour(HG::Core::Behaviour* behaviour)
+GameObjectBuilder& GameObjectBuilder::addBehaviour(Behaviour* behaviour)
 {
     m_currentGameObject->addBehaviour(behaviour);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder::GameObjectBuilder(HG::Core::ResourceCache* cache) :
-    m_currentGameObject(new (cache) HG::Core::GameObject)
+GameObjectBuilder::GameObjectBuilder(ResourceCache* cache) :
+    m_currentGameObject(new (cache) GameObject)
 {
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGameObject(HG::Core::GameObject* ptr)
+GameObjectBuilder& GameObjectBuilder::setGameObject(GameObject* ptr)
 {
     delete m_currentGameObject;
 
@@ -58,42 +60,42 @@ HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGameObject(HG::Core
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setLocalPosition(const glm::vec3& position)
+GameObjectBuilder& GameObjectBuilder::setLocalPosition(const glm::vec3& position)
 {
     m_currentGameObject->transform()->setLocalPosition(position);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setGlobalPosition(const glm::vec3& position)
+GameObjectBuilder& GameObjectBuilder::setGlobalPosition(const glm::vec3& position)
 {
     m_currentGameObject->transform()->setGlobalPosition(position);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setRotation(const glm::quat& rotation)
+GameObjectBuilder& GameObjectBuilder::setRotation(const glm::quat& rotation)
 {
     m_currentGameObject->transform()->setLocalRotation(rotation);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setScale(const glm::vec3& scale)
+GameObjectBuilder& GameObjectBuilder::setScale(const glm::vec3& scale)
 {
     m_currentGameObject->transform()->setLocalScale(scale);
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setName(std::string name)
+GameObjectBuilder& GameObjectBuilder::setName(std::string name)
 {
     m_currentGameObject->setName(std::move(name));
 
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setParent(HG::Core::GameObject* parent)
+GameObjectBuilder& GameObjectBuilder::setParent(GameObject* parent)
 {
     if (parent == nullptr)
     {
@@ -107,9 +109,10 @@ HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setParent(HG::Core::Ga
     return (*this);
 }
 
-HG::Core::GameObjectBuilder& HG::Core::GameObjectBuilder::setParent(HG::Core::Transform* parent)
+GameObjectBuilder& GameObjectBuilder::setParent(Transform* parent)
 {
     m_currentGameObject->transform()->setParent(parent);
 
     return (*this);
+}
 }

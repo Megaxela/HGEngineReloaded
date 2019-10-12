@@ -1,15 +1,16 @@
-
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Behaviour.hpp>
 #include <HG/Core/GameObject.hpp>
 #include <HG/Core/Scene.hpp>
 
-HG::Core::Behaviour::Behaviour(Type t) : m_type(t), m_enabled(true), m_parent(nullptr), m_properties()
+namespace HG::Core
+{
+Behaviour::Behaviour(Type t) : m_type(t), m_enabled(true), m_parent(nullptr), m_properties()
 {
 }
 
-HG::Core::Behaviour::~Behaviour()
+Behaviour::~Behaviour()
 {
     if (m_parent)
     {
@@ -18,22 +19,22 @@ HG::Core::Behaviour::~Behaviour()
     }
 }
 
-HG::Core::Behaviour::Type HG::Core::Behaviour::type() const
+Behaviour::Type Behaviour::type() const
 {
     return m_type;
 }
 
-bool HG::Core::Behaviour::isEnabled() const
+bool Behaviour::isEnabled() const
 {
     return m_enabled;
 }
 
-void HG::Core::Behaviour::setEnabled(bool value)
+void Behaviour::setEnabled(bool value)
 {
     m_enabled = value;
 }
 
-const HG::Core::Input* HG::Core::Behaviour::input() const
+const Input* Behaviour::input() const
 {
     if (scene() == nullptr || scene()->application() == nullptr)
     {
@@ -43,39 +44,39 @@ const HG::Core::Input* HG::Core::Behaviour::input() const
     return scene()->application()->input();
 }
 
-void HG::Core::Behaviour::update()
+void Behaviour::update()
 {
     onUpdate();
 }
 
-void HG::Core::Behaviour::start()
+void Behaviour::start()
 {
     onStart();
 }
 
-void HG::Core::Behaviour::onStart()
+void Behaviour::onStart()
 {
 }
 
-void HG::Core::Behaviour::onUpdate()
+void Behaviour::onUpdate()
 {
 }
 
-void HG::Core::Behaviour::onFixedUpdate()
+void Behaviour::onFixedUpdate()
 {
 }
 
-HG::Core::GameObject* HG::Core::Behaviour::gameObject() const
+GameObject* Behaviour::gameObject() const
 {
     return m_parent;
 }
 
-void HG::Core::Behaviour::setParentGameObject(HG::Core::GameObject* ptr)
+void Behaviour::setParentGameObject(GameObject* ptr)
 {
     m_parent = ptr;
 }
 
-HG::Core::Scene* HG::Core::Behaviour::scene() const
+Scene* Behaviour::scene() const
 {
     if (m_parent == nullptr)
     {
@@ -85,13 +86,13 @@ HG::Core::Scene* HG::Core::Behaviour::scene() const
     return m_parent->scene();
 }
 
-void HG::Core::Behaviour::addProperty(HG::Core::Behaviour::Property property)
+void Behaviour::addProperty(Behaviour::Property property)
 {
     // todo: Add checking if property with this name already exists
     m_properties.emplace_back(property.name(), property);
 }
 
-void HG::Core::Behaviour::getProperties(std::vector<HG::Core::Behaviour::Property>& container) const
+void Behaviour::getProperties(std::vector<Behaviour::Property>& container) const
 {
     container.reserve(m_properties.size());
 
@@ -101,11 +102,12 @@ void HG::Core::Behaviour::getProperties(std::vector<HG::Core::Behaviour::Propert
     }
 }
 
-std::vector<HG::Core::Behaviour::Property> HG::Core::Behaviour::getProperties() const
+std::vector<Behaviour::Property> Behaviour::getProperties() const
 {
     std::vector<Property> container;
 
     getProperties(container);
 
     return container;
+}
 }

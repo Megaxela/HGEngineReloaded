@@ -1,40 +1,42 @@
 // C++ STL
 #include <fstream>
 
+// HG::Core
+#include <HG/Core/Logging.hpp>
+
 // HG::Standard
 #include <HG/Core/FilesystemResourceAccessor.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
-HG::Core::FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
+namespace HG::Core
+{
+FilesystemResourceAccessor::VectorData::VectorData(std::vector<std::byte> data, std::string id) :
     m_data(std::move(data)),
     m_id(std::move(id))
 {
 }
 
-std::size_t HG::Core::FilesystemResourceAccessor::VectorData::size() const
+std::size_t FilesystemResourceAccessor::VectorData::size() const
 {
     return m_data.size();
 }
 
-const std::byte* HG::Core::FilesystemResourceAccessor::VectorData::data() const
+const std::byte* FilesystemResourceAccessor::VectorData::data() const
 {
     return m_data.data();
 }
 
-std::string HG::Core::FilesystemResourceAccessor::VectorData::id() const
+std::string FilesystemResourceAccessor::VectorData::id() const
 {
     return m_id;
 }
 
-HG::Core::DataPtr HG::Core::FilesystemResourceAccessor::loadRaw(const std::string& id)
+DataPtr FilesystemResourceAccessor::loadRaw(const std::string& id)
 {
     std::ifstream file(id, std::ios::binary);
 
     if (!file.is_open())
     {
-        Warning() << "Can't open file \"" << id << "\".";
+        HGWarning() << "Can't open file \"" << id << "\".";
         return nullptr;
     }
 
@@ -50,4 +52,5 @@ HG::Core::DataPtr HG::Core::FilesystemResourceAccessor::loadRaw(const std::strin
     file.read(reinterpret_cast<char*>(data.data()), size);
 
     return std::make_shared<VectorData>(std::move(data), id);
+}
 }
