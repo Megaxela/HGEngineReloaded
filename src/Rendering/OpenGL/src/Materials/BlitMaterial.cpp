@@ -4,7 +4,9 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/BlitMaterial.hpp>
 
-const char* HG::Rendering::OpenGL::Materials::BlitMaterial::rawShader = R"(
+namespace HG::Rendering::OpenGL::Materials
+{
+const char* BlitMaterial::rawShader = R"(
 #ifdef VertexShader
 
 layout (location = 0) in vec2 vertex;
@@ -38,3 +40,4 @@ void main()
 
 #endif
 )";
+}

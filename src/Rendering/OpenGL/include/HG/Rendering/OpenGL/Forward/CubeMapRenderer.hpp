@@ -37,7 +37,7 @@ public:
      * (HG::Rendering::Base::Behaviours::CubeMap)
      * @return
      */
-    size_t getTarget() override;
+    std::size_t getTarget() override;
 
 protected:
     /**

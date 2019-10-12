@@ -43,7 +43,7 @@ public:
      * @brief Method for getting pointer to cubemap object.
      * @return Pointer to cubemap.
      */
-    HG::Rendering::Base::CubeMap* cubeMap() const;
+    [[nodiscard]] HG::Rendering::Base::CubeMap* cubeMap() const;
 
 private:
     HG::Rendering::Base::CubeMap* m_cubeMap;

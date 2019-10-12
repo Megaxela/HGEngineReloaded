@@ -48,7 +48,7 @@ public:
      * @brief Method for getting sprite texture.
      * @return Pointer to texture.
      */
-    HG::Rendering::Base::Texture* texture() const;
+    [[nodiscard]] HG::Rendering::Base::Texture* texture() const;
 
     /**
      * @brief Method for getting sprite clipping.
@@ -60,7 +60,7 @@ public:
      * @brief Method for getting sprite clipping.
      * @return Rectangle.
      */
-    HG::Utils::Rect clipping() const;
+    [[nodiscard]] HG::Utils::Rect clipping() const;
 
 private:
     HG::Rendering::Base::Texture* m_texture;

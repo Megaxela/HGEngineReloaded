@@ -9,9 +9,6 @@
 // HG::Utils
 #include <HG/Utils/StringTools.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
 namespace HG::Utils
 {
 class Mesh;
@@ -45,7 +42,7 @@ public:
      * @return Smart pointer to mesh or nullptr if
      * no mesh set.
      */
-    HG::Utils::MeshPtr mesh() const;
+    [[nodiscard]] HG::Utils::MeshPtr mesh() const;
 
     /**
      * @brief Method for setting mesh object.
@@ -57,7 +54,7 @@ public:
      * @brief Method for getting material for rendering.
      * @return Pointer to material.
      */
-    HG::Rendering::Base::Material* material() const;
+    [[nodiscard]] HG::Rendering::Base::Material* material() const;
 
     /**
      * @brief Method for setting material for rendering.

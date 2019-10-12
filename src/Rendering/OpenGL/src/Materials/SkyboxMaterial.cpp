@@ -1,7 +1,9 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/SkyboxMaterial.hpp>
 
-const char* HG::Rendering::OpenGL::Materials::SkyboxMaterial::rawShader = R"(
+namespace HG::Rendering::OpenGL::Materials
+{
+const char* SkyboxMaterial::rawShader = R"(
 #ifdef VertexShader
 layout (location = 0) in vec3 position;
 
@@ -31,3 +33,4 @@ void main()
 }
 #endif
 )";
+}

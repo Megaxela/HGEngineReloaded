@@ -1,6 +1,7 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Shader.hpp>
@@ -8,9 +9,6 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/ShaderData.hpp>
 #include <HG/Rendering/OpenGL/Common/ShaderDataProcessor.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 #define SHADER_DEFAULT_STRUCTS           \
     "#define MAX_POINT_LIGHTS 128\n"     \
@@ -47,13 +45,15 @@
     "    vec3 specular;\n"               \
     "};\n"
 
-bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
+namespace HG::Rendering::OpenGL::Common
+{
+bool ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto shader = dynamic_cast<HG::Rendering::Base::Shader*>(data);
 
     if (shader == nullptr)
     {
-        Error() << "Got non shader render data in shader data processor. Types are corrupted.";
+        HGError() << "Got non shader render data in shader data processor. Types are corrupted.";
         exit(-1);
     }
 
@@ -81,7 +81,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
         if (!vertexShader.compile())
         {
-            Error() << "Can't compile vertex shader. Error: " << vertexShader.info_log();
+            HGError() << "Can't compile vertex shader. Error: " << vertexShader.info_log();
             exit(-1);
             return false;
         }
@@ -94,7 +94,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
         if (!fragmentShader.compile())
         {
-            Error() << "Can't compile fragment shader. " << fragmentShader.info_log();
+            HGError() << "Can't compile fragment shader. " << fragmentShader.info_log();
             exit(-1);
             return false;
         }
@@ -102,7 +102,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
     if (BENCH_I("Validating program"), !externalData->Program.is_valid())
     {
-        Error() << "Shader is not valid.";
+        HGError() << "Shader is not valid.";
         return false;
     }
 
@@ -112,7 +112,7 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
 
     if (!externalData->Program.link())
     {
-        Error() << "Can't link shader. " << externalData->Program.info_log();
+        HGError() << "Can't link shader. " << externalData->Program.info_log();
         return false;
     }
 
@@ -121,14 +121,15 @@ bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::setup(HG::Rendering::Ba
     return true;
 }
 
-bool HG::Rendering::OpenGL::Common::ShaderDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+bool ShaderDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto shaderData = data->castSpecificDataTo<ShaderData>();
 
     return shaderData == nullptr || shaderData->Program.id() == gl::invalid_id || !shaderData->Valid;
 }
 
-std::size_t HG::Rendering::OpenGL::Common::ShaderDataProcessor::getTarget()
+std::size_t ShaderDataProcessor::getTarget()
 {
     return HG::Rendering::Base::Shader::DataId;
 }
+} // namespace HG::Rendering::OpenGL::Common

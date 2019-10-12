@@ -5,6 +5,7 @@
 
 // HG::Core
 #include <HG/Core/CachableResource.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderData.hpp> // Required for inheritance
@@ -12,9 +13,6 @@
 // HG::Utils
 #include <HG/Utils/FutureHandler.hpp>
 #include <HG/Utils/StringTools.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 namespace HG::Utils
 {
@@ -83,7 +81,7 @@ public:
      * before return.
      * @return Smart pointer to surface.
      */
-    HG::Utils::SurfacePtr getSideSurface(Side side, bool guarantee = false);
+    [[nodiscard]] HG::Utils::SurfacePtr getSideSurface(Side side, bool guarantee = false);
 
     /**
      * @brief Method for setting side surface.

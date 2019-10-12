@@ -64,7 +64,7 @@ protected:
                           HG::Rendering::OpenGL::Common::ShaderData* shaderData,
                           const std::string& name,
                           const HG::Rendering::Base::MaterialValue& value,
-                          uint32_t& textureNumber,
+                          std::uint32_t& textureNumber,
                           bool guarantee = false);
 
 private:

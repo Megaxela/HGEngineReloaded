@@ -29,6 +29,6 @@ public:
      * index | 0     | 1    | 2   | 3      | 4     | 5
      * side  | Right | Left | Top | Bottom | Front | Back
      */
-    uint8_t LoadedSides = 0;
+    std::uint8_t LoadedSides = 0;
 };
 } // namespace HG::Rendering::OpenGL::Common

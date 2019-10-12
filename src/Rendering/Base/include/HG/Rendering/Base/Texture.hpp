@@ -128,7 +128,7 @@ public:
      * method.
      * @return Method value.
      */
-    Filtering magnificationMethod() const;
+    [[nodiscard]] Filtering magnificationMethod() const;
 
     /**
      * @brief Method for changing current minification
@@ -142,7 +142,7 @@ public:
      * method.
      * @return Method value.
      */
-    Filtering minificationMethod() const;
+    [[nodiscard]] Filtering minificationMethod() const;
 
     /**
      * @brief Method for setting s coordinate wrapping
@@ -156,7 +156,7 @@ public:
      * method.
      * @return Method value.
      */
-    Wrapping sWrapping() const;
+    [[nodiscard]] Wrapping sWrapping() const;
 
     /**
      * @brief Method for setting t coordinate wrapping
@@ -170,13 +170,13 @@ public:
      * method.
      * @return Method value.
      */
-    Wrapping tWrapping() const;
+    [[nodiscard]] Wrapping tWrapping() const;
 
     /**
      * @brief Method for getting internal texture
      * format.
      */
-    Format internalFormat() const;
+    [[nodiscard]] Format internalFormat() const;
 
 private:
     HG::Utils::SurfaceFuturePtr m_surface;

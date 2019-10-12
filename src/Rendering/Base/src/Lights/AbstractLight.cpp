@@ -1,21 +1,19 @@
 // HG::Core
 #include <HG/Core/BuildProperties.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Lights/AbstractLight.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
+namespace HG::Rendering::Base
+{
+std::vector<AbstractLight*> AbstractLight::m_lights;
 
-std::vector<HG::Rendering::Base::AbstractLight*> HG::Rendering::Base::AbstractLight::m_lights;
-
-HG::Rendering::Base::AbstractLight::AbstractLight(HG::Rendering::Base::AbstractLight::Type type) :
-    m_type(type),
-    m_color(1.0f, 1.0f, 1.0f)
+AbstractLight::AbstractLight(AbstractLight::Type type) : m_type(type), m_color(1.0f, 1.0f, 1.0f)
 {
 }
 
-HG::Rendering::Base::AbstractLight::~AbstractLight()
+AbstractLight::~AbstractLight()
 {
     // Removing from db
 
@@ -23,36 +21,37 @@ HG::Rendering::Base::AbstractLight::~AbstractLight()
                                   AbstractLight::m_lights.end());
 }
 
-HG::Rendering::Base::AbstractLight::Type HG::Rendering::Base::AbstractLight::type()
+AbstractLight::Type AbstractLight::lightType() const
 {
     return m_type;
 }
 
-void HG::Rendering::Base::AbstractLight::setColor(const HG::Utils::Color& color)
+void AbstractLight::setColor(const HG::Utils::Color& color)
 {
     m_color = color;
 }
 
-HG::Utils::Color HG::Rendering::Base::AbstractLight::color() const
+HG::Utils::Color AbstractLight::color() const
 {
     return m_color;
 }
 
-void HG::Rendering::Base::AbstractLight::onStart()
+void AbstractLight::onStart()
 {
     if constexpr (HG::Core::BuildProperties::isDebug())
     {
         if (std::find(AbstractLight::m_lights.begin(), AbstractLight::m_lights.end(), this) !=
             AbstractLight::m_lights.end())
         {
-            Error() << "Trying to add light to global light system, several times.";
+            HGError() << "Trying to add light to global light system, several times.";
         }
     }
 
     AbstractLight::m_lights.push_back(this);
 }
 
-const std::vector<HG::Rendering::Base::AbstractLight*>& HG::Rendering::Base::AbstractLight::totalLights()
+const std::vector<AbstractLight*>& AbstractLight::totalLights()
 {
     return m_lights;
 }
+} // namespace HG::Rendering::Base

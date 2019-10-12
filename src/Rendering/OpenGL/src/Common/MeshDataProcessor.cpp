@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/MeshData.hpp>
@@ -11,20 +12,21 @@
 // HG::Utils
 #include <HG/Utils/Mesh.hpp>
 
-bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData,
-                                                             bool guarantee)
+namespace HG::Rendering::OpenGL::Common
+{
+bool MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData, bool guarantee)
 {
     auto meshBehaviour = dynamic_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderData);
 
     if (meshBehaviour == nullptr)
     {
-        Error() << "Got non mesh behaviour render data in mesh behaviour data processor. Types are corrupted.";
+        HGError() << "Got non mesh behaviour render data in mesh behaviour data processor. Types are corrupted.";
         exit(-1);
     }
 
     if (meshBehaviour->mesh() == nullptr)
     {
-        Error() << "Can't setup render without set mesh.";
+        HGError() << "Can't setup render without set mesh.";
         return false;
     }
 
@@ -66,7 +68,7 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
     data->EBO.bind(GL_ELEMENT_ARRAY_BUFFER);
 
     // Loading data into EBO
-    data->EBO.set_data(mesh->Indices.size() * sizeof(uint32_t), mesh->Indices.data());
+    data->EBO.set_data(mesh->Indices.size() * sizeof(std::uint32_t), mesh->Indices.data());
 
     // Binding vertex buffer
     data->VAO.set_vertex_buffer(0, data->VBO, 0, sizeof(HG::Utils::Vertex));
@@ -88,20 +90,21 @@ bool HG::Rendering::OpenGL::Common::MeshDataProcessor::setup(HG::Rendering::Base
     data->VAO.set_attribute_format(4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 
     data->Valid = true;
-    data->Count = static_cast<uint32_t>(mesh->Indices.size());
+    data->Count = static_cast<std::uint32_t>(mesh->Indices.size());
 
     return true;
 }
 
-std::size_t HG::Rendering::OpenGL::Common::MeshDataProcessor::getTarget()
+std::size_t MeshDataProcessor::getTarget()
 {
     return HG::Rendering::Base::Behaviours::Mesh::RenderBehaviourId;
 }
 
-bool HG::Rendering::OpenGL::Common::MeshDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+bool MeshDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto meshData = data->castSpecificDataTo<MeshData>();
 
     return meshData == nullptr || meshData->VAO.id() == gl::invalid_id || meshData->VBO.id() == gl::invalid_id ||
            meshData->EBO.id() == gl::invalid_id || !meshData->Valid;
 }
+} // namespace HG::Rendering::OpenGL::Common

@@ -1,7 +1,9 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/GizmosLineMaterial.hpp>
 
-const char* HG::Rendering::OpenGL::Materials::GizmosLineMaterial::rawShader = R"(
+namespace HG::Rendering::OpenGL::Materials
+{
+const char* GizmosLineMaterial::rawShader = R"(
 #ifdef VertexShader
 layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec4 color;
@@ -27,3 +29,4 @@ void main()
 }
 #endif
 )";
+}

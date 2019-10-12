@@ -3,6 +3,7 @@
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/GameObject.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
@@ -27,16 +28,15 @@
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
-HG::Rendering::OpenGL::Forward::SpriteRenderer::SpriteRenderer() : m_spriteMaterial(nullptr), m_spriteData(nullptr)
+namespace HG::Rendering::OpenGL::Forward
+{
+SpriteRenderer::SpriteRenderer() : m_spriteMaterial(nullptr), m_spriteData(nullptr)
 {
 }
 
-void HG::Rendering::OpenGL::Forward::SpriteRenderer::onDeinit()
+void SpriteRenderer::onDeinit()
 {
-    Info() << "Deinitializing sprite renderer";
+    HGInfo() << "Deinitializing sprite renderer";
 
     delete m_spriteMaterial;
     delete m_spriteData;
@@ -45,9 +45,9 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::onDeinit()
     m_spriteData     = nullptr;
 }
 
-void HG::Rendering::OpenGL::Forward::SpriteRenderer::onInit()
+void SpriteRenderer::onInit()
 {
-    Info() << "Initializing sprite renderer";
+    HGInfo() << "Initializing sprite renderer";
 
     m_spriteMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::SpriteMaterial>();
 
@@ -109,7 +109,7 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::onInit()
         4, 3, GL_FLOAT, false, static_cast<GLuint>(offsetof(HG::Utils::Vertex, bitangent)));
 }
 
-void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
+void SpriteRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
 {
     BENCH("Rendering sprite");
     auto spriteBehaviour = static_cast<HG::Rendering::Base::Behaviours::Sprite*>(renderBehaviour);
@@ -143,7 +143,8 @@ void HG::Rendering::OpenGL::Forward::SpriteRenderer::render(HG::Rendering::Base:
     m_spriteData->VAO.unbind();
 }
 
-size_t HG::Rendering::OpenGL::Forward::SpriteRenderer::getTarget()
+std::size_t SpriteRenderer::getTarget()
 {
     return HG::Rendering::Base::Behaviours::Sprite::RenderBehaviourId;
 }
+} // namespace HG::Rendering::OpenGL::Forward

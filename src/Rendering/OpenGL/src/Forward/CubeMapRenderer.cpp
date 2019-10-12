@@ -3,6 +3,7 @@
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
 #include <HG/Core/GameObject.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/Transform.hpp>
 
 // HG::Rendering::Base
@@ -21,13 +22,15 @@
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-HG::Rendering::OpenGL::Forward::CubeMapRenderer::CubeMapRenderer() : m_vao(0), m_vbo(0)
+namespace HG::Rendering::OpenGL::Forward
+{
+CubeMapRenderer::CubeMapRenderer() : m_vao(0), m_vbo(0)
 {
 }
 
-void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onDeinit()
+void CubeMapRenderer::onDeinit()
 {
-    Info() << "Deinitialializing cubemap renderer";
+    HGInfo() << "Deinitialializing cubemap renderer";
 
     m_vao = std::move(gl::vertex_array(0));
     m_vbo = std::move(gl::buffer(0));
@@ -36,9 +39,9 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onDeinit()
     m_skyboxMaterial = nullptr;
 }
 
-void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onInit()
+void CubeMapRenderer::onInit()
 {
-    Info() << "Initialializing cubemap renderer";
+    HGInfo() << "Initialializing cubemap renderer";
 
     static float skyboxVertices[] = {
         // positions
@@ -78,7 +81,7 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::onInit()
     m_vao.set_attribute_format(0, 3, GL_FLOAT);
 }
 
-void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
+void CubeMapRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
 {
     auto cubemapBehaviour = static_cast<HG::Rendering::Base::Behaviours::CubeMap*>(renderBehaviour);
 
@@ -106,7 +109,8 @@ void HG::Rendering::OpenGL::Forward::CubeMapRenderer::render(HG::Rendering::Base
     gl::cubemap_texture_array::unbind();
 }
 
-size_t HG::Rendering::OpenGL::Forward::CubeMapRenderer::getTarget()
+std::size_t CubeMapRenderer::getTarget()
 {
     return HG::Rendering::Base::Behaviours::CubeMap::RenderBehaviourId;
 }
+} // namespace HG::Rendering::OpenGL::Forward

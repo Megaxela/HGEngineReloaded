@@ -36,7 +36,7 @@ public:
      * this renderer can proceed.
      * (HG::Rendering::Base::Behaviours::Mesh)
      */
-    size_t getTarget() override;
+    std::size_t getTarget() override;
 
 protected:
     /**

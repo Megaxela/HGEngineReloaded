@@ -1,6 +1,7 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Common/CubeMapTextureData.hpp>
@@ -46,7 +47,7 @@ void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
         break;
 
     default:
-        ErrorF() << "Can't setup texture because of unknown texture format.";
+        HGErrorF() << "Can't setup texture because of unknown texture format.";
         break;
     }
 
@@ -65,20 +66,21 @@ void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
 }
 } // namespace
 
-bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data,
-                                                                       bool guarantee)
+namespace HG::Rendering::OpenGL::Common
+{
+bool CubeMapTextureDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto texture = static_cast<HG::Rendering::Base::CubeMap*>(data);
 
     // If one of surfaces are not available - dont do anything
     // todo: It would be fun if enable side-side loading.
 
-    Common::CubeMapTextureData* externalData = nullptr;
+    CubeMapTextureData* externalData = nullptr;
 
     // Creating external data if not presented
     if ((externalData = texture->castSpecificDataTo<CubeMapTextureData>()) == nullptr)
     {
-        externalData = new (application()->resourceCache()) Common::CubeMapTextureData();
+        externalData = new (application()->resourceCache()) CubeMapTextureData();
         texture->setSpecificData(externalData);
     }
 
@@ -133,7 +135,7 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::setup(HG::Rende
     return true;
 }
 
-bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+bool CubeMapTextureDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto externalData = data->castSpecificDataTo<CubeMapTextureData>();
 
@@ -141,7 +143,8 @@ bool HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::needSetup(HG::R
            !externalData->Valid || externalData->Texture.id() == gl::invalid_id;
 }
 
-size_t HG::Rendering::OpenGL::Common::CubeMapTextureDataProcessor::getTarget()
+size_t CubeMapTextureDataProcessor::getTarget()
 {
     return HG::Rendering::Base::CubeMap::Id;
 }
+} // namespace HG::Rendering::OpenGL::Common

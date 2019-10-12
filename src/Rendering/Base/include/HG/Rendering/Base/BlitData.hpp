@@ -67,7 +67,7 @@ public:
      * data.
      * @return Constant reference to blit container.
      */
-    const BlitContainer& blitContainer() const;
+    [[nodiscard]] const BlitContainer& blitContainer() const;
 
 private:
     BlitContainer m_points;

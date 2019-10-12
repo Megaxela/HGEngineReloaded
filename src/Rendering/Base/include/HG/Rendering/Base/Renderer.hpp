@@ -43,7 +43,7 @@ public:
      * @brief Method for getting default render target.
      * @return Pointer to default render target.
      */
-    HG::Rendering::Base::RenderTarget* defaultRenderTarget() const;
+    [[nodiscard]] HG::Rendering::Base::RenderTarget* defaultRenderTarget() const;
 
     /**
      * @brief Method for setting pipeline
@@ -56,7 +56,7 @@ public:
      * @brief Method for getting pipeline object.
      * @return Pointer to pipeline object.
      */
-    HG::Rendering::Base::RenderingPipeline* pipeline();
+    [[nodiscard]] HG::Rendering::Base::RenderingPipeline* pipeline() const;
 
     /**
      * @brief Method for initializing pipeline.
@@ -77,19 +77,19 @@ public:
      * @brief Method for getting gizmos object.
      * @return Pointer to gizmos.
      */
-    HG::Rendering::Base::Gizmos* gizmos();
+    [[nodiscard]] HG::Rendering::Base::Gizmos* gizmos() const;
 
     /**
      * @brief Method for getting renderer material collection.
      * @return Pointer to material collection.
      */
-    HG::Rendering::Base::MaterialCollection* materialCollection();
+    [[nodiscard]] HG::Rendering::Base::MaterialCollection* materialCollection() const;
 
     /**
      * @brief Method for getting active camera.
      * @return May return nullptr if there is no active camera.
      */
-    HG::Rendering::Base::Camera* activeCamera() const;
+    [[nodiscard]] HG::Rendering::Base::Camera* activeCamera() const;
 
     /**
      * @brief Method for setting active camera.
@@ -117,14 +117,14 @@ public:
      * setup?
      * @param data Pointer to data.
      */
-    bool needSetup(HG::Rendering::Base::RenderData* data);
+    [[nodiscard]] bool needSetup(HG::Rendering::Base::RenderData* data) const;
 
     /**
      * @brief Method for getting currently active cube map
      * object. Can be nullptr.
      * @return Pointer to currently active cube map.
      */
-    HG::Rendering::Base::CubeMap* activeCubeMap() const;
+    [[nodiscard]] HG::Rendering::Base::CubeMap* activeCubeMap() const;
 
     /**
      * @brief Method for setting currently active cube map.

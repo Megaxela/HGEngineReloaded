@@ -87,7 +87,7 @@ public:
      * @brief Method for getting parent application.
      * @return Pointer to parent application.
      */
-    HG::Core::Application* application() const;
+    [[nodiscard]] HG::Core::Application* application() const;
 
     /**
      * @brief Method for setting up render behaviour.
@@ -124,7 +124,7 @@ public:
      * @return Pointer to render target.
      * (Default render target by default)
      */
-    HG::Rendering::Base::RenderTarget* renderTarget() const;
+    [[nodiscard]] HG::Rendering::Base::RenderTarget* renderTarget() const;
 
     /**
      * @brief Method for setting pointer to render override
@@ -139,7 +139,7 @@ public:
      * system.
      * @return Pointer to render override. Can be nullptr.
      */
-    HG::Rendering::Base::RenderOverride* renderOverride() const;
+    [[nodiscard]] HG::Rendering::Base::RenderOverride* renderOverride() const;
 
     /**
      * @brief Method for getting texture pixel value.

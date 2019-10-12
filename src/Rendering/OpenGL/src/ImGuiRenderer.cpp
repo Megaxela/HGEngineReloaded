@@ -2,6 +2,7 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/MaterialCollection.hpp>
@@ -17,9 +18,6 @@
 // HG::Utils
 #include <HG/Utils/Surface.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
 // ImGui
 #include <imgui.h>
 
@@ -29,7 +27,9 @@
 // GLM
 #include <glm/gtc/matrix_transform.hpp>
 
-HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* application) :
+namespace HG::Rendering::OpenGL
+{
+ImGuiRenderer::ImGuiRenderer(HG::Core::Application* application) :
     m_application(application),
     m_material(nullptr),
     m_vbo(gl::invalid_id),
@@ -38,9 +38,9 @@ HG::Rendering::OpenGL::ImGuiRenderer::ImGuiRenderer(HG::Core::Application* appli
 {
 }
 
-void HG::Rendering::OpenGL::ImGuiRenderer::onDeinit()
+void ImGuiRenderer::onDeinit()
 {
-    Info() << "Deinitializing ImGui renderer";
+    HGInfo() << "Deinitializing ImGui renderer";
 
     delete m_material;
     m_material = nullptr;
@@ -51,9 +51,9 @@ void HG::Rendering::OpenGL::ImGuiRenderer::onDeinit()
     m_fontTexture = nullptr;
 }
 
-void HG::Rendering::OpenGL::ImGuiRenderer::onInit()
+void ImGuiRenderer::onInit()
 {
-    Info() << "Initializing ImGui renderer";
+    HGInfo() << "Initializing ImGui renderer";
 
     m_material = application()->renderer()->materialCollection()->getMaterial<Materials::ImGuiMaterial>();
 
@@ -69,12 +69,12 @@ void HG::Rendering::OpenGL::ImGuiRenderer::onInit()
     createFontsTexture();
 }
 
-HG::Core::Application* HG::Rendering::OpenGL::ImGuiRenderer::application() const
+HG::Core::Application* ImGuiRenderer::application() const
 {
     return m_application;
 }
 
-void HG::Rendering::OpenGL::ImGuiRenderer::render()
+void ImGuiRenderer::render()
 {
     // Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
     auto& io = ImGui::GetIO();
@@ -197,7 +197,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
                     }
                 }
 
-                auto data = texture->castSpecificDataTo<HG::Rendering::OpenGL::Common::Texture2DData>();
+                auto data = texture->castSpecificDataTo<Common::Texture2DData>();
 
                 data->Texture.bind();
 
@@ -234,7 +234,7 @@ void HG::Rendering::OpenGL::ImGuiRenderer::render()
     gl::set_scissor({last_scissor_box[0], last_scissor_box[1]}, {last_scissor_box[2], last_scissor_box[3]});
 }
 
-void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
+void ImGuiRenderer::createFontsTexture()
 {
     BENCH("Creating fonts texture");
 
@@ -260,7 +260,8 @@ void HG::Rendering::OpenGL::ImGuiRenderer::createFontsTexture()
         }
         else
         {
-            Error() << "Can't setup ImGUI font data.";
+            HGError() << "Can't setup ImGUI font data.";
         }
     }
 }
+} // namespace HG::Rendering::OpenGL

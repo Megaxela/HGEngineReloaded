@@ -53,19 +53,19 @@ public:
          * @brief Method for getting zoom value.
          * @return Zoom value.
          */
-        float zoom() const;
+        [[nodiscard]] float zoom() const;
 
         /**
          * @brief Method for setting orthogonal size.
          * @param size
          */
-        void setSize(uint32_t size);
+        void setSize(std::uint32_t size);
 
         /**
          * @brief Method for getting orthogonal size.
          * @return
          */
-        uint32_t size() const;
+        [[nodiscard]] std::uint32_t size() const;
 
         /**
          * @brief Set operator.
@@ -75,7 +75,7 @@ public:
 
     private:
         float m_zoom;
-        uint32_t m_size;
+        std::uint32_t m_size;
 
         Camera* m_parentCam;
     };
@@ -112,7 +112,7 @@ public:
          * field of view. In degrees.
          * @return Field of view value.
          */
-        float fieldOfView() const;
+        [[nodiscard]] float fieldOfView() const;
 
         /**
          * @brief Set operator.
@@ -186,13 +186,13 @@ public:
      * for this camera.
      * @return Matrix 4x4
      */
-    glm::mat4 projectionMatrix() const;
+    [[nodiscard]] glm::mat4 projectionMatrix() const;
 
     /**
      * @brief Method to get view matrix.
      * @return Matrix 4x4
      */
-    glm::mat4 viewMatrix() const;
+    [[nodiscard]] glm::mat4 viewMatrix() const;
 
     /**
      * @brief Method to set near value.
@@ -204,7 +204,7 @@ public:
      * @brief Method to get near value.
      * @return Near value
      */
-    CullType getNear() const;
+    [[nodiscard]] CullType getNear() const;
 
     /**
      * @brief Method to set far value.
@@ -216,7 +216,7 @@ public:
      * @brief Method to get far value.
      * @return Far value.
      */
-    CullType getFar() const;
+    [[nodiscard]] CullType getFar() const;
 
     /**
      * @brief Method for rotating gameobject
@@ -261,7 +261,7 @@ private:
     HG_PROPERTY_INITIALIZER_RAW_OBJ(this,
                                     &m_orthogonalSettings,
                                     OrthoSize,
-                                    uint32_t,
+                                    std::uint32_t,
                                     OrthogonalSettings::setSize,
                                     OrthogonalSettings::size);
 

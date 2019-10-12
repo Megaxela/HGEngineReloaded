@@ -70,7 +70,7 @@ public:
      * material uniform key/values.
      * @return Constant reference.
      */
-    const VariablesContainer& uniformVaues() const;
+    [[nodiscard]] const VariablesContainer& uniformVaues() const;
 
     /**
      * @brief Method for setting shader to material.
@@ -82,7 +82,7 @@ public:
      * @brief Method for getting material shader.
      * @return Pointer to shader.
      */
-    HG::Rendering::Base::Shader* shader() const;
+    [[nodiscard]] HG::Rendering::Base::Shader* shader() const;
 
 protected:
     /**

@@ -26,7 +26,7 @@ public:
      * @brief Method for getting constant radius.
      * @return Value.
      */
-    float constant() const;
+    [[nodiscard]] float constant() const;
 
     /**
      * @brief Method for setting linear radius.
@@ -38,7 +38,7 @@ public:
      * @brief Method for getting linear radius.
      * @return Value.
      */
-    float linear() const;
+    [[nodiscard]] float linear() const;
 
     /**
      * @brief Method for setting quadratic radius.
@@ -50,7 +50,7 @@ public:
      * @brief Method for getting quadratic radius.
      * @return Value.
      */
-    float quadratic() const;
+    [[nodiscard]] float quadratic() const;
 
 private:
     HG_PROPERTY_INITIALIZER_RAW(Constant, float, setConstant, constant);

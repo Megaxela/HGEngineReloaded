@@ -32,7 +32,7 @@ public:
      * @tparam T Type of expected specific data.
      * @return Pointer to specific data.
      */
-    HG::Rendering::Base::RenderSpecificData* specificData();
+    [[nodiscard]] HG::Rendering::Base::RenderSpecificData* specificData() const;
 
     /**
      * @brief Method for centralized casting abstract
@@ -42,7 +42,7 @@ public:
      * @return Pointer to type.
      */
     template <typename T>
-    T* castSpecificDataTo()
+    [[nodiscard]] T* castSpecificDataTo() const
     {
         static_assert(std::is_base_of<HG::Rendering::Base::RenderSpecificData, T>::value,
                       "Cast type has to be derived of HG::Rendering::Base::RenderSpecificData");
@@ -60,7 +60,7 @@ public:
      * @brief Method for getting render data
      * type.
      */
-    std::size_t dataType() const;
+    [[nodiscard]] std::size_t dataType() const;
 
     /**
      * @brief Method for invalidating render data.

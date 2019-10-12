@@ -1,15 +1,13 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/BlitData.hpp>
 
-HG::Rendering::Base::BlitData::BlitData() : m_points()
+namespace HG::Rendering::Base
+{
+BlitData::BlitData() : m_points()
 {
 }
 
-void HG::Rendering::Base::BlitData::blitRectangular(HG::Rendering::Base::Texture* texture,
-                                                    glm::ivec2 tl,
-                                                    glm::ivec2 br,
-                                                    glm::ivec2 pos,
-                                                    glm::ivec2 size)
+void BlitData::blitRectangular(Texture* texture, glm::ivec2 tl, glm::ivec2 br, glm::ivec2 pos, glm::ivec2 size)
 {
     if (size.x == 0 || size.y == 0)
     {
@@ -24,9 +22,9 @@ void HG::Rendering::Base::BlitData::blitRectangular(HG::Rendering::Base::Texture
              {0, 1, 2, 2, 1, 3});
 }
 
-void HG::Rendering::Base::BlitData::blitMesh(HG::Rendering::Base::Texture* texture,
-                                             const std::vector<HG::Rendering::Base::BlitData::PointData>& points,
-                                             const std::vector<uint32_t>& indices)
+void BlitData::blitMesh(Texture* texture,
+                        const std::vector<BlitData::PointData>& points,
+                        const std::vector<uint32_t>& indices)
 {
     auto& pointData = m_points[texture];
 
@@ -43,7 +41,8 @@ void HG::Rendering::Base::BlitData::blitMesh(HG::Rendering::Base::Texture* textu
     }
 }
 
-const HG::Rendering::Base::BlitData::BlitContainer& HG::Rendering::Base::BlitData::blitContainer() const
+const BlitData::BlitContainer& BlitData::blitContainer() const
 {
     return m_points;
 }
+} // namespace HG::Rendering::Base

@@ -1,5 +1,6 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Material.hpp>
@@ -21,10 +22,9 @@
 // glm
 #include <glm/gtc/matrix_transform.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
-HG::Rendering::OpenGL::BlitRenderer::BlitRenderer(HG::Core::Application* application) :
+namespace HG::Rendering::OpenGL
+{
+BlitRenderer::BlitRenderer(HG::Core::Application* application) :
     m_application(application),
     m_material(nullptr),
     m_vbo(gl::invalid_id),
@@ -37,9 +37,9 @@ HG::Rendering::OpenGL::BlitRenderer::BlitRenderer(HG::Core::Application* applica
 {
 }
 
-void HG::Rendering::OpenGL::BlitRenderer::onInit()
+void BlitRenderer::onInit()
 {
-    Info() << "Initializing blitter";
+    HGInfo() << "Initializing blitter";
 
     m_material = application()->renderer()->materialCollection()->getMaterial<Materials::BlitMaterial>();
 
@@ -56,9 +56,9 @@ void HG::Rendering::OpenGL::BlitRenderer::onInit()
     m_attributeLocationUV       = program->attribute_location("uvPixels");
 }
 
-void HG::Rendering::OpenGL::BlitRenderer::onDeinit()
+void BlitRenderer::onDeinit()
 {
-    Info() << "Deinitializing blitter";
+    HGInfo() << "Deinitializing blitter";
 
     delete m_material;
     m_material = nullptr;
@@ -67,14 +67,14 @@ void HG::Rendering::OpenGL::BlitRenderer::onDeinit()
     m_ebo = std::move(gl::buffer(gl::invalid_id));
 }
 
-HG::Core::Application* HG::Rendering::OpenGL::BlitRenderer::application() const
+HG::Core::Application* BlitRenderer::application() const
 {
     return m_application;
 }
 
-void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarget* target,
-                                                 HG::Rendering::Base::Texture* texture,
-                                                 const HG::Rendering::Base::BlitData::DataContainer& container)
+void BlitRenderer::render(HG::Rendering::Base::RenderTarget* target,
+                          HG::Rendering::Base::Texture* texture,
+                          const HG::Rendering::Base::BlitData::DataContainer& container)
 {
     gl::set_polygon_face_culling_enabled(false);
 
@@ -126,10 +126,11 @@ void HG::Rendering::OpenGL::BlitRenderer::render(HG::Rendering::Base::RenderTarg
     ebo.bind(GL_ELEMENT_ARRAY_BUFFER);
 
     // Loading data into EBO
-    ebo.set_data(container.indices.size() * sizeof(uint32_t), container.indices.data(), GL_STREAM_DRAW);
+    ebo.set_data(container.indices.size() * sizeof(std::uint32_t), container.indices.data(), GL_STREAM_DRAW);
 
     // Actually drawing
     gl::draw_elements(GL_TRIANGLES, static_cast<GLsizei>(container.indices.size()), GL_UNSIGNED_INT, nullptr);
 
     gl::set_polygon_face_culling_enabled(true);
 }
+} // namespace HG::Rendering::OpenGL

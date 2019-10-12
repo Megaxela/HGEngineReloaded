@@ -19,7 +19,7 @@ class MeshData
     , public HG::Rendering::Base::RenderSpecificData
 {
 public:
-    uint32_t Count;
+    std::uint32_t Count;
 
     gl::vertex_array VAO;
     gl::buffer VBO;

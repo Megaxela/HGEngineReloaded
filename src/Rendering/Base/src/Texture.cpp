@@ -4,7 +4,9 @@
 // HG::Utils
 #include <HG/Utils/Surface.hpp>
 
-HG::Rendering::Base::Texture::Texture() :
+namespace HG::Rendering::Base
+{
+Texture::Texture() :
     RenderData(DataId),
     m_surface(nullptr),
     m_minFiltering(Filtering::Nearest),
@@ -16,9 +18,7 @@ HG::Rendering::Base::Texture::Texture() :
 {
 }
 
-HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr,
-                                      Filtering minification,
-                                      Filtering magnification) :
+Texture::Texture(HG::Utils::FutureHandler<HG::Utils::SurfacePtr> ptr, Filtering minification, Filtering magnification) :
     RenderData(DataId),
     m_surface(std::move(ptr)),
     m_minFiltering(minification),
@@ -30,10 +30,10 @@ HG::Rendering::Base::Texture::Texture(HG::Utils::FutureHandler<HG::Utils::Surfac
 {
 }
 
-HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
-                                      HG::Rendering::Base::Texture::Format format,
-                                      HG::Rendering::Base::Texture::Filtering minification,
-                                      HG::Rendering::Base::Texture::Filtering magnification) :
+Texture::Texture(glm::ivec2 size,
+                 Texture::Format format,
+                 Texture::Filtering minification,
+                 Texture::Filtering magnification) :
     RenderData(DataId),
     m_surface(nullptr),
     m_minFiltering(minification),
@@ -45,7 +45,7 @@ HG::Rendering::Base::Texture::Texture(glm::ivec2 size,
 {
 }
 
-void HG::Rendering::Base::Texture::setSize(glm::ivec2 size)
+void Texture::setSize(glm::ivec2 size)
 {
     if (m_surface.get() != nullptr)
     {
@@ -55,7 +55,7 @@ void HG::Rendering::Base::Texture::setSize(glm::ivec2 size)
     m_size = size;
 }
 
-glm::ivec2 HG::Rendering::Base::Texture::size(bool guarantee)
+glm::ivec2 Texture::size(bool guarantee)
 {
     auto surf = guarantee ? m_surface.guaranteeGet() : m_surface.get();
     if (surf)
@@ -66,12 +66,12 @@ glm::ivec2 HG::Rendering::Base::Texture::size(bool guarantee)
     return m_size;
 }
 
-HG::Utils::SurfacePtr HG::Rendering::Base::Texture::surface(bool guarantee)
+HG::Utils::SurfacePtr Texture::surface(bool guarantee)
 {
     return guarantee ? m_surface.guaranteeGet() : m_surface.get();
 }
 
-void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)
+void Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)
 {
     m_surface = std::move(ptr);
 
@@ -81,47 +81,48 @@ void HG::Rendering::Base::Texture::setSurface(HG::Utils::SurfaceFuturePtr ptr)
     }
 }
 
-void HG::Rendering::Base::Texture::setMagnificationMethod(HG::Rendering::Base::Texture::Filtering value)
+void Texture::setMagnificationMethod(Texture::Filtering value)
 {
     m_magFiltering = value;
 }
 
-HG::Rendering::Base::Texture::Filtering HG::Rendering::Base::Texture::magnificationMethod() const
+Texture::Filtering Texture::magnificationMethod() const
 {
     return m_magFiltering;
 }
 
-void HG::Rendering::Base::Texture::setMinificationMethod(HG::Rendering::Base::Texture::Filtering value)
+void Texture::setMinificationMethod(Texture::Filtering value)
 {
     m_minFiltering = value;
 }
 
-HG::Rendering::Base::Texture::Filtering HG::Rendering::Base::Texture::minificationMethod() const
+Texture::Filtering Texture::minificationMethod() const
 {
     return m_minFiltering;
 }
 
-void HG::Rendering::Base::Texture::setSWrapping(HG::Rendering::Base::Texture::Wrapping method)
+void Texture::setSWrapping(Texture::Wrapping method)
 {
     m_sWrapping = method;
 }
 
-HG::Rendering::Base::Texture::Wrapping HG::Rendering::Base::Texture::sWrapping() const
+Texture::Wrapping Texture::sWrapping() const
 {
     return m_sWrapping;
 }
 
-void HG::Rendering::Base::Texture::setTWrapping(HG::Rendering::Base::Texture::Wrapping method)
+void Texture::setTWrapping(Texture::Wrapping method)
 {
     m_tWrapping = method;
 }
 
-HG::Rendering::Base::Texture::Wrapping HG::Rendering::Base::Texture::tWrapping() const
+Texture::Wrapping Texture::tWrapping() const
 {
     return m_tWrapping;
 }
 
-HG::Rendering::Base::Texture::Format HG::Rendering::Base::Texture::internalFormat() const
+Texture::Format Texture::internalFormat() const
 {
     return m_internalFormat;
 }
+} // namespace HG::Rendering::Base

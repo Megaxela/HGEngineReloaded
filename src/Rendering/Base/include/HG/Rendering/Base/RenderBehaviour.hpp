@@ -35,7 +35,7 @@ public:
      * @brief Method for getting behaviour type.
      * @return Real class `typeid(T).hash_code()` value.
      */
-    std::size_t renderBehaviourType();
+    [[nodiscard]] std::size_t renderBehaviourType() const;
 
 protected:
     // Restrict to override this HG::Core::Behaviour methods

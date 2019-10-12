@@ -39,7 +39,7 @@ public:
      * @brief Method for getting light type.
      * @return Type enum class value.
      */
-    Type type();
+    [[nodiscard]] Type lightType() const;
 
     /**
      * @brief Method for setting light diffuse color.
@@ -51,7 +51,7 @@ public:
      * @brief Method for getting light diffuse color.
      * @return Diffuse color.
      */
-    HG::Utils::Color color() const;
+    [[nodiscard]] HG::Utils::Color color() const;
 
     /**
      * @brief Method for getting all lights on scene.
