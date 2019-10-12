@@ -534,4 +534,4 @@ void Input::tickControllers()
     m_mouse.tick();
     m_gamepads.tick();
 }
-}
+} // namespace HG::Core

@@ -110,4 +110,4 @@ std::vector<Behaviour::Property> Behaviour::getProperties() const
 
     return container;
 }
-}
+} // namespace HG::Core

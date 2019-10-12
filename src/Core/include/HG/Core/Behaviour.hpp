@@ -92,15 +92,14 @@ public:
             return m_typeInfo;
         }
 
-
-        template <typename Type> [[nodiscard]]
-        std::function<Type()> getGetter() const
+        template <typename Type>
+        [[nodiscard]] std::function<Type()> getGetter() const
         {
             return std::any_cast<std::function<Type()>>(m_getter);
         }
 
-        template <typename Type> [[nodiscard]]
-        std::function<void(Type)> getSetter() const
+        template <typename Type>
+        [[nodiscard]] std::function<void(Type)> getSetter() const
         {
             return std::any_cast<std::function<void(Type)>>(m_setter);
         }
@@ -215,8 +214,8 @@ public:
      * @tparam Type Argument type.
      * @param name Property name.
      */
-    template <typename Type> [[nodiscard]]
-    Type getProperty(const std::string& name) const
+    template <typename Type>
+    [[nodiscard]] Type getProperty(const std::string& name) const
     {
         auto propertyIter =
             std::find_if(m_properties.begin(),

@@ -1,6 +1,6 @@
 // HG::Core
-#include <HG/Core/ThreadPool.hpp>
 #include <HG/Core/Logging.hpp>
+#include <HG/Core/ThreadPool.hpp>
 
 namespace HG::Core
 {
@@ -73,7 +73,7 @@ void ThreadPool::threadFunction(std::size_t id, ThreadPool::Type type)
         catch (std::exception& exception)
         {
             HGError() << "Thread from pool with [id=" << id << ", type=" << type
-                    << "] received exception: " << exception.what();
+                      << "] received exception: " << exception.what();
         }
     }
 
@@ -190,4 +190,4 @@ std::size_t ThreadPool::numberOfJobs(ThreadPool::Type type) const
 
     return data->jobs.size();
 }
-}
+} // namespace HG::Core

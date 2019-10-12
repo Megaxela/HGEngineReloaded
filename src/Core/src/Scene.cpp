@@ -1,7 +1,7 @@
 // HG::Core
 #include <HG/Core/GameObject.hpp>
-#include <HG/Core/Scene.hpp>
 #include <HG/Core/Logging.hpp>
+#include <HG/Core/Scene.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
@@ -134,4 +134,4 @@ void Scene::getGameObjects(std::vector<GameObject*>& container) const
         container.push_back(gameObject);
     }
 }
-}
+} // namespace HG::Core

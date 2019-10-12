@@ -176,12 +176,7 @@ bool TimeStatistics::hasTimer(int timer) const
     return m_timers.find(timer) != m_timers.end();
 }
 
-TimeStatistics::Timer::Timer() :
-    m_buffer(),
-    m_insertPosition(0),
-    m_bufferSize(0),
-    m_timerStarted(false),
-    m_timerStart()
+TimeStatistics::Timer::Timer() : m_buffer(), m_insertPosition(0), m_bufferSize(0), m_timerStarted(false), m_timerStart()
 {
     changeEstimateBuffer(30);
 }
@@ -255,4 +250,4 @@ bool TimeStatistics::Timer::isTimerStarted() const
 {
     return m_timerStarted;
 }
-}
+} // namespace HG::Core

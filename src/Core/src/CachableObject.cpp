@@ -8,4 +8,4 @@ CachableObject::CachableObject() : m_cache(ResourceCache::currentCache)
 {
     ResourceCache::currentCache = nullptr;
 }
-}
+} // namespace HG::Core

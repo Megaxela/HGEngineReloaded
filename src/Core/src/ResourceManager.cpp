@@ -1,8 +1,8 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceAccessor.hpp>
 #include <HG/Core/ResourceManager.hpp>
-#include <HG/Core/Logging.hpp>
 
 namespace HG::Core
 {
@@ -27,7 +27,7 @@ ResourceAccessor* ResourceManager::resourceAccessor() const
 
 DataPtr ResourceManager::loadRawFromAccessor(const std::string& id)
 {
-    HGInfo() <<"Loading resource \"" << id << "\"";
+    HGInfo() << "Loading resource \"" << id << "\"";
 
     if (m_accessor == nullptr)
     {
@@ -56,4 +56,4 @@ void ResourceManager::setResourceAccessor(ResourceAccessor* accessor)
 
     m_accessor = accessor;
 }
-}
+} // namespace HG::Core

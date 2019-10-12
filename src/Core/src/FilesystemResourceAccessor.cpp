@@ -53,4 +53,4 @@ DataPtr FilesystemResourceAccessor::loadRaw(const std::string& id)
 
     return std::make_shared<VectorData>(std::move(data), id);
 }
-}
+} // namespace HG::Core

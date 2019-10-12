@@ -1,7 +1,7 @@
 // HG::Core
 #include <HG/Core/CachableObject.hpp>
-#include <HG/Core/ResourceCache.hpp>
 #include <HG/Core/Logging.hpp>
+#include <HG/Core/ResourceCache.hpp>
 
 namespace HG::Core
 {
@@ -23,8 +23,8 @@ ResourceCache::~ResourceCache()
         if (!cache.second.used.empty())
         {
             HGError() << "Leaked cached resources detected. " << cache.first << " hash - " << cache.second.used.size()
-                    << " leaked objects.";
+                      << " leaked objects.";
         }
     }
 }
-}
+} // namespace HG::Core

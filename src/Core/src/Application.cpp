@@ -263,4 +263,4 @@ HG::Rendering::Base::SystemController* Application::systemController() const
 {
     return m_systemController;
 }
-}
+} // namespace HG::Core

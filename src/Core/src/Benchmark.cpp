@@ -2,11 +2,9 @@
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
 
-
 namespace HG::Core
 {
-Benchmark::ScopeJob::ScopeJob(Application* application, std::string name) :
-    m_benchmark(application->benchmark())
+Benchmark::ScopeJob::ScopeJob(Application* application, std::string name) : m_benchmark(application->benchmark())
 {
     m_benchmark->startJob(std::move(name));
 }
@@ -16,13 +14,7 @@ Benchmark::ScopeJob::~ScopeJob()
     m_benchmark->stopJob();
 }
 
-Benchmark::Benchmark() :
-    m_timingsMutex(),
-    m_timings(),
-    m_start(),
-    m_finish(),
-    m_isRunning(false),
-    m_wantRunning(false)
+Benchmark::Benchmark() : m_timingsMutex(), m_timings(), m_start(), m_finish(), m_isRunning(false), m_wantRunning(false)
 {
 }
 
@@ -189,4 +181,4 @@ std::vector<Benchmark::TimeType> Benchmark::frameTimes() const
 {
     return m_frameTimes;
 }
-}
+} // namespace HG::Core

@@ -46,8 +46,7 @@ GameObjectBuilder& GameObjectBuilder::addBehaviour(Behaviour* behaviour)
     return (*this);
 }
 
-GameObjectBuilder::GameObjectBuilder(ResourceCache* cache) :
-    m_currentGameObject(new (cache) GameObject)
+GameObjectBuilder::GameObjectBuilder(ResourceCache* cache) : m_currentGameObject(new (cache) GameObject)
 {
 }
 
@@ -115,4 +114,4 @@ GameObjectBuilder& GameObjectBuilder::setParent(Transform* parent)
 
     return (*this);
 }
-}
+} // namespace HG::Core

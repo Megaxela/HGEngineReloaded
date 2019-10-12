@@ -116,9 +116,7 @@ void CountStatistics::AbstractCounter::frameChanged()
 {
 }
 
-CountStatistics::CummulativeCounter::CummulativeCounter() :
-    AbstractCounter(CounterType::Cumulative),
-    m_value(0)
+CountStatistics::CummulativeCounter::CummulativeCounter() : AbstractCounter(CounterType::Cumulative), m_value(0)
 {
 }
 
@@ -164,4 +162,4 @@ CountStatistics::ValueType CountStatistics::LastFrameCounter::value() const
 {
     return m_previousFrameValue;
 }
-}
+} // namespace HG::Core

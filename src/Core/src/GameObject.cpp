@@ -2,9 +2,9 @@
 #include <HG/Core/Behaviour.hpp>
 #include <HG/Core/BuildProperties.hpp>
 #include <HG/Core/GameObject.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/Transform.hpp>
-#include <HG/Core/Logging.hpp>
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderBehaviour.hpp>
@@ -122,13 +122,11 @@ void GameObject::addBehaviour(Behaviour* behaviour)
 
     switch (behaviour->type())
     {
-    case Behaviour::Type::Logic:
-    {
+    case Behaviour::Type::Logic: {
         m_behaviours.add(behaviour);
         break;
     }
-    case Behaviour::Type::Render:
-    {
+    case Behaviour::Type::Render: {
         auto casted = dynamic_cast<HG::Rendering::Base::RenderBehaviour*>(behaviour);
 
         if (!casted)
@@ -177,4 +175,4 @@ void GameObject::setHidden(bool value)
 {
     m_hidden = value;
 }
-}
+} // namespace HG::Core

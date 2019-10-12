@@ -283,4 +283,4 @@ Transform& Transform::operator=(const Transform& transform)
 
     return *this;
 }
-}
+} // namespace HG::Core
