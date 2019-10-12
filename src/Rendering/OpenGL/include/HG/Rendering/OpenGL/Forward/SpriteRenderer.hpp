@@ -38,7 +38,7 @@ public:
      * @brief What render behaviours can proceed this
      * renderer. (HG::Rendering::Base::Behaviours::Sprite)
      */
-    size_t getTarget() override;
+    std::size_t getTarget() override;
 
 protected:
     /**

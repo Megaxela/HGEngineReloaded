@@ -13,48 +13,45 @@
 #include <HG/Rendering/Base/SystemController.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/glmex.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 // GLM
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
 
-HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings() : m_zoom(1.0f), m_size(1), m_parentCam(nullptr)
+namespace HG::Rendering::Base
+{
+Camera::OrthogonalSettings::OrthogonalSettings() : m_zoom(1.0f), m_size(1), m_parentCam(nullptr)
 {
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings::OrthogonalSettings(
-    const HG::Rendering::Base::Camera::OrthogonalSettings& rhs) :
-    OrthogonalSettings()
+Camera::OrthogonalSettings::OrthogonalSettings(const Camera::OrthogonalSettings& rhs) : OrthogonalSettings()
 {
     (*this) = rhs;
 }
 
-void HG::Rendering::Base::Camera::OrthogonalSettings::setZoom(float zoom)
+void Camera::OrthogonalSettings::setZoom(float zoom)
 {
     m_zoom = zoom;
 }
 
-float HG::Rendering::Base::Camera::OrthogonalSettings::zoom() const
+float Camera::OrthogonalSettings::zoom() const
 {
     return m_zoom;
 }
 
-void HG::Rendering::Base::Camera::OrthogonalSettings::setSize(uint32_t size)
+void Camera::OrthogonalSettings::setSize(std::uint32_t size)
 {
     m_size = size;
 }
 
-uint32_t HG::Rendering::Base::Camera::OrthogonalSettings::size() const
+std::uint32_t Camera::OrthogonalSettings::size() const
 {
     return m_size;
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings&
-HG::Rendering::Base::Camera::OrthogonalSettings::operator=(const HG::Rendering::Base::Camera::OrthogonalSettings& rhs)
+Camera::OrthogonalSettings& Camera::OrthogonalSettings::operator=(const Camera::OrthogonalSettings& rhs)
 {
     m_zoom = rhs.m_zoom;
     m_size = rhs.m_size;
@@ -66,18 +63,16 @@ HG::Rendering::Base::Camera::OrthogonalSettings::operator=(const HG::Rendering::
     return (*this);
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings() : m_fov(90), m_parentCam(nullptr)
+Camera::PerspectiveSettings::PerspectiveSettings() : m_fov(90), m_parentCam(nullptr)
 {
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings::PerspectiveSettings(
-    const HG::Rendering::Base::Camera::PerspectiveSettings& rhs) :
-    PerspectiveSettings()
+Camera::PerspectiveSettings::PerspectiveSettings(const Camera::PerspectiveSettings& rhs) : PerspectiveSettings()
 {
     (*this) = rhs;
 }
 
-void HG::Rendering::Base::Camera::PerspectiveSettings::setFieldOfView(float fov)
+void Camera::PerspectiveSettings::setFieldOfView(float fov)
 {
     m_fov = fov;
     if (m_parentCam != nullptr)
@@ -86,13 +81,12 @@ void HG::Rendering::Base::Camera::PerspectiveSettings::setFieldOfView(float fov)
     }
 }
 
-float HG::Rendering::Base::Camera::PerspectiveSettings::fieldOfView() const
+float Camera::PerspectiveSettings::fieldOfView() const
 {
     return m_fov;
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings&
-HG::Rendering::Base::Camera::PerspectiveSettings::operator=(const HG::Rendering::Base::Camera::PerspectiveSettings& rhs)
+Camera::PerspectiveSettings& Camera::PerspectiveSettings::operator=(const Camera::PerspectiveSettings& rhs)
 {
     m_fov = rhs.m_fov;
 
@@ -104,7 +98,7 @@ HG::Rendering::Base::Camera::PerspectiveSettings::operator=(const HG::Rendering:
     return (*this);
 }
 
-HG::Rendering::Base::Camera::Camera() :
+Camera::Camera() :
     m_projectionMatrixChanged(true),
     m_projectionMatrix(1.0f),
     m_projection(),
@@ -117,7 +111,7 @@ HG::Rendering::Base::Camera::Camera() :
     m_perspectiveSettings.m_parentCam = this;
 }
 
-HG::Rendering::Base::Camera::~Camera()
+Camera::~Camera()
 {
     // If active camera removed, clean value
     if (scene() && scene()->application() && scene()->application()->renderer() &&
@@ -127,22 +121,22 @@ HG::Rendering::Base::Camera::~Camera()
     }
 }
 
-HG::Rendering::Base::Camera::OrthogonalSettings& HG::Rendering::Base::Camera::orthogonalSettings()
+Camera::OrthogonalSettings& Camera::orthogonalSettings()
 {
     return m_orthogonalSettings;
 }
 
-HG::Rendering::Base::Camera::PerspectiveSettings& HG::Rendering::Base::Camera::perspectiveSettings()
+Camera::PerspectiveSettings& Camera::perspectiveSettings()
 {
     return m_perspectiveSettings;
 }
 
-glm::mat4 HG::Rendering::Base::Camera::viewMatrix() const
+glm::mat4 Camera::viewMatrix() const
 {
     auto parentGO = gameObject();
     if (!parentGO)
     {
-        Error() << "Can't get game object of active camera.";
+        HGError() << "Can't get game object of active camera.";
         return glm::mat4();
     }
 
@@ -154,7 +148,7 @@ glm::mat4 HG::Rendering::Base::Camera::viewMatrix() const
     return glm::lookAt(pos, pos + front, glmex::vec3::up);
 }
 
-void HG::Rendering::Base::Camera::setProjection(HG::Rendering::Base::Camera::Projection projection)
+void Camera::setProjection(Camera::Projection projection)
 {
     if (m_projection != projection)
     {
@@ -164,12 +158,12 @@ void HG::Rendering::Base::Camera::setProjection(HG::Rendering::Base::Camera::Pro
     m_projection = projection;
 }
 
-HG::Rendering::Base::Camera::Projection HG::Rendering::Base::Camera::projection() const
+Camera::Projection Camera::projection() const
 {
     return m_projection;
 }
 
-glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
+glm::mat4 Camera::projectionMatrix() const
 {
     auto viewportSize = scene()->application()->renderer()->pipeline()->renderTarget()->size(); // Current render target
 
@@ -205,34 +199,34 @@ glm::mat4 HG::Rendering::Base::Camera::projectionMatrix() const
         m_projectionMatrixChanged = false;
         break;
     default:
-        Error() << "Found wrong camera projection value.";
+        HGError() << "Found wrong camera projection value.";
         throw std::runtime_error("Found wrong camera projection value.");
     }
 
     return m_projectionMatrix;
 }
 
-void HG::Rendering::Base::Camera::setNear(HG::Rendering::Base::Camera::CullType value)
+void Camera::setNear(Camera::CullType value)
 {
     m_near = value;
 }
 
-HG::Rendering::Base::Camera::CullType HG::Rendering::Base::Camera::getNear() const
+Camera::CullType Camera::getNear() const
 {
     return m_near;
 }
 
-void HG::Rendering::Base::Camera::setFar(HG::Rendering::Base::Camera::CullType value)
+void Camera::setFar(Camera::CullType value)
 {
     m_far = value;
 }
 
-HG::Rendering::Base::Camera::CullType HG::Rendering::Base::Camera::getFar() const
+Camera::CullType Camera::getFar() const
 {
     return m_far;
 }
 
-void HG::Rendering::Base::Camera::onStart()
+void Camera::onStart()
 {
     if constexpr (HG::Core::BuildProperties::isDebug())
     {
@@ -244,25 +238,25 @@ void HG::Rendering::Base::Camera::onStart()
         // Getting current viewport
         if (scene() == nullptr)
         {
-            Error() << "No scene set. Can't determine initial viewport.";
+            HGError() << "No scene set. Can't determine initial viewport.";
             return;
         }
 
         if (scene()->application() == nullptr)
         {
-            Error() << "No application set in scene. Can't determine initial viewport.";
+            HGError() << "No application set in scene. Can't determine initial viewport.";
             return;
         }
 
         if (scene()->application()->renderer() == nullptr)
         {
-            Error() << "No renderer set for application.";
+            HGError() << "No renderer set for application.";
             return;
         }
 
         if (scene()->application()->systemController() == nullptr)
         {
-            Error() << "No system controller set in application. Can't determine initial viewport.";
+            HGError() << "No system controller set in application. Can't determine initial viewport.";
             return;
         }
     }
@@ -274,12 +268,12 @@ void HG::Rendering::Base::Camera::onStart()
     }
 }
 
-void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point)
+void Camera::lookAt(const glm::vec3& point)
 {
     lookAt(point, glmex::vec3::up);
 }
 
-void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
+void Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
 {
     auto position     = gameObject()->transform()->localPosition();
     auto resultMatrix = glm::lookAt(point, position, upVector);
@@ -296,7 +290,7 @@ void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3
     {
         if (gameObject() == nullptr)
         {
-            Error() << "Can't make camera look at without gameobject.";
+            HGError() << "Can't make camera look at without gameobject.";
             return;
         }
     }
@@ -304,7 +298,8 @@ void HG::Rendering::Base::Camera::lookAt(const glm::vec3& point, const glm::vec3
     gameObject()->transform()->setLocalRotation(rotation);
 }
 
-void HG::Rendering::Base::Camera::setActive()
+void Camera::setActive()
 {
     scene()->application()->renderer()->setActiveCamera(this);
 }
+} // namespace HG::Rendering::Base

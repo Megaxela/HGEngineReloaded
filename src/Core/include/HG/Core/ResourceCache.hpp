@@ -45,7 +45,7 @@ public:
      * @return Pointer to memory for objects.
      */
     template <typename T>
-    void* getResource(std::size_t n)
+    [[nodiscard]] void* getResource(std::size_t n)
     {
         // Searching for cache by type
         decltype(m_objects)::iterator cache;
@@ -130,7 +130,7 @@ public:
      * @return Unordered set of elements.
      */
     template <typename T>
-    std::unordered_set<T*> getUsedResources() const
+    [[nodiscard]] std::unordered_set<T*> getUsedResources() const
     {
         std::unordered_set<T*> result;
 

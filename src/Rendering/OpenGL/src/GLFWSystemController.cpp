@@ -15,8 +15,8 @@
 // HG::Rendering::OpenGL
 #    include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
 
-// ALogger
-#    include <CurrentLogger.hpp>
+// HG::Utils
+#    include <HG/Utils/Logging.hpp>
 
 // GLM
 #    include <gl/all.hpp>
@@ -24,13 +24,15 @@
 // ImGui
 #    include <imgui.h>
 
-HG::Rendering::OpenGL::GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
+namespace HG::Rendering::OpenGL
+{
+GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
     SystemController(application),
     m_window(nullptr)
 {
 }
 
-HG::Rendering::OpenGL::GLFWSystemController::~GLFWSystemController()
+GLFWSystemController::~GLFWSystemController()
 {
     imGuiDeinit();
 
@@ -49,7 +51,7 @@ static void ImGuiSetClipboardText(void* user_data, const char* text)
     glfwSetClipboardString((GLFWwindow*)user_data, text);
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::imGuiInit()
+void GLFWSystemController::imGuiInit()
 {
     // Setup back-end capabilities flags
     ImGuiIO& io = ImGui::GetIO();
@@ -100,7 +102,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiInit()
     m_mouseCursors[ImGuiMouseCursor_Hand]       = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::imGuiDeinit()
+void GLFWSystemController::imGuiDeinit()
 {
     // Destroying cursors
     for (auto&& cursor : m_mouseCursors)
@@ -113,7 +115,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiDeinit()
     }
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::imGuiNewFrame()
+void GLFWSystemController::imGuiNewFrame()
 {
     auto& io = ImGui::GetIO();
 
@@ -176,13 +178,14 @@ void HG::Rendering::OpenGL::GLFWSystemController::imGuiNewFrame()
     ImGui::NewFrame();
 }
 
-bool HG::Rendering::OpenGL::GLFWSystemController::init()
+bool GLFWSystemController::init()
 {
-    Info() << "Initializing GLFW";
+    HGInfo() << "Initializing GLFW";
 
     // Setting error callback
-    glfwSetErrorCallback(
-        [](int code, const char* description) { ErrorF() << "GLFW Received error #" << code << ", " << description; });
+    glfwSetErrorCallback([](int code, const char* description) {
+        HGErrorF() << "GLFW Received error #" << code << ", " << description;
+    });
 
     // Initializing GLFW
     if (!glfwInit())
@@ -208,12 +211,12 @@ bool HG::Rendering::OpenGL::GLFWSystemController::init()
 // Incognito
 namespace
 {
-HG::Rendering::OpenGL::GLFWSystemController* controller = nullptr;
+GLFWSystemController* controller = nullptr;
 }
 
-bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::string title)
+bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::string title)
 {
-    Info() << "Creating window " << width << "x" << height << " with title \"" << title << "\"";
+    HGInfo() << "Creating window " << width << "x" << height << " with title \"" << title << "\"";
 
     m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
@@ -223,7 +226,7 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
         return false;
     }
 
-    Info() << "Initializing ImGui";
+    HGInfo() << "Initializing ImGui";
     imGuiInit();
 
     controller = this;
@@ -270,7 +273,7 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     GLenum error;
     if ((error = glewInit()) != GLEW_OK)
     {
-        Error() << "Can't init GLEW. Error: " << glewGetErrorString(error);
+        HGError() << "Can't init GLEW. Error: " << glewGetErrorString(error);
         return false;
     }
 
@@ -279,11 +282,11 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
     {
-        Info() << "Turning on OpenGL debug output.";
+        HGInfo() << "Turning on OpenGL debug output.";
         gl::set_debug_output_enabled(true);
         gl::set_syncronous_debug_output_enabled(true);
 
-        glDebugMessageCallback(&HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput, nullptr);
+        glDebugMessageCallback(&GLFWSystemController::glDebugOutput, nullptr);
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
 #    endif
@@ -308,22 +311,22 @@ bool HG::Rendering::OpenGL::GLFWSystemController::createWindow(uint32_t width, u
     return true;
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::deinit()
+void GLFWSystemController::deinit()
 {
     imGuiDeinit();
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::closeWindow()
+void GLFWSystemController::closeWindow()
 {
     glfwDestroyWindow(m_window);
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::swapBuffers()
+void GLFWSystemController::swapBuffers()
 {
     glfwSwapBuffers(m_window);
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::pollEvents()
+void GLFWSystemController::pollEvents()
 {
     // Ticking pushed/released values in input subsystem
     const_cast<HG::Core::Input*>(application()->input())->tickControllers();
@@ -351,7 +354,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::pollEvents()
     }
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
+void GLFWSystemController::handleGamepadsEvents()
 {
     for (auto index = GLFW_JOYSTICK_1; index <= GLFW_JOYSTICK_LAST; ++index)
     {
@@ -402,35 +405,31 @@ void HG::Rendering::OpenGL::GLFWSystemController::handleGamepadsEvents()
     }
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::joystickCallback(int gamepad, int event)
+void GLFWSystemController::joystickCallback(int gamepad, int event)
 {
     if (event == GLFW_CONNECTED)
     {
-        InfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " connected.";
+        HGInfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " connected.";
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
             ->setIsConnectedGamepad(static_cast<uint8_t>(gamepad), true);
     }
     else if (event == GLFW_DISCONNECTED)
     {
-        InfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " disconnected.";
+        HGInfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " disconnected.";
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
             ->setIsConnectedGamepad(static_cast<uint8_t>(gamepad), false);
     }
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::cursorPosCallback(GLFWwindow*, double x, double y)
+void GLFWSystemController::cursorPosCallback(GLFWwindow*, double x, double y)
 {
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
         ->setMousePosition(static_cast<int>(x), static_cast<int>(y));
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*,
-                                                                   int key,
-                                                                   int scancode,
-                                                                   int action,
-                                                                   int mods)
+void GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
     (void)scancode;
     (void)mods;
@@ -629,7 +628,7 @@ void HG::Rendering::OpenGL::GLFWSystemController::keyPressCallback(GLFWwindow*,
     io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::charCallback(GLFWwindow*, unsigned int c)
+void GLFWSystemController::charCallback(GLFWwindow*, unsigned int c)
 {
     auto& io = ImGui::GetIO();
 
@@ -639,37 +638,37 @@ void HG::Rendering::OpenGL::GLFWSystemController::charCallback(GLFWwindow*, unsi
     }
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
+void GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
 {
     // No associative container, cause of GLFW buttons are equal to HGEngine's input buttons.
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
         ->setPressedButton(static_cast<uint8_t>(button), static_cast<bool>(action));
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta)
+void GLFWSystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta)
 {
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
         ->setMouseWheelScroll(xDelta, yDelta);
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::handleWindowEvents()
+void GLFWSystemController::handleWindowEvents()
 {
     const_cast<HG::Core::Input::Window*>(controller->application()->input()->window())
         ->setClosed(static_cast<bool>(glfwWindowShouldClose(m_window)));
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
+void GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
     controller->application()->renderer()->defaultRenderTarget()->setSize({width, height});
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
-                                                                GLenum type,
-                                                                GLuint id,
-                                                                GLenum severity,
-                                                                GLsizei,
-                                                                const GLchar* message,
-                                                                const void*)
+void GLFWSystemController::glDebugOutput(GLenum source,
+                                         GLenum type,
+                                         GLuint id,
+                                         GLenum severity,
+                                         GLsizei,
+                                         const GLchar* message,
+                                         const void*)
 {
     // ignore non-significant error/warning codes
     if (id == 131169 || id == 3203 || id == 131185 || id == 131218 || id == 131204 || id == 8 ||
@@ -782,37 +781,37 @@ void HG::Rendering::OpenGL::GLFWSystemController::glDebugOutput(GLenum source,
     case GL_DEBUG_TYPE_ERROR:
     case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
     case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-        ErrorEx("OpenGL::RendererController") << ss.str();
+        HGErrorEx("OpenGL::RendererController") << ss.str();
         break;
 
     case GL_DEBUG_TYPE_PORTABILITY:
     case GL_DEBUG_TYPE_PERFORMANCE:
     case GL_DEBUG_TYPE_MARKER:
-        WarningEx("OpenGL::RendererController") << ss.str();
+        HGWarningEx("OpenGL::RendererController") << ss.str();
         break;
 
     case GL_DEBUG_TYPE_PUSH_GROUP:
     case GL_DEBUG_TYPE_POP_GROUP:
     case GL_DEBUG_TYPE_OTHER:
     default:
-        InfoEx("OpenGL::RendererController") << ss.str();
+        HGInfoEx("OpenGL::RendererController") << ss.str();
         break;
     }
 }
 
-HG::Utils::Rect HG::Rendering::OpenGL::GLFWSystemController::viewport() const
+HG::Utils::Rect GLFWSystemController::viewport() const
 {
     auto sz = controller->application()->renderer()->defaultRenderTarget()->size();
 
     return {0, 0, sz.x, sz.y};
 }
 
-void HG::Rendering::OpenGL::GLFWSystemController::changeTitle(std::string title)
+void GLFWSystemController::changeTitle(std::string title)
 {
     if (m_window)
     {
         glfwSetWindowTitle(m_window, title.c_str());
     }
 }
-
+} // namespace HG::Rendering::OpenGL
 #endif

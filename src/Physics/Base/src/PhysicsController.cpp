@@ -1,11 +1,14 @@
 // HG::Physics::Base
 #include <HG/Physics/Base/PhysicsController.hpp>
 
-HG::Physics::Base::PhysicsController::PhysicsController(HG::Core::Application* application) : m_parent(application)
+namespace HG::Physics::Base
+{
+PhysicsController::PhysicsController(HG::Core::Application* application) : m_parent(application)
 {
 }
 
-HG::Core::Application* HG::Physics::Base::PhysicsController::application() const
+HG::Core::Application* PhysicsController::application() const
 {
     return m_parent;
 }
+} // namespace HG::Physics::Base

@@ -26,13 +26,18 @@
 #include <HG/Rendering/Base/SystemController.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
 
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
+
 // GLM
 #include <glm/glm.hpp>
 
 // ImGui
 #include <imgui.h>
 
-HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
+namespace HG::Rendering::OpenGL::Forward
+{
+RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
     HG::Rendering::Base::RenderingPipeline(application),
     m_behavioursCache(),
     m_sortedBehaviours(),
@@ -45,7 +50,7 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::RenderingPipeline(HG::Core::A
 {
 }
 
-HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
+RenderingPipeline::~RenderingPipeline()
 {
     for (auto&& renderer : m_renderers)
     {
@@ -57,8 +62,7 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline::~RenderingPipeline()
     delete m_blitRenderer;
 }
 
-HG::Rendering::OpenGL::Forward::RenderingPipeline* HG::Rendering::OpenGL::Forward::RenderingPipeline::addRenderer(
-    HG::Rendering::OpenGL::Forward::AbstractRenderer* renderer)
+RenderingPipeline* RenderingPipeline::addRenderer(AbstractRenderer* renderer)
 {
     renderer->setApplication(application());
     m_renderers[renderer->getTarget()] = renderer;
@@ -66,7 +70,7 @@ HG::Rendering::OpenGL::Forward::RenderingPipeline* HG::Rendering::OpenGL::Forwar
     return this;
 }
 
-bool HG::Rendering::OpenGL::Forward::RenderingPipeline::init()
+bool RenderingPipeline::init()
 {
     if (!HG::Rendering::Base::RenderingPipeline::init())
     {
@@ -87,7 +91,7 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::init()
     return true;
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
+void RenderingPipeline::deinit()
 {
     HG::Rendering::Base::RenderingPipeline::deinit();
 
@@ -105,7 +109,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::deinit()
     application()->renderer()->materialCollection()->clearCache();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color color)
+void RenderingPipeline::clear(HG::Utils::Color color)
 {
     proceedRenderTargetOverride();
     updateViewport();
@@ -118,7 +122,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::clear(HG::Utils::Color c
     gl::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const std::vector<HG::Core::GameObject*>& objects)
+void RenderingPipeline::render(const std::vector<HG::Core::GameObject*>& objects)
 {
     clear(HG::Utils::Color::fromRGB(25, 25, 25));
 
@@ -156,8 +160,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::render(const std::vector
     application()->systemController()->swapBuffers();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(
-    const std::vector<HG::Core::GameObject*>& objects)
+void RenderingPipeline::proceedGameObjects(const std::vector<HG::Core::GameObject*>& objects)
 {
     BENCH("Proceeding gameobjects");
     m_sortedBehaviours.clear();
@@ -200,7 +203,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(
                 {
                     if (cubemapBehaviour)
                     {
-                        Warning() << "Several cubemap behaviours are available at the same time.";
+                        HGWarning() << "Several cubemap behaviours are available at the same time.";
                     }
 
                     cubemapBehaviour = behaviour;
@@ -235,7 +238,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedGameObjects(
     }
 }
 
-bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Base::RenderBehaviour* behaviour)
+bool RenderingPipeline::render(HG::Rendering::Base::RenderBehaviour* behaviour)
 {
     proceedRenderTargetOverride();
 
@@ -243,7 +246,7 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Ba
 
     if (rendererIterator == m_renderers.end())
     {
-        Info() << "Trying to render unknown render behaviour \"" << SystemTools::getTypeName(*behaviour) << "\"";
+        HGInfo() << "Trying to render unknown render behaviour \"" << SystemTools::getTypeName(*behaviour) << "\"";
         return false;
     }
 
@@ -255,7 +258,7 @@ bool HG::Rendering::OpenGL::Forward::RenderingPipeline::render(HG::Rendering::Ba
     return true;
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::setRenderTarget(HG::Rendering::Base::RenderTarget* target)
+void RenderingPipeline::setRenderTarget(HG::Rendering::Base::RenderTarget* target)
 {
     HG::Rendering::Base::RenderingPipeline::setRenderTarget(target);
 
@@ -263,7 +266,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setRenderTarget(HG::Rend
     {
         if (!setup(target))
         {
-            Error() << "Can't setup target.";
+            HGError() << "Can't setup target.";
             return;
         }
     }
@@ -275,7 +278,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::setRenderTarget(HG::Rend
     updateViewport();
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::updateViewport()
+void RenderingPipeline::updateViewport()
 {
     if (m_cachedViewport != renderTarget()->size())
     {
@@ -284,7 +287,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::updateViewport()
     }
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverride()
+void RenderingPipeline::proceedRenderTargetOverride()
 {
     if ((renderOverride() == nullptr || renderOverride()->mainRenderTarget == nullptr) &&
         m_savedRenderTarget != nullptr)
@@ -303,17 +306,17 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::proceedRenderTargetOverr
     }
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture* texture,
-                                                                         glm::ivec2 tl,
-                                                                         glm::ivec2 br,
-                                                                         uint8_t* data)
+void RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture* texture,
+                                         glm::ivec2 tl,
+                                         glm::ivec2 br,
+                                         std::uint8_t* data)
 {
     BENCH("Getting texture pixel region");
     auto textureData = texture->castSpecificDataTo<Common::Texture2DData>();
 
     if (textureData == nullptr)
     {
-        Error() << "No texture data.";
+        HGError() << "No texture data.";
         return;
     }
 
@@ -326,8 +329,7 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::getTextureRegion(HG::Ren
     }
 }
 
-void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base::RenderTarget* target,
-                                                             HG::Rendering::Base::BlitData* blitData)
+void RenderingPipeline::blit(HG::Rendering::Base::RenderTarget* target, HG::Rendering::Base::BlitData* blitData)
 {
     auto savedRenderTarget = renderTarget();
     setRenderTarget(target);
@@ -339,3 +341,4 @@ void HG::Rendering::OpenGL::Forward::RenderingPipeline::blit(HG::Rendering::Base
 
     setRenderTarget(savedRenderTarget);
 }
+} // namespace HG::Rendering::OpenGL::Forward

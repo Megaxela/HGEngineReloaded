@@ -5,18 +5,17 @@
 #include <HG/Core/BuildProperties.hpp>
 #include <HG/Core/Transform.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
 // GLM
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/transform.hpp>
 
-HG::Core::Transform::Transform() : Transform(nullptr)
+namespace HG::Core
+{
+Transform::Transform() : Transform(nullptr)
 {
 }
 
-HG::Core::Transform::Transform(GameObject* owner) :
+Transform::Transform(GameObject* owner) :
     m_localRotation(1.0f, 0.0f, 0.0f, 0.0f), // Initial
     m_localScale(1.0f, 1.0f, 1.0f),
     m_localPosition(),
@@ -26,7 +25,7 @@ HG::Core::Transform::Transform(GameObject* owner) :
 {
 }
 
-HG::Core::Transform::~Transform()
+Transform::~Transform()
 {
     for (auto& child : m_children)
     {
@@ -39,7 +38,7 @@ HG::Core::Transform::~Transform()
     setParent(nullptr);
 }
 
-void HG::Core::Transform::rotateAround(glm::vec3 anchor, glm::quat rotValue)
+void Transform::rotateAround(glm::vec3 anchor, glm::quat rotValue)
 {
     // Transformations
     auto matrix = localToWorldMatrix();
@@ -66,17 +65,17 @@ void HG::Core::Transform::rotateAround(glm::vec3 anchor, glm::quat rotValue)
     setLocalRotation(rotation);
 }
 
-glm::vec3 HG::Core::Transform::localScale() const
+glm::vec3 Transform::localScale() const
 {
     return m_localScale;
 }
 
-void HG::Core::Transform::setLocalScale(const glm::vec3& scale)
+void Transform::setLocalScale(const glm::vec3& scale)
 {
     m_localScale = scale;
 }
 
-glm::vec3 HG::Core::Transform::globalScale() const
+glm::vec3 Transform::globalScale() const
 {
     // Calculate
     if (m_parent == nullptr)
@@ -89,7 +88,7 @@ glm::vec3 HG::Core::Transform::globalScale() const
     }
 }
 
-void HG::Core::Transform::setGlobalScale(const glm::vec3& scale)
+void Transform::setGlobalScale(const glm::vec3& scale)
 {
     if (m_parent == nullptr)
     {
@@ -101,27 +100,27 @@ void HG::Core::Transform::setGlobalScale(const glm::vec3& scale)
     }
 }
 
-glm::quat HG::Core::Transform::localRotation() const
+glm::quat Transform::localRotation() const
 {
     return m_localRotation;
 }
 
-void HG::Core::Transform::setLocalRotation(const glm::quat& rotation)
+void Transform::setLocalRotation(const glm::quat& rotation)
 {
     m_localRotation = rotation;
 }
 
-glm::vec3 HG::Core::Transform::localPosition() const
+glm::vec3 Transform::localPosition() const
 {
     return m_localPosition;
 }
 
-void HG::Core::Transform::setLocalPosition(const glm::vec3& localPosition)
+void Transform::setLocalPosition(const glm::vec3& localPosition)
 {
     m_localPosition = localPosition;
 }
 
-glm::vec3 HG::Core::Transform::globalPosition() const
+glm::vec3 Transform::globalPosition() const
 {
     // Calculate
     if (m_parent == nullptr)
@@ -134,7 +133,7 @@ glm::vec3 HG::Core::Transform::globalPosition() const
     }
 }
 
-void HG::Core::Transform::setGlobalPosition(const glm::vec3& globalPosition)
+void Transform::setGlobalPosition(const glm::vec3& globalPosition)
 {
     if (m_parent == nullptr)
     {
@@ -146,7 +145,7 @@ void HG::Core::Transform::setGlobalPosition(const glm::vec3& globalPosition)
     }
 }
 
-glm::quat HG::Core::Transform::globalRotation() const
+glm::quat Transform::globalRotation() const
 {
     if (m_parent == nullptr)
     {
@@ -156,7 +155,7 @@ glm::quat HG::Core::Transform::globalRotation() const
     return glm::normalize(m_parent->globalRotation() * m_localRotation);
 }
 
-void HG::Core::Transform::setGlobalRotation(const glm::quat& rotation)
+void Transform::setGlobalRotation(const glm::quat& rotation)
 {
     if (m_parent == nullptr)
     {
@@ -168,7 +167,7 @@ void HG::Core::Transform::setGlobalRotation(const glm::quat& rotation)
     }
 }
 
-void HG::Core::Transform::setParent(HG::Core::Transform* transform)
+void Transform::setParent(Transform* transform)
 {
     if (transform == nullptr)
     {
@@ -177,7 +176,7 @@ void HG::Core::Transform::setParent(HG::Core::Transform* transform)
 
         if (m_parent != nullptr)
         {
-            if constexpr (HG::Core::BuildProperties::isDebug())
+            if constexpr (BuildProperties::isDebug())
             {
                 if (std::find(m_parent->children().begin(), m_parent->children().end(), this) ==
                     m_parent->children().end())
@@ -213,12 +212,12 @@ void HG::Core::Transform::setParent(HG::Core::Transform* transform)
     }
 }
 
-HG::Core::Transform* HG::Core::Transform::parent() const
+Transform* Transform::parent() const
 {
     return m_parent;
 }
 
-glm::mat4 HG::Core::Transform::localToWorldMatrix() const
+glm::mat4 Transform::localToWorldMatrix() const
 {
     auto scale = globalScale();
 
@@ -243,7 +242,7 @@ glm::mat4 HG::Core::Transform::localToWorldMatrix() const
     return model;
 }
 
-void HG::Core::Transform::setFromLocalToWorldMatrix(const glm::mat4& matrix)
+void Transform::setFromLocalToWorldMatrix(const glm::mat4& matrix)
 {
     glm::vec3 position;
     glm::quat rotation;
@@ -258,22 +257,22 @@ void HG::Core::Transform::setFromLocalToWorldMatrix(const glm::mat4& matrix)
     setGlobalScale(scale);
 }
 
-const std::vector<HG::Core::Transform*>& HG::Core::Transform::children() const
+const std::vector<Transform*>& Transform::children() const
 {
     return m_children;
 }
 
-HG::Core::GameObject* HG::Core::Transform::gameObject() const
+GameObject* Transform::gameObject() const
 {
     return m_owner;
 }
 
-HG::Core::Transform::Transform(const HG::Core::Transform& transform) : Transform()
+Transform::Transform(const Transform& transform) : Transform()
 {
     (*this) = transform;
 }
 
-HG::Core::Transform& HG::Core::Transform::operator=(const HG::Core::Transform& transform)
+Transform& Transform::operator=(const Transform& transform)
 {
     // todo: Recalculate local rotation from current parent's rotation
     m_localRotation = transform.globalRotation();
@@ -284,3 +283,4 @@ HG::Core::Transform& HG::Core::Transform::operator=(const HG::Core::Transform& t
 
     return *this;
 }
+} // namespace HG::Core

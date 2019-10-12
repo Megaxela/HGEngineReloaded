@@ -71,7 +71,7 @@ TEST(Core, CachableResource)
         ASSERT_EQ(sequence, expected);
     }
 
-    int32_t z = 1;
+    std::int32_t z = 1;
 
     for (int i = 0; i < 64; ++i)
     {

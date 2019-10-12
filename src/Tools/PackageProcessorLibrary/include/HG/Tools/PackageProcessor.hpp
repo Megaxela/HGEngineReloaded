@@ -104,8 +104,8 @@ public:
         std::string author;
         struct
         {
-            uint32_t major = 0;
-            uint32_t minor = 0;
+            std::uint32_t major = 0;
+            std::uint32_t minor = 0;
         } version;
     };
 
@@ -135,13 +135,13 @@ public:
          * Filesystem or package located.
          * @return
          */
-        Type type() const;
+        [[nodiscard]] Type type() const;
 
         /**
          * @brief Method for getting file path.
          * @return Path to file.
          */
-        std::filesystem::path path() const;
+        [[nodiscard]] std::filesystem::path path() const;
 
         /**
          * @brief Method for getting size of
@@ -151,7 +151,7 @@ public:
          * will be thrown.
          * @return Global offset in bytes.
          */
-        std::size_t compressedOffset() const;
+        [[nodiscard]] std::size_t compressedOffset() const;
 
         /**
          * @brief Method for getting compressed
@@ -161,7 +161,7 @@ public:
          * will be thrown.
          * @return Size in bytes.
          */
-        std::size_t compressedSize() const;
+        [[nodiscard]] std::size_t compressedSize() const;
 
     private:
         Type m_type;
@@ -245,7 +245,7 @@ public:
      * files.
      * @return Constant reference to vector with files.
      */
-    const std::vector<File>& files() const;
+    [[nodiscard]] const std::vector<File>& files() const;
 
 private:
     void internalUnpack(std::ifstream& stream, std::filesystem::path destination, const File& file);
@@ -255,9 +255,9 @@ private:
 
     void writePackageFile(std::ofstream& to, std::ifstream& basePackageFile, std::size_t& offset, std::size_t& size);
 
-    uint32_t calculateStreamCRC(std::ifstream& fl);
+    std::uint32_t calculateStreamCRC(std::ifstream& fl);
 
-    void validateCRC(std::ifstream& file, uint32_t crc);
+    void validateCRC(std::ifstream& file, std::uint32_t crc);
 
     std::filesystem::path m_pathToOpenedPackage;
 

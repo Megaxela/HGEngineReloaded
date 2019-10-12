@@ -1,7 +1,9 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/CubeMap.hpp>
 
-HG::Rendering::Base::CubeMap::CubeMap() :
+namespace HG::Rendering::Base
+{
+CubeMap::CubeMap() :
     RenderData(Id),
     m_right(nullptr),
     m_left(nullptr),
@@ -12,12 +14,12 @@ HG::Rendering::Base::CubeMap::CubeMap() :
 {
 }
 
-HG::Rendering::Base::CubeMap::CubeMap(HG::Utils::SurfaceFuturePtr right,
-                                      HG::Utils::SurfaceFuturePtr left,
-                                      HG::Utils::SurfaceFuturePtr top,
-                                      HG::Utils::SurfaceFuturePtr bottom,
-                                      HG::Utils::SurfaceFuturePtr front,
-                                      HG::Utils::SurfaceFuturePtr back) :
+CubeMap::CubeMap(HG::Utils::SurfaceFuturePtr right,
+                 HG::Utils::SurfaceFuturePtr left,
+                 HG::Utils::SurfaceFuturePtr top,
+                 HG::Utils::SurfaceFuturePtr bottom,
+                 HG::Utils::SurfaceFuturePtr front,
+                 HG::Utils::SurfaceFuturePtr back) :
     RenderData(Id),
     m_right(std::move(right)),
     m_left(std::move(left)),
@@ -28,8 +30,7 @@ HG::Rendering::Base::CubeMap::CubeMap(HG::Utils::SurfaceFuturePtr right,
 {
 }
 
-HG::Utils::SurfacePtr HG::Rendering::Base::CubeMap::getSideSurface(HG::Rendering::Base::CubeMap::Side side,
-                                                                   bool guarantee)
+HG::Utils::SurfacePtr CubeMap::getSideSurface(CubeMap::Side side, bool guarantee)
 {
     if (guarantee)
     {
@@ -75,8 +76,7 @@ HG::Utils::SurfacePtr HG::Rendering::Base::CubeMap::getSideSurface(HG::Rendering
     return nullptr;
 }
 
-void HG::Rendering::Base::CubeMap::setSideSurface(HG::Rendering::Base::CubeMap::Side side,
-                                                  HG::Utils::SurfaceFuturePtr surface)
+void CubeMap::setSideSurface(CubeMap::Side side, HG::Utils::SurfaceFuturePtr surface)
 {
     switch (side)
     {
@@ -104,3 +104,4 @@ void HG::Rendering::Base::CubeMap::setSideSurface(HG::Rendering::Base::CubeMap::
 
     throw std::invalid_argument("Wrong side value.");
 }
+} // namespace HG::Rendering::Base

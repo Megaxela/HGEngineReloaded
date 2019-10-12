@@ -3,32 +3,37 @@
 #include <HG/Core/ResourceAccessor.hpp>
 #include <HG/Core/ResourceManager.hpp>
 
-HG::Core::ResourceManager::ResourceManager(HG::Core::Application* parent) : m_accessor(nullptr), m_application(parent)
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
+
+namespace HG::Core
+{
+ResourceManager::ResourceManager(Application* parent) : m_accessor(nullptr), m_application(parent)
 {
 }
 
-HG::Core::ResourceManager::~ResourceManager()
+ResourceManager::~ResourceManager()
 {
     delete m_accessor;
 }
 
-HG::Core::Application* HG::Core::ResourceManager::application()
+Application* ResourceManager::application() const
 {
     return m_application;
 }
 
-HG::Core::ResourceAccessor* HG::Core::ResourceManager::resourceAccessor() const
+ResourceAccessor* ResourceManager::resourceAccessor() const
 {
     return m_accessor;
 }
 
-HG::Core::DataPtr HG::Core::ResourceManager::loadRawFromAccessor(const std::string& id)
+DataPtr ResourceManager::loadRawFromAccessor(const std::string& id)
 {
-    Info() << "Loading resource \"" << id << "\"";
+    HGInfo() << "Loading resource \"" << id << "\"";
 
     if (m_accessor == nullptr)
     {
-        Error() << "Trying to load \"" << id << "\" resource, without ResourceAccessor.";
+        HGError() << "Trying to load \"" << id << "\" resource, without ResourceAccessor.";
         return nullptr;
     }
 
@@ -36,7 +41,7 @@ HG::Core::DataPtr HG::Core::ResourceManager::loadRawFromAccessor(const std::stri
 
     if (data == nullptr)
     {
-        Error() << "Can't load \"" << id << "\" resource. See errors above.";
+        HGError() << "Can't load \"" << id << "\" resource. See errors above.";
 
         return nullptr;
     }
@@ -44,12 +49,13 @@ HG::Core::DataPtr HG::Core::ResourceManager::loadRawFromAccessor(const std::stri
     return data;
 }
 
-void HG::Core::ResourceManager::setResourceAccessor(HG::Core::ResourceAccessor* accessor)
+void ResourceManager::setResourceAccessor(ResourceAccessor* accessor)
 {
     if (m_accessor != nullptr)
     {
-        Warning() << "Redefining ResourceAccessor accessor is bad practice.";
+        HGWarning() << "Redefining ResourceAccessor accessor is bad practice.";
     }
 
     m_accessor = accessor;
 }
+} // namespace HG::Core

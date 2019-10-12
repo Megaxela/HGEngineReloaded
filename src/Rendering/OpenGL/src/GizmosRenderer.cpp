@@ -16,13 +16,15 @@
 #include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
 
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
+
 // gl
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
-HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* application) :
+namespace HG::Rendering::OpenGL
+{
+GizmosRenderer::GizmosRenderer(HG::Core::Application* application) :
     m_application(application),
     m_lineMaterial(nullptr),
     m_meshMaterial(nullptr),
@@ -31,9 +33,9 @@ HG::Rendering::OpenGL::GizmosRenderer::GizmosRenderer(HG::Core::Application* app
 {
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::onDeinit()
+void GizmosRenderer::onDeinit()
 {
-    Info() << "Deinitializing gizmos renderer";
+    HGInfo() << "Deinitializing gizmos renderer";
 
     delete m_lineMaterial;
     delete m_meshMaterial;
@@ -45,9 +47,9 @@ void HG::Rendering::OpenGL::GizmosRenderer::onDeinit()
     m_linesVBO = std::move(gl::buffer(gl::invalid_id));
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::onInit()
+void GizmosRenderer::onInit()
 {
-    Info() << "Initializing gizmos renderer";
+    HGInfo() << "Initializing gizmos renderer";
 
     m_linesVAO = std::move(gl::vertex_array());
     m_linesVBO = std::move(gl::buffer());
@@ -75,34 +77,34 @@ void HG::Rendering::OpenGL::GizmosRenderer::onInit()
     m_linesVAO.set_attribute_format(1, 4, GL_FLOAT, false, offsetof(HG::Rendering::Base::Gizmos::LineData, beginColor));
 }
 
-HG::Core::Application* HG::Rendering::OpenGL::GizmosRenderer::application() const
+HG::Core::Application* GizmosRenderer::application() const
 {
     return m_application;
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::line(const HG::Rendering::Base::Gizmos::LineData& line)
+void GizmosRenderer::line(const HG::Rendering::Base::Gizmos::LineData& line)
 {
     m_lineData.push_back(line);
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::sphere(const HG::Rendering::Base::Gizmos::SphereData& sphere)
+void GizmosRenderer::sphere(const HG::Rendering::Base::Gizmos::SphereData& sphere)
 {
     (void)sphere;
     // todo: Add implementation
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::hexahedron(const HG::Rendering::Base::Gizmos::HexahedronData& hexahedron)
+void GizmosRenderer::hexahedron(const HG::Rendering::Base::Gizmos::HexahedronData& hexahedron)
 {
     (void)hexahedron;
     // todo: Add implementation
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::render()
+void GizmosRenderer::render()
 {
     renderLines();
 }
 
-void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
+void GizmosRenderer::renderLines()
 {
     BENCH("Rendering gizmos lines");
     auto camera = application()->renderer()->activeCamera();
@@ -135,3 +137,4 @@ void HG::Rendering::OpenGL::GizmosRenderer::renderLines()
 
     m_lineData.clear();
 }
+} // namespace HG::Rendering::OpenGL

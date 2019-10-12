@@ -20,14 +20,16 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-void HG::Standard::Behaviours::DebugControllerOverlay::onUpdate()
+namespace HG::Standard::Behaviours
+{
+void DebugControllerOverlay::onUpdate()
 {
     displayMenu();
     displayGameObjectsWindow();
     displayInspectorWindow();
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::displayMenu()
+void DebugControllerOverlay::displayMenu()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -65,7 +67,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayMenu()
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::displayGameObjectsWindow()
+void DebugControllerOverlay::displayGameObjectsWindow()
 {
     ImGui::Begin("GameObjects");
 
@@ -77,7 +79,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayGameObjectsWindow(
     ImGui::End();
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::displayInspectorWindow()
+void DebugControllerOverlay::displayInspectorWindow()
 {
     static bool opened = true;
 
@@ -97,7 +99,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayInspectorWindow()
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
+void DebugControllerOverlay::proceedInspector()
 {
     // Display gameobject origin
     //    auto originPosition = m_activeGameObject->transform()->globalPosition();
@@ -172,7 +174,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedInspector()
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObjects(HG::Core::Transform* parent)
+void DebugControllerOverlay::proceedParentedGameObjects(HG::Core::Transform* parent)
 {
     HG::Core::GameObject* newActiveGameObject = nullptr;
 
@@ -213,8 +215,7 @@ void HG::Standard::Behaviours::DebugControllerOverlay::proceedParentedGameObject
     }
 }
 
-void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(
-    const HG::Core::Behaviour::Property& property)
+void DebugControllerOverlay::displayPropertyWidget(const HG::Core::Behaviour::Property& property)
 {
     if (property.typeInfo() == typeid(float))
     {
@@ -256,3 +257,4 @@ void HG::Standard::Behaviours::DebugControllerOverlay::displayPropertyWidget(
         ImGui::Text("Unknown property format: %s", property.type().c_str());
     }
 }
+} // namespace HG::Standard::Behaviours

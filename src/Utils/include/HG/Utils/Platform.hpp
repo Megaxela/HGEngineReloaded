@@ -6,13 +6,13 @@
 #    define OS_WINDOWS
 #endif
 
-// ALogger
-#include <CurrentLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 #ifdef OS_LINUX
 #    define FUNCTION_WINDOWS_STUB
-#    define FUNCTION_LINUX_STUB Error() << "Function has no realisation for linux.";
+#    define FUNCTION_LINUX_STUB HGErrorF() << "Function has no realisation for linux.";
 #else
-#    define FUNCTION_WINDOWS_STUB ErrorF() << "Function has no realisation for windows.";
+#    define FUNCTION_WINDOWS_STUB HGErrorF() << "Function has no realisation for windows.";
 #    define FUNCTION_LINUX_STUB
 #endif

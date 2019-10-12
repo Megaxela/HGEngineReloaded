@@ -64,7 +64,7 @@ void HG::Rendering::Base::Gizmos::circle(const glm::vec3& position, glm::vec2 si
 
 void HG::Rendering::Base::Gizmos::circle(const HG::Core::Transform& transform,
                                          glm::vec2 size,
-                                         uint32_t parts,
+                                         std::uint32_t parts,
                                          const HG::Utils::Color& color)
 {
     // todo: Apply transform rotation and scale
@@ -87,7 +87,7 @@ void HG::Rendering::Base::Gizmos::circle(const HG::Core::Transform& transform,
 
     auto lastPoint = firstPoint;
 
-    for (uint32_t i = 1; i < parts; ++i)
+    for (std::uint32_t i = 1; i < parts; ++i)
     {
         auto angleRadians = (2 * glm::pi<float>()) / parts * i;
 

@@ -13,7 +13,28 @@
 #    include <psapi.h>
 #endif
 
-uint64_t HG::Utils::PhysicalResource::getTotalRAM()
+namespace
+{
+std::uint64_t parseLine(char* line)
+{
+    // This assumes that a digit will be found and the line ends in " Kb".
+    auto i        = strlen(line);
+    const char* p = line;
+
+    // Skipping all symbols, except digits
+    while (*p < '0' || *p > '9')
+        p++;
+
+    line[i - 3] = '\0';
+
+    // Parsing
+    return static_cast<uint64_t>(atoll(p));
+}
+} // namespace
+
+namespace HG::Utils
+{
+std::uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 {
 #ifdef OS_WINDOWS
     MEMORYSTATUSEX status;
@@ -32,7 +53,7 @@ uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 
     if (sysinfo(&info) == -1)
     {
-        ErrorF() << "sysinfo error: " << strerror(errno);
+        HGErrorF() << "sysinfo error: " << strerror(errno);
         return 0;
     }
 
@@ -59,7 +80,7 @@ uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 
     if (sysinfo(&info) == -1)
     {
-        ErrorF() << "sysinfo error: " << strerror(errno);
+        HGErrorF() << "sysinfo error: " << strerror(errno);
         return 0;
     }
 
@@ -67,26 +88,7 @@ uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 #endif
 }
 
-namespace
-{
-uint64_t parseLine(char* line)
-{
-    // This assumes that a digit will be found and the line ends in " Kb".
-    auto i        = strlen(line);
-    const char* p = line;
-
-    // Skipping all symbols, except digits
-    while (*p < '0' || *p > '9')
-        p++;
-
-    line[i - 3] = '\0';
-
-    // Parsing
-    return static_cast<uint64_t>(atoll(p));
-}
-} // namespace
-
-uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
+std::uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 {
 #ifdef OS_WINDOWS
 
@@ -113,7 +115,7 @@ uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 
     if (file == nullptr)
     {
-        ErrorF() << "Can't open \"/proc/self/status\". Error: " << strerror(errno);
+        HGErrorF() << "Can't open \"/proc/self/status\". Error: " << strerror(errno);
         return 0;
     }
 
@@ -130,8 +132,9 @@ uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
         }
     }
 
-    WarningF() << "VmRSS was not found in \"/proc/self/status\".";
+    HGWarningF() << "VmRSS was not found in \"/proc/self/status\".";
     fclose(file);
     return 0;
 #endif
 }
+} // namespace HG::Utils

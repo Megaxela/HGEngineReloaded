@@ -12,13 +12,15 @@
 // HG::Standard
 #include <HG/Standard/Behaviours/FPSCameraMovement.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 // GLM
 #include <glm/glm.hpp>
 
-HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
+namespace HG::Standard::Behaviours
+{
+FPSCameraMovement::FPSCameraMovement() :
     m_enabled(false),
     m_first(false),
     m_lastMousePosition(),
@@ -29,17 +31,17 @@ HG::Standard::Behaviours::FPSCameraMovement::FPSCameraMovement() :
 {
 }
 
-void HG::Standard::Behaviours::FPSCameraMovement::onStart()
+void FPSCameraMovement::onStart()
 {
     m_camera = gameObject()->findBehaviour<HG::Rendering::Base::Camera>();
 
     if (!m_camera)
     {
-        Warning() << "Can't setup FPS camera movement, without camera.";
+        HGWarning() << "Can't setup FPS camera movement, without camera.";
     }
 }
 
-void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
+void FPSCameraMovement::onUpdate()
 {
     if (m_camera == nullptr)
     {
@@ -75,7 +77,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::onUpdate()
     }
 }
 
-void HG::Standard::Behaviours::FPSCameraMovement::handleMouseRotation()
+void FPSCameraMovement::handleMouseRotation()
 {
     // Frame sens
     float frameSensitivity = m_propertySensitivity / 10;
@@ -107,7 +109,7 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleMouseRotation()
     m_camera->lookAt(m_camera->gameObject()->transform()->localPosition() + m_front);
 }
 
-void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
+void FPSCameraMovement::handleKeyboardMovement()
 {
     auto dt = scene()->application()->timeStatistics()->lastFrameDeltaTime().count() / 1000000.0;
 
@@ -163,3 +165,4 @@ void HG::Standard::Behaviours::FPSCameraMovement::handleKeyboardMovement()
                                                  inputDirection *
                                                      m_camera->gameObject()->transform()->globalRotation());
 }
+} // namespace HG::Standard::Behaviours

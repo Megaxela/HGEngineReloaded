@@ -124,7 +124,7 @@ public:
      * @brief Method for getting shader text.
      * @return Shader text.
      */
-    std::string shaderText() const;
+    [[nodiscard]] std::string shaderText() const;
 
 private:
     std::string m_shaderText;

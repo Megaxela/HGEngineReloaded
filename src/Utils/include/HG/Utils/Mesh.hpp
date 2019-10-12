@@ -18,7 +18,7 @@ class Mesh
 public:
     // Properties
     std::vector<Vertex> Vertices;
-    std::vector<uint32_t> Indices;
+    std::vector<std::uint32_t> Indices;
 
     /**
      * @brief Default constructor.

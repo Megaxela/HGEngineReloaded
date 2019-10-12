@@ -58,7 +58,7 @@ public:
      * @brief Method for getting parent scene.
      * @return Pointer to parent scene.
      */
-    HG::Core::Scene* scene() const;
+    [[nodiscard]] HG::Core::Scene* scene() const;
 
     /**
      * @brief Method for adding new behaviour.
@@ -89,14 +89,14 @@ public:
      * name.
      * @return String name.
      */
-    std::string name() const;
+    [[nodiscard]] std::string name() const;
 
     /**
      * @brief Method for checking is gameobject enabled.
      * If gameobject is disabled, no behaviours will be updated.
      * @return
      */
-    bool isEnabled() const;
+    [[nodiscard]] bool isEnabled() const;
 
     /**
      * @brief Method for setting gameobject enabled state.
@@ -112,7 +112,7 @@ public:
      * HG::Core::Scene::getGameObjects, but it's still possible to remove
      * or add gameobject to scene.
      */
-    bool isHidden() const;
+    [[nodiscard]] bool isHidden() const;
 
     /**
      * @brief Method for setting gameobject hidden state.
@@ -134,7 +134,7 @@ public:
      * @param container Container object.
      */
     template <typename Container>
-    void getRenderingBehaviours(Container& container)
+    void getRenderingBehaviours(Container& container) const
     {
         for (auto&& behaviour : m_renderBehaviours)
         {
@@ -149,7 +149,7 @@ public:
 
     // todo: Add commentary
     template <typename BehaviourType>
-    BehaviourType* findBehaviour()
+    BehaviourType* findBehaviour() const
     {
         for (auto&& behaviour : m_behaviours)
         {
@@ -189,7 +189,7 @@ public:
 
     // todo: Add commentary
     template <typename BehaviourType, typename Container>
-    void findBehaviours(Container& container)
+    void findBehaviours(Container& container) const
     {
         for (auto&& behaviour : m_behaviours)
         {
@@ -209,7 +209,7 @@ public:
 
     // todo: Add commentary
     template <typename Container>
-    void getBehaviours(Container& container)
+    void getBehaviours(Container& container) const
     {
         for (auto&& behaviour : m_behaviours)
         {

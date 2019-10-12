@@ -57,7 +57,7 @@ public:
      * @brief Method for getting application.
      * @return Pointer to application.
      */
-    HG::Core::Application* application() const;
+    [[nodiscard]] HG::Core::Application* application() const;
 
     /**
      * @brief Method for setting application.

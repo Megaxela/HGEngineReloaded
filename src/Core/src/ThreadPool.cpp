@@ -2,11 +2,11 @@
 #include <HG/Core/ThreadPool.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
-HG::Core::ThreadPool::ThreadPool() : m_data()
+namespace HG::Core
+{
+ThreadPool::ThreadPool() : m_data()
 {
     auto hw = std::thread::hardware_concurrency();
 
@@ -24,7 +24,7 @@ HG::Core::ThreadPool::ThreadPool() : m_data()
     }
 }
 
-HG::Core::ThreadPool::~ThreadPool()
+ThreadPool::~ThreadPool()
 {
     for (auto&& [type, data] : m_data)
     {
@@ -37,13 +37,13 @@ HG::Core::ThreadPool::~ThreadPool()
     }
 }
 
-void HG::Core::ThreadPool::threadFunction(std::size_t id, HG::Core::ThreadPool::Type type)
+void ThreadPool::threadFunction(std::size_t id, ThreadPool::Type type)
 {
     auto data = getPoolData(type);
 
     if (data == nullptr) // WTF??
     {
-        Error() << "Thread function can't get it's pool data. Closing thread.";
+        HGError() << "Thread function can't get it's pool data. Closing thread.";
         return;
     }
 
@@ -74,8 +74,8 @@ void HG::Core::ThreadPool::threadFunction(std::size_t id, HG::Core::ThreadPool::
         }
         catch (std::exception& exception)
         {
-            Error() << "Thread from pool with [id=" << id << ", type=" << type
-                    << "] received exception: " << exception.what();
+            HGError() << "Thread from pool with [id=" << id << ", type=" << type
+                      << "] received exception: " << exception.what();
         }
     }
 
@@ -84,7 +84,7 @@ void HG::Core::ThreadPool::threadFunction(std::size_t id, HG::Core::ThreadPool::
     //    data->threads.erase(id);
 }
 
-void HG::Core::ThreadPool::pushInternal(std::function<void()> job, HG::Core::ThreadPool::Type type)
+void ThreadPool::pushInternal(std::function<void()> job, ThreadPool::Type type)
 {
     auto data = getPoolData(type);
 
@@ -101,7 +101,7 @@ void HG::Core::ThreadPool::pushInternal(std::function<void()> job, HG::Core::Thr
     data->jobsNotifier.notify_all();
 }
 
-void HG::Core::ThreadPool::startPool(HG::Core::ThreadPool::Type type, std::size_t numberOfThreads)
+void ThreadPool::startPool(ThreadPool::Type type, std::size_t numberOfThreads)
 {
     std::shared_ptr<PoolData> data = nullptr;
 
@@ -138,7 +138,7 @@ void HG::Core::ThreadPool::startPool(HG::Core::ThreadPool::Type type, std::size_
     }
 }
 
-void HG::Core::ThreadPool::stopPool(HG::Core::ThreadPool::Type type)
+void ThreadPool::stopPool(ThreadPool::Type type)
 {
     std::shared_ptr<PoolData> data = getPoolData(type);
 
@@ -151,7 +151,7 @@ void HG::Core::ThreadPool::stopPool(HG::Core::ThreadPool::Type type)
     data->jobsNotifier.notify_all();
 }
 
-void HG::Core::ThreadPool::joinPool(HG::Core::ThreadPool::Type type)
+void ThreadPool::joinPool(ThreadPool::Type type)
 {
     std::shared_ptr<PoolData> data = getPoolData(type);
 
@@ -164,7 +164,7 @@ void HG::Core::ThreadPool::joinPool(HG::Core::ThreadPool::Type type)
     }
 }
 
-std::shared_ptr<HG::Core::ThreadPool::PoolData> HG::Core::ThreadPool::getPoolData(HG::Core::ThreadPool::Type type) const
+std::shared_ptr<ThreadPool::PoolData> ThreadPool::getPoolData(ThreadPool::Type type) const
 {
     std::shared_lock lock(m_dataMutex);
 
@@ -181,7 +181,7 @@ std::shared_ptr<HG::Core::ThreadPool::PoolData> HG::Core::ThreadPool::getPoolDat
     }
 }
 
-std::size_t HG::Core::ThreadPool::numberOfJobs(HG::Core::ThreadPool::Type type) const
+std::size_t ThreadPool::numberOfJobs(ThreadPool::Type type) const
 {
     auto data = getPoolData(type);
 
@@ -192,3 +192,4 @@ std::size_t HG::Core::ThreadPool::numberOfJobs(HG::Core::ThreadPool::Type type) 
 
     return data->jobs.size();
 }
+} // namespace HG::Core

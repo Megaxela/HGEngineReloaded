@@ -1,19 +1,19 @@
 // HG::Utils
 #include <HG/Utils/Loaders/STBImageLoader.hpp>
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Surface.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 // stb
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-HG::Utils::STBImageLoader::STBImageLoader()
+namespace HG::Utils
+{
+STBImageLoader::STBImageLoader()
 {
 }
 
-HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std::byte* data, std::size_t size)
+STBImageLoader::ResultType STBImageLoader::load(const std::byte* data, std::size_t size)
 {
     // Trying to load image with stbb
     int width;
@@ -25,11 +25,11 @@ HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std:
 
     if (resultData == nullptr)
     {
-        Error() << "Can't load image from memory. Error: " << stbi_failure_reason();
+        HGError() << "Can't load image from memory. Error: " << stbi_failure_reason();
         return nullptr;
     }
 
-    auto surface = std::make_shared<Surface>([](uint8_t* data, int, int, int) { stbi_image_free(data); });
+    auto surface = std::make_shared<Surface>([](std::uint8_t* data, int, int, int) { stbi_image_free(data); });
 
     surface->Data   = resultData;
     surface->Width  = width;
@@ -38,3 +38,4 @@ HG::Utils::STBImageLoader::ResultType HG::Utils::STBImageLoader::load(const std:
 
     return surface;
 }
+} // namespace HG::Utils

@@ -12,21 +12,22 @@
 #include <HG/Rendering/OpenGL/Common/RenderTargetDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Common/Texture2DData.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
-HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::RenderTargetDataProcessor()
+namespace HG::Rendering::OpenGL::Common
+{
+RenderTargetDataProcessor::RenderTargetDataProcessor()
 {
 }
 
-bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data,
-                                                                     bool guarantee)
+bool RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto renderTarget = dynamic_cast<HG::Rendering::Base::RenderTarget*>(data);
 
     if (renderTarget == nullptr)
     {
-        Error() << "Got non render target render data in render target data processor. Types are corrupted.";
+        HGError() << "Got non render target render data in render target data processor. Types are corrupted.";
         exit(-1);
     }
 
@@ -85,17 +86,18 @@ bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::setup(HG::Renderi
     return true;
 }
 
-std::size_t HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::getTarget()
+std::size_t RenderTargetDataProcessor::getTarget()
 {
     return HG::Rendering::Base::RenderTarget::DataId;
 }
 
-bool HG::Rendering::OpenGL::Common::RenderTargetDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+bool RenderTargetDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto renderTarget     = static_cast<HG::Rendering::Base::RenderTarget*>(data);
-    auto renderTargetData = renderTarget->castSpecificDataTo<HG::Rendering::OpenGL::Common::RenderTargetData>();
+    auto renderTargetData = renderTarget->castSpecificDataTo<RenderTargetData>();
 
     return renderTargetData == nullptr || renderTargetData->Size != renderTarget->size() ||
            renderTargetData->Framebuffer.id() == gl::invalid_id ||
            renderTargetData->Framebuffer.status() == GL_FRAMEBUFFER_COMPLETE || !renderTargetData->Valid;
 }
+} // namespace HG::Rendering::OpenGL::Common

@@ -10,19 +10,19 @@
 #include <HG/Standard/Behaviours/IngameConsole.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/StringTools.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 // ImGui
 #include <imgui.h>
 
-HG::Standard::Behaviours::IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
+namespace HG::Standard::Behaviours
+{
+IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
 {
     connectLoggingWatcher();
 
-    Info() << "Creating ingame console";
+    HGInfo() << "Creating ingame console";
 
     addCommand(Command("help", "Displays this text.", [this](Command::Arguments) -> int {
         for (auto&& [name, command] : m_commands)
@@ -47,7 +47,7 @@ HG::Standard::Behaviours::IngameConsole::IngameConsole() : m_logsListener(), m_c
     }));
 
     addCommand(Command("quit", "Closes application.", [this](Command::Arguments) -> int {
-        Info() << "Closing app from console.";
+        HGInfo() << "Closing app from console.";
         scene()->application()->stop();
 
         return 0;
@@ -59,20 +59,20 @@ HG::Standard::Behaviours::IngameConsole::IngameConsole() : m_logsListener(), m_c
                        [this](Command::Arguments a) { return commandClEnableDebug(a); }));
 }
 
-HG::Standard::Behaviours::IngameConsole::~IngameConsole()
+IngameConsole::~IngameConsole()
 {
-    if (m_logsListener && CurrentLogger::i())
+    if (m_logsListener && HG::Utils::Logging::userLogger())
     {
-        CurrentLogger::i()->removeLogsListener(m_logsListener);
+        HG::Utils::Logging::userLogger()->removeLogsListener(m_logsListener);
     }
 }
 
-void HG::Standard::Behaviours::IngameConsole::addCommand(HG::Standard::Behaviours::IngameConsole::Command c)
+void IngameConsole::addCommand(IngameConsole::Command c)
 {
     m_commands[HG::Utils::StringTools::toLower(c.command)] = std::move(c);
 }
 
-void HG::Standard::Behaviours::IngameConsole::displayConsole()
+void IngameConsole::displayConsole()
 {
     bool shown = true;
 
@@ -134,19 +134,19 @@ void HG::Standard::Behaviours::IngameConsole::displayConsole()
     }
 }
 
-void HG::Standard::Behaviours::IngameConsole::onStart()
+void IngameConsole::onStart()
 {
     setEnabled(false);
 }
 
-void HG::Standard::Behaviours::IngameConsole::onUpdate()
+void IngameConsole::onUpdate()
 {
     proceedLogs();
 
     displayConsole();
 }
 
-void HG::Standard::Behaviours::IngameConsole::proceedLogs()
+void IngameConsole::proceedLogs()
 {
     AbstractLogger::Message msg;
     while (m_logsListener && m_logsListener->hasMessages())
@@ -157,12 +157,12 @@ void HG::Standard::Behaviours::IngameConsole::proceedLogs()
     }
 }
 
-void HG::Standard::Behaviours::IngameConsole::logText(const HG::Utils::Color& color, std::string text)
+void IngameConsole::logText(const HG::Utils::Color& color, std::string text)
 {
     m_linesBuffer.emplace_back(color, text);
 }
 
-void HG::Standard::Behaviours::IngameConsole::executeCommand(std::string command)
+void IngameConsole::executeCommand(std::string command)
 {
     logText(HG::Utils::Color::fromRGB(250, 250, 250), ">>> " + command);
 
@@ -209,17 +209,17 @@ void HG::Standard::Behaviours::IngameConsole::executeCommand(std::string command
     }
 }
 
-void HG::Standard::Behaviours::IngameConsole::proceedMessage(AbstractLogger::Message message)
+void IngameConsole::proceedMessage(AbstractLogger::Message message)
 {
     logText(getLogColor(message.errorClass), formatMessage(message));
 }
 
-std::string HG::Standard::Behaviours::IngameConsole::formatMessage(AbstractLogger::Message message)
+std::string IngameConsole::formatMessage(AbstractLogger::Message message)
 {
     return message.message;
 }
 
-HG::Utils::Color HG::Standard::Behaviours::IngameConsole::getLogColor(AbstractLogger::ErrorClass errClass)
+HG::Utils::Color IngameConsole::getLogColor(AbstractLogger::ErrorClass errClass)
 {
     switch (errClass)
     {
@@ -238,13 +238,13 @@ HG::Utils::Color HG::Standard::Behaviours::IngameConsole::getLogColor(AbstractLo
     return HG::Utils::Color::White;
 }
 
-void HG::Standard::Behaviours::IngameConsole::connectLoggingWatcher()
+void IngameConsole::connectLoggingWatcher()
 {
     m_logsListener = std::make_shared<LoggingWatcher>(this);
 
-    if (CurrentLogger::i())
+    if (HG::Utils::Logging::userLogger())
     {
-        CurrentLogger::i()->addLogsListener(m_logsListener);
+        HG::Utils::Logging::userLogger()->addLogsListener(m_logsListener);
     }
     else
     {
@@ -252,14 +252,11 @@ void HG::Standard::Behaviours::IngameConsole::connectLoggingWatcher()
     }
 }
 
-HG::Standard::Behaviours::IngameConsole::LoggingWatcher::LoggingWatcher(
-    HG::Standard::Behaviours::IngameConsole* ingameConsole) :
-    m_console(ingameConsole),
-    m_messages()
+IngameConsole::LoggingWatcher::LoggingWatcher(IngameConsole* ingameConsole) : m_console(ingameConsole), m_messages()
 {
 }
 
-AbstractLogger::Message HG::Standard::Behaviours::IngameConsole::LoggingWatcher::popMessage()
+AbstractLogger::Message IngameConsole::LoggingWatcher::popMessage()
 {
     auto element = std::move(m_messages.front());
 
@@ -268,18 +265,18 @@ AbstractLogger::Message HG::Standard::Behaviours::IngameConsole::LoggingWatcher:
     return element;
 }
 
-bool HG::Standard::Behaviours::IngameConsole::LoggingWatcher::hasMessages() const
+bool IngameConsole::LoggingWatcher::hasMessages() const
 {
     return !m_messages.empty();
 }
 
-void HG::Standard::Behaviours::IngameConsole::LoggingWatcher::newMessage(const AbstractLogger::Message& m)
+void IngameConsole::LoggingWatcher::newMessage(const AbstractLogger::Message& m)
 {
     m_messages.push_back(m);
 }
 
-int HG::Standard::Behaviours::IngameConsole::commandClEnableDebug(
-    HG::Standard::Behaviours::IngameConsole::Command::Arguments arguments)
+int IngameConsole::commandClEnableDebug(IngameConsole::Command::Arguments arguments)
 {
     return !toggleBehaviour<DebugControllerOverlay>(arguments);
 }
+} // namespace HG::Standard::Behaviours

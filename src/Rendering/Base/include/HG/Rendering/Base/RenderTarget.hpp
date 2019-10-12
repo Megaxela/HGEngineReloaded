@@ -48,7 +48,7 @@ public:
     /**
      * @brief Method for getting render target size.
      */
-    glm::ivec2 size() const;
+    [[nodiscard]] glm::ivec2 size() const;
 
     /**
      * @brief Method for setting texture for color texture.
@@ -59,7 +59,7 @@ public:
     /**
      * @brief Method for getting texture for color texture.
      */
-    HG::Rendering::Base::Texture* colorTexture(uint32_t index) const;
+    [[nodiscard]] HG::Rendering::Base::Texture* colorTexture(uint32_t index) const;
 
     /**
      * @brief Method for removing color texture.
@@ -71,7 +71,7 @@ public:
      * @brief Method for checking is it
      * default render target.
      */
-    bool isDefault() const;
+    [[nodiscard]] bool isDefault() const;
 
     /**
      * @brief Method for getting begin iterator for color

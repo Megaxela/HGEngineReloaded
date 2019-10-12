@@ -10,10 +10,8 @@
 #include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Surface.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 namespace
 {
@@ -48,13 +46,15 @@ GLuint getWrapping(HG::Rendering::Base::Texture::Wrapping wrapping)
 }
 } // namespace
 
-bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
+namespace HG::Rendering::OpenGL::Common
+{
+bool Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
 {
     auto texture = dynamic_cast<HG::Rendering::Base::Texture*>(data);
 
     if (texture == nullptr)
     {
-        Error() << "Got non texture render data in texture data processor. Types are corrupted.";
+        HGError() << "Got non texture render data in texture data processor. Types are corrupted.";
         exit(-1);
     }
 
@@ -140,7 +140,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
             break;
 
         default:
-            Error() << "Can't setup texture because of unknown texture format.";
+            HGError() << "Can't setup texture because of unknown texture format.";
             break;
         }
 
@@ -160,7 +160,7 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::setup(HG::Rendering:
     return externalData->Allocated && (externalData->Valid || (surface == nullptr && !externalData->Valid));
 }
 
-bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
+bool Texture2DDataProcessor::needSetup(HG::Rendering::Base::RenderData* data)
 {
     auto texture      = static_cast<HG::Rendering::Base::Texture*>(data);
     auto externalData = texture->castSpecificDataTo<Common::Texture2DData>();
@@ -169,7 +169,8 @@ bool HG::Rendering::OpenGL::Common::Texture2DDataProcessor::needSetup(HG::Render
            externalData->Size != texture->size() || !externalData->Valid;
 }
 
-size_t HG::Rendering::OpenGL::Common::Texture2DDataProcessor::getTarget()
+size_t Texture2DDataProcessor::getTarget()
 {
     return HG::Rendering::Base::Texture::DataId;
 }
+} // namespace HG::Rendering::OpenGL::Common

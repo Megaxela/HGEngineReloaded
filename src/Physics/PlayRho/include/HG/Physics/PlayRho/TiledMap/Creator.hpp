@@ -1,6 +1,7 @@
 #pragma once
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Rect.hpp>
 
 // HG::Physics::Base
@@ -8,9 +9,6 @@
 
 // HG::Physics::PlayRho
 #include <Controller.hpp>
-
-// ALogger
-#include <CurrentLogger.hpp>
 
 namespace HG::Physics::PlayRho::TiledMap
 {
@@ -23,7 +21,7 @@ public:
 
         if (castedController == nullptr)
         {
-            Error() << "Trying to create PlayRho collider, when another physics controller is used.";
+            HGError() << "Trying to create PlayRho collider, when another physics controller is used.";
             return nullptr;
         }
 
@@ -42,7 +40,7 @@ public:
 
         if (castedController == nullptr)
         {
-            Error() << "Trying to create PlayRho collider, when another physics controller is used.";
+            HGError() << "Trying to create PlayRho collider, when another physics controller is used.";
             return nullptr;
         }
 
@@ -97,7 +95,7 @@ public:
 
         if (castedController == nullptr)
         {
-            Error() << "Trying to create PlayRho collider, when another physics controller is used.";
+            HGError() << "Trying to create PlayRho collider, when another physics controller is used.";
             return nullptr;
         }
 

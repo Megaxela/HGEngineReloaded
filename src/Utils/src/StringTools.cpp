@@ -4,21 +4,23 @@
 // HG::Utils
 #include <HG/Utils/StringTools.hpp>
 
-std::vector<std::string> HG::Utils::StringTools::split(const std::string& s, char delim)
+namespace HG::Utils::StringTools
+{
+std::vector<std::string> split(const std::string& s, char delim)
 {
     std::vector<std::string> elems;
     split(s, delim, std::back_inserter(elems));
     return elems;
 }
 
-std::vector<std::wstring> HG::Utils::StringTools::split(const std::wstring& s, wchar_t delim)
+std::vector<std::wstring> split(const std::wstring& s, wchar_t delim)
 {
     std::vector<std::wstring> elems;
     split(s, delim, std::back_inserter(elems));
     return elems;
 }
 
-std::vector<std::wstring> HG::Utils::StringTools::smartSplit(const std::wstring& s, wchar_t delim)
+std::vector<std::wstring> smartSplit(const std::wstring& s, wchar_t delim)
 {
     std::vector<std::wstring> elems;
     std::wstringstream ss;
@@ -66,7 +68,7 @@ std::vector<std::wstring> HG::Utils::StringTools::smartSplit(const std::wstring&
     return elems;
 }
 
-std::vector<std::string> HG::Utils::StringTools::smartSplit(const std::string& s, char delim)
+std::vector<std::string> smartSplit(const std::string& s, char delim)
 {
     std::vector<std::string> elems;
     std::stringstream ss;
@@ -114,7 +116,7 @@ std::vector<std::string> HG::Utils::StringTools::smartSplit(const std::string& s
     return elems;
 }
 
-std::string HG::Utils::StringTools::toLower(const std::string& s)
+std::string toLower(const std::string& s)
 {
     std::string copy(s);
 
@@ -122,3 +124,4 @@ std::string HG::Utils::StringTools::toLower(const std::string& s)
 
     return copy;
 }
+} // namespace HG::Utils::StringTools

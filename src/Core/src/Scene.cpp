@@ -5,14 +5,16 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
-HG::Core::Scene::Scene() : m_mainApplication(nullptr), m_gameObjects()
+namespace HG::Core
+{
+Scene::Scene() : m_mainApplication(nullptr), m_gameObjects()
 {
 }
 
-HG::Core::Scene::~Scene()
+Scene::~Scene()
 {
     // Removing gameobject (caching)
     for (auto&& behaviour : m_gameObjects.added())
@@ -32,17 +34,17 @@ HG::Core::Scene::~Scene()
     }
 }
 
-void HG::Core::Scene::setApplication(HG::Core::Application* application)
+void Scene::setApplication(Application* application)
 {
     m_mainApplication = application;
 }
 
-HG::Core::Application* HG::Core::Scene::application() const
+Application* Scene::application() const
 {
     return m_mainApplication;
 }
 
-void HG::Core::Scene::update()
+void Scene::update()
 {
     m_gameObjects.merge();
 
@@ -57,22 +59,22 @@ void HG::Core::Scene::update()
     }
 }
 
-void HG::Core::Scene::render(HG::Rendering::Base::Renderer* renderer)
+void Scene::render(HG::Rendering::Base::Renderer* renderer)
 {
     if (renderer == nullptr)
     {
-        Error() << "No renderer is set.";
+        HGError() << "No renderer is set.";
         return;
     }
 
     renderer->render(m_gameObjects);
 }
 
-void HG::Core::Scene::start()
+void Scene::start()
 {
 }
 
-void HG::Core::Scene::removeGameObject(HG::Core::GameObject* gameObject)
+void Scene::removeGameObject(GameObject* gameObject)
 {
     // Removing current parent scene.
     gameObject->setParentScene(nullptr);
@@ -81,14 +83,14 @@ void HG::Core::Scene::removeGameObject(HG::Core::GameObject* gameObject)
     m_gameObjects.remove(gameObject);
 }
 
-void HG::Core::Scene::addGameObject(HG::Core::GameObject* gameObject)
+void Scene::addGameObject(GameObject* gameObject)
 {
     // Adding current scene as parent.
     gameObject->setParentScene(this);
     m_gameObjects.add(gameObject);
 }
 
-HG::Core::GameObject* HG::Core::Scene::findGameObject(const std::string& name)
+GameObject* Scene::findGameObject(const std::string& name) const
 {
     for (auto&& gameObject : m_gameObjects)
     {
@@ -106,7 +108,7 @@ HG::Core::GameObject* HG::Core::Scene::findGameObject(const std::string& name)
     return nullptr;
 }
 
-void HG::Core::Scene::findGameObjects(const std::string& name, std::vector<HG::Core::GameObject*>& container)
+void Scene::findGameObjects(const std::string& name, std::vector<GameObject*>& container) const
 {
     for (auto&& gameObject : m_gameObjects)
     {
@@ -122,7 +124,7 @@ void HG::Core::Scene::findGameObjects(const std::string& name, std::vector<HG::C
     }
 }
 
-void HG::Core::Scene::getGameObjects(std::vector<HG::Core::GameObject*>& container)
+void Scene::getGameObjects(std::vector<GameObject*>& container) const
 {
     for (auto&& gameObject : m_gameObjects)
     {
@@ -134,3 +136,4 @@ void HG::Core::Scene::getGameObjects(std::vector<HG::Core::GameObject*>& contain
         container.push_back(gameObject);
     }
 }
+} // namespace HG::Core

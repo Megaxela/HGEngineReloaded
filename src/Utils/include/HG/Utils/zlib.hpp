@@ -44,7 +44,7 @@ Deflate(const ByteIn* source,
         std::vector<ByteOut>& target,
         CompressionLevel compression = BestCompression)
 {
-    uint8_t outBuffer[CHUNK_SIZE];
+    std::uint8_t outBuffer[CHUNK_SIZE];
 
     z_stream stream = {nullptr};
 
@@ -90,8 +90,8 @@ std::size_t DeflateStreamToStream(InputStream& inputStream,
                                   std::size_t chunkSize,
                                   CompressionLevel compression = BestCompression)
 {
-    uint8_t inBuffer[chunkSize];
-    uint8_t outBuffer[chunkSize];
+    std::uint8_t inBuffer[chunkSize];
+    std::uint8_t outBuffer[chunkSize];
     std::size_t totalCompressed = 0;
 
     z_stream stream = {nullptr};
@@ -143,8 +143,8 @@ std::size_t DeflateStreamToStream(InputStream& inputStream,
 template <typename InputStream, typename OutputStream>
 std::size_t InflateStreamToStream(InputStream& inputStream, OutputStream& outputStream, std::size_t chunkSize)
 {
-    uint8_t outBuffer[chunkSize];
-    uint8_t inBuffer[chunkSize];
+    std::uint8_t outBuffer[chunkSize];
+    std::uint8_t inBuffer[chunkSize];
     std::size_t totalDecompressed = 0;
 
     z_stream stream;
@@ -217,7 +217,7 @@ typename std::enable_if<sizeof(ByteIn) == 1 && sizeof(ByteOut) == 1, bool>::type
                                                                                          std::size_t sourceSize,
                                                                                          std::vector<ByteOut>& target)
 {
-    uint8_t outBuffer[CHUNK_SIZE];
+    std::uint8_t outBuffer[CHUNK_SIZE];
 
     z_stream stream;
 

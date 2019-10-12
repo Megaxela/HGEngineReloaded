@@ -10,16 +10,18 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::DebugControllerBehaviour()
+namespace HG::Physics::PlayRho
+{
+Behaviours::DebugControllerBehaviour::DebugControllerBehaviour()
 {
 }
 
-void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::onStart()
+void Behaviours::DebugControllerBehaviour::onStart()
 {
     setEnabled(false);
 }
 
-void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::onUpdate()
+void Behaviours::DebugControllerBehaviour::onUpdate()
 {
     auto controller = scene()->application()->physicsController<Controller>();
 
@@ -205,7 +207,7 @@ void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::onUpdate()
     }
 }
 
-void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::tooltip(const char* text)
+void Behaviours::DebugControllerBehaviour::tooltip(const char* text)
 {
     if (ImGui::IsItemHovered())
     {
@@ -216,3 +218,4 @@ void HG::Physics::PlayRho::Behaviours::DebugControllerBehaviour::tooltip(const c
         ImGui::EndTooltip();
     }
 }
+} // namespace HG::Physics::PlayRho

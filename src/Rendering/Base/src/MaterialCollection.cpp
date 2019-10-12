@@ -2,24 +2,25 @@
 #include <HG/Rendering/Base/MaterialCollection.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
 
-HG::Rendering::Base::MaterialCollection::MaterialCollection(HG::Core::ResourceManager* resourceManager,
-                                                            HG::Rendering::Base::Renderer* pipeline) :
+namespace HG::Rendering::Base
+{
+MaterialCollection::MaterialCollection(HG::Core::ResourceManager* resourceManager, Renderer* pipeline) :
     m_resourceManager(resourceManager),
     m_renderer(pipeline)
 {
 }
 
-HG::Rendering::Base::MaterialCollection::~MaterialCollection()
+MaterialCollection::~MaterialCollection()
 {
     clearCache();
 }
 
-void HG::Rendering::Base::MaterialCollection::setup(HG::Rendering::Base::Shader* shader)
+void MaterialCollection::setup(Shader* shader)
 {
     m_renderer->setup(shader, true);
 }
 
-void HG::Rendering::Base::MaterialCollection::clearCache()
+void MaterialCollection::clearCache()
 {
     // Free all shaders
     for (auto&& [hash, shader] : m_shaders)
@@ -29,3 +30,4 @@ void HG::Rendering::Base::MaterialCollection::clearCache()
 
     m_shaders.clear();
 }
+} // namespace HG::Rendering::Base

@@ -11,27 +11,29 @@
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/Texture.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
-HG::Rendering::Base::Renderer::Renderer(HG::Core::Application* application) :
+namespace HG::Rendering::Base
+{
+Renderer::Renderer(HG::Core::Application* application) :
     m_parentApplication(application),
     m_pipeline(nullptr),
-    m_gizmos(new HG::Rendering::Base::Gizmos()),
-    m_materialCollection(new HG::Rendering::Base::MaterialCollection(application->resourceManager(), this)),
+    m_gizmos(new Gizmos()),
+    m_materialCollection(new MaterialCollection(application->resourceManager(), this)),
     m_activeCamera(nullptr),
-    m_defaultRenderTarget(new (application->resourceCache()) HG::Rendering::Base::RenderTarget({0, 0}, true)),
+    m_defaultRenderTarget(new (application->resourceCache()) RenderTarget({0, 0}, true)),
     m_activeCubemap(nullptr)
 {
-    Debug() << "Creating renderer.";
+    HGDebug() << "Creating renderer.";
 
     m_parentApplication->countStatistics()->addCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
                                                        HG::Core::CountStatistics::CounterType::LastFrame);
 }
 
-HG::Rendering::Base::Renderer::~Renderer()
+Renderer::~Renderer()
 {
-    Debug() << "Destroying renderer.";
+    HGDebug() << "Destroying renderer.";
     m_parentApplication->countStatistics()->removeCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices);
 
     delete m_pipeline;
@@ -40,43 +42,43 @@ HG::Rendering::Base::Renderer::~Renderer()
     delete m_defaultRenderTarget;
 }
 
-HG::Rendering::Base::RenderTarget* HG::Rendering::Base::Renderer::defaultRenderTarget() const
+RenderTarget* Renderer::defaultRenderTarget() const
 {
     return m_defaultRenderTarget;
 }
 
-void HG::Rendering::Base::Renderer::setPipeline(HG::Rendering::Base::RenderingPipeline* pipeline)
+void Renderer::setPipeline(RenderingPipeline* pipeline)
 {
     m_pipeline = pipeline;
 }
 
-bool HG::Rendering::Base::Renderer::init()
+bool Renderer::init()
 {
     if (m_pipeline == nullptr)
     {
-        Error() << "No rendering pipeline set.";
+        HGError() << "No rendering pipeline set.";
         return false;
     }
 
     return m_pipeline->init();
 }
 
-void HG::Rendering::Base::Renderer::deinit()
+void Renderer::deinit()
 {
     if (m_pipeline == nullptr)
     {
-        Error() << "No rendering pipeline set.";
+        HGError() << "No rendering pipeline set.";
         return;
     }
 
     return m_pipeline->deinit();
 }
 
-void HG::Rendering::Base::Renderer::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& gameObjects)
+void Renderer::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObject*>& gameObjects)
 {
     if (m_pipeline == nullptr)
     {
-        Error() << "No rendering pipeline set.";
+        HGError() << "No rendering pipeline set.";
         return;
     }
 
@@ -85,27 +87,27 @@ void HG::Rendering::Base::Renderer::render(const HG::Utils::DoubleBufferContaine
     m_gizmos->clear();
 }
 
-HG::Rendering::Base::Gizmos* HG::Rendering::Base::Renderer::gizmos()
+Gizmos* Renderer::gizmos() const
 {
     return m_gizmos;
 }
 
-HG::Rendering::Base::RenderingPipeline* HG::Rendering::Base::Renderer::pipeline()
+RenderingPipeline* Renderer::pipeline() const
 {
     return m_pipeline;
 }
 
-HG::Rendering::Base::MaterialCollection* HG::Rendering::Base::Renderer::materialCollection()
+MaterialCollection* Renderer::materialCollection() const
 {
     return m_materialCollection;
 }
 
-HG::Rendering::Base::Camera* HG::Rendering::Base::Renderer::activeCamera() const
+Camera* Renderer::activeCamera() const
 {
     return m_activeCamera;
 }
 
-void HG::Rendering::Base::Renderer::setActiveCamera(HG::Rendering::Base::Camera* camera)
+void Renderer::setActiveCamera(Camera* camera)
 {
     if (camera->gameObject() == nullptr)
     {
@@ -115,47 +117,48 @@ void HG::Rendering::Base::Renderer::setActiveCamera(HG::Rendering::Base::Camera*
     m_activeCamera = camera;
 }
 
-HG::Rendering::Base::CubeMap* HG::Rendering::Base::Renderer::activeCubeMap() const
+CubeMap* Renderer::activeCubeMap() const
 {
     return m_activeCubemap;
 }
 
-void HG::Rendering::Base::Renderer::setActiveCubeMap(HG::Rendering::Base::CubeMap* cubemap)
+void Renderer::setActiveCubeMap(CubeMap* cubemap)
 {
     m_activeCubemap = cubemap;
 }
 
-bool HG::Rendering::Base::Renderer::setup(HG::Rendering::Base::RenderData* data, bool guarantee)
+bool Renderer::setup(RenderData* data, bool guarantee)
 {
     if (m_pipeline == nullptr)
     {
-        Info() << "There is no rendering pipeline to setup.";
+        HGInfo() << "There is no rendering pipeline to setup.";
         return false;
     }
 
     return m_pipeline->setup(data, guarantee);
 }
 
-bool HG::Rendering::Base::Renderer::needSetup(HG::Rendering::Base::RenderData* data)
+bool Renderer::needSetup(RenderData* data) const
 {
     if (m_pipeline == nullptr)
     {
-        Info() << "There is no rendering pipeline to check for setup requirement.";
+        HGInfo() << "There is no rendering pipeline to check for setup requirement.";
         return false;
     }
 
     return m_pipeline->needSetup(data);
 }
 
-HG::Utils::Color HG::Rendering::Base::Renderer::getTexturePixel(HG::Rendering::Base::Texture* texture, glm::ivec2 pos)
+HG::Utils::Color Renderer::getTexturePixel(Texture* texture, glm::ivec2 pos)
 {
     if (m_pipeline == nullptr)
     {
         throw std::runtime_error("No pipeline to work with.");
     }
 
-    uint8_t buffer[4];
+    std::uint8_t buffer[4];
     m_pipeline->getTextureRegion(texture, pos, pos + glm::ivec2(1, 1), buffer);
 
     return HG::Utils::Color::fromRGB(buffer[0], buffer[1], buffer[2], buffer[3]);
 }
+} // namespace HG::Rendering::Base

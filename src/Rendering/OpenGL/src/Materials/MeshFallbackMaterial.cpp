@@ -1,7 +1,9 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/MeshFallbackMaterial.hpp>
 
-const char* HG::Rendering::OpenGL::Materials::MeshFallbackMaterial::rawShader = R"(
+namespace HG::Rendering::OpenGL::Materials
+{
+const char* MeshFallbackMaterial::rawShader = R"(
 #ifdef VertexShader
 layout (location = 0) in vec3 inPosition;
 layout (location = 2) in vec2 inTexCoords;
@@ -33,3 +35,4 @@ void main()
 }
 #endif
 )";
+}

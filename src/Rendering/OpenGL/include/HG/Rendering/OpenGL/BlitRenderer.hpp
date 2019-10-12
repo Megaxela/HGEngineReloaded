@@ -41,7 +41,7 @@ public:
      * @brief Method for getting parent application.
      * @return Pointer to parent application.
      */
-    HG::Core::Application* application() const;
+    [[nodiscard]] HG::Core::Application* application() const;
 
     /**
      * @brief Method, that performs rendering data

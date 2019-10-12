@@ -1,11 +1,14 @@
 // HG::Utils
 #include <HG/Utils/Loaders/StringLoader.hpp>
 
-HG::Utils::StringLoader::StringLoader()
+namespace HG::Utils
+{
+StringLoader::StringLoader()
 {
 }
 
-HG::Utils::StringLoader::ResultType HG::Utils::StringLoader::load(const std::byte* data, std::size_t size)
+StringLoader::ResultType StringLoader::load(const std::byte* data, std::size_t size)
 {
     return std::string((const char*)data, size);
 }
+} // namespace HG::Utils

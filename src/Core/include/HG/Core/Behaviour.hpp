@@ -77,29 +77,29 @@ public:
         {
         }
 
-        std::string name() const
+        [[nodiscard]] const std::string& name() const
         {
             return m_name;
         }
 
-        std::string type() const
+        [[nodiscard]] const std::string& type() const
         {
             return m_type;
         }
 
-        const std::type_info& typeInfo() const
+        [[nodiscard]] const std::type_info& typeInfo() const
         {
             return m_typeInfo;
         }
 
         template <typename Type>
-        std::function<Type()> getGetter() const
+        [[nodiscard]] std::function<Type()> getGetter() const
         {
             return std::any_cast<std::function<Type()>>(m_getter);
         }
 
         template <typename Type>
-        std::function<void(Type)> getSetter() const
+        [[nodiscard]] std::function<void(Type)> getSetter() const
         {
             return std::any_cast<std::function<void(Type)>>(m_setter);
         }
@@ -133,14 +133,14 @@ public:
      * @brief Method for getting behaviour type.
      * @return Behaviour type.
      */
-    Type type() const;
+    [[nodiscard]] Type type() const;
 
     /**
      * @brief Method for checking is behaviour enabled.
      * If behaviour is disabled, it will not be called in update.
      * @return Is behaviour enabled.
      */
-    bool isEnabled() const;
+    [[nodiscard]] bool isEnabled() const;
 
     /**
      * @brief Method for setting behaviour enabled.
@@ -164,20 +164,20 @@ public:
      * @brief Method for getting gameobject.
      * @return Pointer to parent gameobject.
      */
-    HG::Core::GameObject* gameObject() const;
+    [[nodiscard]] HG::Core::GameObject* gameObject() const;
 
     /**
      * @brief Method for receiving parent scene.
      * @return Scene.
      */
-    HG::Core::Scene* scene() const;
+    [[nodiscard]] HG::Core::Scene* scene() const;
 
     /**
      * @brief Method for getting input controller
      * from application;
      * @return Constant pointer to input controller.
      */
-    const Input* input() const;
+    [[nodiscard]] const Input* input() const;
 
     /**
      * @brief Method for adding property to behaviour.
@@ -215,7 +215,7 @@ public:
      * @param name Property name.
      */
     template <typename Type>
-    Type getProperty(const std::string& name)
+    [[nodiscard]] Type getProperty(const std::string& name) const
     {
         auto propertyIter =
             std::find_if(m_properties.begin(),
@@ -234,7 +234,7 @@ public:
      * @brief Method for getting all properties.
      * @return Vector with all properties.
      */
-    std::vector<Property> getProperties() const;
+    [[nodiscard]] std::vector<Property> getProperties() const;
 
     /**
      * @brief Method for getting all properties.

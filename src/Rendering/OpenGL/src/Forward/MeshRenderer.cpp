@@ -24,6 +24,7 @@
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 
 // HG::Utils
+#include <HG/Utils/Logging.hpp>
 #include <HG/Utils/Mesh.hpp>
 
 // GLM
@@ -32,7 +33,9 @@
 // gl
 #include <gl/all.hpp>
 
-HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() : m_meshFallbackMaterial(nullptr)
+namespace HG::Rendering::OpenGL::Forward
+{
+MeshRenderer::MeshRenderer() : m_meshFallbackMaterial(nullptr)
 {
     constexpr int count = 128;
     m_pointLightNames.reserve(count);
@@ -47,23 +50,23 @@ HG::Rendering::OpenGL::Forward::MeshRenderer::MeshRenderer() : m_meshFallbackMat
     }
 }
 
-void HG::Rendering::OpenGL::Forward::MeshRenderer::onInit()
+void MeshRenderer::onInit()
 {
-    Info() << "Initializing mesh renderer";
+    HGInfo() << "Initializing mesh renderer";
 
     m_meshFallbackMaterial =
         application()->renderer()->materialCollection()->getMaterial<Materials::MeshFallbackMaterial>();
 }
 
-void HG::Rendering::OpenGL::Forward::MeshRenderer::onDeinit()
+void MeshRenderer::onDeinit()
 {
-    Info() << "Deinitializing sprite renderer";
+    HGInfo() << "Deinitializing sprite renderer";
 
     delete m_meshFallbackMaterial;
     m_meshFallbackMaterial = nullptr;
 }
 
-void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
+void MeshRenderer::render(HG::Rendering::Base::RenderBehaviour* renderBehaviour)
 {
     auto meshBehaviour = static_cast<HG::Rendering::Base::Behaviours::Mesh*>(renderBehaviour);
     auto data          = meshBehaviour->castSpecificDataTo<Common::MeshData>();
@@ -136,7 +139,7 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
             continue;
         }
 
-        switch (light->type())
+        switch (light->lightType())
         {
         case HG::Rendering::Base::AbstractLight::Type::Point: {
             auto castedLight = static_cast<HG::Rendering::Base::Lights::PointLight*>(light);
@@ -199,7 +202,8 @@ void HG::Rendering::OpenGL::Forward::MeshRenderer::render(HG::Rendering::Base::R
     data->VAO.unbind();
 }
 
-size_t HG::Rendering::OpenGL::Forward::MeshRenderer::getTarget()
+std::size_t MeshRenderer::getTarget()
 {
     return HG::Rendering::Base::Behaviours::Mesh::RenderBehaviourId;
 }
+} // namespace HG::Rendering::OpenGL::Forward

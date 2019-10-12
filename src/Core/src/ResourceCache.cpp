@@ -3,15 +3,17 @@
 #include <HG/Core/ResourceCache.hpp>
 
 // HG::Utils
-#include <CurrentLogger.hpp>
+#include <HG/Utils/Logging.hpp>
 
-thread_local HG::Core::ResourceCache* HG::Core::ResourceCache::currentCache = nullptr;
+namespace HG::Core
+{
+thread_local ResourceCache* ResourceCache::currentCache = nullptr;
 
-HG::Core::ResourceCache::ResourceCache() : m_objects()
+ResourceCache::ResourceCache() : m_objects()
 {
 }
 
-HG::Core::ResourceCache::~ResourceCache()
+ResourceCache::~ResourceCache()
 {
     // It would be nice to perform
     // clean here, but it's impossible, cause
@@ -22,8 +24,9 @@ HG::Core::ResourceCache::~ResourceCache()
     {
         if (!cache.second.used.empty())
         {
-            Error() << "Leaked cached resources detected. " << cache.first << " hash - " << cache.second.used.size()
-                    << " leaked objects.";
+            HGError() << "Leaked cached resources detected. " << cache.first << " hash - " << cache.second.used.size()
+                      << " leaked objects.";
         }
     }
 }
+} // namespace HG::Core

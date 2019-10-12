@@ -6,103 +6,94 @@
 // HG::ToolsCore
 #include <HG/ToolsCore/CommandLineArguments.hpp>
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::ArgumentBuilder(
-    HG::ToolsCore::CommandLineArguments::Argument& arg) :
-    m_ref(arg)
+namespace HG::ToolsCore
+{
+CommandLineArguments::ArgumentBuilder::ArgumentBuilder(CommandLineArguments::Argument& arg) : m_ref(arg)
 {
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::action(HG::ToolsCore::CommandLineArguments::Action action)
+CommandLineArguments::ArgumentBuilder&
+CommandLineArguments::ArgumentBuilder::action(CommandLineArguments::Action action)
 {
     m_ref.action = action;
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::numberOfArguments(std::size_t number)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::numberOfArguments(std::size_t number)
 {
     m_ref.numberOfArguments = number;
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::constantValue(
-    HG::ToolsCore::CommandLineArguments::ArgumentType argument)
+CommandLineArguments::ArgumentBuilder&
+CommandLineArguments::ArgumentBuilder::constantValue(CommandLineArguments::ArgumentType argument)
 {
     m_ref.constantValue = std::move(argument);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::defaultValue(
-    HG::ToolsCore::CommandLineArguments::ArgumentType value)
+CommandLineArguments::ArgumentBuilder&
+CommandLineArguments::ArgumentBuilder::defaultValue(CommandLineArguments::ArgumentType value)
 {
     m_ref.defaultVaue = std::move(value);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::type(HG::ToolsCore::CommandLineArguments::Type type)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::type(CommandLineArguments::Type type)
 {
     m_ref.type = type;
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder& HG::ToolsCore::CommandLineArguments::ArgumentBuilder::choices(
-    std::vector<HG::ToolsCore::CommandLineArguments::ArgumentType> choices)
+CommandLineArguments::ArgumentBuilder&
+CommandLineArguments::ArgumentBuilder::choices(std::vector<CommandLineArguments::ArgumentType> choices)
 {
     m_ref.choices = std::move(choices);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::required(bool required)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::required(bool required)
 {
     m_ref.required = required;
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::metavar(std::string meta)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::metavar(std::string meta)
 {
     m_ref.meta = std::move(meta);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::destination(std::string name)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::destination(std::string name)
 {
     m_ref.destination = std::move(name);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::help(std::string help)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::help(std::string help)
 {
     m_ref.help = std::move(help);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder&
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder::version(std::string version)
+CommandLineArguments::ArgumentBuilder& CommandLineArguments::ArgumentBuilder::version(std::string version)
 {
     m_ref.version = std::move(version);
 
     return (*this);
 }
 
-HG::ToolsCore::CommandLineArguments::CommandLineArguments(std::string name) :
+CommandLineArguments::CommandLineArguments(std::string name) :
     m_name(std::move(name)),
     m_argumentsMap(),
     m_argumentsList()
@@ -111,8 +102,7 @@ HG::ToolsCore::CommandLineArguments::CommandLineArguments(std::string name) :
     addArgument({"-h", "--help"}).help("show this message and exit").action(Action::Help).numberOfArguments(0);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentBuilder
-HG::ToolsCore::CommandLineArguments::addArgument(std::vector<std::string> namesOrFlags)
+CommandLineArguments::ArgumentBuilder CommandLineArguments::addArgument(std::vector<std::string> namesOrFlags)
 {
     if (namesOrFlags.empty())
     {
@@ -137,7 +127,7 @@ HG::ToolsCore::CommandLineArguments::addArgument(std::vector<std::string> namesO
     return ArgumentBuilder(keptArgument);
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentsMap HG::ToolsCore::CommandLineArguments::parse(int argc, char** argv)
+CommandLineArguments::ArgumentsMap CommandLineArguments::parse(int argc, char** argv)
 {
     // Collecting required elements and counting minimal
     // number of arguments to proceed
@@ -172,7 +162,7 @@ HG::ToolsCore::CommandLineArguments::ArgumentsMap HG::ToolsCore::CommandLineArgu
     return internalParsing(argc - 1, argv + 1);
 }
 
-void HG::ToolsCore::CommandLineArguments::showHelp()
+void CommandLineArguments::showHelp()
 {
     showUsageLine();
     std::cout << std::endl;
@@ -207,7 +197,7 @@ void HG::ToolsCore::CommandLineArguments::showHelp()
     }
 }
 
-void HG::ToolsCore::CommandLineArguments::showUsageLine()
+void CommandLineArguments::showUsageLine()
 {
     std::cout << "usage: " << m_name << ' ';
 
@@ -257,8 +247,7 @@ void HG::ToolsCore::CommandLineArguments::showUsageLine()
     std::cout << std::endl;
 }
 
-void HG::ToolsCore::CommandLineArguments::showArguments(
-    const std::vector<const HG::ToolsCore::CommandLineArguments::Argument*>& arguments)
+void CommandLineArguments::showArguments(const std::vector<const CommandLineArguments::Argument*>& arguments)
 {
     // Getting required number of tabs
     std::size_t requiredNumberOfTags =
@@ -350,12 +339,11 @@ void HG::ToolsCore::CommandLineArguments::showArguments(
     std::cout << std::endl;
 }
 
-void HG::ToolsCore::CommandLineArguments::showVersion()
+void CommandLineArguments::showVersion()
 {
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentType
-HG::ToolsCore::CommandLineArguments::parseValue(const char* value, HG::ToolsCore::CommandLineArguments::Type t)
+CommandLineArguments::ArgumentType CommandLineArguments::parseValue(const char* value, CommandLineArguments::Type t)
 {
     ArgumentType result;
 
@@ -398,8 +386,7 @@ HG::ToolsCore::CommandLineArguments::parseValue(const char* value, HG::ToolsCore
     return result;
 }
 
-HG::ToolsCore::CommandLineArguments::ArgumentsMap
-HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char** arguments)
+CommandLineArguments::ArgumentsMap CommandLineArguments::internalParsing(int numberOfArguments, char** arguments)
 {
     std::unordered_map<std::string, ArgumentType> result;
 
@@ -482,7 +469,8 @@ HG::ToolsCore::CommandLineArguments::internalParsing(int numberOfArguments, char
     return result;
 }
 
-std::string HG::ToolsCore::CommandLineArguments::nameFromKey(const std::string& s)
+std::string CommandLineArguments::nameFromKey(const std::string& s)
 {
     return std::string(std::find_if(s.begin(), s.end(), [](char c) { return c != '-'; }), s.end());
 }
+} // namespace HG::ToolsCore

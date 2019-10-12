@@ -11,7 +11,7 @@ HG::Rendering::Base::RenderBehaviour::RenderBehaviour(std::size_t type) :
 {
 }
 
-std::size_t HG::Rendering::Base::RenderBehaviour::renderBehaviourType()
+std::size_t HG::Rendering::Base::RenderBehaviour::renderBehaviourType() const
 {
     return m_type;
 }

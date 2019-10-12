@@ -20,14 +20,12 @@
 #include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
 #include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
 
-// ALogger
-#include <Loggers/BasicLogger.hpp>
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
 
 int main(int argc, char** argv)
 {
-    CurrentLogger::setCurrentLogger(std::make_shared<Loggers::BasicLogger>());
-
-    InfoF() << "Creating application";
+    HGInfoF() << "Creating application";
     HG::Core::Application application("HGEngine Blitting example", argc, argv);
 
     // Settings resource accessor implementation
@@ -50,7 +48,7 @@ int main(int argc, char** argv)
 
     if (!application.init())
     {
-        ErrorF() << "Can't init application";
+        HGErrorF() << "Can't init application";
         return -1;
     }
 

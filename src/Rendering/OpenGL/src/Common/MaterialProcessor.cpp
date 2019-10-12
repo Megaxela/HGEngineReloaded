@@ -18,12 +18,13 @@
 // GLM
 #include <gl/auxiliary/glm_uniforms.hpp>
 
-HG::Rendering::OpenGL::Common::MaterialProcessor::MaterialProcessor()
+namespace HG::Rendering::OpenGL::Common
+{
+MaterialProcessor::MaterialProcessor()
 {
 }
 
-void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::Application* application,
-                                                                   HG::Rendering::Base::Material* material)
+void MaterialProcessor::useMaterial(HG::Core::Application* application, HG::Rendering::Base::Material* material)
 {
     // todo: Replace static with global rendering state
     static gl::program* current = nullptr;
@@ -47,11 +48,11 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::useMaterial(HG::Core::App
     }
 }
 
-void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG::Core::Application* application,
-                                                                             HG::Rendering::Base::Material* material,
-                                                                             bool guarantee)
+void MaterialProcessor::applyMaterialUniforms(HG::Core::Application* application,
+                                              HG::Rendering::Base::Material* material,
+                                              bool guarantee)
 {
-    uint32_t textureNumber = 0;
+    std::uint32_t textureNumber = 0;
 
     auto* shaderData = material->shader()->castSpecificDataTo<Common::ShaderData>();
 
@@ -61,13 +62,12 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::applyMaterialUniforms(HG:
     }
 }
 
-void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
-    HG::Core::Application* application,
-    HG::Rendering::OpenGL::Common::ShaderData* shaderData,
-    const std::string& name,
-    const HG::Rendering::Base::MaterialValue& value,
-    uint32_t& textureNumber,
-    bool guarantee)
+void MaterialProcessor::setShaderUniform(HG::Core::Application* application,
+                                         ShaderData* shaderData,
+                                         const std::string& name,
+                                         const HG::Rendering::Base::MaterialValue& value,
+                                         std::uint32_t& textureNumber,
+                                         bool guarantee)
 {
     // Trying to get cached uniform location
     auto locationIter = shaderData->UniformLocations.find(name);
@@ -236,3 +236,4 @@ void HG::Rendering::OpenGL::Common::MaterialProcessor::setShaderUniform(
 
     shaderData->CurrentUniformValueHashes.insert_or_assign(locationIter->second, hash);
 }
+} // namespace HG::Rendering::OpenGL::Common

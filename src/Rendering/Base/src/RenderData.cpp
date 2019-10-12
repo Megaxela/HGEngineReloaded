@@ -1,34 +1,35 @@
 // HG::Rendering::Base
-#include <CurrentLogger.hpp>
 #include <HG/Rendering/Base/RenderData.hpp>
 #include <HG/Rendering/Base/RenderSpecificData.hpp>
 
-HG::Rendering::Base::RenderData::RenderData(std::size_t type) : m_data(nullptr), m_type(type)
+namespace HG::Rendering::Base
+{
+RenderData::RenderData(std::size_t type) : m_data(nullptr), m_type(type)
 {
 }
 
-HG::Rendering::Base::RenderData::~RenderData()
+RenderData::~RenderData()
 {
     delete m_data;
     m_data = nullptr;
 }
 
-HG::Rendering::Base::RenderSpecificData* HG::Rendering::Base::RenderData::specificData()
+RenderSpecificData* RenderData::specificData() const
 {
     return m_data;
 }
 
-void HG::Rendering::Base::RenderData::setSpecificData(HG::Rendering::Base::RenderSpecificData* data)
+void RenderData::setSpecificData(RenderSpecificData* data)
 {
     m_data = data;
 }
 
-std::size_t HG::Rendering::Base::RenderData::dataType() const
+std::size_t RenderData::dataType() const
 {
     return m_type;
 }
 
-void HG::Rendering::Base::RenderData::invalidate()
+void RenderData::invalidate()
 {
     if (m_data == nullptr)
     {
@@ -37,3 +38,4 @@ void HG::Rendering::Base::RenderData::invalidate()
 
     m_data->Valid = false;
 }
+} // namespace HG::Rendering::Base

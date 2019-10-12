@@ -1,7 +1,9 @@
 // HG::Rendering::OpenGL
 #include <HG/Rendering/OpenGL/Materials/ImGuiMaterial.hpp>
 
-const char* HG::Rendering::OpenGL::Materials::ImGuiMaterial::rawShader = R"(
+namespace HG::Rendering::OpenGL::Materials
+{
+const char* ImGuiMaterial::rawShader = R"(
 #ifdef VertexShader
 uniform mat4 ProjMtx;
 in vec2 Position;
@@ -30,3 +32,4 @@ void main()
 }
 #endif
 )";
+}

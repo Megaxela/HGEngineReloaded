@@ -76,61 +76,61 @@ public:
      * @brief Method to get red channel.
      * @return Color red channel. 0 - 255
      */
-    uint8_t red() const;
+    [[nodiscard]] uint8_t red() const;
 
     /**
      * @brief Method to get green channel.
      * @return Color green channel. 0 - 255
      */
-    uint8_t green() const;
+    [[nodiscard]] uint8_t green() const;
 
     /**
      * @brief Method to get blue channel.
      * @return Color blue channel. 0 - 255
      */
-    uint8_t blue() const;
+    [[nodiscard]] uint8_t blue() const;
 
     /**
      * @brief Method to get alpha channel.
      * @return Color alpha channel. 0 - 255
      */
-    uint8_t alpha() const;
+    [[nodiscard]] uint8_t alpha() const;
 
     /**
      * @brief Method to get red channel.
      * @return Color red channel. 0.0 - 1.0
      */
-    float redF() const;
+    [[nodiscard]] float redF() const;
 
     /**
      * @brief Method to get green channel.
      * @return Color green channel. 0.0 - 1.0
      */
-    float greenF() const;
+    [[nodiscard]] float greenF() const;
 
     /**
      * @brief Method to get blue channel.
      * @return Color blue channel. 0.0 - 1.0
      */
-    float blueF() const;
+    [[nodiscard]] float blueF() const;
 
     /**
      * @brief Method to get alpha channel.
      * @return Color alpha channel. 0.0 - 1.0
      */
-    float alphaF() const;
+    [[nodiscard]] float alphaF() const;
 
     /**
      * @brief Method for converting color to RGB vector.
      * @return GLM 3 component vector.
      */
-    glm::vec3 toRGBVector() const;
+    [[nodiscard]] glm::vec3 toRGBVector() const;
 
     /**
      * @brief Method for converting color to RGBA vector.
      * @return GLM 4 component vector.
      */
-    glm::vec4 toRGBAVector() const;
+    [[nodiscard]] glm::vec4 toRGBAVector() const;
 
     /**
      * @brief Static method for getting more bright color.

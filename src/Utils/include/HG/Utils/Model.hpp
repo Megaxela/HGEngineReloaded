@@ -39,7 +39,7 @@ public:
      * @return Pointer to parent. If nullptr - it's root
      * model.
      */
-    Model* parent() const;
+    [[nodiscard]] Model* parent() const;
 
     /**
      * @brief Method for setting parent. Therefore
@@ -53,7 +53,7 @@ public:
      * @brief Method for getting reference to children.
      * @return Constant reference to children container.
      */
-    const std::vector<Model*>& children() const;
+    [[nodiscard]] const std::vector<Model*>& children() const;
 
     /**
      * @brief Method for adding mesh to model.
@@ -65,7 +65,7 @@ public:
      * @brief Method for getting container with meshes.
      * @return Container with models meshes.
      */
-    const std::vector<MeshPtr>& meshes() const;
+    [[nodiscard]] const std::vector<MeshPtr>& meshes() const;
 
 private:
     std::vector<MeshPtr> m_meshes;

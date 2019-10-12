@@ -15,7 +15,9 @@
 // ImGui
 #include <imgui.h>
 
-void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
+namespace HG::Standard::Behaviours
+{
+void ServiceInformationOverlay::onUpdate()
 {
     const float DISTANCE = 10.0f;
 
@@ -68,3 +70,4 @@ void HG::Standard::Behaviours::ServiceInformationOverlay::onUpdate()
         ImGui::End();
     }
 }
+} // namespace HG::Standard::Behaviours
