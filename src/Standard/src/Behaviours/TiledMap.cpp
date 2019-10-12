@@ -3,6 +3,7 @@
 
 // HG::Core
 #include <HG/Core/Data.hpp>
+#include <HG/Core/Logging.hpp>
 #include <HG/Core/ResourceAccessor.hpp>
 
 // HG::Standard
@@ -15,13 +16,52 @@
 // RapidXML
 #include <rapidxml.hpp>
 
-// ALogger
-#include <CurrentLogger.hpp>
-
 namespace
 {
 const char* SUPPORTED_VERSION = "1.1.6";
 }
+
+// todo: Remove this implementation if compiler will implement `std::from_chars` for floating.
+namespace std
+{
+// Super stupid implementation, just to fit to API
+from_chars_result from_chars(const char* begin, const char* end, float& f)
+{
+    from_chars_result error;
+
+    error.ec = static_cast<errc>(0);
+
+    f = std::atof(begin);
+
+    auto iter = begin;
+
+    if (*begin == '-' || *begin == '+')
+    {
+        ++iter;
+    }
+
+    bool pointFound = false;
+
+    for (; iter < end; ++iter)
+    {
+        error.ptr = iter;
+
+        if (!std::isdigit(*iter) && ((*iter) != '.' || pointFound))
+        {
+            break;
+        }
+
+        if ((*iter) == '.')
+        {
+            pointFound = true;
+        }
+    }
+
+    error.ptr = iter;
+
+    return error;
+}
+} // namespace std
 
 namespace HG::Standard::Behaviours
 {
@@ -772,48 +812,6 @@ bool TiledMap::proceedEllipseObject(rapidxml::xml_node<>* node, TiledMap::Object
 
     return true;
 }
-
-// todo: Remove this implementation if compiler will implement `std::from_chars` for floating.
-namespace std
-{
-// Super stupid implementation, just to fit to API
-from_chars_result from_chars(const char* begin, const char* end, float& f)
-{
-    from_chars_result error;
-
-    error.ec = static_cast<errc>(0);
-
-    f = std::atof(begin);
-
-    auto iter = begin;
-
-    if (*begin == '-' || *begin == '+')
-    {
-        ++iter;
-    }
-
-    bool pointFound = false;
-
-    for (; iter < end; ++iter)
-    {
-        error.ptr = iter;
-
-        if (!std::isdigit(*iter) && ((*iter) != '.' || pointFound))
-        {
-            break;
-        }
-
-        if ((*iter) == '.')
-        {
-            pointFound = true;
-        }
-    }
-
-    error.ptr = iter;
-
-    return error;
-}
-} // namespace std
 
 bool TiledMap::proceedPolygonObject(rapidxml::xml_node<>* node, TiledMap::ObjectLayer* layer)
 {
