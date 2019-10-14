@@ -14,7 +14,7 @@ It's C++17 STL based game engine.
 * :x: MacOS (coming soon)
 
 ### Supported Rendering Backends
-* :heavy_check_mark: OpenGL 3.3+ (requires [GLFW 3.2.1+](https://github.com/glfw/glfw) and [GLEW 2.1.0](https://github.com/nigels-com/glew))
+* :heavy_check_mark: OpenGL 3.3+ (requires [GLEW 2.1.0](https://github.com/nigels-com/glew))
 * :x: Vulkan (coming soon)
 * :x: DirectX (not planned)
 
@@ -83,17 +83,42 @@ Project uses `cmake` based build system. Sample build process:
 1. Create build directory: `mkdir build`
 1. Go to build directory: `cd build`
 1. Configure project: `cmake -DHGRenderingOGL_USE_GLFW=On ..`
-    1. If you want to build examples - add: `-DHG_BUILD_EXAMPLES=On`
-    1. If you want to build tests (required gtest) - add: `-DHG_BUILD_TESTS=On`
-    1. If you have special path to GLFW - you can use: `-DGLFW_LOCATION=location-of-built-glfw`
-    1. If you have special path to GLEW - you can use: `-DCMAKE_PREFIX_PATH=location-of-build-glew`
+    1. See next section with configure arguments...
 1. Start building: `cmake --build . --target all`
 
+### Engine configure arguments
+ |      Variable Name      |Possible Values|Default|Description                                      |
+ |-------------------------|---------------|-------|-------------------------------------------------|
+ | `HG_BUILD_EXAMPLES`     |   `On`/`Off`  | `Off` | Build provided examples or not                  |
+ | `HG_BUILD_TESTS`        |   `On`/`Off`  | `Off` | Enables tests discover and assets configuration |
+ | `HG_TEST_COVERAGE`      |   `On`/`Off`  | `Off` | Enables compile options for coverage check      |
+ | `HG_BUILD_WARNINGS`     |   `On`/`Off`  | `Off` | Enables huge amount of warnings for build       |
+ | `HG_BUILD_Core_TESTS`   |   `On`/`Off`  | `Off` | Enables Core module tests                       |
+ | `HG_BUILD_Tools_TESTS`  |   `On`/`Off`  | `Off` | Enables Tools module tests                      |
+ | `HG_BUILD_Utils_TESTS`  |   `On`/`Off`  | `Off` | Enables Utils module tests                      |
+ | `HG_BUILD_ALL_TESTS`    |   `On`/`Off`  | `Off` | Enables all modules tests                       |
+ | `HG_STD_STATIC_LINKAGE` |   `On`/`Off`  | `Off` | Enables static C++ STD library linkage          |
+
 ## Libraries required in system
-1. `glfw3` - Engine requires 3.2.1 version if OpenGL support required. 
 1. `glew` - Engine requires 2.1.0 version if OpenGL support required.
 1. `googletest` - Required only if tests are built.
 1. `zlib` - Engine requires this library.
+
+## Libraries provided by submodules/inplace
+1. Submodules:
+    1. [ALogger](https://github.com/Megaxela/ALogger) - simple logging library.
+    1. [ByteArray](https://github.com/Megaxela/ByteArray) - bytearray helper implementation.
+    1. [RingBuffer](https://github.com/Megaxela/ringbuffer) - stl like ringbuffer implementation.
+    1. [assimp](https://github.com/assimp/assimp) - library for 3d models loading.
+    1. [glfw](https://github.com/glfw/glfw) - glfw library for crossplatform system routine handling.
+    1. [glm](https://github.com/g-truc/glm) - gl mathematics library.
+    1. [imgui](https://github.com/ocornut/imgui) - immediate mode graphical user interface.
+    1. [json](https://github.com/nlohmann/json) - nlohmann's json library.
+1. Inplace:
+    1. [PlayRho](https://github.com/louis-langholtz/PlayRho) - real-time 2d physics engine.
+    1. [gl](https://github.com/acdemiralp/gl) - c++11 gl objects wrapping library.
+    1. [rapidxml](http://rapidxml.sourceforge.net/) - xml loading library.
+    1. [stb](https://github.com/nothings/stb) - engine uses only stb image loading implementation.
 
 ## License
 
