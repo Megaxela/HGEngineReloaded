@@ -269,10 +269,10 @@ function(clear_cached_variables)
     set(HG_TEST_ASSETS          "" CACHE STRING "" FORCE)
 
     foreach (VARIABLE ${TEST_ASSETS_VARIABLES})
-        set(${VARIABLE} "" CACHE LIST "" FORCE)
+        set(${VARIABLE} "" CACHE STRING "" FORCE)
     endforeach()
 
-    set(TEST_ASSETS_VARIABLES "" CACHE LIST "" FORCE)
+    set(TEST_ASSETS_VARIABLES "" CACHE STRING "" FORCE)
 endfunction(clear_cached_variables)
 
 function(pack_package)
