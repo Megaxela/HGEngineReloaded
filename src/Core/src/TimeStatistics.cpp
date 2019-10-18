@@ -1,6 +1,7 @@
 // C++ STL
 #include <algorithm>
 #include <stdexcept>
+#include <string>
 
 // HG::Core
 #include <HG/Core/TimeStatistics.hpp>

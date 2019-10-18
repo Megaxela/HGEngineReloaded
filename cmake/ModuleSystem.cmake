@@ -71,7 +71,7 @@ function(add_dependency_subdirectory)
     cmake_parse_arguments(
         ARGS
         ""
-        "PATH;TARGET"
+        "PATH;TARGET;IGNORE_IF"
         ""
         ${ARGN}
     )
@@ -82,6 +82,12 @@ function(add_dependency_subdirectory)
         set(RESULT_TARGET_NAME ${ARGS_PATH})
     endif()
 
+    foreach (IGNORE_ARG ${ARGS_IGNORE_IF})
+        if (${${IGNORE_ARG}})
+            message(STATUS "Skip \"${RESULT_TARGET_NAME}\" dependency, due to \"${IGNORE_ARG}\" is defined.")
+            return()
+        endif()
+    endforeach()
 
     message(STATUS "Adding dependency \"${RESULT_TARGET_NAME}\"")
 
