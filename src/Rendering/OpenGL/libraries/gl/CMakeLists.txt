@@ -62,8 +62,10 @@ endif()
 #   import_library(Boost_INCLUDE_DIRS Boost_IOSTREAMS_LIBRARY_DEBUG Boost_IOSTREAMS_LIBRARY_RELEASE)
 # - You may also set the PROJECT_INCLUDE_DIRS and PROJECT_LIBRARIES instead of using import_library.
 
-find_package  (OpenGL REQUIRED)
-import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
+if (NOT EMSCRIPTEN)
+  find_package  (OpenGL REQUIRED)
+  import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
+endif()
 
 if(CUDA_INTEROP_SUPPORT)
   find_package(CUDA REQUIRED)

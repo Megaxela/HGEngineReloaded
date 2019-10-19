@@ -1,3 +1,6 @@
+// C++ STL
+#include <string>
+
 // HG::Core
 #include <HG/Core/CountStatistics.hpp>
 

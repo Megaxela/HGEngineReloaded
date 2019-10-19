@@ -3,7 +3,7 @@
 // C++ STL
 #include <cstdint>
 #include <functional>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 // GLM

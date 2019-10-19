@@ -4,6 +4,7 @@
 #include <algorithm> // std::find, std::remove
 #include <queue>
 #include <stdexcept>
+#include <string> // std::to_string
 #include <vector>
 
 namespace HG::Utils

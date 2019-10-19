@@ -4,6 +4,8 @@
 // C++ STL
 #include <any>
 #include <functional>
+#include <string>
+#include <vector>
 
 #define HG_PROPERTY_INITIALIZER_RAW_OBJ(BEHAVIOUR, METHOD_OWNER, NAME, TYPE, SETTER, GETTER)                           \
     HG::Core::PropertyInitializer<TYPE> __##NAME##Init = HG::Core::PropertyInitializer<TYPE>(                          \

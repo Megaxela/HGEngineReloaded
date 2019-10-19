@@ -6,6 +6,7 @@
 #include <shared_mutex>
 #include <thread>
 #include <type_traits>
+#include <unordered_map>
 
 // HG::Utils
 #include <HG/Utils/FutureHandler.hpp>

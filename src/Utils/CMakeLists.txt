@@ -2,7 +2,7 @@
 find_package(ZLIB REQUIRED)
 
 # Windows fix
-if (UNIX)
+if (UNIX AND NOT EMSCRIPTEN)
     set(STD_FS_LIBRARY stdc++fs)
 endif()
 
@@ -17,7 +17,7 @@ describe_module(
         stb
         rapidxml
         bytearray
-        STLRoundBuffer
+        ringbuffer
         nlohmann_json
         assimp
         ${ZLIB_LIBRARIES}

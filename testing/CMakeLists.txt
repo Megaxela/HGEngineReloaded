@@ -46,6 +46,27 @@ if (${HG_TEST_COVERAGE})
     )
 endif()
 
+if (EMSCRIPTEN)
+    target_link_options(HGEngineTests BEFORE
+        PUBLIC
+            SHELL:-s\ ERROR_ON_UNDEFINED_SYMBOLS=0
+            SHELL:-s\ DISABLE_EXCEPTION_CATCHING=0
+            SHELL:-s\ EXIT_RUNTIME=1
+            SHELL:-s\ TOTAL_MEMORY=104857600 # 100 MB
+    )
+
+    target_compile_options(HGEngineTests BEFORE
+        PUBLIC
+            SHELL:-s\ DISABLE_EXCEPTION_CATCHING=0
+            SHELL:-s\ TOTAL_MEMORY=104857600 # 100 MB
+    )
+
+    set_target_properties(HGEngineTests
+        PROPERTIES
+            SUFFIX ".html"
+    )
+endif()
+
 # Copying test assets
 foreach(ASSET_VARIABLE ${TEST_ASSETS_VARIABLES})
 
