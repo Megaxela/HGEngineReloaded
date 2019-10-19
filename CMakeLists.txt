@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
+project(HGEngine)
 
 include(cmake/ModuleSystem.cmake)
 include(cmake/PrepareProjects.cmake)
