@@ -1,6 +1,3 @@
-
-
-#ifdef GRAPHICS_USE_GLFW
 // HG::Core
 #    include <HG/Core/Application.hpp>
 #    include <HG/Core/Benchmark.hpp>
@@ -12,17 +9,20 @@
 #    include <HG/Rendering/Base/RenderTarget.hpp>
 #    include <HG/Rendering/Base/Renderer.hpp>
 
-// HG::Rendering::OpenGL
-#    include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
+// HG::System::PC
+#    include <HG/System/PC/GLFWSystemController.hpp>
 
 // HG::Utils
 #    include <HG/Utils/Logging.hpp>
 
-// GLM
-#    include <gl/all.hpp>
+// GLFW
+#include <GLFW/glfw3.h>
 
-// ImGui
-#    include <imgui.h>
+// Incognito
+namespace
+{
+    HG::Rendering::OpenGL::GLFWSystemController* controller = nullptr;
+}
 
 namespace HG::Rendering::OpenGL
 {
@@ -34,9 +34,6 @@ GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
 
 GLFWSystemController::~GLFWSystemController()
 {
-    imGuiDeinit();
-
-    ImGui::DestroyContext();
     glfwTerminate();
     m_window = nullptr;
 }
@@ -51,134 +48,7 @@ static void ImGuiSetClipboardText(void* user_data, const char* text)
     glfwSetClipboardString((GLFWwindow*)user_data, text);
 }
 
-void GLFWSystemController::imGuiInit()
-{
-    // Setup back-end capabilities flags
-    ImGuiIO& io = ImGui::GetIO();
-    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
-    io.BackendFlags |=
-        ImGuiBackendFlags_HasSetMousePos; // We can honor io.WantSetMousePos requests (optional, rarely used)
-
-    // Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
-    io.KeyMap[ImGuiKey_Tab]        = GLFW_KEY_TAB;
-    io.KeyMap[ImGuiKey_LeftArrow]  = GLFW_KEY_LEFT;
-    io.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
-    io.KeyMap[ImGuiKey_UpArrow]    = GLFW_KEY_UP;
-    io.KeyMap[ImGuiKey_DownArrow]  = GLFW_KEY_DOWN;
-    io.KeyMap[ImGuiKey_PageUp]     = GLFW_KEY_PAGE_UP;
-    io.KeyMap[ImGuiKey_PageDown]   = GLFW_KEY_PAGE_DOWN;
-    io.KeyMap[ImGuiKey_Home]       = GLFW_KEY_HOME;
-    io.KeyMap[ImGuiKey_End]        = GLFW_KEY_END;
-    io.KeyMap[ImGuiKey_Insert]     = GLFW_KEY_INSERT;
-    io.KeyMap[ImGuiKey_Delete]     = GLFW_KEY_DELETE;
-    io.KeyMap[ImGuiKey_Backspace]  = GLFW_KEY_BACKSPACE;
-    io.KeyMap[ImGuiKey_Space]      = GLFW_KEY_SPACE;
-    io.KeyMap[ImGuiKey_Enter]      = GLFW_KEY_ENTER;
-    io.KeyMap[ImGuiKey_Escape]     = GLFW_KEY_ESCAPE;
-    io.KeyMap[ImGuiKey_A]          = GLFW_KEY_A;
-    io.KeyMap[ImGuiKey_C]          = GLFW_KEY_C;
-    io.KeyMap[ImGuiKey_V]          = GLFW_KEY_V;
-    io.KeyMap[ImGuiKey_X]          = GLFW_KEY_X;
-    io.KeyMap[ImGuiKey_Y]          = GLFW_KEY_Y;
-    io.KeyMap[ImGuiKey_Z]          = GLFW_KEY_Z;
-
-    io.SetClipboardTextFn = ImGuiSetClipboardText;
-    io.GetClipboardTextFn = ImGuiGetClipboardText;
-    io.ClipboardUserData  = m_window;
-    // todo: Fix this define
-#    ifdef _WIN32
-//    io.ImeWindowHandle = glfwGetWin32Window(m_window);
-#    endif
-
-    // Load cursors
-    // FIXME: GLFW doesn't expose suitable cursors for ResizeAll, ResizeNESW, ResizeNWSE. We revert to arrow cursor for those.
-    m_mouseCursors[ImGuiMouseCursor_Arrow]      = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_TextInput]  = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_ResizeAll]  = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_ResizeNS]   = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_ResizeEW]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-    m_mouseCursors[ImGuiMouseCursor_Hand]       = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
-}
-
-void GLFWSystemController::imGuiDeinit()
-{
-    // Destroying cursors
-    for (auto&& cursor : m_mouseCursors)
-    {
-        if (cursor != nullptr)
-        {
-            glfwDestroyCursor(cursor);
-            cursor = nullptr;
-        }
-    }
-}
-
-void GLFWSystemController::imGuiNewFrame()
-{
-    auto& io = ImGui::GetIO();
-
-    // Setup display size
-    // todo: Viewport == Framebuffer for now. Fix if it will change.
-    auto viewportRect = viewport();
-
-    io.DisplaySize             = ImVec2(viewportRect.w, viewportRect.h);
-    io.DisplayFramebufferScale = ImVec2(1, 1);
-
-    // Setup time step
-    io.DeltaTime = float(application()->timeStatistics()->lastFrameDeltaTime().count()) / 1000000;
-
-    // Setup inputs
-    // (we already got mouse wheel, keyboard keys & characters from glfw callbacks polled in glfwPollEvents())
-    if (glfwGetWindowAttrib(m_window, GLFW_FOCUSED))
-    {
-        // Set OS mouse position if requested (only used when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
-        if (io.WantSetMousePos)
-        {
-            glfwSetCursorPos(m_window, io.MousePos.x, io.MousePos.y);
-        }
-        else
-        {
-            auto pos    = application()->input()->mouse()->getMousePosition();
-            io.MousePos = ImVec2(pos.x, pos.y);
-        }
-    }
-
-    for (uint8_t i = 0; i < 3; ++i)
-    {
-        // If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
-        io.MouseDown[i] = application()->input()->mouse()->isPressed(i);
-    }
-
-    // Update OS/hardware mouse cursor if ImGui isn't drawing a software cursor
-    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) == 0 &&
-        glfwGetInputMode(m_window, GLFW_CURSOR) != GLFW_CURSOR_DISABLED)
-    {
-        auto cursor = ImGui::GetMouseCursor();
-
-        if (io.MouseDrawCursor || cursor == ImGuiMouseCursor_None)
-        {
-            application()->input()->mouse()->setCursorHidden(true);
-        }
-        else
-        {
-            glfwSetCursor(m_window,
-                          m_mouseCursors[cursor] ? m_mouseCursors[cursor] : m_mouseCursors[ImGuiMouseCursor_Arrow]);
-
-            application()->input()->mouse()->setCursorHidden(false);
-        }
-    }
-
-    io.MouseWheel  = application()->input()->mouse()->getMouseWheelScroll().y;
-    io.MouseWheelH = application()->input()->mouse()->getMouseWheelScroll().x;
-
-    // todo: Add gamepad navigation
-
-    ImGui::NewFrame();
-}
-
-bool GLFWSystemController::init()
+bool GLFWSystemController::onInit()
 {
     HGInfo() << "Initializing GLFW";
 
@@ -193,29 +63,22 @@ bool GLFWSystemController::init()
         return false;
     }
 
+    HGInfo() << "Initialized";
+
     // Setting OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-
-    ImGui::CreateContext();
-
-    auto& io = ImGui::GetIO();
-
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
     return true;
 }
 
-// Incognito
-namespace
-{
-GLFWSystemController* controller = nullptr;
-}
+    void GLFWSystemController::onDeinit(){
 
-bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::string title)
-{
+    }
+
+bool GLFWSystemController::onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title) {
     HGInfo() << "Creating window " << width << "x" << height << " with title \"" << title << "\"";
 
     m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -225,9 +88,6 @@ bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::st
         glfwTerminate();
         return false;
     }
-
-    HGInfo() << "Initializing ImGui";
-    imGuiInit();
 
     controller = this;
 
@@ -240,7 +100,7 @@ bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::st
     glfwSetCharCallback(m_window, &GLFWSystemController::charCallback);
     glfwSetScrollCallback(m_window, &GLFWSystemController::mouseWheelCallback);
 
-    const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
         ->setCursorDisabledAction([=](bool disable) {
             if (disable)
             {
@@ -253,7 +113,7 @@ bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::st
             }
         });
 
-    const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
         ->setCursorHiddenAction([=](bool hidden) {
             if (hidden)
             {
@@ -265,45 +125,19 @@ bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::st
             }
         });
 
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
+        ->setIsCursorDisabledAction([=]() {
+            return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
+        });
+
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
+        ->setIsCursorHiddenAction([=]() {
+            return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN;
+        });
+
     glfwMakeContextCurrent(m_window);
 
     glfwSwapInterval(0);
-
-    glewExperimental = GL_TRUE;
-    GLenum error;
-    if ((error = glewInit()) != GLEW_OK)
-    {
-        HGError() << "Can't init GLEW. Error: " << glewGetErrorString(error);
-        return false;
-    }
-
-#    ifndef DNDEBUG
-    GLint flags;
-    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-    {
-        HGInfo() << "Turning on OpenGL debug output.";
-        gl::set_debug_output_enabled(true);
-        gl::set_syncronous_debug_output_enabled(true);
-
-        glDebugMessageCallback(&GLFWSystemController::glDebugOutput, nullptr);
-        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-    }
-#    endif
-
-    // Enabling cull face to clockwise
-    gl::set_polygon_face_culling_enabled(true);
-    gl::set_cull_face(GL_BACK);
-    gl::set_front_face(GL_CW);
-
-    // Enabling depth test
-    gl::set_depth_test_enabled(true);
-    gl::set_depth_function(GL_LESS);
-
-    // Blending
-    gl::set_blending_enabled(true);
-    gl::set_blend_function(GL_SRC_ALPHA, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Setting default render target size
     controller->application()->renderer()->defaultRenderTarget()->setSize({width, height});
@@ -311,9 +145,8 @@ bool GLFWSystemController::createWindow(uint32_t width, uint32_t height, std::st
     return true;
 }
 
-void GLFWSystemController::deinit()
-{
-    imGuiDeinit();
+bool GLFWSystemController::isWindowFocused(){
+    return glfwGetWindowAttrib(m_window, GLFW_FOCUSED);
 }
 
 void GLFWSystemController::closeWindow()
@@ -326,7 +159,7 @@ void GLFWSystemController::swapBuffers()
     glfwSwapBuffers(m_window);
 }
 
-void GLFWSystemController::pollEvents()
+void GLFWSystemController::onPollEvents()
 {
     // Ticking pushed/released values in input subsystem
     const_cast<HG::Core::Input*>(application()->input())->tickControllers();
@@ -345,13 +178,6 @@ void GLFWSystemController::pollEvents()
         BENCH("Handling window events");
         handleWindowEvents();
     }
-
-    // ImGui requires render before new frame
-    if (application()->scene())
-    {
-        BENCH("ImGui New Frame");
-        imGuiNewFrame();
-    }
 }
 
 void GLFWSystemController::handleGamepadsEvents()
@@ -361,7 +187,7 @@ void GLFWSystemController::handleGamepadsEvents()
         int present = glfwJoystickPresent(index);
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
-            ->setIsConnectedGamepad(static_cast<uint8_t>(index), static_cast<bool>(present));
+            ->setIsConnectedGamepad(static_cast<std::uint8_t>(index), static_cast<bool>(present));
 
         if (!present)
         {
@@ -376,7 +202,7 @@ void GLFWSystemController::handleGamepadsEvents()
         for (int i = 0; i < count; ++i)
         {
             const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
-                ->setGamepadAxisValue(static_cast<uint8_t>(index), static_cast<uint8_t>(i), axes[i]);
+                ->setGamepadAxisValue(static_cast<std::uint8_t>(index), static_cast<std::uint8_t>(i), axes[i]);
         }
 
         // Buttons
@@ -384,13 +210,13 @@ void GLFWSystemController::handleGamepadsEvents()
 
         for (int i = 0; i < count; ++i)
         {
-            if (controller->application()->input()->gamepads()->isButtonPressed(static_cast<uint8_t>(index),
-                                                                                static_cast<uint8_t>(i)))
+            if (controller->application()->input()->gamepads()->isButtonPressed(static_cast<std::uint8_t>(index),
+                                                                                static_cast<std::uint8_t>(i)))
             {
                 if (buttons[i] == GLFW_RELEASE)
                 {
                     const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
-                        ->setGamepadButtonValue(static_cast<uint8_t>(index), static_cast<uint8_t>(i), false);
+                        ->setGamepadButtonValue(static_cast<std::uint8_t>(index), static_cast<std::uint8_t>(i), false);
                 }
             }
             else
@@ -398,7 +224,7 @@ void GLFWSystemController::handleGamepadsEvents()
                 if (buttons[i] == GLFW_PRESS)
                 {
                     const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
-                        ->setGamepadButtonValue(static_cast<uint8_t>(index), static_cast<uint8_t>(i), true);
+                        ->setGamepadButtonValue(static_cast<std::uint8_t>(index), static_cast<std::uint8_t>(i), true);
                 }
             }
         }
@@ -412,14 +238,14 @@ void GLFWSystemController::joystickCallback(int gamepad, int event)
         HGInfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " connected.";
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
-            ->setIsConnectedGamepad(static_cast<uint8_t>(gamepad), true);
+            ->setIsConnectedGamepad(static_cast<std::uint8_t>(gamepad), true);
     }
     else if (event == GLFW_DISCONNECTED)
     {
         HGInfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " disconnected.";
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
-            ->setIsConnectedGamepad(static_cast<uint8_t>(gamepad), false);
+            ->setIsConnectedGamepad(static_cast<std::uint8_t>(gamepad), false);
     }
 }
 
@@ -597,52 +423,18 @@ void GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int scancode, 
             }
         }
     }
-
-    // Processing input for ImGui
-    auto& io = ImGui::GetIO();
-
-    if (action == GLFW_PRESS)
-    {
-        io.KeysDown[key] = true;
-    }
-    else if (action == GLFW_RELEASE)
-    {
-        io.KeysDown[key] = false;
-    }
-
-    if (key == GLFW_KEY_KP_ENTER)
-    {
-        if (action == GLFW_PRESS)
-        {
-            io.KeysDown[GLFW_KEY_ENTER] = true;
-        }
-        else
-        {
-            io.KeysDown[GLFW_KEY_ENTER] = false;
-        }
-    }
-
-    io.KeyCtrl  = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-    io.KeyAlt   = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
 }
 
 void GLFWSystemController::charCallback(GLFWwindow*, unsigned int c)
 {
-    auto& io = ImGui::GetIO();
-
-    if (c > 0 && c < 0x10000)
-    {
-        io.AddInputCharacter((unsigned short)c);
-    }
+    const_cast<HG::Core::Input::Keyboard*>(controller->application()->input()->keyboard())->addCharacterEntered(c);
 }
 
 void GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
 {
     // No associative container, cause of GLFW buttons are equal to HGEngine's input buttons.
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
-        ->setPressedButton(static_cast<uint8_t>(button), static_cast<bool>(action));
+        ->setPressedButton(static_cast<std::uint8_t>(button), static_cast<bool>(action));
 }
 
 void GLFWSystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta)
@@ -653,150 +445,13 @@ void GLFWSystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double
 
 void GLFWSystemController::handleWindowEvents()
 {
-    const_cast<HG::Core::Input::Window*>(controller->application()->input()->window())
+    const_cast<HG::Core::Input::Window*>(application()->input()->window())
         ->setClosed(static_cast<bool>(glfwWindowShouldClose(m_window)));
 }
 
 void GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
     controller->application()->renderer()->defaultRenderTarget()->setSize({width, height});
-}
-
-void GLFWSystemController::glDebugOutput(GLenum source,
-                                         GLenum type,
-                                         GLuint id,
-                                         GLenum severity,
-                                         GLsizei,
-                                         const GLchar* message,
-                                         const void*)
-{
-    // ignore non-significant error/warning codes
-    if (id == 131169 || id == 3203 || id == 131185 || id == 131218 || id == 131204 || id == 8 ||
-        id == 131076 || /* Usage warning */
-        id == 22 ||     /* CPU mapping a bisy "streamed data" BO stalled */
-        id == 20 ||     /* GTT mapping a busy "miptree" BO stalled */
-        id == 14 ||     /* CPU mapping a busy "miptree" BO stalled */
-        id == 18 /* CPU mapping a busy "streamed data" BO stalled */)
-    {
-        return;
-    }
-
-    if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
-    {
-        return;
-    }
-
-    std::stringstream ss;
-
-    switch (type)
-    {
-    case GL_DEBUG_TYPE_ERROR:
-        ss << "Error";
-        break;
-    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-        ss << "Deprecated Behaviour";
-        break;
-    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-        ss << "Undefined Behaviour";
-        break;
-    case GL_DEBUG_TYPE_PORTABILITY:
-        ss << "Portability";
-        break;
-    case GL_DEBUG_TYPE_PERFORMANCE:
-        ss << "Performance";
-        break;
-    case GL_DEBUG_TYPE_MARKER:
-        ss << "Marker";
-        break;
-    case GL_DEBUG_TYPE_PUSH_GROUP:
-        ss << "Push Group";
-        break;
-    case GL_DEBUG_TYPE_POP_GROUP:
-        ss << "Pop Group";
-        break;
-    case GL_DEBUG_TYPE_OTHER:
-        ss << "Other";
-        break;
-    default:
-        ss << "Unexpected";
-        break;
-    }
-
-    ss << " (severity: ";
-
-    switch (severity)
-    {
-    case GL_DEBUG_SEVERITY_HIGH:
-        ss << "high";
-        break;
-    case GL_DEBUG_SEVERITY_MEDIUM:
-        ss << "medium";
-        break;
-    case GL_DEBUG_SEVERITY_LOW:
-        ss << "low";
-        break;
-    default:
-        ss << "unexpected";
-        break;
-    }
-
-    ss << ", id: " << id;
-
-    ss << ") message received from ";
-
-    switch (source)
-    {
-    case GL_DEBUG_SOURCE_API:
-        ss << "API";
-        break;
-    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-        ss << "Window System";
-        break;
-    case GL_DEBUG_SOURCE_SHADER_COMPILER:
-        ss << "Shader Compiler";
-        break;
-    case GL_DEBUG_SOURCE_THIRD_PARTY:
-        ss << "Third Party";
-        break;
-    case GL_DEBUG_SOURCE_APPLICATION:
-        ss << "Application";
-        break;
-    case GL_DEBUG_SOURCE_OTHER:
-        ss << "Other";
-        break;
-    default:
-        ss << "Unexpected";
-        break;
-        ;
-    }
-
-    std::string messageCopy(message);
-
-    std::replace(messageCopy.begin(), messageCopy.end(), '\n', ' ');
-
-    ss << ": " << messageCopy;
-
-    switch (type)
-    {
-    case GL_DEBUG_TYPE_ERROR:
-    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-        HGErrorEx("OpenGL::RendererController") << ss.str();
-        break;
-
-    case GL_DEBUG_TYPE_PORTABILITY:
-    case GL_DEBUG_TYPE_PERFORMANCE:
-    case GL_DEBUG_TYPE_MARKER:
-        HGWarningEx("OpenGL::RendererController") << ss.str();
-        break;
-
-    case GL_DEBUG_TYPE_PUSH_GROUP:
-    case GL_DEBUG_TYPE_POP_GROUP:
-    case GL_DEBUG_TYPE_OTHER:
-    default:
-        HGInfoEx("OpenGL::RendererController") << ss.str();
-        break;
-    }
 }
 
 HG::Utils::Rect GLFWSystemController::viewport() const
@@ -814,4 +469,3 @@ void GLFWSystemController::changeTitle(std::string title)
     }
 }
 } // namespace HG::Rendering::OpenGL
-#endif

@@ -18,7 +18,9 @@
 #include <HG/Rendering/OpenGL/Forward/CubeMapRenderer.hpp>
 #include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
 #include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
-#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
+
+// HG::System::PC
+#include <HG/System/PC/GLFWSystemController.hpp>
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>

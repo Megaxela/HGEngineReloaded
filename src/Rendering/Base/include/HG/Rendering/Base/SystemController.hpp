@@ -35,19 +35,19 @@ public:
     /**
      * @brief Destructor.
      */
-    virtual ~SystemController() = default;
+    virtual ~SystemController();
 
     /**
      * @brief Method for initializing graphics
      * subsystem.
      */
-    virtual bool init() = 0;
+    bool init();
 
     /**
      * @brief Method for deinitializing graphics
      * subsystem.
      */
-    virtual void deinit() = 0;
+    void deinit();
 
     /**
      * @brief Method for creating window.
@@ -55,7 +55,7 @@ public:
      * @param height Window height.
      * @param title Window title.
      */
-    virtual bool createWindow(uint32_t width, uint32_t height, std::string title) = 0;
+    bool createWindow(uint32_t width, uint32_t height, std::string title);
 
     /**
      * @brief Method for changing window title.
@@ -69,6 +69,12 @@ public:
     virtual void closeWindow() = 0;
 
     /**
+     * @brief Method for checking is window focused.
+     * @return Is window focused.
+     */
+    virtual bool isWindowFocused() = 0;
+
+    /**
      * @brief Method for swapping buffers in window.
      */
     virtual void swapBuffers() = 0;
@@ -76,7 +82,7 @@ public:
     /**
      * @brief Method for polling events.
      */
-    virtual void pollEvents() = 0;
+    void pollEvents();
 
     /**
      * @brief Method for getting current viewport.
@@ -92,7 +98,52 @@ public:
      */
     [[nodiscard]] HG::Core::Application* application() const;
 
+protected:
+    /**
+     * @brief Derived defined events polling, that has to populate
+     * HG::Core::Input
+     */
+    virtual void onPollEvents() = 0;
+
+    /**
+     * @brief Derived defined window/context creation function.
+     */
+    virtual bool onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title) = 0;
+
+    /**
+     * @brief Derived defined init method, that will be called at the application beginning.
+     * @return Initialization success.
+     */
+    virtual bool onInit() = 0;
+
+    /**
+     * @brief Derived defined deinit method, that will be called before application close or
+     * renderer change.
+     */
+    virtual void onDeinit() = 0;
+
 private:
+
+    /**
+     * @brief Method for initializing ImGui system.
+     */
+    void imGuiInit();
+
+    /**
+     * @brief Method for deinitializing ImGui system.
+     */
+    void imGuiDeinit();
+
+    /**
+     * @brief Method for preparing ImGui to new frame.
+     */
+    void imGuiNewFrame();
+
+    /**
+     * @brief Method for reading keys from HG::Core::Input into ImGui backend.
+     */
+    void imGuiReadKeys();
+
     HG::Core::Application* m_application;
 };
 } // namespace HG::Rendering::Base

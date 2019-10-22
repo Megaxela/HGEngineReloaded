@@ -20,6 +20,9 @@
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
 
+// HG::Utils
+#include <HG/Utils/Logging.hpp>
+
 namespace HG::Core
 {
 Application::Application(std::string name, int /* argc */, char** /* argv */) :
@@ -102,6 +105,19 @@ void Application::stop()
 
 bool Application::init()
 {
+    if (m_systemController == nullptr)
+    {
+        HGError() << "No SystemController set in application pipeline.";
+        return false;
+    }
+
+    if (!m_systemController->init())
+    {
+        HGError() << "Can't init rendering pipeline by system controller. See errors above.";
+        return false;
+    }
+    HGInfo() << "System controller initialized";
+
     return m_renderer->init();
 }
 

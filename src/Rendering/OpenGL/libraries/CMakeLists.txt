@@ -1,2 +1,1 @@
 add_dependency_subdirectory(PATH gl)
-add_dependency_subdirectory(PATH glfw IGNORE_IF EMSCRIPTEN)

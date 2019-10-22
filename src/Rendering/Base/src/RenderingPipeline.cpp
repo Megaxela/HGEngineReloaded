@@ -32,37 +32,19 @@ RenderingPipeline::~RenderingPipeline()
 
 bool RenderingPipeline::init()
 {
-    if (m_parentApplication == nullptr)
-    {
-        HGError() << "No parent application set.";
-        return false;
-    }
-
-    if (m_parentApplication->systemController() == nullptr)
-    {
-        HGError() << "No SystemController set in rendering pipeline.";
-        return false;
-    }
-
-    if (!m_parentApplication->systemController()->init())
-    {
-        HGError() << "Can't init rendering pipeline by system controller. See errors above.";
-        return false;
-    }
-
     if (!m_parentApplication->systemController()->createWindow(800, 600, m_parentApplication->title()))
     {
         HGError() << "Can't create window. See errors above.";
         return false;
     }
 
+    HGInfo() << "Window created";
+
     if (!m_parentApplication->renderer())
     {
         HGError() << "No parent renderer. Can't set default render target.";
         return false;
     }
-
-    setRenderTarget(m_parentApplication->renderer()->defaultRenderTarget());
 
     return true;
 }

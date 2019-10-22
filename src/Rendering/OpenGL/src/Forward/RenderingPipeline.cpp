@@ -35,6 +35,146 @@
 // ImGui
 #include <imgui.h>
 
+namespace {
+    void glDebugOutput(GLenum source,
+                       GLenum type,
+                       GLuint id,
+                       GLenum severity,
+                       GLsizei,
+                       const GLchar* message,
+                       const void*)
+    {
+        // ignore non-significant error/warning codes
+        if (id == 131169 || id == 3203 || id == 131185 || id == 131218 || id == 131204 || id == 8 ||
+            id == 131076 || /* Usage warning */
+            id == 22 ||     /* CPU mapping a busy "streamed data" BO stalled */
+            id == 20 ||     /* GTT mapping a busy "miptree" BO stalled */
+            id == 14 ||     /* CPU mapping a busy "miptree" BO stalled */
+            id == 18 /* CPU mapping a busy "streamed data" BO stalled */)
+        {
+            return;
+        }
+
+        if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
+        {
+            return;
+        }
+
+        std::stringstream ss;
+
+        switch (type)
+        {
+        case GL_DEBUG_TYPE_ERROR:
+            ss << "Error";
+            break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+            ss << "Deprecated Behaviour";
+            break;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+            ss << "Undefined Behaviour";
+            break;
+        case GL_DEBUG_TYPE_PORTABILITY:
+            ss << "Portability";
+            break;
+        case GL_DEBUG_TYPE_PERFORMANCE:
+            ss << "Performance";
+            break;
+        case GL_DEBUG_TYPE_MARKER:
+            ss << "Marker";
+            break;
+        case GL_DEBUG_TYPE_PUSH_GROUP:
+            ss << "Push Group";
+            break;
+        case GL_DEBUG_TYPE_POP_GROUP:
+            ss << "Pop Group";
+            break;
+        case GL_DEBUG_TYPE_OTHER:
+            ss << "Other";
+            break;
+        default:
+            ss << "Unexpected";
+            break;
+        }
+
+        ss << " (severity: ";
+
+        switch (severity)
+        {
+        case GL_DEBUG_SEVERITY_HIGH:
+            ss << "high";
+            break;
+        case GL_DEBUG_SEVERITY_MEDIUM:
+            ss << "medium";
+            break;
+        case GL_DEBUG_SEVERITY_LOW:
+            ss << "low";
+            break;
+        default:
+            ss << "unexpected";
+            break;
+        }
+
+        ss << ", id: " << id;
+
+        ss << ") message received from ";
+
+        switch (source)
+        {
+        case GL_DEBUG_SOURCE_API:
+            ss << "API";
+            break;
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+            ss << "Window System";
+            break;
+        case GL_DEBUG_SOURCE_SHADER_COMPILER:
+            ss << "Shader Compiler";
+            break;
+        case GL_DEBUG_SOURCE_THIRD_PARTY:
+            ss << "Third Party";
+            break;
+        case GL_DEBUG_SOURCE_APPLICATION:
+            ss << "Application";
+            break;
+        case GL_DEBUG_SOURCE_OTHER:
+            ss << "Other";
+            break;
+        default:
+            ss << "Unexpected";
+            break;
+            ;
+        }
+
+        std::string messageCopy(message);
+
+        std::replace(messageCopy.begin(), messageCopy.end(), '\n', ' ');
+
+        ss << ": " << messageCopy;
+
+        switch (type)
+        {
+        case GL_DEBUG_TYPE_ERROR:
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+            HGErrorEx("OpenGL::RendererController") << ss.str();
+            break;
+
+        case GL_DEBUG_TYPE_PORTABILITY:
+        case GL_DEBUG_TYPE_PERFORMANCE:
+        case GL_DEBUG_TYPE_MARKER:
+            HGWarningEx("OpenGL::RendererController") << ss.str();
+            break;
+
+        case GL_DEBUG_TYPE_PUSH_GROUP:
+        case GL_DEBUG_TYPE_POP_GROUP:
+        case GL_DEBUG_TYPE_OTHER:
+        default:
+            HGInfoEx("OpenGL::RendererController") << ss.str();
+            break;
+        }
+    }
+
+}
+
 namespace HG::Rendering::OpenGL::Forward
 {
 RenderingPipeline::RenderingPipeline(HG::Core::Application* application) :
@@ -77,11 +217,26 @@ bool RenderingPipeline::init()
         return false;
     }
 
+    HGInfo() << "Initializing dependencies";
+    if (!initDependencies())
+    {
+        return false;
+    }
+
+    // todo: Somehow move this to HG::Rendering::Base::RenderingPipeline
+    setRenderTarget(application()->renderer()->defaultRenderTarget());
+
+    HGInfo() << "Performing rendering setup";
+    initRenderingSetup();
+
+    HGInfo() << "Initializing renderers";
     for (auto&& [id, renderer] : m_renderers)
     {
         renderer->init();
     }
 
+
+    HGInfo() << "Other";
     m_gizmosRenderer->init();
 
     m_blitRenderer->init();
@@ -107,6 +262,48 @@ void RenderingPipeline::deinit()
     m_imguiRenderer->deinit();
 
     application()->renderer()->materialCollection()->clearCache();
+}
+
+bool RenderingPipeline::initDependencies(){
+    glewExperimental = GL_TRUE;
+    GLenum error;
+    if ((error = glewInit()) != GLEW_OK)
+    {
+        HGError() << "Can't init GLEW. Error: " << glewGetErrorString(error);
+        return false;
+    }
+
+    return true;
+}
+
+void RenderingPipeline::initRenderingSetup(){
+#    ifndef DNDEBUG
+    GLint flags;
+    glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+    if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+    {
+        HGInfo() << "Turning on OpenGL debug output.";
+        gl::set_debug_output_enabled(true);
+        gl::set_syncronous_debug_output_enabled(true);
+
+        glDebugMessageCallback(&glDebugOutput, nullptr);
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+    }
+#    endif
+
+    // Enabling cull face to clockwise
+    gl::set_polygon_face_culling_enabled(true);
+    gl::set_cull_face(GL_BACK);
+    gl::set_front_face(GL_CW);
+
+    // Enabling depth test
+    gl::set_depth_test_enabled(true);
+    gl::set_depth_function(GL_LESS);
+
+    // Blending
+    gl::set_blending_enabled(true);
+    gl::set_blend_function(GL_SRC_ALPHA, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void RenderingPipeline::clear(HG::Utils::Color color)

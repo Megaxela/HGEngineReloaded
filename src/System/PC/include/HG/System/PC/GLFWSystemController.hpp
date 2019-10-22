@@ -1,16 +1,10 @@
 #pragma once
 
-// Only if using GLFW library
-
-#ifndef GRAPHICS_USE_GLFW
-#    warning "Trying to include GLFW system controller w/o GLFW renderer."
-#endif
-
-#ifdef GRAPHICS_USE_GLFW
-
+// HG::Rendering::Base
 #    include <HG/Rendering/Base/SystemController.hpp>
-#    include <HG/Rendering/OpenGL/GL/gl_ordered.hpp>
-#    include <imgui.h>
+
+// Forward declaration
+struct GLFWwindow;
 
 namespace HG::Rendering::OpenGL
 {
@@ -30,11 +24,25 @@ public:
      */
     ~GLFWSystemController() override;
 
+    void changeTitle(std::string title) override;
+
     /**
-     * @brief Mehtod for initializing GLFW, setting GLFW settings and setting callbacks.
-     * @return Success.
+     * @brief Method for swapping buffers in window.
      */
-    bool init() override;
+    void swapBuffers() override;
+
+    Utils::Rect viewport() const override;
+
+    void closeWindow() override;
+
+    bool isWindowFocused() override;
+
+protected:
+
+    /**
+     * @brief Method, that's calling `glfwPollEvents`.
+     */
+    void onPollEvents() override;
 
     /**
      * @brief Method for creating window with defines width, height and title.
@@ -43,44 +51,20 @@ public:
      * @param title Window title.
      * @return Success.
      */
-    bool createWindow(uint32_t width, uint32_t height, std::string title) override;
-
-    void changeTitle(std::string title) override;
+    bool onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title) override;
 
     /**
-     * @brief Method for swapping buffers in window.
+     * @brief Method for initializing GLFW, setting GLFW settings and setting callbacks.
+     * @return Success.
      */
-    void swapBuffers() override;
+    bool onInit() override;
 
     /**
-     * @brief Method, that's calling `glfwPollEvents`.
+     * @brief Method for deinitializing. Does nothing for now...
+     * @todo Do something...
      */
-    void pollEvents() override;
-
-    Utils::Rect viewport() const override;
-
-    void deinit() override;
-
-    void closeWindow() override;
-
+    void onDeinit() override;
 private:
-    static void
-    glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei, const GLchar* mess, const void*);
-
-    /**
-     * @brief Method for initializing ImGui system.
-     */
-    void imGuiInit();
-
-    /**
-     * @brief Method for deinitializing ImGui system.
-     */
-    void imGuiDeinit();
-
-    /**
-     * @brief Method for preparing ImGui to new frame.
-     */
-    void imGuiNewFrame();
 
     /**
      * @brief Method for handling gamepad events.
@@ -142,8 +126,5 @@ private:
     static void framebufferSizeCallback(GLFWwindow*, int width, int height);
 
     GLFWwindow* m_window;
-
-    GLFWcursor* m_mouseCursors[ImGuiMouseCursor_COUNT];
 };
 } // namespace HG::Rendering::OpenGL
-#endif

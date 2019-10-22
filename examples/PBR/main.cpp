@@ -16,7 +16,9 @@
 #include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
 #include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
-#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
+
+// HG::System::PC
+#include <HG/System/PC/GLFWSystemController.hpp>
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
@@ -48,7 +50,9 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    HGInfoF() << "Initialization successful. Creating scene...";
     application.setScene(new FirstScene());
 
+    HGInfoF() << "Executing...";
     return application.exec();
 }
