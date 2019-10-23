@@ -236,6 +236,7 @@ public:
     {
         return false;
     }
+
 protected:
     void onPollEvents() override
     {
