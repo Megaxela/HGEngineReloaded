@@ -5,6 +5,7 @@
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
 #include <gtest/gtest.h>
+#include <stdint-gcc.h>
 
 enum class Actions
 {
@@ -204,25 +205,6 @@ public:
         TestActions.push_back(Actions::SystemControllerDeallocated);
     }
 
-    bool init() override
-    {
-        TestActions.push_back(Actions::SystemControllerInited);
-
-        return true;
-    }
-
-    void deinit() override
-    {
-        TestActions.push_back(Actions::SystemControllerDeinited);
-    }
-
-    bool createWindow(uint32_t width, uint32_t height, std::string title) override
-    {
-        TestActions.push_back(Actions::SystemControllerWindowCreated);
-
-        return true;
-    }
-
     void changeTitle(std::string title) override
     {
     }
@@ -237,14 +219,36 @@ public:
         TestActions.push_back(Actions::SystemControllerBuffersSwapped);
     }
 
-    void pollEvents() override
+    [[nodiscard]] HG::Utils::Rect viewport() const override
+    {
+        return HG::Utils::Rect();
+    }
+
+protected:
+    bool onInit() override
+    {
+        TestActions.push_back(Actions::SystemControllerInited);
+        return true;
+    }
+
+public:
+    bool isWindowFocused() override
+    {
+        return false;
+    }
+protected:
+    void onPollEvents() override
     {
         TestActions.push_back(Actions::SystemControllerEventsPolled);
     }
-
-    HG::Utils::Rect viewport() const override
+    bool onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title) override
     {
-        return HG::Utils::Rect();
+        TestActions.push_back(Actions::SystemControllerWindowCreated);
+        return true;
+    }
+    void onDeinit() override
+    {
+        TestActions.push_back(Actions::SystemControllerDeinited);
     }
 };
 

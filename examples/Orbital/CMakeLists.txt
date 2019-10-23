@@ -6,4 +6,5 @@ add_example(
         HGRenderingOGL
         HGRenderingBase
         HGStandard
+        HGSystemPC
 )

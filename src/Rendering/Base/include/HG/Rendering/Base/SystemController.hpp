@@ -123,7 +123,6 @@ protected:
     virtual void onDeinit() = 0;
 
 private:
-
     /**
      * @brief Method for initializing ImGui system.
      */

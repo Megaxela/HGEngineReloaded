@@ -12,5 +12,4 @@ describe_module(
         gl
         HGCore
         HGRenderingBase
-        glfw
 )

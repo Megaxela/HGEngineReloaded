@@ -18,7 +18,7 @@
 #include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
 
 // HG::System::PC
-#include <HG/System/PC/GLFWSystemController.hpp>
+#include <HG/System/PC/SystemController.hpp>
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     application.resourceManager()->setResourceAccessor(new HG::Core::FilesystemResourceAccessor());
 
     // Setting system controller
-    application.setSystemController(new HG::Rendering::OpenGL::GLFWSystemController(&application));
+    application.setSystemController(new HG::System::PC::SystemController(&application));
 
     auto pipeline = new HG::Rendering::OpenGL::Forward::RenderingPipeline(&application);
     pipeline->addRenderer(new HG::Rendering::OpenGL::Forward::MeshRenderer());
@@ -50,9 +50,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    HGInfoF() << "Initialization successful. Creating scene...";
     application.setScene(new FirstScene());
 
-    HGInfoF() << "Executing...";
     return application.exec();
 }

@@ -1,28 +1,28 @@
 #pragma once
 
 // HG::Rendering::Base
-#    include <HG/Rendering/Base/SystemController.hpp>
+#include <HG/Rendering/Base/SystemController.hpp>
 
 // Forward declaration
 struct GLFWwindow;
 
-namespace HG::Rendering::OpenGL
+namespace HG::System::PC
 {
 /**
  * @brief Class, that describes system controller, using GLFW library.
  */
-class GLFWSystemController : public HG::Rendering::Base::SystemController
+class SystemController : public HG::Rendering::Base::SystemController
 {
 public:
     /**
      * @brief Constructor.
      */
-    explicit GLFWSystemController(HG::Core::Application* application);
+    explicit SystemController(HG::Core::Application* application);
 
     /**
      * @brief Method, that's closing window on destruction.
      */
-    ~GLFWSystemController() override;
+    ~SystemController() override;
 
     void changeTitle(std::string title) override;
 
@@ -38,7 +38,6 @@ public:
     bool isWindowFocused() override;
 
 protected:
-
     /**
      * @brief Method, that's calling `glfwPollEvents`.
      */
@@ -64,8 +63,8 @@ protected:
      * @todo Do something...
      */
     void onDeinit() override;
-private:
 
+private:
     /**
      * @brief Method for handling gamepad events.
      */
@@ -127,4 +126,4 @@ private:
 
     GLFWwindow* m_window;
 };
-} // namespace HG::Rendering::OpenGL
+} // namespace HG::System::PC

@@ -19,23 +19,33 @@ Input::Keyboard::Keyboard() :
     m_numberOfPressedCharacters(0)
 {
 }
-void Input::Keyboard::visitKeys(const std::function<void(Key)> & pushedCallback, const std::function<void(Key)> & pressedCallback, const std::function<void(Key)> & releasedCallback) const{
-    for (auto iter = std::size_t(Key::First); iter <= std::size_t(Key::Last); ++iter) {
-        if (m_pushed[iter] && pushedCallback != nullptr) {
+void Input::Keyboard::visitKeys(const std::function<void(Key)>& pushedCallback,
+                                const std::function<void(Key)>& pressedCallback,
+                                const std::function<void(Key)>& releasedCallback) const
+{
+    for (auto iter = std::size_t(Key::First); iter <= std::size_t(Key::Last); ++iter)
+    {
+        if (m_pushed[iter] && pushedCallback != nullptr)
+        {
             pushedCallback(Key(iter));
         }
-        if (m_pressed[iter] && pressedCallback != nullptr) {
+        if (m_pressed[iter] && pressedCallback != nullptr)
+        {
             pressedCallback(Key(iter));
         }
-        if (m_released[iter] && releasedCallback != nullptr) {
+        if (m_released[iter] && releasedCallback != nullptr)
+        {
             releasedCallback(Key(iter));
         }
     }
 }
 
-void Input::Keyboard::visitPressedModifiers(const std::function<void(Modifiers)> & callback) const{
-    for (auto iter = std::uint8_t(Modifiers::First); iter <= std::uint8_t(Modifiers::Last); ++iter) {
-        if ((m_pressedModifiers & iter) != 0) {
+void Input::Keyboard::visitPressedModifiers(const std::function<void(Modifiers)>& callback) const
+{
+    for (auto iter = std::uint8_t(Modifiers::First); iter <= std::uint8_t(Modifiers::Last); ++iter)
+    {
+        if ((m_pressedModifiers & iter) != 0)
+        {
             callback(Modifiers(iter));
         }
     }
@@ -97,7 +107,8 @@ bool Input::Keyboard::isModifierPressed(Input::Keyboard::Modifiers modifier) con
     return static_cast<bool>(m_pressedModifiers & (1u << int(modifier)));
 }
 
-void Input::Keyboard::visitPressedCharacters(std::function<void(std::uint32_t)> visitor) const{
+void Input::Keyboard::visitPressedCharacters(std::function<void(std::uint32_t)> visitor) const
+{
     for (std::uint8_t i = 0; i < m_numberOfPressedCharacters; ++i)
     {
         visitor(m_pressedCharacters[i]);
@@ -262,7 +273,8 @@ void Input::Mouse::setCursorHidden(bool hidden) const
     m_hiddenAction(hidden);
 }
 
-bool Input::Mouse::isCursorDisabled() const {
+bool Input::Mouse::isCursorDisabled() const
+{
     if (m_isDisabledAction == nullptr)
     {
         HGError() << "Can't check is cursor disabled, in case of unavailable action.";
@@ -272,7 +284,8 @@ bool Input::Mouse::isCursorDisabled() const {
     return m_isDisabledAction();
 }
 
-bool Input::Mouse::isCursorHidden() const {
+bool Input::Mouse::isCursorHidden() const
+{
     if (m_isHiddenAction == nullptr)
     {
         HGError() << "Can't check is cursor hidden, in case of unavailable action.";
@@ -292,11 +305,13 @@ void Input::Mouse::setCursorHiddenAction(std::function<void(bool)> hiddenAction)
     m_hiddenAction = std::move(hiddenAction);
 }
 
-void Input::Mouse::setIsCursorDisabledAction(std::function<bool()> isDisabledAction){
+void Input::Mouse::setIsCursorDisabledAction(std::function<bool()> isDisabledAction)
+{
     m_isDisabledAction = std::move(isDisabledAction);
 }
 
-void Input::Mouse::setIsCursorHiddenAction(std::function<bool()> isHiddenAction){
+void Input::Mouse::setIsCursorHiddenAction(std::function<bool()> isHiddenAction)
+{
     m_isHiddenAction = std::move(isHiddenAction);
 }
 

@@ -38,8 +38,6 @@ bool RenderingPipeline::init()
         return false;
     }
 
-    HGInfo() << "Window created";
-
     if (!m_parentApplication->renderer())
     {
         HGError() << "No parent renderer. Can't set default render target.";

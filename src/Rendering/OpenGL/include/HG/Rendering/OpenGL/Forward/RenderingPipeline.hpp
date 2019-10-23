@@ -113,7 +113,6 @@ public:
     void getTextureRegion(HG::Rendering::Base::Texture* texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data) override;
 
 private:
-
     /**
      * @brief This method performs glew initialization
      */

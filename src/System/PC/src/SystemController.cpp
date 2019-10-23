@@ -1,19 +1,19 @@
 // HG::Core
-#    include <HG/Core/Application.hpp>
-#    include <HG/Core/Benchmark.hpp>
-#    include <HG/Core/Input.hpp>
-#    include <HG/Core/TimeStatistics.hpp>
+#include <HG/Core/Application.hpp>
+#include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Input.hpp>
+#include <HG/Core/TimeStatistics.hpp>
 
 // HG::Rendering::Base
-#    include <HG/Rendering/Base/Camera.hpp>
-#    include <HG/Rendering/Base/RenderTarget.hpp>
-#    include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/Camera.hpp>
+#include <HG/Rendering/Base/RenderTarget.hpp>
+#include <HG/Rendering/Base/Renderer.hpp>
 
 // HG::System::PC
-#    include <HG/System/PC/GLFWSystemController.hpp>
+#include <HG/System/PC/SystemController.hpp>
 
 // HG::Utils
-#    include <HG/Utils/Logging.hpp>
+#include <HG/Utils/Logging.hpp>
 
 // GLFW
 #include <GLFW/glfw3.h>
@@ -21,18 +21,18 @@
 // Incognito
 namespace
 {
-    HG::Rendering::OpenGL::GLFWSystemController* controller = nullptr;
+HG::System::PC::SystemController* controller = nullptr;
 }
 
-namespace HG::Rendering::OpenGL
+namespace HG::System::PC
 {
-GLFWSystemController::GLFWSystemController(HG::Core::Application* application) :
-    SystemController(application),
+SystemController::SystemController(HG::Core::Application* application) :
+    HG::Rendering::Base::SystemController(application),
     m_window(nullptr)
 {
 }
 
-GLFWSystemController::~GLFWSystemController()
+SystemController::~SystemController()
 {
     glfwTerminate();
     m_window = nullptr;
@@ -48,7 +48,7 @@ static void ImGuiSetClipboardText(void* user_data, const char* text)
     glfwSetClipboardString((GLFWwindow*)user_data, text);
 }
 
-bool GLFWSystemController::onInit()
+bool SystemController::onInit()
 {
     HGInfo() << "Initializing GLFW";
 
@@ -74,11 +74,12 @@ bool GLFWSystemController::onInit()
     return true;
 }
 
-    void GLFWSystemController::onDeinit(){
+void SystemController::onDeinit()
+{
+}
 
-    }
-
-bool GLFWSystemController::onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title) {
+bool SystemController::onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title)
+{
     HGInfo() << "Creating window " << width << "x" << height << " with title \"" << title << "\"";
 
     m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -92,48 +93,44 @@ bool GLFWSystemController::onCreateWindow(std::uint32_t width, std::uint32_t hei
     controller = this;
 
     // Setting event callbacks
-    glfwSetKeyCallback(m_window, &GLFWSystemController::keyPressCallback);
-    glfwSetCursorPosCallback(m_window, &GLFWSystemController::cursorPosCallback);
-    glfwSetMouseButtonCallback(m_window, &GLFWSystemController::mouseButtonCallback);
-    glfwSetJoystickCallback(&GLFWSystemController::joystickCallback);
-    glfwSetFramebufferSizeCallback(m_window, &GLFWSystemController::framebufferSizeCallback);
-    glfwSetCharCallback(m_window, &GLFWSystemController::charCallback);
-    glfwSetScrollCallback(m_window, &GLFWSystemController::mouseWheelCallback);
+    glfwSetKeyCallback(m_window, &SystemController::keyPressCallback);
+    glfwSetCursorPosCallback(m_window, &SystemController::cursorPosCallback);
+    glfwSetMouseButtonCallback(m_window, &SystemController::mouseButtonCallback);
+    glfwSetJoystickCallback(&SystemController::joystickCallback);
+    glfwSetFramebufferSizeCallback(m_window, &SystemController::framebufferSizeCallback);
+    glfwSetCharCallback(m_window, &SystemController::charCallback);
+    glfwSetScrollCallback(m_window, &SystemController::mouseWheelCallback);
 
-    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
-        ->setCursorDisabledAction([=](bool disable) {
-            if (disable)
-            {
-                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            }
-            else
-            {
-                // todo: Add checking is it hidden and hide cursor
-                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            }
-        });
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())->setCursorDisabledAction([=](bool disable) {
+        if (disable)
+        {
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+        else
+        {
+            // todo: Add checking is it hidden and hide cursor
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+    });
 
-    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
-        ->setCursorHiddenAction([=](bool hidden) {
-            if (hidden)
-            {
-                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-            }
-            else
-            {
-                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            }
-        });
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())->setCursorHiddenAction([=](bool hidden) {
+        if (hidden)
+        {
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        }
+        else
+        {
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+    });
 
-    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
-        ->setIsCursorDisabledAction([=]() {
-            return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
-        });
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())->setIsCursorDisabledAction([=]() {
+        return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
+    });
 
-    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())
-        ->setIsCursorHiddenAction([=]() {
-            return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN;
-        });
+    const_cast<HG::Core::Input::Mouse*>(application()->input()->mouse())->setIsCursorHiddenAction([=]() {
+        return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN;
+    });
 
     glfwMakeContextCurrent(m_window);
 
@@ -145,21 +142,22 @@ bool GLFWSystemController::onCreateWindow(std::uint32_t width, std::uint32_t hei
     return true;
 }
 
-bool GLFWSystemController::isWindowFocused(){
+bool SystemController::isWindowFocused()
+{
     return glfwGetWindowAttrib(m_window, GLFW_FOCUSED);
 }
 
-void GLFWSystemController::closeWindow()
+void SystemController::closeWindow()
 {
     glfwDestroyWindow(m_window);
 }
 
-void GLFWSystemController::swapBuffers()
+void SystemController::swapBuffers()
 {
     glfwSwapBuffers(m_window);
 }
 
-void GLFWSystemController::onPollEvents()
+void SystemController::onPollEvents()
 {
     // Ticking pushed/released values in input subsystem
     const_cast<HG::Core::Input*>(application()->input())->tickControllers();
@@ -180,7 +178,7 @@ void GLFWSystemController::onPollEvents()
     }
 }
 
-void GLFWSystemController::handleGamepadsEvents()
+void SystemController::handleGamepadsEvents()
 {
     for (auto index = GLFW_JOYSTICK_1; index <= GLFW_JOYSTICK_LAST; ++index)
     {
@@ -231,7 +229,7 @@ void GLFWSystemController::handleGamepadsEvents()
     }
 }
 
-void GLFWSystemController::joystickCallback(int gamepad, int event)
+void SystemController::joystickCallback(int gamepad, int event)
 {
     if (event == GLFW_CONNECTED)
     {
@@ -249,13 +247,13 @@ void GLFWSystemController::joystickCallback(int gamepad, int event)
     }
 }
 
-void GLFWSystemController::cursorPosCallback(GLFWwindow*, double x, double y)
+void SystemController::cursorPosCallback(GLFWwindow*, double x, double y)
 {
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
         ->setMousePosition(static_cast<int>(x), static_cast<int>(y));
 }
 
-void GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int scancode, int action, int mods)
+void SystemController::keyPressCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
     (void)scancode;
     (void)mods;
@@ -425,47 +423,47 @@ void GLFWSystemController::keyPressCallback(GLFWwindow*, int key, int scancode, 
     }
 }
 
-void GLFWSystemController::charCallback(GLFWwindow*, unsigned int c)
+void SystemController::charCallback(GLFWwindow*, unsigned int c)
 {
     const_cast<HG::Core::Input::Keyboard*>(controller->application()->input()->keyboard())->addCharacterEntered(c);
 }
 
-void GLFWSystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
+void SystemController::mouseButtonCallback(GLFWwindow*, int button, int action, int)
 {
     // No associative container, cause of GLFW buttons are equal to HGEngine's input buttons.
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
         ->setPressedButton(static_cast<std::uint8_t>(button), static_cast<bool>(action));
 }
 
-void GLFWSystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta)
+void SystemController::mouseWheelCallback(GLFWwindow*, double xDelta, double yDelta)
 {
     const_cast<HG::Core::Input::Mouse*>(controller->application()->input()->mouse())
         ->setMouseWheelScroll(xDelta, yDelta);
 }
 
-void GLFWSystemController::handleWindowEvents()
+void SystemController::handleWindowEvents()
 {
     const_cast<HG::Core::Input::Window*>(application()->input()->window())
         ->setClosed(static_cast<bool>(glfwWindowShouldClose(m_window)));
 }
 
-void GLFWSystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
+void SystemController::framebufferSizeCallback(GLFWwindow*, int width, int height)
 {
     controller->application()->renderer()->defaultRenderTarget()->setSize({width, height});
 }
 
-HG::Utils::Rect GLFWSystemController::viewport() const
+HG::Utils::Rect SystemController::viewport() const
 {
     auto sz = controller->application()->renderer()->defaultRenderTarget()->size();
 
     return {0, 0, sz.x, sz.y};
 }
 
-void GLFWSystemController::changeTitle(std::string title)
+void SystemController::changeTitle(std::string title)
 {
     if (m_window)
     {
         glfwSetWindowTitle(m_window, title.c_str());
     }
 }
-} // namespace HG::Rendering::OpenGL
+} // namespace HG::System::PC

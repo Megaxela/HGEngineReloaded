@@ -295,8 +295,8 @@ public:
         Keyboard();
 
         void visitKeys(const std::function<void(Key key)>& pushedCallback,
-                const std::function<void(Key key)>& pressedCallback,
-                        const std::function<void(Key key)>& releasedCallback) const;
+                       const std::function<void(Key key)>& pressedCallback,
+                       const std::function<void(Key key)>& releasedCallback) const;
 
         /**
          * @brief Method for visiting all pressed modifiers.

@@ -1,7 +1,7 @@
 // HG::Core
-#    include <HG/Core/Application.hpp>
-#    include <HG/Core/Input.hpp>
+#include <HG/Core/Application.hpp>
 #include <HG/Core/Benchmark.hpp>
+#include <HG/Core/Input.hpp>
 #include <HG/Core/TimeStatistics.hpp>
 
 // HG::Rendering::Base
@@ -12,14 +12,15 @@
 
 // ImGui
 #include <imgui.h>
-#include <stdint-gcc.h>
+#include <imgui_internal.h>
 
 namespace HG::Rendering::Base
 {
 SystemController::SystemController(HG::Core::Application* application) : m_application(application)
 {
 }
-SystemController::~SystemController(){
+SystemController::~SystemController()
+{
     imGuiDeinit();
     ImGui::DestroyContext();
 }
@@ -28,16 +29,15 @@ HG::Core::Application* SystemController::application() const
     return m_application;
 }
 
-bool SystemController::init(){
+bool SystemController::init()
+{
     if (!onInit())
     {
         return false;
     }
 
-    HGInfo() << "Creating ImGui Context";
     ImGui::CreateContext();
 
-    HGInfo() << "Created";
     auto& io = ImGui::GetIO();
 
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
@@ -45,16 +45,18 @@ bool SystemController::init(){
     return true;
 }
 
-void SystemController::deinit(){
+void SystemController::deinit()
+{
     onDeinit();
     imGuiDeinit();
 }
-void SystemController::pollEvents(){
+void SystemController::pollEvents()
+{
     // Actually poll events
     onPollEvents();
 
     // ImGui requires render before new frame
-    if (application()->scene())
+    if (application()->scene() && ImGui::GetCurrentContext()->Font != nullptr)
     {
         BENCH("ImGui New Frame");
         imGuiNewFrame();
@@ -63,7 +65,8 @@ void SystemController::pollEvents(){
     imGuiReadKeys();
 }
 
-bool SystemController::createWindow(std::uint32_t width, std::uint32_t height, std::string title){
+bool SystemController::createWindow(std::uint32_t width, std::uint32_t height, std::string title)
+{
     if (!onCreateWindow(width, height, std::move(title)))
     {
         return false;
@@ -71,17 +74,17 @@ bool SystemController::createWindow(std::uint32_t width, std::uint32_t height, s
 
     HGInfo() << "Initializing ImGui";
     imGuiInit();
-    HGInfo() << "ImGui initialized";
 
     return true;
 }
 
-void SystemController::imGuiInit(){
+void SystemController::imGuiInit()
+{
     // Setup back-end capabilities flags
     ImGuiIO& io = ImGui::GetIO();
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
     io.BackendFlags |=
-            ImGuiBackendFlags_HasSetMousePos; // We can honor io.WantSetMousePos requests (optional, rarely used)
+        ImGuiBackendFlags_HasSetMousePos; // We can honor io.WantSetMousePos requests (optional, rarely used)
 
     // Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.admin
     io.KeyMap[ImGuiKey_Tab]        = int(HG::Core::Input::Keyboard::Key::Tab);
@@ -107,96 +110,98 @@ void SystemController::imGuiInit(){
     io.KeyMap[ImGuiKey_Z]          = int(HG::Core::Input::Keyboard::Key::Z);
 
     // todo: Reimplement clipboard
-//    io.SetClipboardTextFn = ImGuiSetClipboardText;
-//    io.GetClipboardTextFn = ImGuiGetClipboardText;
-//    io.ClipboardUserData  = m_window;
+    //    io.SetClipboardTextFn = ImGuiSetClipboardText;
+    //    io.GetClipboardTextFn = ImGuiGetClipboardText;
+    //    io.ClipboardUserData  = m_window;
 
     // Load cursors
     // FIXME: GLFW doesn't expose suitable cursors for ResizeAll, ResizeNESW, ResizeNWSE. We revert to arrow cursor for those.
     // todo: Reimplement cursors in HG::Core::Input
-//    m_mouseCursors[ImGuiMouseCursor_Arrow]      = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_TextInput]  = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_ResizeAll]  = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_ResizeNS]   = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_ResizeEW]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-//    m_mouseCursors[ImGuiMouseCursor_Hand]       = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_Arrow]      = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_TextInput]  = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_ResizeAll]  = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_ResizeNS]   = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_ResizeEW]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    //    m_mouseCursors[ImGuiMouseCursor_Hand]       = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+}
+void SystemController::imGuiDeinit()
+{
+    // Destroying cursors
+    // todo: Reimplement cursors in HG::Core::Input
+    //        for (auto&& cursor : m_mouseCursors)
+    //        {
+    //            if (cursor != nullptr)
+    //            {
+    //                glfwDestroyCursor(cursor);
+    //                cursor = nullptr;
+    //            }
+    //        }
+}
+void SystemController::imGuiNewFrame()
+{
+    auto& io = ImGui::GetIO();
 
-}void SystemController::imGuiDeinit(){
-        // Destroying cursors
-        // todo: Reimplement cursors in HG::Core::Input
-//        for (auto&& cursor : m_mouseCursors)
-//        {
-//            if (cursor != nullptr)
-//            {
-//                glfwDestroyCursor(cursor);
-//                cursor = nullptr;
-//            }
-//        }
+    // Setup display size
+    // todo: Viewport == Framebuffer for now. Fix if it will change.
+    auto viewportRect = viewport();
 
-}void SystemController::imGuiNewFrame(){
-        auto& io = ImGui::GetIO();
+    io.DisplaySize             = ImVec2(viewportRect.w, viewportRect.h);
+    io.DisplayFramebufferScale = ImVec2(1, 1);
 
-        // Setup display size
-        // todo: Viewport == Framebuffer for now. Fix if it will change.
-        auto viewportRect = viewport();
+    // Setup time step
+    io.DeltaTime = float(application()->timeStatistics()->lastFrameDeltaTime().count()) / 1000000;
 
-        io.DisplaySize             = ImVec2(viewportRect.w, viewportRect.h);
-        io.DisplayFramebufferScale = ImVec2(1, 1);
-
-        // Setup time step
-        io.DeltaTime = float(application()->timeStatistics()->lastFrameDeltaTime().count()) / 1000000;
-
-        // Setup inputs
-        // (we already got mouse wheel, keyboard keys & characters from glfw callbacks polled in glfwPollEvents())
-        if (application()->systemController()->isWindowFocused())
+    // Setup inputs
+    // (we already got mouse wheel, keyboard keys & characters from glfw callbacks polled in glfwPollEvents())
+    if (application()->systemController()->isWindowFocused())
+    {
+        // Set OS mouse position if requested (only used when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
+        if (io.WantSetMousePos)
         {
-            // Set OS mouse position if requested (only used when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
-            if (io.WantSetMousePos)
-            {
-                // todo: Figure out do we actually need this?
-//                glfwSetCursorPos(m_window, io.MousePos.x, io.MousePos.y);
-            }
-            else
-            {
-                auto pos    = application()->input()->mouse()->getMousePosition();
-                io.MousePos = ImVec2(pos.x, pos.y);
-            }
+            // todo: Figure out do we actually need this?
+            //                glfwSetCursorPos(m_window, io.MousePos.x, io.MousePos.y);
         }
-
-        for (std::uint8_t i = 0; i < 3; ++i)
+        else
         {
-            // If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
-            io.MouseDown[i] = application()->input()->mouse()->isPressed(i);
+            auto pos    = application()->input()->mouse()->getMousePosition();
+            io.MousePos = ImVec2(pos.x, pos.y);
         }
+    }
 
-        // Update OS/hardware mouse cursor if ImGui isn't drawing a software cursor
-        if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) == 0 &&
-            !application()->input()->mouse()->isCursorDisabled())
+    for (std::uint8_t i = 0; i < 3; ++i)
+    {
+        // If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
+        io.MouseDown[i] = application()->input()->mouse()->isPressed(i);
+    }
+
+    // Update OS/hardware mouse cursor if ImGui isn't drawing a software cursor
+    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) == 0 &&
+        !application()->input()->mouse()->isCursorDisabled())
+    {
+        auto cursor = ImGui::GetMouseCursor();
+
+        if (io.MouseDrawCursor || cursor == ImGuiMouseCursor_None)
         {
-            auto cursor = ImGui::GetMouseCursor();
-
-            if (io.MouseDrawCursor || cursor == ImGuiMouseCursor_None)
-            {
-                application()->input()->mouse()->setCursorHidden(true);
-            }
-            else
-            {
-                // todo: Reimplement cursors in HG::Core::Input
-//                glfwSetCursor(m_window,
-//                              m_mouseCursors[cursor] ? m_mouseCursors[cursor] : m_mouseCursors[ImGuiMouseCursor_Arrow]);
-
-                application()->input()->mouse()->setCursorHidden(false);
-            }
+            application()->input()->mouse()->setCursorHidden(true);
         }
+        else
+        {
+            // todo: Reimplement cursors in HG::Core::Input
+            //                glfwSetCursor(m_window,
+            //                              m_mouseCursors[cursor] ? m_mouseCursors[cursor] : m_mouseCursors[ImGuiMouseCursor_Arrow]);
 
-        io.MouseWheel  = application()->input()->mouse()->getMouseWheelScroll().y;
-        io.MouseWheelH = application()->input()->mouse()->getMouseWheelScroll().x;
+            application()->input()->mouse()->setCursorHidden(false);
+        }
+    }
 
-        // todo: Add gamepad navigation
+    io.MouseWheel  = application()->input()->mouse()->getMouseWheelScroll().y;
+    io.MouseWheelH = application()->input()->mouse()->getMouseWheelScroll().x;
 
-        ImGui::NewFrame();
+    // todo: Add gamepad navigation
+
+    ImGui::NewFrame();
 }
 
 void SystemController::imGuiReadKeys()
@@ -205,43 +210,37 @@ void SystemController::imGuiReadKeys()
     auto& io = ImGui::GetIO();
 
     application()->input()->keyboard()->visitKeys(
-            // Pushed
-            [&io](HG::Core::Input::Keyboard::Key key) {
-                io.KeysDown[std::size_t(key)] = true;
-            },
-            // Pressed
-            nullptr,
-            // Released
-            [&io](HG::Core::Input::Keyboard::Key key) {
-                io.KeysDown[std::size_t(key)] = false;
-            }
-    );
+        // Pushed
+        [&io](HG::Core::Input::Keyboard::Key key) { io.KeysDown[std::size_t(key)] = true; },
+        // Pressed
+        nullptr,
+        // Released
+        [&io](HG::Core::Input::Keyboard::Key key) { io.KeysDown[std::size_t(key)] = false; });
 
-    if (application()->input()->keyboard()->isPressed(
-            HG::Core::Input::Keyboard::Key::NumReturn
-    )) {
+    if (application()->input()->keyboard()->isPressed(HG::Core::Input::Keyboard::Key::NumReturn))
+    {
         io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::Return)] = true;
     }
 
-    if (application()->input()->keyboard()->isReleased(
-            HG::Core::Input::Keyboard::Key::NumReturn
-    )) {
+    if (application()->input()->keyboard()->isReleased(HG::Core::Input::Keyboard::Key::NumReturn))
+    {
         io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::Return)] = false;
     }
 
-    io.KeyCtrl  = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftCtrl)] || io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightCtrl)];
-    io.KeyShift = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftShift)] || io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightShift)];
-    io.KeyAlt   = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftAlt)] || io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightAlt)];
-    io.KeySuper = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftSuper)] || io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightSuper)];
+    io.KeyCtrl = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftCtrl)] ||
+                 io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightCtrl)];
+    io.KeyShift = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftShift)] ||
+                  io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightShift)];
+    io.KeyAlt = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftAlt)] ||
+                io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightAlt)];
+    io.KeySuper = io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::LeftSuper)] ||
+                  io.KeysDown[std::size_t(HG::Core::Input::Keyboard::Key::RightSuper)];
 
-    application()->input()->keyboard()->visitPressedCharacters(
-            [&io](std::uint32_t character)
-            {
-                if (character > 0 && character < 0x10000)
-                {
-                    io.AddInputCharacter((unsigned short) character);
-                }
-            }
-    );
+    application()->input()->keyboard()->visitPressedCharacters([&io](std::uint32_t character) {
+        if (character > 0 && character < 0x10000)
+        {
+            io.AddInputCharacter((unsigned short)character);
+        }
+    });
 }
 } // namespace HG::Rendering::Base

@@ -116,7 +116,6 @@ bool Application::init()
         HGError() << "Can't init rendering pipeline by system controller. See errors above.";
         return false;
     }
-    HGInfo() << "System controller initialized";
 
     return m_renderer->init();
 }
