@@ -5,7 +5,6 @@
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
 #include <gtest/gtest.h>
-#include <stdint-gcc.h>
 
 enum class Actions
 {
