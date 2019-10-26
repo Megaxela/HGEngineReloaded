@@ -232,8 +232,6 @@ function(add_example)
         ${ARGN}
     )
 
-    message(STATUS "Adding example \"${ARGS_NAME}\"")
-
     project(HGExample${ARGS_NAME})
 
     set(CMAKE_CXX_STANDARD 17)
