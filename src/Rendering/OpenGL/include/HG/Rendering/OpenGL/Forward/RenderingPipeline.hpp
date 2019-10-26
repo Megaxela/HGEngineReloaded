@@ -114,6 +114,16 @@ public:
 
 private:
     /**
+     * @brief This method performs glew initialization
+     */
+    bool initDependencies();
+
+    /**
+     * @brief This method setting up initial rendering settings
+     */
+    void initRenderingSetup();
+
+    /**
      * @brief Method for updating render target
      * according to override system.
      */

@@ -294,6 +294,16 @@ public:
          */
         Keyboard();
 
+        void visitKeys(const std::function<void(Key key)>& pushedCallback,
+                       const std::function<void(Key key)>& pressedCallback,
+                       const std::function<void(Key key)>& releasedCallback) const;
+
+        /**
+         * @brief Method for visiting all pressed modifiers.
+         * @param callback Function, that will be called with all pressed modifiers.
+         */
+        void visitPressedModifiers(const std::function<void(Modifiers key)>& callback) const;
+
         /**
          * @brief Method to get is keyboard key is pressed.
          * @param key Key enum value.
@@ -327,7 +337,7 @@ public:
          * pressed character function will return 0.
          * @return Character codepoint or 0.
          */
-        [[nodiscard]] std::uint32_t pressedCharacter() const;
+        void visitPressedCharacters(std::function<void(std::uint32_t)> visitor) const;
 
         // Control method from now
 
@@ -349,7 +359,7 @@ public:
          * @bried Method for setting entered character.
          * @param codepoint Character code point.
          */
-        void setCharacterEntered(std::uint32_t codepoint);
+        void addCharacterEntered(std::uint32_t codepoint);
 
         /**
         * @brief Method for notifying input controller
@@ -362,7 +372,8 @@ public:
         std::vector<bool> m_released;
         std::vector<bool> m_pressed;
         std::uint8_t m_pressedModifiers; // Bitfield
-        std::uint32_t m_pressedCharacter;
+        std::array<std::uint32_t, 32> m_pressedCharacters;
+        std::uint8_t m_numberOfPressedCharacters;
     };
 
     /**
@@ -455,6 +466,18 @@ public:
          */
         void setCursorHidden(bool hidden) const;
 
+        /**
+         * @brief Method for checking is cursor disabled.
+         * @return Is cursor disabled.
+         */
+        [[nodiscard]] bool isCursorDisabled() const;
+
+        /**
+         * @brief Method for checking is cursor hidden.
+         * @return Is cursor hidden.
+         */
+        [[nodiscard]] bool isCursorHidden() const;
+
         // Control methods from now
 
         /**
@@ -468,6 +491,18 @@ public:
          * @param hiddenAction Function with actual setting.
          */
         void setCursorHiddenAction(std::function<void(bool)> hiddenAction);
+
+        /**
+         * @brief Method for setting "is cursor disabled" action.
+         * @param isDisabledAction Function with actual check.
+         */
+        void setIsCursorDisabledAction(std::function<bool()> isDisabledAction);
+
+        /**
+         * @brief Method for setting "is cursor hidden" action.
+         * @param isHiddenAction Function with actual check.
+         */
+        void setIsCursorHiddenAction(std::function<bool()> isHiddenAction);
 
         /**
          * @brief Method for setting mouse position. Locally to window.
@@ -510,6 +545,8 @@ public:
 
         std::function<void(bool)> m_disabledAction;
         std::function<void(bool)> m_hiddenAction;
+        std::function<bool(void)> m_isDisabledAction;
+        std::function<bool(void)> m_isHiddenAction;
     };
 
     /*

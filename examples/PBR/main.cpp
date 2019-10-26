@@ -16,7 +16,9 @@
 #include <HG/Rendering/OpenGL/Common/Texture2DDataProcessor.hpp>
 #include <HG/Rendering/OpenGL/Forward/MeshRenderer.hpp>
 #include <HG/Rendering/OpenGL/Forward/RenderingPipeline.hpp>
-#include <HG/Rendering/OpenGL/GLFWSystemController.hpp>
+
+// HG::System::PC
+#include <HG/System/PC/SystemController.hpp>
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
@@ -30,7 +32,7 @@ int main(int argc, char** argv)
     application.resourceManager()->setResourceAccessor(new HG::Core::FilesystemResourceAccessor());
 
     // Setting system controller
-    application.setSystemController(new HG::Rendering::OpenGL::GLFWSystemController(&application));
+    application.setSystemController(new HG::System::PC::SystemController(&application));
 
     auto pipeline = new HG::Rendering::OpenGL::Forward::RenderingPipeline(&application);
     pipeline->addRenderer(new HG::Rendering::OpenGL::Forward::MeshRenderer());

@@ -9,6 +9,7 @@ add_subdirectory(Rendering)
 add_subdirectory(Standard)
 add_subdirectory(Physics)
 add_subdirectory(Tools)
+add_subdirectory(System)
 
 # Build standard package
 #pack_package(

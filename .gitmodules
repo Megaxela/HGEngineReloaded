@@ -28,5 +28,5 @@
 	path = cmake/external/sanitizers-cmake
 	url = git://github.com/arsenm/sanitizers-cmake.git
 [submodule "src/Rendering/OpenGL/libraries/glfw"]
-	path = src/Rendering/OpenGL/libraries/glfw
+	path = src/System/PC/libraries/glfw
 	url = https://github.com/glfw/glfw.git
