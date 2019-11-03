@@ -12,6 +12,8 @@ main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 . "${main_script_dir}/functions/sources.sh"
 . "${main_script_dir}/functions/codestyle.sh"
 . "${main_script_dir}/functions/build.sh"
+. "${main_script_dir}/functions/test.sh"
+. "${main_script_dir}/functions/coverage.sh"
 
 if [ -z "${COMPILER_TOOL}" ]; then
   COMPILER_TOOL=clang
@@ -25,6 +27,8 @@ if [ -z "${COVERAGE}" ]; then
   COVERAGE=OFF
 fi
 
+# JFF
+mkdir --parent "${EXTERNAL_DEPS_DIR}"
 
 function action_help() {
   echo
@@ -99,7 +103,6 @@ function action_check_codestyle() {
 
 function action_install_external_dependencies() {
   echo "Installing external dependencies..."
-  mkdir --parent "${EXTERNAL_DEPS_DIR}"
 
   if ! install_external_dependencies "${EXTERNAL_DEPS_DIR}"; then
     echo "Can't install external dependencies."
@@ -111,8 +114,27 @@ function action_install_external_dependencies() {
 
 function action_build() {
   echo "Building..."
-  mkdir --parent
   perform_build "${FLAGS}"
+
+  return $EXECUTED
+}
+
+function action_test() {
+  echo "Running tests"
+  if ! perform_test; then
+    echo "Tests failed."
+    exit 1
+  fi
+
+  return $EXECUTED
+}
+
+function action_coverage() {
+  echo "Checking coverage"
+  if ! perform_coverage_check; then
+    echo "Can't perform coverage check."
+    exit 1
+  fi
 
   return $EXECUTED
 }
@@ -122,6 +144,11 @@ function perform_run() {
   action_check_codestyle
   action_install_external_dependencies
   action_build
+  action_test
+
+  if [[ "${COVERAGE}" -eq "ON" ]]; then
+    action_coverage
+  fi
 }
 
 declare -A actions
@@ -132,6 +159,7 @@ actions=(
   ["--check_codestyle"]=action_check_codestyle
   ["--external_dependencies"]=action_install_external_dependencies
   ["--build"]=action_build
+  ["--test"]=action_test
 )
 
 function try_exec_as_action() {
@@ -151,7 +179,7 @@ function main() {
     local result=$?
 
     if [ $result -eq $QUITTED ]; then
-      exit 0
+      return 0
     elif [ $result -eq $EXECUTED ]; then
       continue
     fi
@@ -160,6 +188,8 @@ function main() {
   done
 
   perform_run
+
+  return 0
 }
 
 main "$@"
