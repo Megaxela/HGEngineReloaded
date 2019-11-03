@@ -27,6 +27,10 @@ if [ -z "${COVERAGE}" ]; then
   COVERAGE=OFF
 fi
 
+if [[ "${COVERAGE}" -eq "ON" ]]; then
+  PROJECT_FLAGS="$PROJECT_FLAGS -DHG_TEST_COVERAGE=On"
+fi
+
 # JFF
 mkdir --parent "${EXTERNAL_DEPS_DIR}"
 
