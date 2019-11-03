@@ -35,7 +35,7 @@ git:
 before_install:
   - git submodule update --init
 
-install:
+script:
   - ${SCRIPT_PATH}
 
 #  # Checking for relative includes
