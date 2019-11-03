@@ -5,7 +5,7 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 . "${script_dir}/variables.sh"
 
 function collect_coverage_info() {
-  lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --directory "$build_dir" --base-directory "$source_dir" --capture --output-file coverage.info
+  lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --directory "$build_dir" --base-directory "$source_dir" --capture --output-file "$build_dir/coverage.info"
 }
 
 function remove_coverage_info_for() {
