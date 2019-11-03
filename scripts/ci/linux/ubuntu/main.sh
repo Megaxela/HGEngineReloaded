@@ -119,7 +119,10 @@ function action_install_external_dependencies() {
 
 function action_build() {
   echo "Building..."
-  perform_build "${PROJECT_FLAGS}"
+  if ! perform_build "${PROJECT_FLAGS}"; then
+    echo "Build failed."
+    exit 1
+  fi
 
   return $EXECUTED
 }
