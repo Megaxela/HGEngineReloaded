@@ -52,7 +52,12 @@ function action_help() {
   echo "        OFF"
   echo
   echo "Actions:"
-  echo "    -h, --help    Display usage instructions"
+  echo "    -h, --help                   Display usage instructions"
+  echo "        --dependencies           Install required dependencies for build"
+  echo "        --check_codestyle        Check codestyle (this method will modify code)"
+  echo "        --external_dependencies  Install external dependencies (glew for example)"
+  echo "        --build                  Perform project build"
+  echo "        --test                   Run tests"
 
   # shellcheck disable=SC2086
   return $QUITTED
@@ -69,7 +74,7 @@ function action_install_dependencies() {
   fi
 
   if [[ "${COVERAGE}" -eq "ON" ]]; then
-    if ! install_coverage_dependencies; then
+    if ! install_coverage_dependencies "${EXTERNAL_DEPS_DIR}"; then
       echo "Can't install coverage dependencies."
       exit 1
     fi
