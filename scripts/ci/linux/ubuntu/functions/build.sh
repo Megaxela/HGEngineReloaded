@@ -5,7 +5,6 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 . "${script_dir}/tools.sh"
 
 function perform_build () {
-  echo "[DEBUG] " cmake "$@" "-B$build_dir" "-H$source_dir"
   if ! cmake $@ "-B$build_dir" "-H$source_dir"; then
     >&2 echo "Can't configure project."
     return $FALSE
