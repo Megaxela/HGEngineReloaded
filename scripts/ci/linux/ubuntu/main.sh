@@ -1,15 +1,15 @@
 #!/bin/bash
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-. "${script_dir}/functions/variables.sh"
-. "${script_dir}/functions/tools.sh"
-. "${script_dir}/functions/common_dependencies.sh"
-. "${script_dir}/functions/compiler_dependencies.sh"
-. "${script_dir}/functions/external_dependencies.sh"
-. "${script_dir}/functions/coverage_dependencies.sh"
-. "${script_dir}/functions/sources.sh"
-. "${script_dir}/functions/build.sh"
+. "${main_script_dir}/functions/variables.sh"
+. "${main_script_dir}/functions/tools.sh"
+. "${main_script_dir}/functions/common_dependencies.sh"
+. "${main_script_dir}/functions/compiler_dependencies.sh"
+. "${main_script_dir}/functions/external_dependencies.sh"
+. "${main_script_dir}/functions/coverage_dependencies.sh"
+. "${main_script_dir}/functions/sources.sh"
+. "${main_script_dir}/functions/build.sh"
 
 if [ -z "${COMPILER_TOOL}" ]; then
   COMPILER_TOOL=clang
