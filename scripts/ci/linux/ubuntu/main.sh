@@ -10,6 +10,7 @@ main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 . "${main_script_dir}/functions/external_dependencies.sh"
 . "${main_script_dir}/functions/coverage_dependencies.sh"
 . "${main_script_dir}/functions/sources.sh"
+. "${main_script_dir}/functions/codestyle.sh"
 . "${main_script_dir}/functions/build.sh"
 
 if [ -z "${COMPILER_TOOL}" ]; then
