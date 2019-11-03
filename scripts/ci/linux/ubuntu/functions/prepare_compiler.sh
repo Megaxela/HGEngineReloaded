@@ -8,8 +8,8 @@ function prepare_compiler() {
 
   case $compiler in
     clang)
-      export CC="clang-7"
-      export CXX="clang++-7"
+      export CC="/usr/local/clang-7.0.0/bin/clang"
+      export CXX="/usr/local/clang-7.0.0/bin/clang++"
       ;;
     gcc)
       export CC="gcc-8"
