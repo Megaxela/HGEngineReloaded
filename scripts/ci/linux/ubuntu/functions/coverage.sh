@@ -11,7 +11,7 @@ function collect_coverage_info() {
 function remove_coverage_info_for() {
 
   for glob in "$@"; do
-    if ! lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove coverage.info $glob -o coverage.info; then
+    if ! lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --remove "$build_dir/coverage.info" $glob -o "$build_dir/coverage.info"; then
       echo "Can't remove coverage info for '$glob'."
       return $FALSE
     fi
