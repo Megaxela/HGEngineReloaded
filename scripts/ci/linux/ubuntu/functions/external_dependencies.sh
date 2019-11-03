@@ -50,7 +50,7 @@ function install_gtest() {
     return $FALSE
   fi
 
-  if ! cmake --build "$path/gtest/build_dir" --target install -- -j4; then
+  if ! sudo cmake --build "$path/gtest/build_dir" --target install -- -j4; then
     >&2 echo "Can't compile and install gtest."
     return $FALSE
   fi
