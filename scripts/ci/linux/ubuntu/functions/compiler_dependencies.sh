@@ -15,6 +15,7 @@ function install_compiler_dependencies () {
 
       # Required STD lib
         g++-8
+        gcc-8
       )
       ;;
     gcc)
