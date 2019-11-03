@@ -7,7 +7,7 @@ function install_packages() {
 
 function add_repositories() {
   for arg in $1; do
-    sudo add-apt-repository "$arg";
+    yes | sudo add-apt-repository "$arg";
   done
 }
 
