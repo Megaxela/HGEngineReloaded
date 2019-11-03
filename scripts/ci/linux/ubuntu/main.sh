@@ -119,7 +119,7 @@ function action_install_external_dependencies() {
 
 function action_build() {
   echo "Building..."
-  perform_build "${FLAGS}"
+  perform_build "${PROJECT_FLAGS}"
 
   return $EXECUTED
 }
