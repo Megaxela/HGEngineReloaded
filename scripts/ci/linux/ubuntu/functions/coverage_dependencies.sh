@@ -4,7 +4,7 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 . "${script_dir}/packages.sh"
 . "${script_dir}/tools.sh"
 
-function insall_lcov_from_sources() {
+function install_lcov_from_sources() {
   local path="$1"
 
   # Getting lcov
@@ -34,7 +34,19 @@ function install_coverage_dependencies() {
     libjson-perl
   )
 
-  install_packages "${packages[@]}"
-  insall_lcov_from_sources "$external_path"
-  gem install coveralls-lcov
+  if ! install_packages "${packages[@]}"; then
+    >&2 echo "Can't install packages."
+    return $FALSE
+  fi
+
+  if ! install_lcov_from_sources "$external_path"; then
+    >&2 echo "Can't install lcov from sources."
+    return $FALSE
+  fi
+  if ! gem install coveralls-lcov; then
+    >&2 echo "Can't install coveralls lcov."
+    return $FALSE
+  fi
+
+  return $TRUE
 }
