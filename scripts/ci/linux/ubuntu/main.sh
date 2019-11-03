@@ -4,6 +4,7 @@ main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 
 . "${main_script_dir}/functions/variables.sh"
 . "${main_script_dir}/functions/tools.sh"
+. "${main_script_dir}/functions/prepare_compiler.sh"
 . "${main_script_dir}/functions/common_dependencies.sh"
 . "${main_script_dir}/functions/compiler_dependencies.sh"
 . "${main_script_dir}/functions/external_dependencies.sh"
