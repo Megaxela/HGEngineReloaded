@@ -10,9 +10,6 @@ function install_compiler_dependencies () {
   case $compiler in
     clang)
       local packages=(
-      # Compiler
-        clang-7
-
       # Required STD lib
         g++-8
         gcc-8
