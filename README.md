@@ -1,10 +1,9 @@
 # HG Engine
 It's C++17 STL based game engine.
 
-## Status
-|Linux CMake (Azure)|Linux CMake (Travis)|Coverage|
-|-------------------|--------------------|--------|
-|[![Build Status](https://dev.azure.com/xelamegaxela/xelamegaxela/_apis/build/status/Megaxela.HGEngineReloaded?branchName=master)](https://dev.azure.com/xelamegaxela/xelamegaxela/_build/latest?definitionId=1?branchName=master)|[![Build Status](https://travis-ci.com/Megaxela/HGEngineReloaded.svg?branch=master)](https://travis-ci.com/Megaxela/HGEngineReloaded)|[![Coverage Status](https://coveralls.io/repos/github/Megaxela/HGEngineReloaded/badge.svg)](https://coveralls.io/github/Megaxela/HGEngineReloaded)|
+[![License](https://img.shields.io/github/license/Megaxela/HGEngineReloaded)](https://github.com/Megaxela/HGEngineReloaded/blob/master/LICENSE.MIT)
+[![Build Status](https://travis-ci.com/Megaxela/HGEngineReloaded.svg?branch=master)](https://travis-ci.com/Megaxela/HGEngineReloaded)
+[![Coverage Status](https://coveralls.io/repos/github/Megaxela/HGEngineReloaded/badge.svg)](https://coveralls.io/github/Megaxela/HGEngineReloaded)
 
 ## Abilities
 
@@ -32,7 +31,7 @@ It's C++17 STL based game engine.
 * Asynchronous resource loading
 * User friendly thread pool for user parallel actions
 * Benchmarking system
-* Manual resource control (with leak detect) via HG::Core::ResourceCache
+* Manual resource control (with leak detect) via `HG::Core::ResourceCache`
 * Integrated support of ingame statistics
 * Flexible resource access system
 * Integrated engine and ingame logging system
