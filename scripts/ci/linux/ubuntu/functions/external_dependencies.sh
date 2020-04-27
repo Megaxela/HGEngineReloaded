@@ -23,7 +23,7 @@ function install_glew() {
     return $FALSE
   fi
 
-  if ! cmake "-B$path/glew-glew-2.1.0/build_dir" "-H$path/glew-glew-2.1.0/build/cmake"; then
+  if ! cmake "$CMAKE_ADDITIONAL_CONFIGURE_ARGS" "-B$path/glew-glew-2.1.0/build_dir" "-H$path/glew-glew-2.1.0/build/cmake"; then
     >&2 echo "Can't generate glew project."
     return $FALSE
   fi
@@ -45,7 +45,7 @@ function install_gtest() {
     return $FALSE
   fi
 
-  if ! cmake "-B$path/gtest/build_dir" "-H$path/gtest/"; then
+  if ! cmake "$CMAKE_ADDITIONAL_CONFIGURE_ARGS" "-B$path/gtest/build_dir" "-H$path/gtest/"; then
     >&2 echo "Can't configure gtest."
     return $FALSE
   fi
