@@ -24,6 +24,7 @@ function prepare_compiler() {
           "-DCMAKE_SYSTEM_NAME=Windows"
           "-DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32"
           "-DCMAKE_RC_COMPILER=/usr/bin/x86_64-w64-mingw32-windres"
+          "-DDLLTOOL=/usr/bin/x86_64-w64-mingw32-dlltool"
           "-DCMAKE_INSTALL_PREFIX=/usr/x86_64-w64-mingw32"
           "-DWIN32=ON"
           "-DMINGW=ON"
