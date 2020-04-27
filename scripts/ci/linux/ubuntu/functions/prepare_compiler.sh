@@ -16,6 +16,8 @@ function prepare_compiler() {
       export CXX="g++-8"
       ;;
     mingw-w64)
+      echo "DEBUG!! : " `which x86_64-w64-mingw32-windres`
+      echo "DEBUG!! : " `which x86_64-w64-mingw32-dlltool`
       export CC="/usr/bin/x86_64-w64-mingw32-gcc-posix"
       export CXX="/usr/bin/x86_64-w64-mingw32-g++-posix"
       export CMAKE_ADDITIONAL_CONFIGURE_ARGS=(
@@ -23,6 +25,8 @@ function prepare_compiler() {
           "-DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32"
           "-DCMAKE_RC_COMPILER=/usr/bin/x86_64-w64-mingw32-windres"
           "-DCMAKE_INSTALL_PREFIX=/usr/x86_64-w64-mingw32"
+          "-DWIN32=ON"
+          "-DMINGW=ON"
       )
       ;;
     *)
