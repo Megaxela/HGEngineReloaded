@@ -15,6 +15,10 @@ function prepare_compiler() {
       export CC="gcc-8"
       export CXX="g++-8"
       ;;
+    mingw-w64)
+      export CC="/usr/bin/x86_64-w64-mingw32-gcc-posix"
+      export CXX="/usr/bin/x86_64-w64-mingw32-g++-posix"
+      ;;
     *)
       >&2 echo "Unknown compiler $compiler"
       return $FALSE

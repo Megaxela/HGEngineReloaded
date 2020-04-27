@@ -22,6 +22,12 @@ function install_compiler_dependencies () {
         gcc-8
       )
       ;;
+    mingw-w64)
+      local packages=(
+      # Installing mingw-w64
+        mingw-w64
+      )
+      ;;
     *)
       >&2 echo "Unknown compiler '$compiler'."
       return $FALSE
