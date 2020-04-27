@@ -6,11 +6,13 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 function install_sources () {
   keys_from=(
     'https://apt.llvm.org/llvm-snapshot.gpg.key'
+    'https://apt.kitware.com/keys/kitware-archive-latest.asc'
   )
 
   sources=(
     'ppa:ubuntu-toolchain-r/test'
     'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main'
+    'deb https://apt.kitware.com/ubuntu/ xenial main'
   )
 
   add_keys "${keys_from[@]}"

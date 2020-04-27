@@ -18,6 +18,7 @@ function prepare_compiler() {
     mingw-w64)
       echo "DEBUG!! : " `which x86_64-w64-mingw32-windres`
       echo "DEBUG!! : " `which x86_64-w64-mingw32-dlltool`
+      cmake --version
       export CC="/usr/bin/x86_64-w64-mingw32-gcc-posix"
       export CXX="/usr/bin/x86_64-w64-mingw32-g++-posix"
       export CMAKE_ADDITIONAL_CONFIGURE_ARGS=(
