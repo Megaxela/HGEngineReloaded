@@ -15,6 +15,7 @@ function install_script_dependencies() {
 
     install_packages "${packages[@]}"
 
+    ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
     dpkg-reconfigure --frontend $DEBIAN_FRONTEND tzdata
 
     return $TRUE
