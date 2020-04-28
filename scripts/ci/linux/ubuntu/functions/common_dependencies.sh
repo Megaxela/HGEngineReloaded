@@ -10,8 +10,6 @@ function install_common_dependencies () {
 
   # Compilation
     build-essential
-    cmake
-    cmake-data
 
   # Graphics
     xorg-dev
