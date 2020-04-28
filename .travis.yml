@@ -46,12 +46,21 @@ git:
 
 before_install:
   - git submodule update --init
+  # Updating docker
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 script:
   - docker --version
   - docker run --help
   - docker run \
-        --env "COMPILER_TOOL=clang" \
+        --env "SCRIPT_PATH=$SCRIPT_PATH" \
+        --env "PROJECT_FLAGS=$PROJECT_FLAGS" \
+        --env "COMPILER_TOOL=$COMPILER_TOOL" \
+        --env "EXECUTE_TESTS=$EXECUTE_TESTS" \
+        --env "COVERAGE=$COVERAGE" \
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
         /bin/bash -C "/build/$SCRIPT_PATH"
