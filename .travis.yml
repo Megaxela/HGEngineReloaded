@@ -51,7 +51,7 @@ script:
   - docker --version
   - docker run --help
   - docker run \
-        --env A=C \
+        -e "A=C" \
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
         /bin/bash -C "/build/$SCRIPT_PATH"
