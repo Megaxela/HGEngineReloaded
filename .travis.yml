@@ -50,10 +50,10 @@ before_install:
 script:
   - docker run --help
   - docker run \
-        --env PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off" \
-        --env COMPILER_TOOL="clang" \
-        --env EXECUTE_TESTS="OFF" \
-        --env COVERAGE="OFF" \
+        --env "PROJECT_FLAGS=-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off" \
+        --env "COMPILER_TOOL=clang" \
+        --env "EXECUTE_TESTS=OFF" \
+        --env "COVERAGE=OFF" \
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
         /bin/bash -C "/build/$SCRIPT_PATH"
