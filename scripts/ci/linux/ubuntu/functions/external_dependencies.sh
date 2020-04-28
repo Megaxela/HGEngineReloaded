@@ -28,7 +28,7 @@ function install_glew() {
     return $FALSE
   fi
 
-  if ! cmake --build "$path/glew-glew-2.1.0/build_dir" --target install -- -j4; then
+  if ! sudo cmake --build "$path/glew-glew-2.1.0/build_dir" --target install -- -j4; then
     >&2 echo "Can't compile and install glew."
     return $FALSE
   fi
