@@ -48,9 +48,9 @@ before_install:
   - git submodule update --init
 
 script:
+  - docker --version
   - docker run --help
   - docker run \
-        --env "PROJECT_FLAGS=-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off" \
         --env "COMPILER_TOOL=clang" \
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
