@@ -68,20 +68,23 @@ function install_zlib() {
     fi
 
     echo "DEBUG: --prefix=$ZLIB_PREFIX"
-    if ! $path/zlib/configure "--prefix=$ZLIB_PREFIX" --static; then
+
+    cd $path/zlib
+    if ! ./configure "--prefix=$ZLIB_PREFIX" --static; then
         >&2 echo "Can't configure zlib"
         return $FALSE
     fi
 
-    if ! make -C "$path/zlib" -j4; then
+    if ! make -j4; then
         >&2 echo "Can't compile zlib."
         return $FALSE
     fi
 
-    if ! sudo make -C "$path/zlib" install; then
+    if ! sudo make install; then
         >&2 echo "Can't install zlib."
         return $FALSE
     fi
+    cd -
 
     return $TRUE
 }
