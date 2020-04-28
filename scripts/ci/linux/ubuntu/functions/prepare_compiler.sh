@@ -9,12 +9,12 @@ function prepare_compiler() {
   export ZLIB_PREFIX="/usr/local/"
   case $compiler in
     clang)
-      export CC="/usr/local/clang-7.0.0/bin/clang"
-      export CXX="/usr/local/clang-7.0.0/bin/clang++"
+      export CC=`which clang`
+      export CXX=`which clang++`
       ;;
     gcc)
-      export CC="gcc-8"
-      export CXX="g++-8"
+      export CC=`which gcc`
+      export CXX=`which g++`
       ;;
     mingw-w64)
       echo "DEBUG!! : " `which x86_64-w64-mingw32-windres`
@@ -31,8 +31,6 @@ function prepare_compiler() {
           "-DCMAKE_RC_COMPILER=$(which x86_64-w64-mingw32-windres)"
           "-DDLLTOOL=$(which x86_64-w64-mingw32-dlltool)"
           "-DCMAKE_INSTALL_PREFIX=/usr/x86_64-w64-mingw32"
-          "-DWIN32=ON"
-          "-DMINGW=ON"
       )
       ;;
     *)
