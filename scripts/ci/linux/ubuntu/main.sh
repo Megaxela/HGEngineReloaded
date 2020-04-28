@@ -122,7 +122,7 @@ function action_install_dependencies() {
 
 function action_check_codestyle() {
   echo "Checking codestyle..."
-  if ! check_codestyle; then
+  if ! check_codestyle "${SOURCE_DIR}"; then
     echo "Codestyle failed..."
     print_changes
     exit 1
@@ -145,7 +145,7 @@ function action_install_external_dependencies() {
 
 function action_build() {
   echo "Building..."
-  if ! perform_build ${PROJECT_FLAGS}; then
+  if ! perform_build "${BUILD_DIR}" "${SOURCE_DIR}" ${PROJECT_FLAGS}; then
     echo "Build failed."
     exit 1
   fi

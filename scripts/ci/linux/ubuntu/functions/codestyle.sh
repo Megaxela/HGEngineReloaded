@@ -5,6 +5,8 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 . "${script_dir}/tools.sh"
 
 function check_codestyle() {
+  local source_dir="$1"
+
   cd ${source_dir}
   if ! "${source_dir}/scripts/check_relative_includes.sh"; then
     return $FALSE
