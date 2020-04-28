@@ -16,24 +16,24 @@ main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 . "${main_script_dir}/functions/test.sh"
 . "${main_script_dir}/functions/coverage.sh"
 
-if [ -z "${HG_COMPILER_TOOL}" ]; then
-  HG_COMPILER_TOOL=clang
+if [ -z "${COMPILER_TOOL}" ]; then
+  COMPILER_TOOL=clang
 fi
 
 if [ -z "${EXTERNAL_DEPS_DIR}" ]; then
   EXTERNAL_DEPS_DIR="external-deps"
 fi
 
-if [ -z "${HG_COVERAGE}" ]; then
-  HG_COVERAGE=OFF
+if [ -z "${COVERAGE}" ]; then
+  COVERAGE=OFF
 fi
 
-if [ -z "${HG_EXECUTE_TESTS}" ]; then
-  HG_EXECUTE_TESTS=ON
+if [ -z "${EXECUTE_TESTS}" ]; then
+  EXECUTE_TESTS=ON
 fi
 
-if [[ "${HG_COVERAGE}" -eq "ON" ]]; then
-  HG_PROJECT_FLAGS="$HG_PROJECT_FLAGS -DHG_TEST_HG_COVERAGE=On"
+if [[ "${COVERAGE}" -eq "ON" ]]; then
+  PROJECT_FLAGS="$PROJECT_FLAGS -DHG_TEST_COVERAGE=On"
 fi
 
 SUDO_EXEC=sudo
@@ -53,22 +53,22 @@ function action_help() {
   echo "by following setup arguments and environment variables."
   echo
   echo "Variables:"
-  echo "    HG_COMPILER_TOOL     Specifies compiler. "
-  echo "        clang            ('gcc' by default)"
+  echo "    COMPILER_TOOL       Specifies compiler. "
+  echo "        clang           ('gcc' by default)"
   echo "        gcc"
   echo "        mingw-w64"
   echo
-  echo "    HG_EXTERNAL_DEPS_DIR Directory for storing external dependencies."
-  echo "                         ('external-deps' by default)"
+  echo "    EXTERNAL_DEPS_DIR   Directory for storing external dependencies."
+  echo "                        ('external-deps' by default)"
   echo
-  echo "    HG_PROJECT_FLAGS     Project configure (cmake) flags"
+  echo "    PROJECT_FLAGS       Project configure (cmake) flags"
   echo
-  echo "    HG_HG_COVERAGE          Enable coverage for this build"
-  echo "        ON               ('OFF' by default)"
+  echo "    COVERAGE            Enable coverage for this build"
+  echo "        ON              ('OFF' by default)"
   echo "        OFF"
   echo
-  echo "    HG_HG_EXECUTE_TESTS     Enable tests execution"
-  echo "        ON               ('ON' by default)"
+  echo "    EXECUTE_TESTS       Enable tests execution"
+  echo "        ON              ('ON' by default)"
   echo "        OFF"
   echo
   echo "Actions:"
@@ -99,19 +99,19 @@ function action_install_dependencies() {
     exit 1
   fi
 
-  if [[ "${HG_COVERAGE}" -eq "ON" ]]; then
+  if [[ "${COVERAGE}" -eq "ON" ]]; then
     if ! install_coverage_dependencies "${EXTERNAL_DEPS_DIR}"; then
       echo "Can't install coverage dependencies."
       exit 1
     fi
   fi
 
-  if ! install_compiler_dependencies "${HG_COMPILER_TOOL}"; then
+  if ! install_compiler_dependencies "${COMPILER_TOOL}"; then
     echo "Can't install compiler dependencies."
     exit 1
   fi
 
-  if ! prepare_compiler "${HG_COMPILER_TOOL}"; then
+  if ! prepare_compiler "${COMPILER_TOOL}"; then
     echo "Can't prepare compiler."
     exit 1
   fi
@@ -145,7 +145,7 @@ function action_install_external_dependencies() {
 
 function action_build() {
   echo "Building..."
-  if ! perform_build ${HG_PROJECT_FLAGS}; then
+  if ! perform_build ${PROJECT_FLAGS}; then
     echo "Build failed."
     exit 1
   fi
@@ -179,11 +179,11 @@ function perform_run() {
   action_install_external_dependencies
   action_build
 
-  if [[ "${HG_EXECUTE_TESTS}" -eq "ON" ]]; then
+  if [[ "${EXECUTE_TESTS}" -eq "ON" ]]; then
     action_test
   fi
 
-  if [[ "${HG_COVERAGE}" -eq "ON" ]]; then
+  if [[ "${COVERAGE}" -eq "ON" ]]; then
     action_coverage
   fi
 }
