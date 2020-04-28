@@ -51,7 +51,7 @@ script:
   - env | grep HG_ > .env
   - cat .env
   - docker run \
-        --env-file .env
+        --env-file .env \
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
         /bin/bash -C "/build/$SCRIPT_PATH"
