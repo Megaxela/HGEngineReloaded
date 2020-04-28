@@ -28,7 +28,7 @@ function install_glew() {
     return $FALSE
   fi
 
-  if ! sudo cmake --build "$path/glew-glew-2.1.0/build_dir" --target install -- -j4; then
+  if ! $SUDO_EXEC cmake --build "$path/glew-glew-2.1.0/build_dir" --target install -- -j4; then
     >&2 echo "Can't compile and install glew."
     return $FALSE
   fi
@@ -50,7 +50,7 @@ function install_gtest() {
     return $FALSE
   fi
 
-  if ! sudo cmake --build "$path/gtest/build_dir" --target install -- -j4; then
+  if ! $SUDO_EXEC cmake --build "$path/gtest/build_dir" --target install -- -j4; then
     >&2 echo "Can't compile and install gtest."
     return $FALSE
   fi
@@ -80,7 +80,7 @@ function install_zlib() {
         return $FALSE
     fi
 
-    if ! sudo make install; then
+    if ! $SUDO_EXEC make install; then
         >&2 echo "Can't install zlib."
         return $FALSE
     fi

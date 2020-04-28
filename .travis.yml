@@ -1,6 +1,9 @@
 dist: xenial
 language: cpp
-sudo: required
+os: linux
+
+services:
+  - docker
 
 branches:
   only:
@@ -11,11 +14,9 @@ notifications:
     on_success: never
     on_failure: always
 
-matrix:
+jobs:
   include:
     - name: Ubuntu, GCC
-      os: linux
-      dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
@@ -24,8 +25,6 @@ matrix:
         - COVERAGE=ON
 
     - name: Ubuntu, CLang
-      os: linux
-      dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
@@ -34,8 +33,6 @@ matrix:
         - COVERAGE=OFF
 
     - name: Ubuntu, MinGW-W64 (without Tools)
-      os: linux
-      dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
@@ -51,4 +48,12 @@ before_install:
   - git submodule update --init
 
 script:
-  - ${SCRIPT_PATH}
+  - sudo docker run --rm -it \
+        -e SCRIPT_PATH \
+        -e PROJECT_FLAGS \
+        -e COMPILER_TOOL \
+        -e EXECUTE_TESTS \
+        -e COVERAGE \
+        -v "$TRAVIS_BUILD_DIR:/build/" \
+        ubuntu:focal \
+        /bin/bash "cd /build/ && ${SCRIPT_PATH}"

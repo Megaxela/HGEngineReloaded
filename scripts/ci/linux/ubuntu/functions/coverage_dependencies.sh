@@ -13,7 +13,7 @@ function install_lcov_from_sources() {
     return $FALSE
   fi
 
-  if ! sudo make -C "$path/lcov" install; then
+  if ! $SUDO_EXEC make -C "$path/lcov" install; then
     >&2 echo "Can't compile and install lcov."
     return $FALSE
   fi

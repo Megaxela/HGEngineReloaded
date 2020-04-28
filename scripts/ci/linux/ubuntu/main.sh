@@ -9,6 +9,7 @@ main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 . "${main_script_dir}/functions/compiler_dependencies.sh"
 . "${main_script_dir}/functions/external_dependencies.sh"
 . "${main_script_dir}/functions/coverage_dependencies.sh"
+. "${main_script_dir}/functions/script_dependencies.sh"
 . "${main_script_dir}/functions/sources.sh"
 . "${main_script_dir}/functions/codestyle.sh"
 . "${main_script_dir}/functions/build.sh"
@@ -33,6 +34,12 @@ fi
 
 if [[ "${COVERAGE}" -eq "ON" ]]; then
   PROJECT_FLAGS="$PROJECT_FLAGS -DHG_TEST_COVERAGE=On"
+fi
+
+SUDO_EXEC=sudo
+if [[ $EUID -eq 0 ]]; then
+  echo "Run as root. Don't use sudo"
+  SUDO_EXEC=''
 fi
 
 # JFF
