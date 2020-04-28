@@ -58,6 +58,29 @@ function install_gtest() {
   return $TRUE
 }
 
+function install_zlib() {
+    local path="$1"
+
+    # Getting zlib
+    if ! git clone https://github.com/madler/zlib.git "$path/zlib"; then
+        >&2 echo "Can't download zlib"
+        return $FALSE
+    fi
+
+    if ! $path/zlib/configure "--prefix=$ZLIB_PREFIX" --static; then
+        >&2 echo "Can't configure zlib"
+        return $FALSE
+    fi
+
+    if ! sudo make -C "$path/zlib/" install -j4; then
+        >&2 echo "Can't compile and install zlib."
+        return $FALSE
+    fi
+
+    return $TRUE
+}
+
+}
 function install_external_dependencies() {
   local path="$1"
 
@@ -68,6 +91,11 @@ function install_external_dependencies() {
 
   if ! install_gtest $path; then
     >&2 echo "Can't install gtest as dependency."
+    return $FALSE
+  fi
+
+  if ! install_zlib $path; then
+    >&2 echo "Can't install zlib as dependency."
     return $FALSE
   fi
 
