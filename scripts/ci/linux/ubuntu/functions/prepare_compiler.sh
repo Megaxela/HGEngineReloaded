@@ -26,6 +26,7 @@ function prepare_compiler() {
       export RUNLIB="$(which x86_64-w64-mingw32-ranlib)"
       export ZLIB_PREFIX="/usr/x86_64-w64-mingw32"
       export CMAKE_ADDITIONAL_CONFIGURE_ARGS=(
+          "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
           "-DCMAKE_SYSTEM_NAME=Windows"
           "-DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32"
           "-DCMAKE_RC_COMPILER=$(which x86_64-w64-mingw32-windres)"
