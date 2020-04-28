@@ -18,27 +18,27 @@ jobs:
   include:
     - name: Ubuntu, GCC
       env:
-        - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-        - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
-        - COMPILER_TOOL=gcc
-        - EXECUTE_TESTS=ON
-        - COVERAGE=ON
+        - HG_SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
+        - HG_PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
+        - HG_COMPILER_TOOL=gcc
+        - HG_EXECUTE_TESTS=ON
+        - HG_COVERAGE=ON
 
     - name: Ubuntu, CLang
       env:
-        - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-        - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
-        - COMPILER_TOOL=clang
-        - EXECUTE_TESTS=ON
-        - COVERAGE=OFF
+        - HG_SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
+        - HG_PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
+        - HG_COMPILER_TOOL=clang
+        - HG_EXECUTE_TESTS=ON
+        - HG_COVERAGE=OFF
 
     - name: Ubuntu, MinGW-W64 (without Tools)
       env:
-        - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-        - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
-        - COMPILER_TOOL=mingw-w64
-        - EXECUTE_TESTS=OFF
-        - COVERAGE=OFF
+        - HG_SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
+        - HG_PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
+        - HG_COMPILER_TOOL=mingw-w64
+        - HG_EXECUTE_TESTS=OFF
+        - HG_COVERAGE=OFF
 
 # We'll do submodules manually, because of `--recursive`
 git:
@@ -48,12 +48,10 @@ before_install:
   - git submodule update --init
 
 script:
-  - docker run --help
+  - env | grep HG_ > .env
+  - cat .env
   - docker run \
-        --env "PROJECT_FLAGS=-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off" \
-        --env "COMPILER_TOOL=clang" \
-        --env "EXECUTE_TESTS=OFF" \
-        --env "COVERAGE=OFF" \
+        --env-file .env
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
         /bin/bash -C "/build/$SCRIPT_PATH"
