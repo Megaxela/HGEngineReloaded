@@ -50,11 +50,11 @@ before_install:
 script:
   - docker run --help
   - docker run \
-        -e SCRIPT_PATH \
-        -e PROJECT_FLAGS \
-        -e COMPILER_TOOL \
-        -e EXECUTE_TESTS \
-        -e COVERAGE \
+        -e SCRIPT_PATH="$SCRIPT_PATH" \
+        -e PROJECT_FLAGS="$PROJECT_FLAGS" \
+        -e COMPILER_TOOL="$COMPILER_TOOL" \
+        -e EXECUTE_TESTS="$EXECUTE_TESTS" \
+        -e COVERAGE="$COVERAGE" \
         -v$TRAVIS_BUILD_DIR:/build/ \
         ubuntu:focal \
         /bin/bash -C "/build/$SCRIPT_PATH"
