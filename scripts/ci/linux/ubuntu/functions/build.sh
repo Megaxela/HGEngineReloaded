@@ -7,10 +7,10 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 function perform_build () {
   local build_dir="$1"
   local source_dir="$2"
-  local project_flags=$3
+  local project_flags="${@:3}"
 
   echo cmake "${CMAKE_ADDITIONAL_CONFIGURE_ARGS[@]}" ${project_flags[@]} "-B$build_dir" "-H$source_dir"
-  
+
   if ! cmake "${CMAKE_ADDITIONAL_CONFIGURE_ARGS[@]}" ${project_flags[@]} "-B$build_dir" "-H$source_dir"; then
     >&2 echo "Can't configure project."
     return $FALSE
