@@ -54,16 +54,16 @@ script:
       -e COMPILER_TOOL \
       -e EXECUTE_TESTS \
       -e COVERAGE \
-      -v "${TRAVIS_BUILD_DIR}:/build/" \
+      -v "$TRAVIS_BUILD_DIR:/build/" \
       ubuntu:focal \
-      /bin/bash -C "/build/${SCRIPT_PATH}"
-  
+      /bin/bash -C "/build/$SCRIPT_PATH"
+
   - sudo docker run --rm -it \
         -e SCRIPT_PATH \
         -e PROJECT_FLAGS \
         -e COMPILER_TOOL \
         -e EXECUTE_TESTS \
         -e COVERAGE \
-        -v "${TRAVIS_BUILD_DIR}:/build/" \
+        -v "$TRAVIS_BUILD_DIR:/build/" \
         ubuntu:focal \
-        /bin/bash -C "/build/${SCRIPT_PATH}"
+        /bin/bash -C "/build/$SCRIPT_PATH"
