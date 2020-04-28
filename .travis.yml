@@ -33,12 +33,12 @@ matrix:
         - EXECUTE_TESTS=ON
         - COVERAGE=OFF
 
-    - name: Ubuntu, MinGW-W64
+    - name: Ubuntu, MinGW-W64 (without Tools)
       os: linux
       dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-        - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
+        - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
         - COMPILER_TOOL=mingw-w64
         - EXECUTE_TESTS=OFF
         - COVERAGE=OFF
