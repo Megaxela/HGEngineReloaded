@@ -46,6 +46,10 @@ git:
 
 before_install:
   - git submodule update --init
+  - env | grep PROJECT_FLAGS >> env-file.txt
+  - env | grep COMPILER_TOOL >> env-file.txt
+  - env | grep EXECUTE_TESTS >> env-file.txt
+  - env | grep COVERAGE >> env-file.txt
 
 script:
-  - docker run "-v$TRAVIS_BUILD_DIR:/build/" ubuntu:focal /bin/bash -C "/build/$SCRIPT_PATH"
+  - docker run --env-file=env-file.txt "-v$TRAVIS_BUILD_DIR:/build/" ubuntu:focal /bin/bash -C "/build/$SCRIPT_PATH"
