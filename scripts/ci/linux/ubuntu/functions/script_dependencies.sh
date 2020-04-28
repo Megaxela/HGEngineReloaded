@@ -8,6 +8,7 @@ function install_script_dependencies() {
     local packages=(
         wget
         gnupg
+        software-properties-common
     )
 
     install_packages "${packages[@]}"
