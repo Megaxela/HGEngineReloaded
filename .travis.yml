@@ -48,6 +48,7 @@ before_install:
   - git submodule update --init
 
 script:
+  - docker run --help
   - docker run \
         -e SCRIPT_PATH \
         -e PROJECT_FLAGS \
