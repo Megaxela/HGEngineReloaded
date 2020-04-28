@@ -80,7 +80,6 @@ function install_zlib() {
     return $TRUE
 }
 
-}
 function install_external_dependencies() {
   local path="$1"
 
