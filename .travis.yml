@@ -48,4 +48,12 @@ before_install:
   - git submodule update --init
 
 script:
-  - docker run -v$TRAVIS_BUILD_DIR:/build/ ubuntu:focal /bin/bash -C "/build/$SCRIPT_PATH"
+  - docker run \
+        -e SCRIPT_PATH \
+        -e PROJECT_FLAGS \
+        -e COMPILER_TOOL \
+        -e EXECUTE_TESTS \
+        -e COVERAGE \
+        -v$TRAVIS_BUILD_DIR:/build/ \
+        ubuntu:focal \
+        /bin/bash -C "/build/$SCRIPT_PATH"

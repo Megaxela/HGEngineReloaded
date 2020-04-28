@@ -84,6 +84,12 @@ function action_help() {
 }
 
 function action_install_dependencies() {
+  echo "Installing internal dependencies..."
+  if ! install_script_dependencies; then
+    echo "Can't install internal dependencies."
+    exit 1
+  fi
+
   echo "Install sources..."
   install_sources
 
