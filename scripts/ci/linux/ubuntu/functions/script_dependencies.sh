@@ -12,6 +12,7 @@ function install_script_dependencies() {
         software-properties-common
         tzdata
         git
+        python
     )
 
     install_packages "${packages[@]}"
