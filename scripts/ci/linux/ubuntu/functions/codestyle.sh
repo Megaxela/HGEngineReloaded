@@ -7,6 +7,7 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 function check_codestyle() {
   local source_dir="$1"
 
+  cd ${source_dir}
   if ! "${source_dir}/scripts/check_relative_includes.sh"; then
     return $FALSE
   fi
@@ -14,7 +15,10 @@ function check_codestyle() {
   "${source_dir}/scripts/run_clang_format.sh"
 
   if ! check_nothing_changed; then
+    cd -
     return $FALSE
   fi
+
+  cd -
   return $TRUE
 }
