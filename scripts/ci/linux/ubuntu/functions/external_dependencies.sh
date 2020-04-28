@@ -89,13 +89,13 @@ function install_external_dependencies() {
     return $FALSE
   fi
 
-  if ! install_gtest $path; then
-    >&2 echo "Can't install gtest as dependency."
+  if ! install_zlib $path; then
+    >&2 echo "Can't install zlib as dependency."
     return $FALSE
   fi
 
-  if ! install_zlib $path; then
-    >&2 echo "Can't install zlib as dependency."
+  if ! install_gtest $path; then
+    >&2 echo "Can't install gtest as dependency."
     return $FALSE
   fi
 
