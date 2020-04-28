@@ -53,6 +53,7 @@ function action_help() {
   echo "by following setup arguments and environment variables."
   echo
   echo "Variables:"
+  echo "    SOURCE_DIR          Specifies sources directory"
   echo "    COMPILER_TOOL       Specifies compiler. "
   echo "        clang           ('gcc' by default)"
   echo "        gcc"
@@ -122,7 +123,7 @@ function action_install_dependencies() {
 
 function action_check_codestyle() {
   echo "Checking codestyle..."
-  if ! check_codestyle; then
+  if ! check_codestyle "${SOURCE_DIR}"; then
     echo "Codestyle failed..."
     print_changes
     exit 1

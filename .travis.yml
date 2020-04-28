@@ -50,6 +50,7 @@ before_install:
   - env | grep COMPILER_TOOL >> env-file.txt
   - env | grep EXECUTE_TESTS >> env-file.txt
   - env | grep COVERAGE >> env-file.txt
+  - echo "SOURCE_DIR=/build" >> env-file.txt
 
 script:
   - docker run --env-file=env-file.txt "-v$TRAVIS_BUILD_DIR:/build/" ubuntu:focal /bin/bash -C "/build/$SCRIPT_PATH"

@@ -11,6 +11,7 @@ function install_script_dependencies() {
         gnupg
         software-properties-common
         tzdata
+        git
     )
 
     install_packages "${packages[@]}"
