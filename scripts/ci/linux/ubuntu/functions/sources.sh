@@ -10,7 +10,7 @@ function install_sources () {
   )
 
   sources=(
-    'ppa:ubuntu-toolchain-r/test'
+#    'ppa:ubuntu-toolchain-r/test'
     'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
     'deb https://apt.kitware.com/ubuntu/ bionic main'
   )
