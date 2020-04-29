@@ -15,7 +15,7 @@ matrix:
   include:
     - name: Ubuntu, GCC
       os: linux
-      dist: bionic
+      dist: focal
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
@@ -25,7 +25,7 @@ matrix:
 
     - name: Ubuntu, CLang
       os: linux
-      dist: bionic
+      dist: focal
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
@@ -35,7 +35,7 @@ matrix:
 
     - name: Ubuntu, MinGW-W64 (without Tools)
       os: linux
-      dist: bionic
+      dist: focal
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
