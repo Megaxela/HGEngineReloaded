@@ -5,12 +5,10 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 function install_sources () {
   keys_from=(
-    'https://apt.llvm.org/llvm-snapshot.gpg.key'
     'https://apt.kitware.com/keys/kitware-archive-latest.asc'
   )
 
   sources=(
-    'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-9 main'
     'deb https://apt.kitware.com/ubuntu/ focal main'
   )
 
