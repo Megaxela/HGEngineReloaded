@@ -43,7 +43,6 @@ matrix:
         - EXECUTE_TESTS=OFF
         - COVERAGE=OFF
 
-# We'll do submodules manually, because of `--recursive`
 git:
   submodules: false
 
