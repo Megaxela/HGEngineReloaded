@@ -304,9 +304,9 @@ void RenderingPipeline::clear(HG::Utils::Color color)
     updateViewport();
 
     // Clearing main buffer
-    auto colorArray = color.toRGBAVector().data;
+    auto colorArray = color.toRGBAVector();
 
-    gl::set_clear_color({colorArray.data[0], colorArray.data[1], colorArray.data[2], colorArray.data[3]});
+    gl::set_clear_color({colorArray[0], colorArray[1], colorArray[2], colorArray[3]});
 
     gl::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
