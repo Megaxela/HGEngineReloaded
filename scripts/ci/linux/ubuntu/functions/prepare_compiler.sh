@@ -9,21 +9,18 @@ function prepare_compiler() {
   export ZLIB_PREFIX="/usr/local/"
   case $compiler in
     clang)
-      export CC="/usr/local/clang-7.0.0/bin/clang"
-      export CXX="/usr/local/clang-7.0.0/bin/clang++"
+      export CC=`which clang`
+      export CXX=`which clang++`
       ;;
     gcc)
-      export CC="gcc-8"
-      export CXX="g++-8"
+      export CC=`which gcc`
+      export CXX=`which g++`
       ;;
     mingw-w64)
-      echo "DEBUG!! : " `which x86_64-w64-mingw32-windres`
-      echo "DEBUG!! : " `which x86_64-w64-mingw32-dlltool`
-      cmake --version
-      export CC="$(which x86_64-w64-mingw32-gcc-posix)"
-      export CXX="$(which x86_64-w64-mingw32-g++-posix)"
-      export AR="$(which x86_64-w64-mingw32-ar)"
-      export RUNLIB="$(which x86_64-w64-mingw32-ranlib)"
+      export CC=`which x86_64-w64-mingw32-gcc-posix`
+      export CXX=`which x86_64-w64-mingw32-g++-posix`
+      export AR=`which x86_64-w64-mingw32-ar`
+      export RUNLIB=`which x86_64-w64-mingw32-ranlib`
       export ZLIB_PREFIX="/usr/x86_64-w64-mingw32"
       export CMAKE_ADDITIONAL_CONFIGURE_ARGS=(
           "-DCMAKE_SYSTEM_NAME=Windows"
