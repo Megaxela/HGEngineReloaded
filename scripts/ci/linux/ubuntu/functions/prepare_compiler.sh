@@ -9,8 +9,8 @@ function prepare_compiler() {
   export ZLIB_PREFIX="/usr/local/"
   case $compiler in
     clang)
-      export CC=`which clang`
-      export CXX=`which clang++`
+      export CC=`which clang-10`
+      export CXX=`which clang++-10`
       ;;
     gcc)
       export CC=`which gcc`

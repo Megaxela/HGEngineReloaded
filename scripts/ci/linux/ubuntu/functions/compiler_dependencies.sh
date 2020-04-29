@@ -13,7 +13,7 @@ function install_compiler_dependencies () {
       # Required STD lib
         g++
         gcc
-        clang
+        clang-10
       )
       ;;
     gcc)

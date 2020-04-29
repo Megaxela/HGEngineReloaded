@@ -5,13 +5,13 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 . "${script_dir}/variables.sh"
 
 function collect_coverage_info() {
-  lcov --gcov-tool `whereis gcov` --compat-libtool --directory "$build_dir" --base-directory "$source_dir" --capture --output-file "$build_dir/coverage.info"
+  lcov --gcov-tool /usr/bin/gcov --compat-libtool --directory "$build_dir" --base-directory "$source_dir" --capture --output-file "$build_dir/coverage.info"
 }
 
 function remove_coverage_info_for() {
 
   for glob in "$@"; do
-    if ! lcov --gcov-tool `whereis gcov` --compat-libtool --remove "$build_dir/coverage.info" $glob -o "$build_dir/coverage.info"; then
+    if ! lcov --gcov-tool /usr/bin/gcov --compat-libtool --remove "$build_dir/coverage.info" $glob -o "$build_dir/coverage.info"; then
       echo "Can't remove coverage info for '$glob'."
       return $FALSE
     fi
