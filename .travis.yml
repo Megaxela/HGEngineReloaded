@@ -1,9 +1,6 @@
 dist: xenial
 language: cpp
-os: linux
-
-services:
-  - docker
+sudo: required
 
 branches:
   only:
@@ -14,9 +11,11 @@ notifications:
     on_success: never
     on_failure: always
 
-jobs:
+matrix:
   include:
     - name: Ubuntu, GCC
+      os: linux
+      dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
@@ -25,6 +24,8 @@ jobs:
         - COVERAGE=ON
 
     - name: Ubuntu, CLang
+      os: linux
+      dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
@@ -33,6 +34,8 @@ jobs:
         - COVERAGE=OFF
 
     - name: Ubuntu, MinGW-W64 (without Tools)
+      os: linux
+      dist: bionic
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
@@ -46,13 +49,6 @@ git:
 
 before_install:
   - git submodule update --init
-  - env | grep PROJECT_FLAGS >> env-file.txt
-  - env | grep COMPILER_TOOL >> env-file.txt
-  - env | grep EXECUTE_TESTS >> env-file.txt
-  - env | grep COVERAGE >> env-file.txt
-
-  - echo "SOURCE_DIR=/build" >> env-file.txt
-  - echo "BUILD_DIR=/build/build" >> env-file.txt
 
 script:
-  - docker run --env-file=env-file.txt "-v$TRAVIS_BUILD_DIR:/build/" ubuntu:focal /bin/bash -C "/build/$SCRIPT_PATH"
+  - ${SCRIPT_PATH}

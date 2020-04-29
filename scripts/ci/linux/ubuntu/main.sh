@@ -9,7 +9,6 @@ main_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd
 . "${main_script_dir}/functions/compiler_dependencies.sh"
 . "${main_script_dir}/functions/external_dependencies.sh"
 . "${main_script_dir}/functions/coverage_dependencies.sh"
-. "${main_script_dir}/functions/script_dependencies.sh"
 . "${main_script_dir}/functions/sources.sh"
 . "${main_script_dir}/functions/codestyle.sh"
 . "${main_script_dir}/functions/build.sh"
@@ -34,12 +33,6 @@ fi
 
 if [[ "${COVERAGE}" -eq "ON" ]]; then
   PROJECT_FLAGS="$PROJECT_FLAGS -DHG_TEST_COVERAGE=On"
-fi
-
-SUDO_EXEC=sudo
-if [[ $EUID -eq 0 ]]; then
-  echo "Run as root. Don't use sudo"
-  SUDO_EXEC=''
 fi
 
 # JFF
@@ -84,12 +77,6 @@ function action_help() {
 }
 
 function action_install_dependencies() {
-  echo "Installing internal dependencies..."
-  if ! install_script_dependencies; then
-    echo "Can't install internal dependencies."
-    exit 1
-  fi
-
   echo "Install sources..."
   install_sources
 
@@ -122,7 +109,7 @@ function action_install_dependencies() {
 
 function action_check_codestyle() {
   echo "Checking codestyle..."
-  if ! check_codestyle "${SOURCE_DIR}"; then
+  if ! check_codestyle; then
     echo "Codestyle failed..."
     print_changes
     exit 1
@@ -145,7 +132,7 @@ function action_install_external_dependencies() {
 
 function action_build() {
   echo "Building..."
-  if ! perform_build "${BUILD_DIR}" "${SOURCE_DIR}" ${PROJECT_FLAGS}; then
+  if ! perform_build ${PROJECT_FLAGS}; then
     echo "Build failed."
     exit 1
   fi

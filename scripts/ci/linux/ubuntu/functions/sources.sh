@@ -10,9 +10,9 @@ function install_sources () {
   )
 
   sources=(
-#    'ppa:ubuntu-toolchain-r/test'
-    'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-9 main'
-    'deb https://apt.kitware.com/ubuntu/ focal main'
+    'ppa:ubuntu-toolchain-r/test'
+    'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+    'deb https://apt.kitware.com/ubuntu/ bionic main'
   )
 
   add_keys "${keys_from[@]}"

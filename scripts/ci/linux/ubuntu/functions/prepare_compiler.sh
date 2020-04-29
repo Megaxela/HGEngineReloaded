@@ -9,12 +9,12 @@ function prepare_compiler() {
   export ZLIB_PREFIX="/usr/local/"
   case $compiler in
     clang)
-      export CC=`which clang`
-      export CXX=`which clang++`
+      export CC="/usr/local/clang-7.0.0/bin/clang"
+      export CXX="/usr/local/clang-7.0.0/bin/clang++"
       ;;
     gcc)
-      export CC=`which gcc`
-      export CXX=`which g++`
+      export CC="gcc-8"
+      export CXX="g++-8"
       ;;
     mingw-w64)
       echo "DEBUG!! : " `which x86_64-w64-mingw32-windres`
@@ -26,12 +26,13 @@ function prepare_compiler() {
       export RUNLIB="$(which x86_64-w64-mingw32-ranlib)"
       export ZLIB_PREFIX="/usr/x86_64-w64-mingw32"
       export CMAKE_ADDITIONAL_CONFIGURE_ARGS=(
-          "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
           "-DCMAKE_SYSTEM_NAME=Windows"
           "-DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32"
           "-DCMAKE_RC_COMPILER=$(which x86_64-w64-mingw32-windres)"
           "-DDLLTOOL=$(which x86_64-w64-mingw32-dlltool)"
           "-DCMAKE_INSTALL_PREFIX=/usr/x86_64-w64-mingw32"
+          "-DWIN32=ON"
+          "-DMINGW=ON"
       )
       ;;
     *)
