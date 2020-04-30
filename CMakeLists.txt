@@ -10,6 +10,7 @@ set(CMAKE_MODULE_PATH
 )
 
 option(HG_BUILD_EXAMPLES "Build project example" Off)
+option(HG_BUILD_TOOLS    "Build project tools"   On)
 option(HG_BUILD_TESTS    "Build tests"           Off)
 option(HG_TEST_COVERAGE  "Enables test coverage" Off)
 

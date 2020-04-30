@@ -23,7 +23,7 @@ function install_glew() {
     return $FALSE
   fi
 
-  if ! cmake "-B$path/glew-glew-2.1.0/build_dir" "-H$path/glew-glew-2.1.0/build/cmake"; then
+  if ! cmake "${CMAKE_ADDITIONAL_CONFIGURE_ARGS[@]}" "-B$path/glew-glew-2.1.0/build_dir" "-H$path/glew-glew-2.1.0/build/cmake"; then
     >&2 echo "Can't generate glew project."
     return $FALSE
   fi
@@ -45,7 +45,7 @@ function install_gtest() {
     return $FALSE
   fi
 
-  if ! cmake "-B$path/gtest/build_dir" "-H$path/gtest/"; then
+  if ! cmake "${CMAKE_ADDITIONAL_CONFIGURE_ARGS[@]}" "-B$path/gtest/build_dir" "-H$path/gtest/"; then
     >&2 echo "Can't configure gtest."
     return $FALSE
   fi
@@ -58,11 +58,47 @@ function install_gtest() {
   return $TRUE
 }
 
+function install_zlib() {
+    local path="$1"
+
+    # Getting zlib
+    if ! git clone https://github.com/madler/zlib.git "$path/zlib"; then
+        >&2 echo "Can't download zlib"
+        return $FALSE
+    fi
+
+    echo "DEBUG: --prefix=$ZLIB_PREFIX"
+
+    cd $path/zlib
+    if ! ./configure "--prefix=$ZLIB_PREFIX" --static; then
+        >&2 echo "Can't configure zlib"
+        return $FALSE
+    fi
+
+    if ! make -j4; then
+        >&2 echo "Can't compile zlib."
+        return $FALSE
+    fi
+
+    if ! sudo make install; then
+        >&2 echo "Can't install zlib."
+        return $FALSE
+    fi
+    cd -
+
+    return $TRUE
+}
+
 function install_external_dependencies() {
   local path="$1"
 
   if ! install_glew $path; then
     >&2 echo "Can't install glew as dependency."
+    return $FALSE
+  fi
+
+  if ! install_zlib $path; then
+    >&2 echo "Can't install zlib as dependency."
     return $FALSE
   fi
 

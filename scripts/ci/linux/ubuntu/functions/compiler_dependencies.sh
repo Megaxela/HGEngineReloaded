@@ -11,15 +11,22 @@ function install_compiler_dependencies () {
     clang)
       local packages=(
       # Required STD lib
-        g++-8
-        gcc-8
+        g++
+        gcc
+        clang-10
       )
       ;;
     gcc)
       local packages=(
       # Compiler
-        g++-8
-        gcc-8
+        g++
+        gcc
+      )
+      ;;
+    mingw-w64)
+      local packages=(
+      # Installing mingw-w64
+        mingw-w64
       )
       ;;
     *)

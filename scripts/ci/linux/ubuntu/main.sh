@@ -27,6 +27,10 @@ if [ -z "${COVERAGE}" ]; then
   COVERAGE=OFF
 fi
 
+if [ -z "${EXECUTE_TESTS}" ]; then
+  EXECUTE_TESTS=ON
+fi
+
 if [[ "${COVERAGE}" -eq "ON" ]]; then
   PROJECT_FLAGS="$PROJECT_FLAGS -DHG_TEST_COVERAGE=On"
 fi
@@ -45,6 +49,7 @@ function action_help() {
   echo "    COMPILER_TOOL       Specifies compiler. "
   echo "        clang           ('gcc' by default)"
   echo "        gcc"
+  echo "        mingw-w64"
   echo
   echo "    EXTERNAL_DEPS_DIR   Directory for storing external dependencies."
   echo "                        ('external-deps' by default)"
@@ -53,6 +58,10 @@ function action_help() {
   echo
   echo "    COVERAGE            Enable coverage for this build"
   echo "        ON              ('OFF' by default)"
+  echo "        OFF"
+  echo
+  echo "    EXECUTE_TESTS       Enable tests execution"
+  echo "        ON              ('ON' by default)"
   echo "        OFF"
   echo
   echo "Actions:"
@@ -156,7 +165,10 @@ function perform_run() {
   action_check_codestyle
   action_install_external_dependencies
   action_build
-  action_test
+
+  if [[ "${EXECUTE_TESTS}" -eq "ON" ]]; then
+    action_test
+  fi
 
   if [[ "${COVERAGE}" -eq "ON" ]]; then
     action_coverage
