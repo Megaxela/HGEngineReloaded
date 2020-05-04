@@ -8,9 +8,13 @@ add_subdirectory(Utils)
 add_subdirectory(Rendering)
 add_subdirectory(Standard)
 add_subdirectory(Physics)
-add_subdirectory(Tools)
 add_subdirectory(System)
 add_subdirectory(Networking)
+
+if (${HG_BUILD_TOOLS})
+    add_subdirectory(Tools)
+endif()
+
 
 # Build standard package
 #pack_package(

@@ -13,22 +13,36 @@ notifications:
 
 matrix:
   include:
-    - os: linux
-      compiler: gcc
+    - name: Ubuntu, GCC
+      os: linux
+      dist: focal
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-        - COVERAGE=ON
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
         - COMPILER_TOOL=gcc
+        - EXECUTE_TESTS=ON
+        - COVERAGE=ON
 
-    - os: linux
-      compiler: clang
+    - name: Ubuntu, CLang
+      os: linux
+      dist: focal
       env:
         - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
         - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off"
         - COMPILER_TOOL=clang
+        - EXECUTE_TESTS=ON
+        - COVERAGE=OFF
 
-# We'll do submodules manually, because of `--recursive`
+    - name: Ubuntu, MinGW-W64 (without Tools)
+      os: linux
+      dist: focal
+      env:
+        - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
+        - PROJECT_FLAGS="-DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
+        - COMPILER_TOOL=mingw-w64
+        - EXECUTE_TESTS=OFF
+        - COVERAGE=OFF
+
 git:
   submodules: false
 
