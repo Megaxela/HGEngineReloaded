@@ -43,7 +43,7 @@ void ThreadPool::threadFunction(std::size_t id, ThreadPool::Type type)
 
     if (data == nullptr) // WTF??
     {
-        HGError() << "Thread function can't get it's pool data. Closing thread.";
+        HGError("Thread function can't get it's pool data, closing thread");
         return;
     }
 
@@ -74,8 +74,7 @@ void ThreadPool::threadFunction(std::size_t id, ThreadPool::Type type)
         }
         catch (std::exception& exception)
         {
-            HGError() << "Thread from pool with [id=" << id << ", type=" << type
-                      << "] received exception: " << exception.what();
+            HGError("Thread from pool with [id={}, type={}] received exception: {}", id, type, exception.what());
         }
     }
 

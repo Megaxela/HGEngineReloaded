@@ -25,7 +25,7 @@ Renderer::Renderer(HG::Core::Application* application) :
     m_defaultRenderTarget(new (application->resourceCache()) RenderTarget({0, 0}, true)),
     m_activeCubemap(nullptr)
 {
-    HGDebug() << "Creating renderer.";
+    HGDebug("Creating renderer");
 
     m_parentApplication->countStatistics()->addCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices,
                                                        HG::Core::CountStatistics::CounterType::LastFrame);
@@ -33,7 +33,7 @@ Renderer::Renderer(HG::Core::Application* application) :
 
 Renderer::~Renderer()
 {
-    HGDebug() << "Destroying renderer.";
+    HGDebug("Destroying renderer");
     m_parentApplication->countStatistics()->removeCounter(HG::Core::CountStatistics::CommonCounter::NumberOfVertices);
 
     delete m_pipeline;
@@ -56,7 +56,7 @@ bool Renderer::init()
 {
     if (m_pipeline == nullptr)
     {
-        HGError() << "No rendering pipeline set.";
+        HGError("No rendering pipeline set");
         return false;
     }
 
@@ -67,7 +67,7 @@ void Renderer::deinit()
 {
     if (m_pipeline == nullptr)
     {
-        HGError() << "No rendering pipeline set.";
+        HGError("No rendering pipeline set");
         return;
     }
 
@@ -78,7 +78,7 @@ void Renderer::render(const HG::Utils::DoubleBufferContainer<HG::Core::GameObjec
 {
     if (m_pipeline == nullptr)
     {
-        HGError() << "No rendering pipeline set.";
+        HGError("No rendering pipeline set");
         return;
     }
 
@@ -131,7 +131,7 @@ bool Renderer::setup(RenderData* data, bool guarantee)
 {
     if (m_pipeline == nullptr)
     {
-        HGInfo() << "There is no rendering pipeline to setup.";
+        HGInfo("There is no rendering pipeline to setup");
         return false;
     }
 
@@ -142,7 +142,7 @@ bool Renderer::needSetup(RenderData* data) const
 {
     if (m_pipeline == nullptr)
     {
-        HGInfo() << "There is no rendering pipeline to check for setup requirement.";
+        HGInfo("There is no rendering pipeline to check for setup requirement");
         return false;
     }
 

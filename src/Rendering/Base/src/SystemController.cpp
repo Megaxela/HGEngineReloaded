@@ -72,7 +72,7 @@ bool SystemController::createWindow(std::uint32_t width, std::uint32_t height, s
         return false;
     }
 
-    HGInfo() << "Initializing ImGui";
+    HGInfo("Initializing ImGui");
     imGuiInit();
 
     return true;

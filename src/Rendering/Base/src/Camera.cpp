@@ -136,7 +136,7 @@ glm::mat4 Camera::viewMatrix() const
     auto parentGO = gameObject();
     if (!parentGO)
     {
-        HGError() << "Can't get game object of active camera.";
+        HGError("Can't get game object of active camera.");
         return glm::mat4();
     }
 
@@ -199,8 +199,8 @@ glm::mat4 Camera::projectionMatrix() const
         m_projectionMatrixChanged = false;
         break;
     default:
-        HGError() << "Found wrong camera projection value.";
-        throw std::runtime_error("Found wrong camera projection value.");
+        HGError("Found wrong camera projection value");
+        throw std::runtime_error("Found wrong camera projection value");
     }
 
     return m_projectionMatrix;
@@ -238,25 +238,25 @@ void Camera::onStart()
         // Getting current viewport
         if (scene() == nullptr)
         {
-            HGError() << "No scene set. Can't determine initial viewport.";
+            HGError("No scene set. Can't determine initial viewport.");
             return;
         }
 
         if (scene()->application() == nullptr)
         {
-            HGError() << "No application set in scene. Can't determine initial viewport.";
+            HGError("No application set in scene. Can't determine initial viewport.");
             return;
         }
 
         if (scene()->application()->renderer() == nullptr)
         {
-            HGError() << "No renderer set for application.";
+            HGError("No renderer set for application.");
             return;
         }
 
         if (scene()->application()->systemController() == nullptr)
         {
-            HGError() << "No system controller set in application. Can't determine initial viewport.";
+            HGError("No system controller set in application. Can't determine initial viewport.");
             return;
         }
     }
@@ -290,7 +290,7 @@ void Camera::lookAt(const glm::vec3& point, const glm::vec3& upVector)
     {
         if (gameObject() == nullptr)
         {
-            HGError() << "Can't make camera look at without gameobject.";
+            HGError("Can't make camera look at without gameobject.");
             return;
         }
     }

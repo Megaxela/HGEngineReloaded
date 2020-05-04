@@ -24,8 +24,7 @@ ResourceCache::~ResourceCache()
     {
         if (!cache.second.used.empty())
         {
-            HGError() << "Leaked cached resources detected. " << cache.first << " hash - " << cache.second.used.size()
-                      << " leaked objects.";
+            HGError("Leaked cached resources detected. {} hash - {} leaked objects.", cache.first, cache.second.used.size());
         }
     }
 }

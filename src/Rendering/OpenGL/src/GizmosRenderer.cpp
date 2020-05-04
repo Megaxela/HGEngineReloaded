@@ -35,7 +35,7 @@ GizmosRenderer::GizmosRenderer(HG::Core::Application* application) :
 
 void GizmosRenderer::onDeinit()
 {
-    HGInfo() << "Deinitializing gizmos renderer";
+    HGInfo("Deinitializing gizmos renderer");
 
     delete m_lineMaterial;
     delete m_meshMaterial;
@@ -49,7 +49,7 @@ void GizmosRenderer::onDeinit()
 
 void GizmosRenderer::onInit()
 {
-    HGInfo() << "Initializing gizmos renderer";
+    HGInfo("Initializing gizmos renderer");
 
     m_linesVAO = std::move(gl::vertex_array());
     m_linesVBO = std::move(gl::buffer());

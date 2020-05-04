@@ -303,7 +303,7 @@ void TiledMapRenderer::prepareTileLayer(const TiledMap::TileLayer* tileLayer, HG
         // If tileset was not found
         if (tilesetIter == m_map->tilesets().end())
         {
-            HGError() << "Tileset for GID " << decodedTile.actualTile << " was not found.";
+            HGError("Tileset for GID {} was not found.", decodedTile.actualTile);
         }
 
         // Calculating tile position at tileset
@@ -355,7 +355,7 @@ void TiledMapRenderer::prepareTileLayer(const TiledMap::TileLayer* tileLayer, HG
         {
             // Texture was not found. Log and skip this.
             // todo: Get advantage of fallback texture.
-            HGError() << "Can't find texture for tileset \"" << (*tilesetIter)->name << "\".";
+            HGError("Can't find texture for tileset \"{}\"", (*tilesetIter)->name);
             continue;
         }
 

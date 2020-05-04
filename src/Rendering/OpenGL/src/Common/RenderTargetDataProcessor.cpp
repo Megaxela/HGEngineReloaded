@@ -27,7 +27,7 @@ bool RenderTargetDataProcessor::setup(HG::Rendering::Base::RenderData* data, boo
 
     if (renderTarget == nullptr)
     {
-        HGError() << "Got non render target render data in render target data processor. Types are corrupted.";
+        HGError("Got non render target render data in render target data processor, types are corrupted");
         exit(-1);
     }
 

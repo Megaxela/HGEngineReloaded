@@ -54,7 +54,7 @@ bool Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool g
 
     if (texture == nullptr)
     {
-        HGError() << "Got non texture render data in texture data processor. Types are corrupted.";
+        HGError("Got non texture render data in texture data processor, types are corrupted");
         exit(-1);
     }
 
@@ -140,7 +140,7 @@ bool Texture2DDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool g
             break;
 
         default:
-            HGError() << "Can't setup texture because of unknown texture format.";
+            HGError("Can't setup texture because of unknown texture format");
             break;
         }
 

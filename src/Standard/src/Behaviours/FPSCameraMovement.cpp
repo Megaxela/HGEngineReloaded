@@ -37,7 +37,7 @@ void FPSCameraMovement::onStart()
 
     if (!m_camera)
     {
-        HGWarning() << "Can't setup FPS camera movement, without camera.";
+        HGWarning("Can't setup FPS camera movement without camera");
     }
 }
 

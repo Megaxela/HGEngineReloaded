@@ -20,13 +20,13 @@ bool MeshDataProcessor::setup(HG::Rendering::Base::RenderData* renderData, bool 
 
     if (meshBehaviour == nullptr)
     {
-        HGError() << "Got non mesh behaviour render data in mesh behaviour data processor. Types are corrupted.";
+        HGError("Got non mesh behaviour render data in mesh behaviour data processor, types are corrupted");
         exit(-1);
     }
 
     if (meshBehaviour->mesh() == nullptr)
     {
-        HGError() << "Can't setup render without set mesh.";
+        HGError("Can't setup render without set mesh");
         return false;
     }
 

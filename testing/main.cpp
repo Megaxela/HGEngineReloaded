@@ -1,20 +1,16 @@
+// GTest
 #include <gtest/gtest.h>
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
 
-class DumbLogger : public AbstractLogger
-{
-protected:
-    void onNewMessage(const Message&) override
-    {
-    }
-};
+// spdlog
+#include <spdlog/sinks/null_sink.h>
 
 int main(int argc, char** argv)
 {
     // Disable current logger warning
-    HG::Utils::Logging::overrideUserLogger(std::make_shared<DumbLogger>());
+    spdlog::set_default_logger(spdlog::null_logger_st("null-logger"));
 
     testing::InitGoogleTest(&argc, argv);
 
