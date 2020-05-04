@@ -10,6 +10,7 @@ add_subdirectory(Standard)
 add_subdirectory(Physics)
 add_subdirectory(Tools)
 add_subdirectory(System)
+add_subdirectory(Networking)
 
 # Build standard package
 #pack_package(

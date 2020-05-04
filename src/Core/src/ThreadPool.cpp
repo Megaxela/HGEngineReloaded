@@ -155,6 +155,11 @@ void ThreadPool::joinPool(ThreadPool::Type type)
 {
     std::shared_ptr<PoolData> data = getPoolData(type);
 
+    if (data == nullptr)
+    {
+        return;
+    }
+
     for (auto&& [id, thread] : data->threads)
     {
         if (thread.joinable())

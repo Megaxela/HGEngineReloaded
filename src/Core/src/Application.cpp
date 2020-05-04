@@ -156,15 +156,15 @@ bool Application::performCycle()
     // Start counting update time (events are in update section)
     m_timeStatistics->tickTimerBegin(TimeStatistics::UpdateTime);
 
+    // Checking for new scene, etc
+    proceedScene();
+
     // Polling events
     if (m_renderer->pipeline() != nullptr && systemController() != nullptr)
     {
         BENCH_D(this, "Events polling");
         systemController()->pollEvents();
     }
-
-    // Checking for new scene, etc
-    proceedScene();
 
     {
         BENCH_D(this, "Updating");

@@ -56,7 +56,7 @@ void SystemController::pollEvents()
     onPollEvents();
 
     // ImGui requires render before new frame
-    if (application()->scene() && ImGui::GetCurrentContext()->Font != nullptr)
+    if (application()->scene())
     {
         BENCH("ImGui New Frame");
         imGuiNewFrame();
