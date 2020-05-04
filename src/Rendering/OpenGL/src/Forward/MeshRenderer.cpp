@@ -52,7 +52,7 @@ MeshRenderer::MeshRenderer() : m_meshFallbackMaterial(nullptr)
 
 void MeshRenderer::onInit()
 {
-    HGInfo() << "Initializing mesh renderer";
+    HGInfo("Initializing mesh renderer");
 
     m_meshFallbackMaterial =
         application()->renderer()->materialCollection()->getMaterial<Materials::MeshFallbackMaterial>();
@@ -60,7 +60,7 @@ void MeshRenderer::onInit()
 
 void MeshRenderer::onDeinit()
 {
-    HGInfo() << "Deinitializing sprite renderer";
+    HGInfo("Deinitializing sprite renderer");
 
     delete m_meshFallbackMaterial;
     m_meshFallbackMaterial = nullptr;

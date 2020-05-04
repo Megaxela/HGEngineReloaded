@@ -36,7 +36,7 @@ SpriteRenderer::SpriteRenderer() : m_spriteMaterial(nullptr), m_spriteData(nullp
 
 void SpriteRenderer::onDeinit()
 {
-    HGInfo() << "Deinitializing sprite renderer";
+    HGInfo("Deinitializing sprite renderer");
 
     delete m_spriteMaterial;
     delete m_spriteData;
@@ -47,7 +47,7 @@ void SpriteRenderer::onDeinit()
 
 void SpriteRenderer::onInit()
 {
-    HGInfo() << "Initializing sprite renderer";
+    HGInfo("Initializing sprite renderer");
 
     m_spriteMaterial = application()->renderer()->materialCollection()->getMaterial<Materials::SpriteMaterial>();
 

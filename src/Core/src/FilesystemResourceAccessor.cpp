@@ -36,7 +36,7 @@ DataPtr FilesystemResourceAccessor::loadRaw(const std::string& id)
 
     if (!file.is_open())
     {
-        HGWarning() << "Can't open file \"" << id << "\".";
+        HGWarning("Can't open file \"{}\".", id);
         return nullptr;
     }
 

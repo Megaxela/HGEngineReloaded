@@ -1,6 +1,3 @@
-[submodule "src/Utils/libraries/ALogger"]
-	path = src/Utils/libraries/ALogger
-	url = https://github.com/Megaxela/ALogger.git
 [submodule "src/Utils/libraries/glm"]
 	path = src/Utils/libraries/glm
 	url = https://github.com/g-truc/glm.git
@@ -30,3 +27,6 @@
 [submodule "src/Rendering/OpenGL/libraries/glfw"]
 	path = src/System/PC/libraries/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "src/Utils/libraries/spdlog"]
+	path = src/Utils/libraries/spdlog
+	url = https://github.com/gabime/spdlog.git

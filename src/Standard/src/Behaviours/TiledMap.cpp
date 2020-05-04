@@ -99,7 +99,7 @@ bool TiledMap::loadMap(HG::Core::DataPtr data)
 
     if (mapNode == nullptr)
     {
-        HGError() << "Can't find root <map> tag.";
+        HGError("Can't find root <map> tag.");
         return false;
     }
 
@@ -124,8 +124,8 @@ bool TiledMap::loadMap(HG::Core::DataPtr data)
 
     if (m_properties.tiledVersion != SUPPORTED_VERSION)
     {
-        HGWarning() << "Tiled map parser supports " << SUPPORTED_VERSION << " tiled maps, trying to load "
-                    << m_properties.tiledVersion;
+        HGWarning(
+            "Tiled map parser supports {} tiled maps, trying to load {}", SUPPORTED_VERSION, m_properties.tiledVersion);
     }
 
     if (!(attribute = mapNode->first_attribute("orientation")))
@@ -141,7 +141,7 @@ bool TiledMap::loadMap(HG::Core::DataPtr data)
     }
     else
     {
-        HGWarning() << sv << " orientation is not supported.";
+        HGWarning("{} orientation is not supported.", sv);
     }
 
     if (!(attribute = mapNode->first_attribute("renderorder")))
@@ -157,7 +157,7 @@ bool TiledMap::loadMap(HG::Core::DataPtr data)
     }
     else
     {
-        HGWarning() << sv << " render order is not supported.";
+        HGWarning("{} render order is not supported.", sv);
     }
 
     if (!(attribute = mapNode->first_attribute("width")))
@@ -299,7 +299,7 @@ bool TiledMap::proceedRootNode(rapidxml::xml_node<>* root, Group* target, bool p
         }
         else if (name == "imagelayer")
         {
-            HGWarning() << "Image layer is not implemented yet";
+            HGWarning("Image layer is not implemented yet");
         }
         else if (name == "layer")
         {
@@ -632,7 +632,7 @@ bool TiledMap::proceedProperties(rapidxml::xml_node<>* node, TiledMap::Propertie
         }
         else
         {
-            HGWarning() << "Found unknown type \"" << type << "\".";
+            HGWarning("Found unknown type \"{}\"", type);
         }
     }
 
@@ -1173,7 +1173,7 @@ bool TiledMap::performTileLayerDecoding(const char* data,
         }
         else if (compression == "gzip")
         {
-            HGError() << "GZIP compression is not supported yet.";
+            HGError("GZIP compression is not supported yet.");
             return false;
         }
 
@@ -1199,7 +1199,7 @@ bool TiledMap::proceedCSVTileData(const char* data, std::size_t dataSize, std::v
     (void)result;
 
     // todo: Add CSV support
-    HGWarning() << "CSV does not supported yet.";
+    HGWarning("CSV does not supported yet");
     return false;
 }
 

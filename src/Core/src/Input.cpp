@@ -57,7 +57,7 @@ bool Input::Keyboard::isPressed(Input::Keyboard::Key key) const
     {
         if (std::size_t(key) >= m_pressed.size())
         {
-            HGError() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
+            HGError("There is no key with code {} requested. Returning false.", std::size_t(key));
             return false;
         }
     }
@@ -71,7 +71,7 @@ bool Input::Keyboard::isPushed(Input::Keyboard::Key key) const
     {
         if (std::size_t(key) >= m_pushed.size())
         {
-            HGError() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
+            HGError("There is no key with code {} requested. Returning false.", std::size_t(key));
             return false;
         }
     }
@@ -85,7 +85,7 @@ bool Input::Keyboard::isReleased(Input::Keyboard::Key key) const
     {
         if (std::size_t(key) >= m_released.size())
         {
-            HGError() << "There is no key with code " << std::size_t(key) << " requested. Returning false.";
+            HGError("There is no key with code {} requested. Returning false.", std::size_t(key));
             return false;
         }
     }
@@ -99,7 +99,7 @@ bool Input::Keyboard::isModifierPressed(Input::Keyboard::Modifiers modifier) con
     {
         if ((int)modifier > 7)
         {
-            HGError() << "There is no modifier with code " << int(modifier) << " requested. Returning false.";
+            HGError("There is no modifier with code {} requested. Returning false.", int(modifier));
             return false;
         }
     }
@@ -121,7 +121,7 @@ void Input::Keyboard::setPressed(Input::Keyboard::Key key, bool pressed)
     {
         if (std::size_t(key) >= m_pressed.size())
         {
-            HGError() << "There is no key with code " << std::size_t(key) << " requested. Doing nothing.";
+            HGError("There is no key with code {} requested. Doing nothing.", std::size_t(key));
             return;
         }
     }
@@ -144,7 +144,7 @@ void Input::Keyboard::setPressed(Input::Keyboard::Modifiers modifier, bool press
     {
         if ((int)modifier > 7)
         {
-            HGError() << "There is no modifier with code " << int(modifier) << " requested. Doing nothing.";
+            HGError("There is no modifier with code {} requested. Doing nothing.", int(modifier));
             return;
         }
     }
@@ -255,7 +255,7 @@ void Input::Mouse::setCursorDisabled(bool locked) const
 {
     if (m_disabledAction == nullptr)
     {
-        HGError() << "Can't disable cursor, in case of unavailable action.";
+        HGError("Can't disable cursor, in case of unavailable action.");
         return;
     }
 
@@ -266,7 +266,7 @@ void Input::Mouse::setCursorHidden(bool hidden) const
 {
     if (m_hiddenAction == nullptr)
     {
-        HGError() << "Can't hide cursor, in case of unavailable action.";
+        HGError("Can't hide cursor, in case of unavailable action.");
         return;
     }
 
@@ -277,7 +277,7 @@ bool Input::Mouse::isCursorDisabled() const
 {
     if (m_isDisabledAction == nullptr)
     {
-        HGError() << "Can't check is cursor disabled, in case of unavailable action.";
+        HGError("Can't check is cursor disabled, in case of unavailable action.");
         return false;
     }
 
@@ -288,7 +288,7 @@ bool Input::Mouse::isCursorHidden() const
 {
     if (m_isHiddenAction == nullptr)
     {
-        HGError() << "Can't check is cursor hidden, in case of unavailable action.";
+        HGError("Can't check is cursor hidden, in case of unavailable action.");
         return false;
     }
 
@@ -381,9 +381,9 @@ std::uint8_t Input::Gamepads::numberOfGamepadsConnected() const
 {
     std::uint8_t numberOfGamepads = 0;
 
-    for (auto gamepad : m_gamepads)
+    for (const auto& [gamepad_index, gamepad_data] : m_gamepads)
     {
-        if (gamepad.second.connected)
+        if (gamepad_data.connected)
         {
             ++numberOfGamepads;
         }

@@ -40,7 +40,7 @@ ImGuiRenderer::ImGuiRenderer(HG::Core::Application* application) :
 
 void ImGuiRenderer::onDeinit()
 {
-    HGInfo() << "Deinitializing ImGui renderer";
+    HGInfo("Deinitializing ImGui renderer");
 
     delete m_material;
     m_material = nullptr;
@@ -53,7 +53,7 @@ void ImGuiRenderer::onDeinit()
 
 void ImGuiRenderer::onInit()
 {
-    HGInfo() << "Initializing ImGui renderer";
+    HGInfo("Initializing ImGui renderer");
 
     m_material = application()->renderer()->materialCollection()->getMaterial<Materials::ImGuiMaterial>();
 
@@ -262,7 +262,7 @@ void ImGuiRenderer::createFontsTexture()
         }
         else
         {
-            HGError() << "Can't setup ImGUI font data.";
+            HGError("Can't setup ImGUI font data");
         }
     }
 }

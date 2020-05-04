@@ -105,7 +105,7 @@ AssimpLoader::ResultType AssimpLoader::load(const std::byte* data, std::size_t s
 
     if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
     {
-        HGError() << "Can't load model. Error: " << importer.GetErrorString();
+        HGError("Can't load model, error: {}", importer.GetErrorString());
         return nullptr;
     }
 

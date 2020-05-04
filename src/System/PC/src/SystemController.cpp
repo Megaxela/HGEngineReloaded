@@ -50,12 +50,11 @@ static void ImGuiSetClipboardText(void* user_data, const char* text)
 
 bool SystemController::onInit()
 {
-    HGInfo() << "Initializing GLFW";
+    HGInfo("Initializing GLFW");
 
     // Setting error callback
-    glfwSetErrorCallback([](int code, const char* description) {
-        HGErrorF() << "GLFW Received error #" << code << ", " << description;
-    });
+    glfwSetErrorCallback(
+        [](int code, const char* description) { HGError("GLFW Received error #{}, {}", code, description); });
 
     // Initializing GLFW
     if (!glfwInit())
@@ -63,7 +62,7 @@ bool SystemController::onInit()
         return false;
     }
 
-    HGInfo() << "Initialized";
+    HGInfo("Initialized");
 
     // Setting OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -80,7 +79,7 @@ void SystemController::onDeinit()
 
 bool SystemController::onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title)
 {
-    HGInfo() << "Creating window " << width << "x" << height << " with title \"" << title << "\"";
+    HGInfo("Creating window {}x{} with title \"{}\"", width, height, title);
 
     m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
@@ -233,14 +232,14 @@ void SystemController::joystickCallback(int gamepad, int event)
 {
     if (event == GLFW_CONNECTED)
     {
-        HGInfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " connected.";
+        HGInfo("Gamepad #{} connected.", gamepad);
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
             ->setIsConnectedGamepad(static_cast<std::uint8_t>(gamepad), true);
     }
     else if (event == GLFW_DISCONNECTED)
     {
-        HGInfoEx("OpenGL::RendererController") << "Gamepad #" << gamepad << " disconnected.";
+        HGInfo("Gamepad #{} disconnected.", gamepad);
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
             ->setIsConnectedGamepad(static_cast<std::uint8_t>(gamepad), false);

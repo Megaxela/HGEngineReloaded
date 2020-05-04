@@ -22,7 +22,7 @@ IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
 {
     connectLoggingWatcher();
 
-    HGInfo() << "Creating ingame console";
+    HGInfo("Creating ingame console");
 
     addCommand(Command("help", "Displays this text.", [this](Command::Arguments) -> int {
         for (auto&& [name, command] : m_commands)
@@ -47,7 +47,7 @@ IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
     }));
 
     addCommand(Command("quit", "Closes application.", [this](Command::Arguments) -> int {
-        HGInfo() << "Closing app from console.";
+        HGInfo("Closing app from console");
         scene()->application()->stop();
 
         return 0;
@@ -61,9 +61,10 @@ IngameConsole::IngameConsole() : m_logsListener(), m_commands(), m_linesBuffer()
 
 IngameConsole::~IngameConsole()
 {
-    if (m_logsListener && HG::Utils::Logging::userLogger())
+    if (m_logsListener)
     {
-        HG::Utils::Logging::userLogger()->removeLogsListener(m_logsListener);
+        auto& sinks = spdlog::default_logger()->sinks();
+        sinks.erase(std::find(sinks.begin(), sinks.end(), m_logsListener));
     }
 }
 
@@ -148,12 +149,12 @@ void IngameConsole::onUpdate()
 
 void IngameConsole::proceedLogs()
 {
-    AbstractLogger::Message msg;
+    Message msg;
     while (m_logsListener && m_logsListener->hasMessages())
     {
         msg = std::move(m_logsListener->popMessage());
 
-        proceedMessage(std::move(msg));
+        proceedMessage(msg);
     }
 }
 
@@ -189,7 +190,7 @@ void IngameConsole::executeCommand(std::string command)
             // Displaying command description
             if (result == -1)
             {
-                auto errorColor = getLogColor(AbstractLogger::ErrorClass::Error);
+                auto errorColor = getLogColor(spdlog::level::level_enum::err);
 
                 logText(errorColor, "Wrong usage of command \"" + splittedCommand[0] + "\"");
 
@@ -203,35 +204,37 @@ void IngameConsole::executeCommand(std::string command)
         }
         else
         {
-            auto errorColor = getLogColor(AbstractLogger::ErrorClass::Error);
+            auto errorColor = getLogColor(spdlog::level::level_enum::err);
             logText(errorColor, "There is no command \"" + splittedCommand[0] + "\"");
         }
     }
 }
 
-void IngameConsole::proceedMessage(AbstractLogger::Message message)
+void IngameConsole::proceedMessage(const IngameConsole::Message& message)
 {
-    logText(getLogColor(message.errorClass), formatMessage(message));
+    logText(getLogColor(message.level), formatMessage(message));
 }
 
-std::string IngameConsole::formatMessage(AbstractLogger::Message message)
+std::string IngameConsole::formatMessage(const IngameConsole::Message& message)
 {
     return message.message;
 }
 
-HG::Utils::Color IngameConsole::getLogColor(AbstractLogger::ErrorClass errClass)
+HG::Utils::Color IngameConsole::getLogColor(spdlog::level::level_enum errClass)
 {
     switch (errClass)
     {
-    case AbstractLogger::ErrorClass::Debug:
+    case spdlog::level::trace:
+    case spdlog::level::debug:
         return HG::Utils::Color::fromRGB(180, 180, 180);
-    case AbstractLogger::ErrorClass::Warning:
+    case spdlog::level::warn:
         return HG::Utils::Color::fromRGB(180, 50, 50);
-    case AbstractLogger::ErrorClass::Error:
+    case spdlog::level::err:
+    case spdlog::level::critical:
         return HG::Utils::Color::fromRGB(255, 50, 50);
-    case AbstractLogger::ErrorClass::None:
-    case AbstractLogger::ErrorClass::Info:
-    case AbstractLogger::ErrorClass::Unknown:
+    case spdlog::level::info:
+    case spdlog::level::off:
+    case spdlog::level::n_levels:
         return HG::Utils::Color::White;
     }
 
@@ -240,39 +243,8 @@ HG::Utils::Color IngameConsole::getLogColor(AbstractLogger::ErrorClass errClass)
 
 void IngameConsole::connectLoggingWatcher()
 {
-    m_logsListener = std::make_shared<LoggingWatcher>(this);
-
-    if (HG::Utils::Logging::userLogger())
-    {
-        HG::Utils::Logging::userLogger()->addLogsListener(m_logsListener);
-    }
-    else
-    {
-        std::cerr << "Can't connect logging watcher, because of no logger." << std::endl;
-    }
-}
-
-IngameConsole::LoggingWatcher::LoggingWatcher(IngameConsole* ingameConsole) : m_console(ingameConsole), m_messages()
-{
-}
-
-AbstractLogger::Message IngameConsole::LoggingWatcher::popMessage()
-{
-    auto element = std::move(m_messages.front());
-
-    m_messages.pop_front();
-
-    return element;
-}
-
-bool IngameConsole::LoggingWatcher::hasMessages() const
-{
-    return !m_messages.empty();
-}
-
-void IngameConsole::LoggingWatcher::newMessage(const AbstractLogger::Message& m)
-{
-    m_messages.push_back(m);
+    m_logsListener = std::make_shared<LoggingWatcher<std::mutex>>(this);
+    spdlog::default_logger()->sinks().push_back(m_logsListener);
 }
 
 int IngameConsole::commandClEnableDebug(IngameConsole::Command::Arguments arguments)

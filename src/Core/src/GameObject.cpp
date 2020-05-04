@@ -10,6 +10,7 @@
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
+#include <HG/Utils/SystemTools.hpp>
 
 namespace HG::Core
 {
@@ -98,7 +99,7 @@ void GameObject::removeBehaviour(Behaviour* behaviour)
     {
         if (behaviour->gameObject() != this)
         {
-            HGError() << "Trying to remove behaviour from GameObject, that's not it's parent.";
+            HGError("Trying to remove behaviour from GameObject, that's not it's parent.");
             return;
         }
     }
@@ -133,7 +134,7 @@ void GameObject::addBehaviour(Behaviour* behaviour)
 
         if (!casted)
         {
-            HGError() << "Can't add behaviour of type " << SystemTools::getTypeName(behaviour);
+            HGError("Can't add behaviour of type {}", HG::Utils::SystemTools::getTypeName(behaviour));
             return;
         }
 

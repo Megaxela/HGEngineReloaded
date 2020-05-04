@@ -25,8 +25,8 @@
 
 int main(int argc, char** argv)
 {
-    HGInfoF() << "Creating application";
-    HG::Core::Application application("HEEngine RenderToTexture Example", argc, argv);
+    HGInfo("Creating application");
+    HG::Core::Application application("HGEngine RenderToTexture Example", argc, argv);
 
     // Setting resource accessor implementation
     application.resourceManager()->setResourceAccessor(new HG::Core::FilesystemResourceAccessor());
@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 
     if (!application.init())
     {
-        HGErrorF() << "Can't init application.";
+        HGError("Can't init application.");
         return -1;
     }
 

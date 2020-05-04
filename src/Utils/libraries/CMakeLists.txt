@@ -11,7 +11,7 @@ set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS         OFF CACHE BOOL "" FORCE)
 set(ASSIMP_BUILD_TESTS        OFF CACHE BOOL "" FORCE)
 
-add_dependency_subdirectory(PATH ALogger    )
+add_dependency_subdirectory(PATH spdlog     )
 add_dependency_subdirectory(PATH glm        )
 add_dependency_subdirectory(PATH stb        )
 add_dependency_subdirectory(PATH rapidxml   )
