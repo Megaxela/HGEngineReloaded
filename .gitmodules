@@ -27,9 +27,6 @@
 [submodule "src/Rendering/OpenGL/libraries/glfw"]
 	path = src/System/PC/libraries/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "src/Utils/libraries/fmt"]
-	path = src/Utils/libraries/fmt
-	url = https://github.com/fmtlib/fmt.git
 [submodule "src/Utils/libraries/spdlog"]
 	path = src/Utils/libraries/spdlog
 	url = https://github.com/gabime/spdlog.git
