@@ -12,7 +12,7 @@ describe_module(
         ${ZLIB_INCLUDE_DIRS}
 
     DEPENDENCIES
-        ALogger
+        spdlog
         glm
         stb
         rapidxml

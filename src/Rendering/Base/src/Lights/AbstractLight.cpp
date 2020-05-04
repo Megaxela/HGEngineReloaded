@@ -45,7 +45,7 @@ void AbstractLight::onStart()
         if (std::find(AbstractLight::m_lights.begin(), AbstractLight::m_lights.end(), this) !=
             AbstractLight::m_lights.end())
         {
-            HGError() << "Trying to add light to global light system, several times.";
+            HGError("Trying to add light to global light system several times.");
         }
     }
 

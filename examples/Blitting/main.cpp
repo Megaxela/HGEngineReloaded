@@ -27,7 +27,7 @@
 
 int main(int argc, char** argv)
 {
-    HGInfoF() << "Creating application";
+    HGInfo("Creating application");
     HG::Core::Application application("HGEngine Blitting example", argc, argv);
 
     // Settings resource accessor implementation
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
     if (!application.init())
     {
-        HGErrorF() << "Can't init application";
+        HGError("Can't init application");
         return -1;
     }
 

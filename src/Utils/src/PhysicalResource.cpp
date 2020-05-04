@@ -53,7 +53,7 @@ std::uint64_t HG::Utils::PhysicalResource::getTotalRAM()
 
     if (sysinfo(&info) == -1)
     {
-        HGErrorF() << "sysinfo error: " << strerror(errno);
+        HGError("sysinfo error: {}", strerror(errno));
         return 0;
     }
 
@@ -80,7 +80,7 @@ uint64_t HG::Utils::PhysicalResource::getFreeRAM()
 
     if (sysinfo(&info) == -1)
     {
-        HGErrorF() << "sysinfo error: " << strerror(errno);
+        HGError("sysinfo error: {}", strerror(errno));
         return 0;
     }
 
@@ -115,7 +115,7 @@ std::uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
 
     if (file == nullptr)
     {
-        HGErrorF() << "Can't open \"/proc/self/status\". Error: " << strerror(errno);
+        HGError("Can't open \"/proc/self/status\", error: {}", strerror(errno));
         return 0;
     }
 
@@ -132,7 +132,7 @@ std::uint64_t HG::Utils::PhysicalResource::getProcessRAMUsed()
         }
     }
 
-    HGWarningF() << "VmRSS was not found in \"/proc/self/status\".";
+    HGWarning("VmRSS was not found in \"/proc/self/status\"");
     fclose(file);
     return 0;
 #endif

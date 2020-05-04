@@ -107,13 +107,13 @@ bool Application::init()
 {
     if (m_systemController == nullptr)
     {
-        HGError() << "No SystemController set in application pipeline.";
+        HGError("No SystemController set in application pipeline.");
         return false;
     }
 
     if (!m_systemController->init())
     {
-        HGError() << "Can't init rendering pipeline by system controller. See errors above.";
+        HGError("Can't init rendering pipeline by system controller. See errors above.");
         return false;
     }
 

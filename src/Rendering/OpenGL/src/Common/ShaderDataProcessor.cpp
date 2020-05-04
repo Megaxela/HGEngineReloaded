@@ -55,7 +55,7 @@ bool ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guar
 
     if (shader == nullptr)
     {
-        HGError() << "Got non shader render data in shader data processor. Types are corrupted.";
+        HGError("Got non shader render data in shader data processor, types are corrupted");
         exit(-1);
     }
 
@@ -83,7 +83,7 @@ bool ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guar
 
         if (!vertexShader.compile())
         {
-            HGError() << "Can't compile vertex shader. Error: " << vertexShader.info_log();
+            HGError("Can't compile vertex shader, error: {}", vertexShader.info_log());
             exit(-1);
             return false;
         }
@@ -96,7 +96,7 @@ bool ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guar
 
         if (!fragmentShader.compile())
         {
-            HGError() << "Can't compile fragment shader. " << fragmentShader.info_log();
+            HGError("Can't compile fragment shader, error: {}", fragmentShader.info_log());
             exit(-1);
             return false;
         }
@@ -104,7 +104,7 @@ bool ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guar
 
     if (BENCH_I("Validating program"), !externalData->Program.is_valid())
     {
-        HGError() << "Shader is not valid.";
+        HGError("Shader is not valid");
         return false;
     }
 
@@ -114,7 +114,7 @@ bool ShaderDataProcessor::setup(HG::Rendering::Base::RenderData* data, bool guar
 
     if (!externalData->Program.link())
     {
-        HGError() << "Can't link shader. " << externalData->Program.info_log();
+        HGError("Can't link shader, error: {}", externalData->Program.info_log());
         return false;
     }
 

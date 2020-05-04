@@ -32,7 +32,7 @@ CubeMapRenderer::CubeMapRenderer() : m_vao(0), m_vbo(0)
 
 void CubeMapRenderer::onDeinit()
 {
-    HGInfo() << "Deinitialializing cubemap renderer";
+    HGInfo("Deinitializing cubemap renderer");
 
     m_vao = std::move(gl::vertex_array(0));
     m_vbo = std::move(gl::buffer(0));
@@ -43,7 +43,7 @@ void CubeMapRenderer::onDeinit()
 
 void CubeMapRenderer::onInit()
 {
-    HGInfo() << "Initialializing cubemap renderer";
+    HGInfo("Initializing cubemap renderer");
 
     static float skyboxVertices[] = {
         // positions

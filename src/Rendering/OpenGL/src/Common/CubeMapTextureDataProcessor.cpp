@@ -47,7 +47,7 @@ void setupCubeMapSide(const HG::Utils::SurfacePtr& surface,
         break;
 
     default:
-        HGErrorF() << "Can't setup texture because of unknown texture format.";
+        HGError("Can't setup texture because of unknown texture format");
         break;
     }
 

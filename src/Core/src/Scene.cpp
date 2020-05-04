@@ -63,7 +63,7 @@ void Scene::render(HG::Rendering::Base::Renderer* renderer)
 {
     if (renderer == nullptr)
     {
-        HGError() << "No renderer is set.";
+        HGError("No renderer is set.");
         return;
     }
 

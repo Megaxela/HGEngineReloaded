@@ -12,9 +12,7 @@
 
 // HG::Utils
 #include <HG/Utils/Color.hpp>
-
-// ALogger
-#include <SystemTools.h>
+#include <HG/Utils/SystemTools.hpp>
 
 // ImGui
 #include <imgui.h>
@@ -142,7 +140,7 @@ void DebugControllerOverlay::proceedInspector()
     {
         ImGui::Separator();
 
-        auto behaviourName = SystemTools::getTypeName(*behaviour);
+        auto behaviourName = HG::Utils::SystemTools::getTypeName(*behaviour);
 
         bool enabled = behaviour->isEnabled();
 

@@ -29,11 +29,11 @@ ResourceAccessor* ResourceManager::resourceAccessor() const
 
 DataPtr ResourceManager::loadRawFromAccessor(const std::string& id)
 {
-    HGInfo() << "Loading resource \"" << id << "\"";
+    HGInfo("Loading resource \"{}\"", id);
 
     if (m_accessor == nullptr)
     {
-        HGError() << "Trying to load \"" << id << "\" resource, without ResourceAccessor.";
+        HGError("Trying to load \"{}\" resource, without ResourceAccessor.", id);
         return nullptr;
     }
 
@@ -41,7 +41,7 @@ DataPtr ResourceManager::loadRawFromAccessor(const std::string& id)
 
     if (data == nullptr)
     {
-        HGError() << "Can't load \"" << id << "\" resource. See errors above.";
+        HGError("Can't load \"{}\" resource. See errors above.", id);
 
         return nullptr;
     }
@@ -53,7 +53,7 @@ void ResourceManager::setResourceAccessor(ResourceAccessor* accessor)
 {
     if (m_accessor != nullptr)
     {
-        HGWarning() << "Redefining ResourceAccessor accessor is bad practice.";
+        HGWarning("Redefining ResourceAccessor accessor is bad practice.");
     }
 
     m_accessor = accessor;

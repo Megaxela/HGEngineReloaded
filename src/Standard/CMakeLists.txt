@@ -4,5 +4,4 @@ describe_module(
         HGCore
         HGUtils
         HGPhysicsBase
-        ALogger
 )

@@ -28,6 +28,7 @@
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
+#include <HG/Utils/SystemTools.hpp>
 
 // GLM
 #include <glm/glm.hpp>
@@ -150,20 +151,20 @@ void glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsiz
     case GL_DEBUG_TYPE_ERROR:
     case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
     case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-        HGErrorEx("OpenGL::RendererController") << ss.str();
+        HGError(ss.str());
         break;
 
     case GL_DEBUG_TYPE_PORTABILITY:
     case GL_DEBUG_TYPE_PERFORMANCE:
     case GL_DEBUG_TYPE_MARKER:
-        HGWarningEx("OpenGL::RendererController") << ss.str();
+        HGWarning(ss.str());
         break;
 
     case GL_DEBUG_TYPE_PUSH_GROUP:
     case GL_DEBUG_TYPE_POP_GROUP:
     case GL_DEBUG_TYPE_OTHER:
     default:
-        HGInfoEx("OpenGL::RendererController") << ss.str();
+        HGInfo(ss.str());
         break;
     }
 }
@@ -260,7 +261,7 @@ bool RenderingPipeline::initDependencies()
     GLenum error;
     if ((error = glewInit()) != GLEW_OK)
     {
-        HGError() << "Can't init GLEW. Error: " << glewGetErrorString(error);
+        HGError("Can't init GLEW, error: {}", glewGetErrorString(error));
         return false;
     }
 
@@ -274,7 +275,7 @@ void RenderingPipeline::initRenderingSetup()
     glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
     {
-        HGInfo() << "Turning on OpenGL debug output.";
+        HGInfo("Turning on OpenGL debug output");
         gl::set_debug_output_enabled(true);
         gl::set_syncronous_debug_output_enabled(true);
 
@@ -392,7 +393,7 @@ void RenderingPipeline::proceedGameObjects(const std::vector<HG::Core::GameObjec
                 {
                     if (cubemapBehaviour)
                     {
-                        HGWarning() << "Several cubemap behaviours are available at the same time.";
+                        HGWarning("Several cubemap behaviours are available at the same time");
                     }
 
                     cubemapBehaviour = behaviour;
@@ -435,7 +436,7 @@ bool RenderingPipeline::render(HG::Rendering::Base::RenderBehaviour* behaviour)
 
     if (rendererIterator == m_renderers.end())
     {
-        HGInfo() << "Trying to render unknown render behaviour \"" << SystemTools::getTypeName(*behaviour) << "\"";
+        HGInfo("Trying to render unknown render behaviour \"{}\"", HG::Utils::SystemTools::getTypeName(*behaviour));
         return false;
     }
 
@@ -455,7 +456,7 @@ void RenderingPipeline::setRenderTarget(HG::Rendering::Base::RenderTarget* targe
     {
         if (!setup(target))
         {
-            HGError() << "Can't setup target.";
+            HGError("Can't setup target");
             return;
         }
     }
@@ -505,7 +506,7 @@ void RenderingPipeline::getTextureRegion(HG::Rendering::Base::Texture* texture,
 
     if (textureData == nullptr)
     {
-        HGError() << "No texture data.";
+        HGError("No texture data");
         return;
     }
 

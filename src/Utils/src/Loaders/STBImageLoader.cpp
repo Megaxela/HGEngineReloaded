@@ -25,7 +25,7 @@ STBImageLoader::ResultType STBImageLoader::load(const std::byte* data, std::size
 
     if (resultData == nullptr)
     {
-        HGError() << "Can't load image from memory. Error: " << stbi_failure_reason();
+        HGError("Can't load image from memory, error: {}", stbi_failure_reason());
         return nullptr;
     }
 

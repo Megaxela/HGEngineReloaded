@@ -10,8 +10,8 @@
 // HG::Utils
 #include <HG/Utils/Color.hpp>
 
-// ALogger
-#include <LogsListener.hpp>
+// spdlog
+#include <spdlog/sinks/base_sink.h>
 
 // RingBuffer
 #include <ringbuffer.hpp>
@@ -71,21 +71,58 @@ protected:
     void onStart() override;
 
 private:
-    class LoggingWatcher : public Logger::LogsListener
+    struct Message
+    {
+        Message() : message(), level(spdlog::level::level_enum::off)
+        {
+        }
+
+        Message(std::string msg, spdlog::level::level_enum lvl) : message(std::move(msg)), level(lvl)
+        {
+        }
+
+        std::string message;
+        spdlog::level::level_enum level;
+    };
+
+    template <typename MutexT>
+    class LoggingWatcher : public spdlog::sinks::base_sink<MutexT>
     {
     public:
-        explicit LoggingWatcher(IngameConsole* ingameConsole);
+        explicit LoggingWatcher(IngameConsole* ingameConsole) : m_console(ingameConsole), m_messages()
+        {
+        }
 
-        AbstractLogger::Message popMessage() override;
+        Message popMessage()
+        {
+            auto element = std::move(m_messages.front());
+            m_messages.pop_front();
 
-        bool hasMessages() const override;
+            return element;
+        }
 
-        void newMessage(const AbstractLogger::Message& m) override;
+        [[nodiscard]] bool hasMessages() const
+        {
+            return !m_messages.empty();
+        }
+
+    protected:
+        void flush_() override
+        {
+        }
+
+        void sink_it_(const spdlog::details::log_msg& msg) override
+        {
+            spdlog::memory_buf_t formatted;
+            spdlog::sinks::base_sink<MutexT>::formatter_->format(msg, formatted);
+
+            m_messages.emplace_back(std::string(msg.payload.begin(), msg.payload.end()), msg.level);
+        }
 
     private:
         IngameConsole* m_console;
 
-        ringbuffer<AbstractLogger::Message, 1024> m_messages;
+        ringbuffer<Message, 1024> m_messages;
     };
 
     void displayConsole();
@@ -94,13 +131,13 @@ private:
 
     void proceedLogs();
 
-    void proceedMessage(AbstractLogger::Message message);
+    void proceedMessage(const Message& message);
 
     void logText(const HG::Utils::Color& color, std::string text);
 
-    std::string formatMessage(AbstractLogger::Message message);
+    std::string formatMessage(const Message& message);
 
-    HG::Utils::Color getLogColor(AbstractLogger::ErrorClass errClass);
+    HG::Utils::Color getLogColor(spdlog::level::level_enum errClass);
 
     void executeCommand(std::string command);
 
@@ -122,14 +159,14 @@ private:
             }
             else
             {
-                logText(getLogColor(AbstractLogger::ErrorClass::Error), "Already disabled");
+                logText(getLogColor(spdlog::level::level_enum::err), "Already disabled");
             }
         }
         else if (behaviour && arguments[0] == "1")
         {
             if (behaviour->isEnabled())
             {
-                logText(getLogColor(AbstractLogger::ErrorClass::Error), "Already enabled");
+                logText(getLogColor(spdlog::level::level_enum::err), "Already enabled");
             }
             else
             {
@@ -138,7 +175,7 @@ private:
         }
         else if (!behaviour && arguments[0] == "0")
         {
-            logText(getLogColor(AbstractLogger::ErrorClass::Error), "Already disabled");
+            logText(getLogColor(spdlog::level::level_enum::err), "Already disabled");
         }
         else if (!behaviour && arguments[0] == "1")
         {
@@ -151,7 +188,7 @@ private:
     // Commands
     int commandClEnableDebug(Command::Arguments arguments);
 
-    Logger::LogsListenerPtr m_logsListener;
+    std::shared_ptr<LoggingWatcher<std::mutex>> m_logsListener;
 
     std::unordered_map<std::string, Command> m_commands;
 

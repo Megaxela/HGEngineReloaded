@@ -34,13 +34,13 @@ bool RenderingPipeline::init()
 {
     if (!m_parentApplication->systemController()->createWindow(800, 600, m_parentApplication->title()))
     {
-        HGError() << "Can't create window. See errors above.";
+        HGError("Can't create window, see errors above");
         return false;
     }
 
     if (!m_parentApplication->renderer())
     {
-        HGError() << "No parent renderer. Can't set default render target.";
+        HGError("No parent renderer, can't set default render target");
         return false;
     }
 
@@ -51,12 +51,12 @@ void RenderingPipeline::deinit()
 {
     if (m_parentApplication == nullptr)
     {
-        HGError() << "No parent application set.";
+        HGError("No parent application set");
     }
 
     if (m_parentApplication->systemController() == nullptr)
     {
-        HGError() << "No SystemController set in rendering pipeline.";
+        HGError("No SystemController set in rendering pipeline");
     }
 
     m_parentApplication->systemController()->deinit();
@@ -71,7 +71,7 @@ HG::Core::Application* RenderingPipeline::application() const
 
 bool RenderingPipeline::setup(RenderData* data, bool guarantee)
 {
-    BENCH("Setup of resource " + std::to_string(data->dataType()));
+    BENCH(fmt::format("Setup of resource {}", data->dataType()));
 
     if (data->dataType() == RenderBehaviour::RenderDataId)
     {
@@ -83,7 +83,7 @@ bool RenderingPipeline::setup(RenderData* data, bool guarantee)
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        HGError() << "Can't setup render data with " << data->dataType() << " type. No processor.";
+        HGError("Can't setup render data with {} type, no processor", data->dataType());
         return false;
     }
 
@@ -92,7 +92,7 @@ bool RenderingPipeline::setup(RenderData* data, bool guarantee)
 
 bool RenderingPipeline::needSetup(RenderData* data)
 {
-    BENCH("Checking is setup required for " + std::to_string(data->dataType()));
+    BENCH(fmt::format("Checking is setup required for {}", data->dataType()));
     if (data->dataType() == RenderBehaviour::RenderDataId)
     {
         return needSetupRenderBehaviour(dynamic_cast<RenderBehaviour*>(data));
@@ -103,8 +103,7 @@ bool RenderingPipeline::needSetup(RenderData* data)
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        HGError() << "Can't check is render data with type " << data->dataType()
-                  << " requires to be set up. No processor.";
+        HGError("Can't check is render data with type {} requires to be set up, no processor", data->dataType());
         return false;
     }
 
@@ -113,13 +112,13 @@ bool RenderingPipeline::needSetup(RenderData* data)
 
 bool RenderingPipeline::setupRenderBehaviour(RenderBehaviour* behaviour, bool guarantee)
 {
-    BENCH("Setup of rendering behaviour " + std::to_string(behaviour->renderBehaviourType()));
+    BENCH(fmt::format("Setup of rendering behaviour {}", behaviour->renderBehaviourType()));
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        HGError() << "Can't setup rendering behaviour's render data with " << behaviour->renderBehaviourType()
-                  << " type. No processor.";
+        HGError("Can't setup rendering behaviour's render data with {} type, no processor",
+                behaviour->renderBehaviourType());
         return false;
     }
 
@@ -128,13 +127,13 @@ bool RenderingPipeline::setupRenderBehaviour(RenderBehaviour* behaviour, bool gu
 
 bool RenderingPipeline::needSetupRenderBehaviour(RenderBehaviour* behaviour)
 {
-    BENCH("Is setup required for rendering behaviour " + std::to_string(behaviour->renderBehaviourType()));
+    BENCH(fmt::format("Is setup required for rendering behaviour {}", behaviour->renderBehaviourType()));
     auto processorIterator = m_renderDataProcessor.find(behaviour->renderBehaviourType());
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        HGError() << "Can't check rendering behaviour's setup requirement with " << behaviour->renderBehaviourType()
-                  << " type. No processor.";
+        HGError("Can't check rendering behaviour's setup requirement with {} type, no processor",
+                behaviour->renderBehaviourType());
         return false;
     }
 

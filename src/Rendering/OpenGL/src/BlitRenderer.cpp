@@ -41,7 +41,7 @@ BlitRenderer::BlitRenderer(HG::Core::Application* application) :
 
 void BlitRenderer::onInit()
 {
-    HGInfo() << "Initializing blitter";
+    HGInfo("Initializing blitter");
 
     m_material = application()->renderer()->materialCollection()->getMaterial<Materials::BlitMaterial>();
 
@@ -60,7 +60,7 @@ void BlitRenderer::onInit()
 
 void BlitRenderer::onDeinit()
 {
-    HGInfo() << "Deinitializing blitter";
+    HGInfo("Deinitializing blitter");
 
     delete m_material;
     m_material = nullptr;
