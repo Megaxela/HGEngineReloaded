@@ -6,17 +6,13 @@
 // spdlog
 #include <spdlog/spdlog.h>
 
-#define HGDebug(...) \
-    SPDLOG_DEBUG(__VA_ARGS__)
+#define HGDebug(...) SPDLOG_DEBUG(__VA_ARGS__)
 
-#define HGInfo(...)  \
-    SPDLOG_DEBUG(__VA_ARGS__)
+#define HGInfo(...) SPDLOG_DEBUG(__VA_ARGS__)
 
-#define HGWarning(...) \
-    SPDLOG_WARN(__VA_ARGS__)
+#define HGWarning(...) SPDLOG_WARN(__VA_ARGS__)
 
-#define HGError(...) \
-    SPDLOG_ERROR(__VA_ARGS__)
+#define HGError(...) SPDLOG_ERROR(__VA_ARGS__)
 
 namespace HG::Utils
 {
@@ -31,11 +27,11 @@ public:
      * @brief Method for getting user logger.
      * @return Pointer to user logger.
      */
-//    static LoggerPtr userLogger();
-//
-//    static void overrideUserLogger(LoggerPtr logger);
+    //    static LoggerPtr userLogger();
+    //
+    //    static void overrideUserLogger(LoggerPtr logger);
 
 private:
-//    static LoggerPtr m_override;
+    //    static LoggerPtr m_override;
 };
 } // namespace HG::Utils

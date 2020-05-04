@@ -71,32 +71,27 @@ protected:
     void onStart() override;
 
 private:
-
     struct Message
     {
-        Message() :
-            message(),
-            level(spdlog::level::level_enum::off)
-        {}
+        Message() : message(), level(spdlog::level::level_enum::off)
+        {
+        }
 
-        Message(std::string msg, spdlog::level::level_enum lvl) :
-            message(std::move(msg)),
-            level(lvl)
-        {}
+        Message(std::string msg, spdlog::level::level_enum lvl) : message(std::move(msg)), level(lvl)
+        {
+        }
 
         std::string message;
         spdlog::level::level_enum level;
     };
 
-    template<typename MutexT>
+    template <typename MutexT>
     class LoggingWatcher : public spdlog::sinks::base_sink<MutexT>
     {
     public:
-
-        explicit LoggingWatcher(IngameConsole* ingameConsole) :
-            m_console(ingameConsole),
-            m_messages()
-        {}
+        explicit LoggingWatcher(IngameConsole* ingameConsole) : m_console(ingameConsole), m_messages()
+        {
+        }
 
         Message popMessage()
         {
@@ -113,17 +108,15 @@ private:
 
     protected:
         void flush_() override
-        {}
+        {
+        }
 
         void sink_it_(const spdlog::details::log_msg& msg) override
         {
             spdlog::memory_buf_t formatted;
             spdlog::sinks::base_sink<MutexT>::formatter_->format(msg, formatted);
 
-            m_messages.emplace_back(
-                std::string(msg.payload.begin(), msg.payload.end()),
-                msg.level
-            );
+            m_messages.emplace_back(std::string(msg.payload.begin(), msg.payload.end()), msg.level);
         }
 
     private:

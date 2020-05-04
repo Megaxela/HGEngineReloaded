@@ -117,7 +117,8 @@ bool RenderingPipeline::setupRenderBehaviour(RenderBehaviour* behaviour, bool gu
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        HGError("Can't setup rendering behaviour's render data with {} type, no processor", behaviour->renderBehaviourType());
+        HGError("Can't setup rendering behaviour's render data with {} type, no processor",
+                behaviour->renderBehaviourType());
         return false;
     }
 
@@ -131,7 +132,8 @@ bool RenderingPipeline::needSetupRenderBehaviour(RenderBehaviour* behaviour)
 
     if (processorIterator == m_renderDataProcessor.end())
     {
-        HGError("Can't check rendering behaviour's setup requirement with {} type, no processor", behaviour->renderBehaviourType());
+        HGError("Can't check rendering behaviour's setup requirement with {} type, no processor",
+                behaviour->renderBehaviourType());
         return false;
     }
 

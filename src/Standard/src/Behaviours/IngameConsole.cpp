@@ -64,9 +64,7 @@ IngameConsole::~IngameConsole()
     if (m_logsListener)
     {
         auto& sinks = spdlog::default_logger()->sinks();
-        sinks.erase(
-            std::find(sinks.begin(), sinks.end(), m_logsListener)
-        );
+        sinks.erase(std::find(sinks.begin(), sinks.end(), m_logsListener));
     }
 }
 

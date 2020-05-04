@@ -53,9 +53,8 @@ bool SystemController::onInit()
     HGInfo("Initializing GLFW");
 
     // Setting error callback
-    glfwSetErrorCallback([](int code, const char* description) {
-        HGError("GLFW Received error #{}, {}", code, description);
-    });
+    glfwSetErrorCallback(
+        [](int code, const char* description) { HGError("GLFW Received error #{}, {}", code, description); });
 
     // Initializing GLFW
     if (!glfwInit())

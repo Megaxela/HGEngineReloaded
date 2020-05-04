@@ -124,7 +124,8 @@ bool TiledMap::loadMap(HG::Core::DataPtr data)
 
     if (m_properties.tiledVersion != SUPPORTED_VERSION)
     {
-        HGWarning("Tiled map parser supports {} tiled maps, trying to load {}", SUPPORTED_VERSION, m_properties.tiledVersion);
+        HGWarning(
+            "Tiled map parser supports {} tiled maps, trying to load {}", SUPPORTED_VERSION, m_properties.tiledVersion);
     }
 
     if (!(attribute = mapNode->first_attribute("orientation")))
