@@ -45,7 +45,8 @@ public:
     }
 
     void pop(T& result)
-    {   // for single consumer. check isEmpty() before
+    {
+        // for single consumer. check isEmpty() before
         //            ASSERT(!isEmpty(), "Queue is empty");
         auto first = m_first.load(std::memory_order_acquire);
         result     = m_buffer[first];
