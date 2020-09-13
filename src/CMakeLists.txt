@@ -10,10 +10,7 @@ add_subdirectory(Standard)
 add_subdirectory(Physics)
 add_subdirectory(System)
 add_subdirectory(Networking)
-
-if (${HG_BUILD_TOOLS})
-    add_subdirectory(Tools)
-endif()
+add_subdirectory(Tools)
 
 
 # Build standard package

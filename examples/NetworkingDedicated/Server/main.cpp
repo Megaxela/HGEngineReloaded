@@ -15,6 +15,9 @@
 // NetworkingDedicated Server
 #include <ArgumentNames.hpp>
 
+// C++ STL
+#include <iostream>
+
 int main(int argc, char** argv)
 {
     HG::ToolsCore::CommandLineArguments arguments(argv[0]);
@@ -54,21 +57,20 @@ int main(int argc, char** argv)
     }
     catch (const std::invalid_argument& e)
     {
-        HGErrorF() << "Invalid argument: \"" << e.what() << "\". See help below.";
-        arguments.showHelp();
+        HGError("Invalid argument: \"{}\". See help below.", e.what()) arguments.showHelp();
         return 1;
     }
     catch (const std::runtime_error& e)
     {
-        HGErrorF() << "Error: \"" << e.what() << "\"";
+        HGError("Error: \"{}\"", e.what());
         return 2;
     }
 
-    HGInfoF() << "Server is up and running.";
+    HGInfo("Server is up and running.");
     std::string a;
     std::cin >> a;
 
-    HGInfoF() << "Stopping server...";
+    HGInfo("Stopping server...");
     server.stop();
 
     return 0;
