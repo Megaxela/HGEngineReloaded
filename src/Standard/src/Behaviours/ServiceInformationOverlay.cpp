@@ -5,6 +5,11 @@
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/ThreadPool.hpp>
 #include <HG/Core/TimeStatistics.hpp>
+#include <HG/Core/GameObject.hpp>
+
+// HG::Renderer
+#include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
 
 // HG::Standard
 #include <HG/Standard/Behaviours/ServiceInformationOverlay.hpp>
@@ -38,7 +43,10 @@ void ServiceInformationOverlay::onUpdate()
 
         auto totalRam = HG::Utils::PhysicalResource::getTotalRAM();
 
+        const auto& pipeline_name = gameObject()->scene()->application()->renderer()->pipeline()->pipelineName();
+
         ImGui::Text(
+            "Pipeline: %s\n"
             "FPS: %f\n"
             "Timings:\n"
             "    Render:  %f ms\n"
@@ -46,6 +54,7 @@ void ServiceInformationOverlay::onUpdate()
             "  + Physics: %f ms\n"
             "------------------------\n"
             "    Frame :  %f ms\n",
+            pipeline_name.c_str(),
             1000000.0 / timeStat->frameDeltaTime().count(),
             timeStat->renderTime().count() / 1000.0f,
             timeStat->updateTime().count() / 1000.0f,

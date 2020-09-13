@@ -1,5 +1,6 @@
 // HG::Networking::Base
 #include <HG/Networking/Base/UnstableConnectionController.hpp>
+#include <iostream>
 
 namespace HG::Networking::Base
 {
@@ -10,6 +11,8 @@ namespace HG::Networking::Base
         m_packetNumber(0),
         m_lastReceivedPacketNumber(0),
         m_lastRemoteReceivedPacketNumber(0),
+        m_receiveBitfield(0),
+        m_ackBitfield(0),
         m_lostSentPackets(0),
         m_lostReceivePackets(0)
     {
@@ -50,6 +53,12 @@ namespace HG::Networking::Base
         // todo: check if it could be rounded
         auto receivePacketOffset = std::int32_t(header.packetIndex) - std::int32_t(m_lastReceivedPacketNumber);
 
+        // First packet is 0, so we need to proceed it
+        if (m_initialPacketsLeft == sizeof(m_receiveBitfield) * 8)
+        {
+            receivePacketOffset = 1;
+        }
+
         // If it's packet from past
         if (receivePacketOffset < 0)
         {
@@ -80,8 +89,6 @@ namespace HG::Networking::Base
             m_receiveBitfield <<= 1u;
         }
 
-        m_receiveBitfield <<= std::uint32_t(receivePacketOffset);
-
         // Mark this one as received
         m_receiveBitfield |= 1u;
 
@@ -89,6 +96,6 @@ namespace HG::Networking::Base
         m_lastReceivedPacketNumber = header.packetIndex;
 
         // Processing remote info
-
+        return true;
     }
 }

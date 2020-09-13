@@ -212,7 +212,7 @@ TEST(Utils, DoubleBufferContainerOutOfRangeIndex)
 #ifndef NDEBUG
     HG::Utils::DoubleBufferContainer<std::size_t> data;
 
-    ASSERT_THROW(data[12], std::out_of_range);
+    ASSERT_THROW(data[12] == 12, std::out_of_range);
 #endif
 }
 

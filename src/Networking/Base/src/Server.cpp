@@ -15,9 +15,6 @@
 #include <HG/Utils/Logging.hpp>
 #include <HG/Utils/LockFree/SPMCQueue.hpp>
 
-// fmt
-#include <fmt/format.h>
-
 // STD
 #include <stdexcept>
 #include <set>
@@ -230,7 +227,7 @@ namespace HG::Networking::Base
                 auto* stableConnection = new HG::Networking::Base::StableConnection(
                     HG::Networking::Base::LowLevel::internalToExternalAddress(newConnection.internalAddress)
                 );
-                HGInfo() << "TCP connection received from " << stableConnection->address().toString();
+                HGInfo("TCP connection received from {}", stableConnection->address().toString());
 
                 auto* internalData = stableConnection->createInternalData<StableConnectionInternalData>();
                 internalData->socket = newConnection.socket;
@@ -273,20 +270,15 @@ namespace HG::Networking::Base
 
                 if (packetHeader.dataSize > kMaxUnstablePacketSize)
                 {
-                    HGWarning()
-                        << "Host "
-                        << address.toString()
-                        << " sent packet with size "
-                        << packetHeader.dataSize
-                        << " but maximum packet data size "
-                        << (kMaxUnstablePacketSize - HG::Networking::Base::PacketLayers::UnstablePacketHeader::kSize)
-                        << " skip this packet.";
+                    HGWarning("Host {} sent packet with size {} but maximum packet data size {}, skip this packet",
+                              address.toString(), packetHeader.dataSize,
+                              (kMaxUnstablePacketSize - HG::Networking::Base::PacketLayers::UnstablePacketHeader::kSize));
                     buffer.clear();
                     continue;
                 }
 
-                HGInfo() << "Received UDP header from " << address.toString() << ". Data size: " << packetHeader.dataSize;
-                HGInfo() << "Data: " << (const char*) (buffer.data() + HG::Networking::Base::PacketLayers::UnstablePacketHeader::kSize);
+                HGInfo("Received UDP header from {}, data size: {}", address.toString(), packetHeader.dataSize);
+                HGInfo("Data: {}", (const char*) (buffer.data() + HG::Networking::Base::PacketLayers::UnstablePacketHeader::kSize));
 
                 buffer.clear();
             }
@@ -341,7 +333,7 @@ namespace HG::Networking::Base
                 for (const auto& sock : socketsToBeClosed)
                 {
                     auto connectionIter = connectionsThreadData.connections.find(sock);
-                    HGInfo() << "Closing connection to " << connectionIter->second->address().toString();
+                    HGInfo("Closing connection to {}", connectionIter->second->address().toString());
                     delete connectionIter->second;
                     connectionsThreadData.connections.erase(connectionIter);
                 }
@@ -377,7 +369,7 @@ namespace HG::Networking::Base
                             HG::Networking::Base::PacketLayers::StablePacketHeader::kSize
                         ))
                         {
-                            HGInfoF() << "Connection to " << stableConnection->address().toString() << " was closed on remote host";
+                            HGInfo("Connection to {} was closed on remote host", stableConnection->address().toString());
                             stableConnection->close();
                             return;
                         }
@@ -396,13 +388,9 @@ namespace HG::Networking::Base
 
                         if (internalData->lastPacketHeader.dataSize > kMaxPacketSize)
                         {
-                            HGWarningF() << "Connection from "
-                                         << stableConnection->address().toString()
-                                         << " sent packet size "
-                                         << internalData->lastPacketHeader.dataSize
-                                         << ", when maximum size "
-                                         << kMaxPacketSize
-                                         << " closing connection.";
+                            HGWarning("Connection from {} sent packet size {}, when maximum size {}, closing connection",
+                                      stableConnection->address().toString(), internalData->lastPacketHeader.dataSize,
+                                      kMaxPacketSize);
                             stableConnection->close();
                             return;
                         }
@@ -418,7 +406,7 @@ namespace HG::Networking::Base
                             internalData->lastPacketHeader.dataSize
                         ))
                         {
-                            HGInfoF() << "Connection to " << stableConnection->address().toString() << " was closed on remote host";
+                            HGInfo("Connection to {} was closed on remote host", stableConnection->address().toString());
                             stableConnection->close();
                             return;
                         }
@@ -429,7 +417,7 @@ namespace HG::Networking::Base
                         }
 
                         // todo: Send this data to processing
-                        HGInfoF() << "Received data: " << (const char*) internalData->buffer.data();
+                        HGInfo("Received data: {}", (const char*) internalData->buffer.data());
 
                         internalData->buffer.resize(0);
                         internalData->state = StableConnectionInternalData::ReadState::Initial;

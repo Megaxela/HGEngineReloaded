@@ -20,7 +20,6 @@ describe_module(
         ringbuffer
         nlohmann_json
         assimp
-        fmt
         ${ZLIB_LIBRARIES}
         ${STD_FS_LIBRARY}
 

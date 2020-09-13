@@ -4,8 +4,8 @@
 // HG::Utils
 #include <HG/Utils/Platform.hpp>
 
-// fmt
-#include <fmt/format.h>
+// spdlog
+#include <spdlog/fmt/fmt.h>
 
 #ifdef OS_WINDOWS
 

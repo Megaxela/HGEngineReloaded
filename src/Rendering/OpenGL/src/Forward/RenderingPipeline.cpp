@@ -531,4 +531,10 @@ void RenderingPipeline::blit(HG::Rendering::Base::RenderTarget* target, HG::Rend
 
     setRenderTarget(savedRenderTarget);
 }
+
+const std::string& RenderingPipeline::pipelineName() const
+{
+    static std::string name = "OpenGL Forward";
+    return name;
+}
 } // namespace HG::Rendering::OpenGL::Forward
