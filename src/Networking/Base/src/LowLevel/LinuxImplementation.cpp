@@ -3,6 +3,10 @@
 // HG::Networking::Base
 #    include <HG/Networking/Base/LowLevel.hpp>
 
+// system
+#include <sys/select.h>
+#include <sys/ioctl.h>
+
 namespace HG::Networking::Base::LowLevel
 {
 SystemInfo::SystemInfo()
@@ -25,12 +29,12 @@ Socket createTCPSocket()
 
 bool bindSocketWithAddress(Socket socket, const InternalAddress& addr)
 {
-    return bind(socket, (sockaddr*)&addr, sizeof(InternalAddress)) != SOCKET_ERROR;
+    return bind(socket, (sockaddr*)&addr, sizeof(InternalAddress)) != -1;
 }
 
 void closeSocket(Socket sock)
 {
-    closesocket(sock);
+    close(sock);
 }
 
 InternalAddress createInternalIPv4Address(std::uint32_t addr, std::uint16_t port)
@@ -66,7 +70,7 @@ bool waitDescriptorSet(DescriptorSet& set, std::chrono::milliseconds timeout)
 {
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(timeout);
 
-    TIMEVAL timeoutStruct{0};
+    timeval timeoutStruct{0};
     timeoutStruct.tv_sec = seconds.count();
 
     return select(set.maxFD, &set.set, nullptr, nullptr, &timeoutStruct) != 0;
@@ -93,7 +97,7 @@ int descriptorSetSize(const DescriptorSet& set)
 NewConnection acceptNewConnection(Socket sock)
 {
     NewConnection newConnection{0};
-    int len = sizeof(newConnection.internalAddress);
+    socklen_t len = static_cast<socklen_t>(sizeof(newConnection.internalAddress));
 
     newConnection.socket = accept(sock, (sockaddr*)&newConnection.internalAddress, &len);
 
@@ -140,7 +144,7 @@ bool readFromUnstableSocket(Socket sock, InternalAddress& address, std::vector<s
 void setSocketToNonblockingMode(Socket sock)
 {
     u_long mode = 0;
-    ioctlsocket(sock, FIONBIO, &mode);
+    ioctl(sock, FIONBIO, &mode);
 }
 
 bool setSocketToListeningMode(Socket sock)
