@@ -1,6 +1,6 @@
-// HG::Networking::Base
-
 #ifdef OS_LINUX
+// HG::Networking::Base
+#    include <HG/Networking/Base/LowLevel.hpp>
 
 namespace HG::Networking::Base::LowLevel
 {

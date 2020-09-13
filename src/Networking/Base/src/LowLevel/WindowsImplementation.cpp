@@ -1,13 +1,12 @@
+#ifdef OS_WINDOWS
 // HG::Networking::Base
-#include <HG/Networking/Base/LowLevel.hpp>
+#    include <HG/Networking/Base/LowLevel.hpp>
 
 // HG::Utils
-#include <HG/Utils/Platform.hpp>
+#    include <HG/Utils/Platform.hpp>
 
 // spdlog
-#include <spdlog/fmt/fmt.h>
-
-#ifdef OS_WINDOWS
+#    include <spdlog/fmt/fmt.h>
 
 namespace HG::Networking::Base::LowLevel
 {
