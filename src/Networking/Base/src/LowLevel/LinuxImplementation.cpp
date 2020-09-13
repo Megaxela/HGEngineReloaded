@@ -138,7 +138,7 @@ bool readFromUnstableSocket(Socket sock, InternalAddress& address, std::vector<s
     auto oldSize = buffer.size();
     buffer.resize(oldSize + size);
 
-    socksize_t len = static_cast<socksize_t>(sizeof(InternalAddress));
+    socklen_t len = static_cast<socklen_t>(sizeof(InternalAddress));
 
     recvfrom(sock, (char*)(buffer.data() + oldSize), size, 0, (sockaddr*)&address, &len);
 
