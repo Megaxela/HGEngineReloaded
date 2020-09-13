@@ -4,8 +4,8 @@
 #    include <HG/Networking/Base/LowLevel.hpp>
 
 // system
-#include <sys/select.h>
-#include <sys/ioctl.h>
+#    include <sys/ioctl.h>
+#    include <sys/select.h>
 
 namespace HG::Networking::Base::LowLevel
 {
