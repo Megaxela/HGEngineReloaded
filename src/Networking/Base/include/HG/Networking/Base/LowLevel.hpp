@@ -14,6 +14,11 @@
 #    include <windows.h>
 #    include <winsock2.h>
 #endif
+#ifdef OS_LINUX
+#    include <netinet/in.h>
+#    include <netinet/ip.h>
+#    include <sys/socket.h>
+#endif
 
 namespace HG::Networking::Base::LowLevel
 {
@@ -37,6 +42,25 @@ struct SystemInfo
     ~SystemInfo();
 
     WSADATA wsaData;
+};
+#endif
+#ifdef OS_LINUX
+using Socket          = int;
+using InternalAddress = sockaddr_in;
+
+struct DescriptorSet
+{
+    fd_set set{0};
+    typeof(Socket) maxFD = 0;
+};
+
+static constexpr Socket kInvalidSocket     = INVALID_SOCKET;
+static constexpr std::uint32_t kAnyAddress = INADDR_ANY;
+
+struct SystemInfo
+{
+    SystemInfo();
+    ~SystemInfo();
 };
 #endif
 
