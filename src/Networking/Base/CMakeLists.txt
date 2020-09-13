@@ -1,5 +1,5 @@
 if (WIN32)
-#    set(SYSTEM_DEPENDENCIES Ws2_32)
+    set(SYSTEM_DEPENDENCIES Ws2_32)
 endif()
 
 describe_module(
@@ -8,5 +8,4 @@ describe_module(
         HGUtils
         HGCore
         ${SYSTEM_DEPENDENCIES}
-
 )
