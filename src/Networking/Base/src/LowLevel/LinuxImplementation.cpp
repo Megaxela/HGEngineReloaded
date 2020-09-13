@@ -6,6 +6,7 @@
 // system
 #    include <sys/ioctl.h>
 #    include <sys/select.h>
+#    include <unistd.h>
 
 namespace HG::Networking::Base::LowLevel
 {
@@ -78,20 +79,23 @@ bool waitDescriptorSet(DescriptorSet& set, std::chrono::milliseconds timeout)
 
 bool isDescriptorReady(Socket socket, DescriptorSet& set)
 {
-    return FD_ISSET(socket, &set);
+    return FD_ISSET(socket, &set.set);
 }
 
 void applyAtDescriptors(const DescriptorSet& set, std::function<void(Socket sock)> func)
 {
-    for (std::uint32_t i = 0; i < set.set.fd_count; ++i)
-    {
-        func(set.set.fd_array[i]);
-    }
+    FUNCTION_LINUX_STUB
+    //    for (std::uint32_t i = 0; i < set.set.fd_count; ++i)
+    //    {
+    //        func(set.set.fd_array[i]);
+    //    }
 }
 
 int descriptorSetSize(const DescriptorSet& set)
 {
-    return set.set.fd_count;
+    FUNCTION_LINUX_STUB
+    return 0;
+    //    return set.set.fd_count;
 }
 
 NewConnection acceptNewConnection(Socket sock)
@@ -134,7 +138,7 @@ bool readFromUnstableSocket(Socket sock, InternalAddress& address, std::vector<s
     auto oldSize = buffer.size();
     buffer.resize(oldSize + size);
 
-    int len = sizeof(InternalAddress);
+    socksize_t len = static_cast<socksize_t>(sizeof(InternalAddress));
 
     recvfrom(sock, (char*)(buffer.data() + oldSize), size, 0, (sockaddr*)&address, &len);
 
