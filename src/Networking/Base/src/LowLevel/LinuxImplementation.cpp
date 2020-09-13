@@ -1,3 +1,4 @@
+#include <HG/Utils/Platform.hpp>
 #ifdef OS_LINUX
 // HG::Networking::Base
 #    include <HG/Networking/Base/LowLevel.hpp>
