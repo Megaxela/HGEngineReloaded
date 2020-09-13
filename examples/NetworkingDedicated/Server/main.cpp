@@ -57,7 +57,8 @@ int main(int argc, char** argv)
     }
     catch (const std::invalid_argument& e)
     {
-        HGError("Invalid argument: \"{}\". See help below.", e.what()) arguments.showHelp();
+        HGError("Invalid argument: \"{}\". See help below.", e.what());
+        arguments.showHelp();
         return 1;
     }
     catch (const std::runtime_error& e)
