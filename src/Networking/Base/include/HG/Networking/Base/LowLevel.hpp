@@ -54,7 +54,7 @@ struct DescriptorSet
     typeof(Socket) maxFD = 0;
 };
 
-static constexpr Socket kInvalidSocket     = INVALID_SOCKET;
+static constexpr Socket kInvalidSocket     = -1;
 static constexpr std::uint32_t kAnyAddress = INADDR_ANY;
 
 struct SystemInfo
