@@ -1,11 +1,11 @@
 // HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/CountStatistics.hpp>
+#include <HG/Core/GameObject.hpp>
 #include <HG/Core/ResourceManager.hpp>
 #include <HG/Core/Scene.hpp>
 #include <HG/Core/ThreadPool.hpp>
 #include <HG/Core/TimeStatistics.hpp>
-#include <HG/Core/GameObject.hpp>
 
 // HG::Renderer
 #include <HG/Rendering/Base/Renderer.hpp>

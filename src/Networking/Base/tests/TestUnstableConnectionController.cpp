@@ -8,7 +8,7 @@ HG::Networking::Base::PacketLayers::UnstablePacketHeader createHeader(std::uint1
 {
     HG::Networking::Base::PacketLayers::UnstablePacketHeader header{0};
 
-    header.magic = 0xDDFF;
+    header.magic       = 0xDDFF;
     header.packetIndex = packetNumber;
 
     return header;
@@ -31,7 +31,6 @@ TEST(NetworkingBase, UnstableConnetionController)
     ASSERT_EQ(generatedHeader.remoteAckBitfield, 0x00000000);
     ASSERT_EQ(controller.lostReceivePackets(), 0);
     ASSERT_EQ(controller.lostSentPackets(), 0);
-
 
     ASSERT_EQ(controller.proceedReceivedPacketHeader(createHeader(2)), true);
 

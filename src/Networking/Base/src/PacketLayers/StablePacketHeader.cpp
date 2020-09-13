@@ -6,17 +6,17 @@
 
 namespace HG::Networking::Base::PacketLayers
 {
-    StablePacketHeader StablePacketHeader::parse(std::vector<std::byte>& buffer)
-    {
-        bytearray_processor bytearray(buffer);
+StablePacketHeader StablePacketHeader::parse(std::vector<std::byte>& buffer)
+{
+    bytearray_processor bytearray(buffer);
 
-        StablePacketHeader result{0};
+    StablePacketHeader result{0};
 
-        std::size_t i = 0;
-        result.magic = bytearray.read<typeof(result.magic)>(i);
-        i += sizeof(result.magic);
-        result.dataSize = bytearray.read<typeof(result.dataSize)>(i);
+    std::size_t i = 0;
+    result.magic  = bytearray.read<typeof(result.magic)>(i);
+    i += sizeof(result.magic);
+    result.dataSize = bytearray.read<typeof(result.dataSize)>(i);
 
-        return result;
-    }
+    return result;
 }
+} // namespace HG::Networking::Base::PacketLayers

@@ -253,17 +253,17 @@ void CommandLineArguments::showUsageLine()
     std::cout << std::endl;
 }
 
-    std::string CommandLineArguments::getValueReplacer(const CommandLineArguments::Argument* arg) const
-    {
-        std::string valueReplacer = nameFromKey(arg->keys.back());
+std::string CommandLineArguments::getValueReplacer(const CommandLineArguments::Argument* arg) const
+{
+    std::string valueReplacer = nameFromKey(arg->keys.back());
 
-        std::transform(
-            valueReplacer.begin(), valueReplacer.end(), valueReplacer.begin(), [](char c) { return std::toupper(c); });
+    std::transform(
+        valueReplacer.begin(), valueReplacer.end(), valueReplacer.begin(), [](char c) { return std::toupper(c); });
 
-        return valueReplacer;
-    }
+    return valueReplacer;
+}
 
-    void CommandLineArguments::showArguments(const std::vector<const CommandLineArguments::Argument*>& arguments)
+void CommandLineArguments::showArguments(const std::vector<const CommandLineArguments::Argument*>& arguments)
 {
     // Getting required number of tabs
     std::size_t requiredNumberOfTags =

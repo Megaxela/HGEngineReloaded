@@ -3,5 +3,4 @@
 
 namespace HG::Networking::Base
 {
-
 }

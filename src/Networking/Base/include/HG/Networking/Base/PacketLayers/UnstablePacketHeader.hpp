@@ -1,13 +1,13 @@
 #pragma once
 
 // STL
+#include <cstddef>
 #include <cstdint>
 #include <vector>
-#include <cstddef>
 
 namespace HG::Networking::Base::PacketLayers
 {
-    /**
+/**
      * @brief Unstable packet header.
      *
      * Format:
@@ -22,20 +22,20 @@ namespace HG::Networking::Base::PacketLayers
      * [10 - 14] - bitfield with remote ack packets received info (each bit represents packet, 1 - received, 0 - not)
      * [14 - 16] - amount of actual data in bytes
      */
-    struct UnstablePacketHeader
-    {
-        static constexpr std::size_t kSize = 16;
+struct UnstablePacketHeader
+{
+    static constexpr std::size_t kSize = 16;
 
-        std::uint16_t magic;
+    std::uint16_t magic;
 
-        std::uint16_t packetIndex;
-        std::uint16_t lastReceivedPacketIndex;
+    std::uint16_t packetIndex;
+    std::uint16_t lastReceivedPacketIndex;
 
-        std::uint32_t remoteReceiveBitfield;
-        std::uint32_t remoteAckBitfield;
+    std::uint32_t remoteReceiveBitfield;
+    std::uint32_t remoteAckBitfield;
 
-        std::uint16_t dataSize;
+    std::uint16_t dataSize;
 
-        static UnstablePacketHeader parse(std::vector<std::byte>& buffer);
-    };
-}
+    static UnstablePacketHeader parse(std::vector<std::byte>& buffer);
+};
+} // namespace HG::Networking::Base::PacketLayers
