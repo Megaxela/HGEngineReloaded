@@ -6,38 +6,38 @@
 namespace HG::Networking::Base
 {
 /**
-     * @brief Class, that describes controller, that manages
-     * unstable connection metrics/low level logic.
-     */
+ * @brief Class, that describes controller, that manages
+ * unstable connection metrics/low level logic.
+ */
 class UnstableConnectionController
 {
 public:
     /**
-         * @brief Constructor.
-         */
+     * @brief Constructor.
+     */
     UnstableConnectionController();
 
     /**
-         * @brief Method, that will return next packet
-         * header without data size field.
-         */
+     * @brief Method, that will return next packet
+     * header without data size field.
+     */
     HG::Networking::Base::PacketLayers::UnstablePacketHeader getNextPacketHeader();
 
     /**
-         * @brief Method, that process new packet header.
-         * @return Does this packet is relative. If not - it must be thrown
-         * away.
-         */
+     * @brief Method, that process new packet header.
+     * @return Does this packet is relative. If not - it must be thrown
+     * away.
+     */
     bool proceedReceivedPacketHeader(const HG::Networking::Base::PacketLayers::UnstablePacketHeader& header);
 
     /**
-         * @brief Method for getting amount of lost sent packets.
-         */
+     * @brief Method for getting amount of lost sent packets.
+     */
     [[nodiscard]] std::uint32_t lostSentPackets() const;
 
     /**
-         * @brief Method for getting amount of lost sent packet by remote host.
-         */
+     * @brief Method for getting amount of lost sent packet by remote host.
+     */
     [[nodiscard]] std::uint32_t lostReceivePackets() const;
 
 private:

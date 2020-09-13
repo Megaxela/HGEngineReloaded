@@ -13,20 +13,20 @@ namespace HG::Networking::Base
 struct AbstractInternalData;
 
 /**
-     * @brief Class, that describes engine client.
-     */
+ * @brief Class, that describes engine client.
+ */
 class Client
 {
 public:
     /**
-         * @brief Constructor.
-         * @param application Base application.
-         */
+     * @brief Constructor.
+     * @param application Base application.
+     */
     explicit Client(HG::Core::Application* application);
 
     /**
-         * @brief Destructor. If client was connected - connection will be closed.
-         */
+     * @brief Destructor. If client was connected - connection will be closed.
+     */
     ~Client();
 
 private:

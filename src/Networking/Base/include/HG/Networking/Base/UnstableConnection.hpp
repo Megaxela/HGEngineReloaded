@@ -9,32 +9,32 @@ namespace HG::Networking::Base
 class AbstractInternalData;
 
 /**
-     * @brief Class, that describes
-     * unstable UDP connection.
-     */
+ * @brief Class, that describes
+ * unstable UDP connection.
+ */
 class UnstableConnection
 {
 public:
     /**
-         * @brief Constructor.
-         * @param address Remove connected host address.
-         */
+     * @brief Constructor.
+     * @param address Remove connected host address.
+     */
     explicit UnstableConnection(HG::Networking::Base::AddressIPv4 address);
 
     /**
-         * @brief Destructor.
-         */
+     * @brief Destructor.
+     */
     ~UnstableConnection();
 
     /**
-         * @brief Method for getting remote host address.
-         * @return Remote host address.
-         */
+     * @brief Method for getting remote host address.
+     * @return Remote host address.
+     */
     [[nodiscard]] HG::Networking::Base::AddressIPv4 address() const;
 
     /**
-         * @brief Method for setting any internal data.
-         */
+     * @brief Method for setting any internal data.
+     */
     template <typename T>
     T* createInternalData()
     {
@@ -43,8 +43,8 @@ public:
     }
 
     /**
-         * @brief Method for getting internal data.
-         */
+     * @brief Method for getting internal data.
+     */
     template <typename T>
     T* internalData() const
     {

@@ -8,11 +8,11 @@
 namespace HG::Networking::Base::PacketLayers
 {
 /**
-     * @brief Stable packet header.
-     *
-     * `magic` - any magic number to identify, that it's packet is from engine client.
-     * `dataSize` - size of following useful load.
-     */
+ * @brief Stable packet header.
+ *
+ * `magic` - any magic number to identify, that it's packet is from engine client.
+ * `dataSize` - size of following useful load.
+ */
 struct StablePacketHeader
 {
     static constexpr std::size_t kSize = 10; // bytes
