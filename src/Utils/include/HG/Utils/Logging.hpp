@@ -8,7 +8,7 @@
 
 #define HGDebug(...) SPDLOG_DEBUG(__VA_ARGS__)
 
-#define HGInfo(...) SPDLOG_DEBUG(__VA_ARGS__)
+#define HGInfo(...) SPDLOG_INFO(__VA_ARGS__)
 
 #define HGWarning(...) SPDLOG_WARN(__VA_ARGS__)
 

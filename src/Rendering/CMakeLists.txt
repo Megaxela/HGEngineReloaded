@@ -7,3 +7,4 @@ endif()
 
 add_subdirectory(Base)
 add_subdirectory(OpenGL)
+add_subdirectory(Vulkan)

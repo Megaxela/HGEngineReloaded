@@ -5,7 +5,6 @@
 
 // HG::Rendering::Base
 #include <HG/Rendering/Base/RenderingPipeline.hpp> // Required for inheritance
-#include <gl/vertex_array.hpp>
 
 namespace HG::Core
 {
