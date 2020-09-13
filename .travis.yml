@@ -33,15 +33,15 @@ matrix:
           - EXECUTE_TESTS=ON
           - COVERAGE=OFF
 
-    -   name: Debug, Ubuntu 20.04, MinGW-W64 (without Tools)
-        os: linux
-        dist: focal
-        env:
-          - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-          - PROJECT_FLAGS="-DCMAKE_BUILD_TYPE=Debug -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
-          - COMPILER_TOOL=mingw-w64
-          - EXECUTE_TESTS=OFF
-          - COVERAGE=OFF
+#    -   name: Debug, Ubuntu 20.04, MinGW-W64 (without Tools)
+#        os: linux
+#        dist: focal
+#        env:
+#          - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
+#          - PROJECT_FLAGS="-DCMAKE_BUILD_TYPE=Debug -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
+#          - COMPILER_TOOL=mingw-w64
+#          - EXECUTE_TESTS=OFF
+#          - COVERAGE=OFF
 
     - name: Release, Ubuntu 20.04, GCC
       os: linux
@@ -63,15 +63,15 @@ matrix:
         - EXECUTE_TESTS=ON
         - COVERAGE=OFF
 
-    - name: Release, Ubuntu 20.04, MinGW-W64 (without Tools)
-      os: linux
-      dist: focal
-      env:
-        - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
-        - PROJECT_FLAGS="-DCMAKE_BUILD_TYPE=Release -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
-        - COMPILER_TOOL=mingw-w64
-        - EXECUTE_TESTS=OFF
-        - COVERAGE=OFF
+#    - name: Release, Ubuntu 20.04, MinGW-W64 (without Tools)
+#      os: linux
+#      dist: focal
+#      env:
+#        - SCRIPT_PATH="scripts/ci/linux/ubuntu/main.sh"
+#        - PROJECT_FLAGS="-DCMAKE_BUILD_TYPE=Release -DHG_BUILD_TESTS=On -DHG_BUILD_EXAMPLES=On -DHG_BUILD_ALL_TESTS=On -DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=Off -DHG_BUILD_TOOLS=Off"
+#        - COMPILER_TOOL=mingw-w64
+#        - EXECUTE_TESTS=OFF
+#        - COVERAGE=OFF
 
 git:
   submodules: false
