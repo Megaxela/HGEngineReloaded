@@ -1,10 +1,20 @@
+// HG::Core
 #include <HG/Core/Application.hpp>
 #include <HG/Core/Scene.hpp>
+
+// HG::Physics::Base
 #include <HG/Physics/Base/PhysicsController.hpp>
+
+// HG::Rendering::Base
 #include <HG/Rendering/Base/Renderer.hpp>
 #include <HG/Rendering/Base/RenderingPipeline.hpp>
 #include <HG/Rendering/Base/SystemController.hpp>
+
+// GTest
 #include <gtest/gtest.h>
+
+// ImGui
+#include <imgui.h>
 
 enum class Actions
 {
@@ -169,6 +179,25 @@ public:
     {
     }
 
+    bool init() override
+    {
+        if (!HG::Rendering::Base::RenderingPipeline::init())
+        {
+            return false;
+        }
+
+        // Required for imgui to work in debug
+        auto& io = ImGui::GetIO();
+
+        unsigned char* data;
+        int width;
+        int height;
+
+        io.Fonts->GetTexDataAsRGBA32(&data, &width, &height);
+
+        return true;
+    }
+
     void clear(HG::Utils::Color color) override
     {
     }
@@ -188,6 +217,12 @@ public:
 
     void getTextureRegion(HG::Rendering::Base::Texture* texture, glm::ivec2 tl, glm::ivec2 br, uint8_t* data) override
     {
+    }
+
+    const std::string& pipelineName() const override
+    {
+        static std::string name;
+        return name;
     }
 };
 

@@ -25,6 +25,7 @@ public:
     enum Type
     {
         FileLoadingThread,
+        NetworkingThread,
         UserThread
     };
 

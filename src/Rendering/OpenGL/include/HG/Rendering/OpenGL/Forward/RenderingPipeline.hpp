@@ -51,6 +51,8 @@ public:
      */
     ~RenderingPipeline() override;
 
+    const std::string& pipelineName() const override;
+
     /**
      * @brief Method for adding renderer to pipeline.
      * @param renderer Pointer to renderer.

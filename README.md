@@ -10,6 +10,7 @@ It's C++17 STL based game engine.
 ### Supported OS
 * :heavy_check_mark: Linux
 * :heavy_check_mark: Windows
+* :x: Web (coming soon)
 * :x: MacOS (coming soon)
 
 ### Supported Rendering Backends
@@ -90,6 +91,7 @@ Project uses `cmake` based build system. Sample build process:
  |-------------------------|---------------|-------|-------------------------------------------------|
  | `HG_BUILD_EXAMPLES`     |   `On`/`Off`  | `Off` | Build provided examples or not                  |
  | `HG_BUILD_TESTS`        |   `On`/`Off`  | `Off` | Enables tests discover and assets configuration |
+ | `HG_BUILD_TOOLS`        |   `On`/`Off`  | `On`  | Enables engine tools build                      |
  | `HG_TEST_COVERAGE`      |   `On`/`Off`  | `Off` | Enables compile options for coverage check      |
  | `HG_BUILD_WARNINGS`     |   `On`/`Off`  | `Off` | Enables huge amount of warnings for build       |
  | `HG_BUILD_Core_TESTS`   |   `On`/`Off`  | `Off` | Enables Core module tests                       |

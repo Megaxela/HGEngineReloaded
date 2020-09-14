@@ -41,6 +41,11 @@ public:
     virtual ~RenderingPipeline();
 
     /**
+     * @brief Method for getting pipeline name for debugging purposes.
+     */
+    [[nodiscard]] virtual const std::string& pipelineName() const = 0;
+
+    /**
      * @brief Method for initializing pipeline.
      * By default it just initialize system controller
      * and creates window.
