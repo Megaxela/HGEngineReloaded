@@ -237,14 +237,30 @@ void CommandLineArguments::showUsageLine()
                 std::cout << ' ' << argument.meta;
             }
         }
+        else if (!argument.destination.empty())
+        {
+            std::cout << ' ' << getValueReplacer(&argument);
+        }
 
         if (!argument.required)
         {
-            std::cout << "] ";
+            std::cout << "]";
         }
+
+        std::cout << ' ';
     }
 
     std::cout << std::endl;
+}
+
+std::string CommandLineArguments::getValueReplacer(const CommandLineArguments::Argument* arg) const
+{
+    std::string valueReplacer = nameFromKey(arg->keys.back());
+
+    std::transform(
+        valueReplacer.begin(), valueReplacer.end(), valueReplacer.begin(), [](char c) { return std::toupper(c); });
+
+    return valueReplacer;
 }
 
 void CommandLineArguments::showArguments(const std::vector<const CommandLineArguments::Argument*>& arguments)
@@ -262,10 +278,7 @@ void CommandLineArguments::showArguments(const std::vector<const CommandLineArgu
 
         // todo c++20: filter '-' with views
 
-        std::string valueReplacer = nameFromKey(argument->keys.back());
-
-        std::transform(
-            valueReplacer.begin(), valueReplacer.end(), valueReplacer.begin(), [](char c) { return std::toupper(c); });
+        std::string valueReplacer = getValueReplacer(argument);
 
         bool isFirst = true;
         for (const auto& key : argument->keys)
@@ -469,7 +482,7 @@ CommandLineArguments::ArgumentsMap CommandLineArguments::internalParsing(int num
     return result;
 }
 
-std::string CommandLineArguments::nameFromKey(const std::string& s)
+std::string CommandLineArguments::nameFromKey(const std::string& s) const
 {
     return std::string(std::find_if(s.begin(), s.end(), [](char c) { return c != '-'; }), s.end());
 }

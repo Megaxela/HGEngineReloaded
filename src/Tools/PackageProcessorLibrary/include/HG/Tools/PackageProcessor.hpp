@@ -28,7 +28,7 @@ namespace HG::Tools
  * #-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#-----#
      *
  * Description:
- * [ 0 -  3] - magic bytex 0xdec0de00
+ * [ 0 -  3] - magic bytes 0xdec0de00
  * [ 4 -  7] - package crc32 (counts from 8th byte)
  * [ 8 - 15] - total package size (uint32_t)
  * [16 - 19] - package packer version (uint32_t)

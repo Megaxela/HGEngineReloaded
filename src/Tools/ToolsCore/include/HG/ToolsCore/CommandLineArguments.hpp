@@ -202,11 +202,13 @@ public:
     void showUsageLine();
 
 private:
+    std::string getValueReplacer(const Argument* arg) const;
+
     ArgumentsMap internalParsing(int numberOfArguments, char** arguments);
 
     void showArguments(const std::vector<const Argument*>& arguments);
 
-    std::string nameFromKey(const std::string& s);
+    std::string nameFromKey(const std::string& s) const;
 
     ArgumentType parseValue(const char* value, Type t);
 

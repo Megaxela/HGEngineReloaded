@@ -16,17 +16,17 @@
 #ifdef OS_LINUX
 #    define FUNCTION_WINDOWS_STUB
 #    define FUNCTION_WEB_STUB
-#    define FUNCTION_LINUX_STUB HGErrorF() << "Function has no implementation for linux.";
+#    define FUNCTION_LINUX_STUB HGError("Function has no implementation for linux.");
 #endif
 
 #ifdef OS_WEB
 #    define FUNCTION_WINDOWS_STUB
-#    define FUNCTION_WEB_STUB HGErrorF() << "Function has no implementation for web.";
+#    define FUNCTION_WEB_STUB HGError("Function has no implementation for web.");
 #    define FUNCTION_LINUX_STUB
 #endif
 
 #ifdef OS_WINDOWS
-#    define FUNCTION_WINDOWS_STUB HGErrorF() << "Function has no implementation for windows.";
+#    define FUNCTION_WINDOWS_STUB HGError("Function has no implementation for windows.");
 #    define FUNCTION_WEB_STUB
 #    define FUNCTION_LINUX_STUB
 #endif
