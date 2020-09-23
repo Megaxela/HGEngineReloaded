@@ -24,6 +24,10 @@ namespace HG::Rendering::Vulkan
 
         bool init() override;
 
+        Backend pipelineBackend() const override;
+
+        const std::string& pipelineName() const override;
+
         void clear(HG::Utils::Color color) override;
 
         void render(const std::vector<HG::Core::GameObject*>& objects) override;
@@ -37,8 +41,11 @@ namespace HG::Rendering::Vulkan
         void deinit() override;
 
     private:
-        bool initVulkanInstance();
-        bool createPhysicalDevice();
+        void setupDebug();
+        void initVulkanDispatcher();
+        void initVulkanInstance();
+        void initDebug();
+        void createPhysicalDevice();
 
         void* m_impl;
     };

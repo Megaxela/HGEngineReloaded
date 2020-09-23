@@ -16,7 +16,7 @@
 
 namespace HG::Rendering::Base
 {
-SystemController::SystemController(HG::Core::Application* application) : m_application(application)
+SystemController::SystemController(HG::Core::Application* application) : m_application(application), m_system_controller_pipeline_setup_cb(), m_pipeline_setup_cb()
 {
 }
 SystemController::~SystemController()
@@ -243,4 +243,24 @@ void SystemController::imGuiReadKeys()
         }
     });
 }
+
+    const SystemController::SystemControllerPipelineSetupCallback& SystemController::systemControllerPipelineSetupCallback() const
+    {
+        return m_system_controller_pipeline_setup_cb;
+    }
+
+    void SystemController::setSystemControllerPipelineSetupFunction(SystemController::SystemControllerPipelineSetupCallback cb)
+    {
+        m_system_controller_pipeline_setup_cb = std::move(cb);
+    }
+
+    const HG::Rendering::Base::SystemController::PipelineSetupCallback& SystemController::pipelineSetupCallback() const
+    {
+        return m_pipeline_setup_cb;
+    }
+
+    void SystemController::setPipelineSetupFunction(HG::Rendering::Base::SystemController::PipelineSetupCallback cb)
+    {
+        m_pipeline_setup_cb = std::move(cb);
+    }
 } // namespace HG::Rendering::Base

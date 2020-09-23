@@ -51,7 +51,16 @@ public:
      */
     ~RenderingPipeline() override;
 
+    /**
+     * @brief Method for getting name of pipeline.
+     */
     const std::string& pipelineName() const override;
+
+    /**
+     * @brief Method for getting type of pipeline backend.
+     * @return HG::Rendering::Base::RenderingPipeline::Backend::OpenGL
+     */
+    Backend pipelineBackend() const override;
 
     /**
      * @brief Method for adding renderer to pipeline.

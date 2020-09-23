@@ -537,4 +537,9 @@ const std::string& RenderingPipeline::pipelineName() const
     static std::string name = "OpenGL Forward";
     return name;
 }
+
+RenderingPipeline::Backend RenderingPipeline::pipelineBackend() const
+{
+    return HG::Rendering::Base::RenderingPipeline::Backend::OpenGL;
+}
 } // namespace HG::Rendering::OpenGL::Forward

@@ -13,3 +13,8 @@ describe_module(
     INCLUDE
         ${VULKAN_INCLUDE_DIR}
 )
+
+target_compile_definitions(HGRenderingVulkan
+    PUBLIC
+        VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1
+)

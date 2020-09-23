@@ -3,8 +3,16 @@
 // HG::Rendering::Base
 #include <HG/Rendering/Base/SystemController.hpp>
 
+// C++ STL
+#include <memory>
+
 // Forward declaration
 struct GLFWwindow;
+
+namespace HG::System::PC::Base
+{
+    class ContextInitializer;
+}
 
 namespace HG::System::PC
 {
@@ -125,5 +133,6 @@ private:
     static void framebufferSizeCallback(GLFWwindow*, int width, int height);
 
     GLFWwindow* m_window;
+    std::shared_ptr<HG::System::PC::Base::ContextInitializer> m_context_initializer;
 };
 } // namespace HG::System::PC

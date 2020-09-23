@@ -30,6 +30,12 @@ struct RenderOverride;
 class RenderingPipeline
 {
 public:
+    enum class Backend
+    {
+        OpenGL,
+        Vulkan
+    };
+
     /**
      * @brief Constructor.
      */
@@ -44,6 +50,11 @@ public:
      * @brief Method for getting pipeline name for debugging purposes.
      */
     [[nodiscard]] virtual const std::string& pipelineName() const = 0;
+
+    /**
+     * @brief Method for getting type of pipeline backend.
+     */
+    [[nodiscard]] virtual Backend pipelineBackend() const = 0;
 
     /**
      * @brief Method for initializing pipeline.

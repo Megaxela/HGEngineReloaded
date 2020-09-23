@@ -3,6 +3,7 @@
 // C++ STL
 #include <cstdint>
 #include <string>
+#include <functional>
 
 // HG::Utils
 #include <HG/Utils/Rect.hpp>
@@ -22,6 +23,9 @@ namespace HG::Rendering::Base
 class SystemController
 {
 public:
+    using SystemControllerPipelineSetupCallback = std::function<void(void*, void*)>;
+    using PipelineSetupCallback = std::function<void(void*)>;
+
     /**
      * @brief Constructor.
      * @param application Pointer to parent application.
@@ -98,7 +102,32 @@ public:
      */
     [[nodiscard]] HG::Core::Application* application() const;
 
+    /**
+     * @brief Method for getting setup callback for rendering pipeline.
+     * Rendering pipeline SHOULD call this and check for existing.
+     */
+    [[nodiscard]] const HG::Rendering::Base::SystemController::SystemControllerPipelineSetupCallback& systemControllerPipelineSetupCallback() const;
+
+    /**
+     * @brief Method for getting callback for receiving additional
+     * data for initializing pipeline.
+     */
+    [[nodiscard]] const HG::Rendering::Base::SystemController::PipelineSetupCallback& pipelineSetupCallback() const;
+
 protected:
+
+    /**
+     * @brief This method should be used by derived system controller,
+     * if it will require additional initialization from rendering pipeline.
+     */
+    void setSystemControllerPipelineSetupFunction(HG::Rendering::Base::SystemController::SystemControllerPipelineSetupCallback cb);
+
+    /**
+     * @brief This method should be used by derived system controller to
+     * provide some data, required by pipeline to be initialized right for this system controller.
+     */
+    void setPipelineSetupFunction(HG::Rendering::Base::SystemController::PipelineSetupCallback cb);
+
     /**
      * @brief Derived defined events polling, that has to populate
      * HG::Core::Input
@@ -144,5 +173,7 @@ private:
     void imGuiReadKeys();
 
     HG::Core::Application* m_application;
+    HG::Rendering::Base::SystemController::SystemControllerPipelineSetupCallback m_system_controller_pipeline_setup_cb;
+    HG::Rendering::Base::SystemController::PipelineSetupCallback m_pipeline_setup_cb;
 };
 } // namespace HG::Rendering::Base

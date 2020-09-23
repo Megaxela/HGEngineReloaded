@@ -8,9 +8,11 @@
 #include <HG/Rendering/Base/Camera.hpp>
 #include <HG/Rendering/Base/RenderTarget.hpp>
 #include <HG/Rendering/Base/Renderer.hpp>
+#include <HG/Rendering/Base/RenderingPipeline.hpp>
 
 // HG::System::PC
 #include <HG/System/PC/SystemController.hpp>
+#include <HG/System/PC/InitializerFabric.hpp>
 
 // HG::Utils
 #include <HG/Utils/Logging.hpp>
@@ -28,7 +30,8 @@ namespace HG::System::PC
 {
 SystemController::SystemController(HG::Core::Application* application) :
     HG::Rendering::Base::SystemController(application),
-    m_window(nullptr)
+    m_window(nullptr),
+    m_context_initializer(nullptr)
 {
 }
 
@@ -50,11 +53,11 @@ static void ImGuiSetClipboardText(void* user_data, const char* text)
 
 bool SystemController::onInit()
 {
-    HGInfo("Initializing GLFW");
+    HGInfo("GLFW: Initializing");
 
     // Setting error callback
     glfwSetErrorCallback(
-        [](int code, const char* description) { HGError("GLFW Received error #{}, {}", code, description); });
+        [](int code, const char* description) { HGError("GLFW: Received error #{}, {}", code, description); });
 
     // Initializing GLFW
     if (!glfwInit())
@@ -62,13 +65,18 @@ bool SystemController::onInit()
         return false;
     }
 
-    HGInfo("Initialized");
+    // Figuring out backend type and preparing initializer for it
+    auto pipeline = application()->renderer()->pipeline();
+    if (!pipeline)
+    {
+        HGInfo("GLFW: No pipeline set. Can't initialize backend specific settings.");
+        return false;
+    }
 
-    // Setting OpenGL version
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+    m_context_initializer = HG::System::PC::InitializerFabric().build(pipeline->pipelineBackend());
+
+    HGInfo("GLFW: Vulkan supported: {}", glfwVulkanSupported() ? "yes" : "no");
+    HGInfo("GLFW: Initialized");
 
     return true;
 }
@@ -79,7 +87,13 @@ void SystemController::onDeinit()
 
 bool SystemController::onCreateWindow(std::uint32_t width, std::uint32_t height, std::string title)
 {
-    HGInfo("Creating window {}x{} with title \"{}\"", width, height, title);
+    HGInfo("GLFW: Creating window {}x{} with title \"{}\"", width, height, title);
+
+    if (m_context_initializer)
+    {
+        HGInfo("GLFW: Calling backend specific context initializer prepare method");
+        m_context_initializer->prepareWindowCreation();
+    }
 
     m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
@@ -131,9 +145,14 @@ bool SystemController::onCreateWindow(std::uint32_t width, std::uint32_t height,
         return glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN;
     });
 
-    glfwMakeContextCurrent(m_window);
+    if (m_context_initializer)
+    {
+        HGInfo("GLFW: Calling backend specific context initializer window setup method");
+        m_context_initializer->windowSetup(m_window);
+    }
 
-    glfwSwapInterval(0);
+    setSystemControllerPipelineSetupFunction(std::move(m_context_initializer->buildSystemControllerPipelineSetupFunction(m_window)));
+    setPipelineSetupFunction(std::move(m_context_initializer->buildPipelineSetupFunction()));
 
     // Setting default render target size
     controller->application()->renderer()->defaultRenderTarget()->setSize({width, height});
@@ -232,14 +251,14 @@ void SystemController::joystickCallback(int gamepad, int event)
 {
     if (event == GLFW_CONNECTED)
     {
-        HGInfo("Gamepad #{} connected.", gamepad);
+        HGInfo("GLFW: Gamepad #{} connected.", gamepad);
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
             ->setIsConnectedGamepad(static_cast<std::uint8_t>(gamepad), true);
     }
     else if (event == GLFW_DISCONNECTED)
     {
-        HGInfo("Gamepad #{} disconnected.", gamepad);
+        HGInfo("GLFW: Gamepad #{} disconnected.", gamepad);
 
         const_cast<HG::Core::Input::Gamepads*>(controller->application()->input()->gamepads())
             ->setIsConnectedGamepad(static_cast<std::uint8_t>(gamepad), false);
